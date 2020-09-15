@@ -121,15 +121,15 @@ function getChangeIndexAt(signal, time) {
   return idx;
 }
 
+/******************************************************************************
+ * 
+ * EXPORTED API FUNCTIONS
+ * 
+ ******************************************************************************/
 
-function zoom_end() {
-
-  console.log(d3.event);
-
-  drawWave2();
-
-}
-
+/**
+ * Zoom fit: show whole data in the screen. Now will be at the right edge of the window.
+ */
 export function zoomFit() {
   var width = $("#wave-axis-container").width();
   // The average change should be ~20px;
@@ -142,14 +142,23 @@ export function zoomFit() {
     .call(zoom.transform, autozoom);
 }
 
+/**
+ * Zoom in: show more details
+ */
 export function zoomIn() {
   zoom.scaleBy(d3.select("#wave-axis-container"), 1.3);
 }
 
+/**
+ * Zoom out: show more overview-ed view
+ */
 export function zoomOut() {
   zoom.scaleBy(d3.select("#wave-axis-container"), 1 / 1.3);
 }
 
+/**
+ * Autoscale: scale to show enough detail for humans
+ */
 export function zoomAutoscale() {
   var signals = d3.selectAll('.signalRow').data()
 
@@ -178,6 +187,11 @@ export function zoomAutoscale() {
   }
 }
 
+/**
+ * Updates the render-range.
+ * 
+ * The render range contains the time/pixel range which must be rendered. (which are visible)
+ */
 function updateRenderRange(){
   if(dbg_enableUpdateRenderRange) {
     const wrapper = d3.select('#wave-axis-container');
@@ -196,6 +210,9 @@ function updateRenderRange(){
   }
 }
 
+/**
+ * Update the axis
+ */
 function updateAxis(){
   const rangeWidth = renderTimeScale.range()[1]-renderTimeScale.range()[0];
 
@@ -210,8 +227,30 @@ function updateAxis(){
 
 }
 
-function zoom_fast() {
+/******************************************************************************
+ * 
+ * D3 CALLBACK FUNCTIONS
+ * 
+ ******************************************************************************/
 
+/**
+ * Zoom end called after the d3 zoom event.
+ * 
+ * `end` event is emitted when no wheel events are received for 150ms.
+ * This function do an exact render.
+ */
+function zoom_end() {
+  console.log(d3.event);
+  drawWave2();
+}
+
+/**
+ * Called by the d3 zoom at all zoom event.
+ * 
+ * zoom_fast do sort and fast transformation. The exact re-render is done by the zoom_end at the
+ * end of the zoom.
+ */
+function zoom_fast() {
   console.log(d3.event);
 
   const wrapper = d3.select('#wave-axis-container');
@@ -232,23 +271,40 @@ function zoom_fast() {
   updateAxis();
 }
 
+/**
+ * Called by d3, when the waveform is scrolled left/right (aka. in time).
+ */
 function scrolled() {
   const wrapper = d3.select('#wave-axis-container');
   d3.zoomTransform(wrapper.node()).x = -wrapper.node().scrollLeft;
   
   updateRenderRange();
   updateAxis();
-
 }
 
+
+/******************************************************************************
+ * 
+ * RENDER FUNCTIONS
+ * 
+ ******************************************************************************/
+
+/**
+ * Remove all signals from the waveform table.
+ */
 export function removeAllSignals(){
   d3.select('#mainGr').selectAll("*").remove();
-  
   d3.select('#names-col').selectAll("*").remove();
-
   d3.select('#values-col').selectAll("*").remove();
 }
 
+/**
+ * Generate waveform table.
+ *
+ * Adds all signals to table. Adds to names- values- and waves-column.
+ * 
+ * @param {Object} signals is the drawing database, which contains the signals to be added.
+ */
 function generateTable(signals) {
 
   zoom
@@ -336,21 +392,14 @@ function generateTable(signals) {
 }
 
 
-function fillSignalNames(signals) {
-  d3.selectAll('.signalName')
-    .append("text")
-    .attr("y", config.rowHeight / 2)
-    .attr("x", 10)
-    .attr('text-anchor', 'left')
-    .attr('alignment-baseline', 'central')
-    .attr("class", "signalNameText")
-    .text(d => d.name);
-}
-
-
+/**
+ * Re-order the signals in the waveform.
+ *
+ * Updates the signals' order in both names-col, values-col and mainGr
+ * 
+ * @param {Object} signals contains the signals in the *wanted* order
+ */
 function reOrderSignals(signals) {
-  // signals contains the signals in the *wanted* order
-
   function reOrder(containerSelector, childSelector) {
     // originalSignals: contains the signals in the *original* order
     var originalSignals = d3.select(containerSelector).selectAll(childSelector).data();
@@ -373,19 +422,26 @@ function reOrderSignals(signals) {
 }
 
 
-$("#names-col").sortable({
-  update: function (event, ui) {
-    reOrderSignals(d3.select("#names-col").selectAll('.signal-name').data());
+/**
+ * Show signal names in the names-col
+ */
+function fillSignalNames() {
+    d3.selectAll('.signalName')
+      .append("text")
+      .attr("y", config.rowHeight / 2)
+      .attr("x", 10)
+      .attr('text-anchor', 'left')
+      .attr('alignment-baseline', 'central')
+      .attr("class", "signalNameText")
+      .text(d => d.name);
   }
-});
-
-$("#values-col").sortable({
-  update: function (event, ui) {
-    reOrderSignals(d3.select("#values-col").selectAll('.signal-value').data());
-  }
-});
-
-
+  
+  
+/**
+ * Show values in the values column at the given simulation-time.
+ *
+ * @param {int} time the simulation time at the values must be shown.
+ */
 function showValuesAt(time) {
   d3.selectAll('.signal-value')
     .text(d => {
@@ -400,13 +456,9 @@ function showValuesAt(time) {
     });
 }
 
-function isInt(value) {
-  return !isNaN(value) &&
-    parseInt(Number(value)) == value &&
-    !isNaN(parseInt(value, 10));
-}
-
-
+/**
+ * Renred all singals in the waveform
+ */
 function drawWave2() {
   if(dbg_enableRender) {
     d3.selectAll('.signalWave')
@@ -416,40 +468,14 @@ function drawWave2() {
   }
 }
 
-
 /**
- * Filter value change elements, pass which are inside the rendering region.
- *
- * @param {Object} waveChange a wave change element, to filter
- * @return {boolean} true if the waveChange element inside the rendering region.
+ * Render the given signal
+ * 
+ * @param {d3 Object} signalWaveSVG is the d3 object to be render
  */
-function waveChangeInRenderRange(waveChange){
-  var t0 = waveChange[0].time,
-    t1 = waveChange[1].time,
-    domainMin = d3.min(renderTimeScale.domain()),
-    domainMax = d3.max(renderTimeScale.domain());
+function drawWave(signalWaveSVG) {
 
-  return t0 <= domainMax && t1 >= domainMin;
-}
-
-/**
- * Filter value change elements, pass which are inside the rendering region.
- *
- * @param {Object} waveChange a wave change element, to filter
- * @return {boolean} true if the waveChange element inside the rendering region.
- */
-function waveIInRenderRange(wave, i){
-  var t0 = wave[i].time,
-    t1 = wave[i+1].time,
-    domainMin = d3.min(renderTimeScale.domain()),
-    domainMax = d3.max(renderTimeScale.domain());
-
-  return t0 <= domainMax && t1 >= domainMin;
-}
-
-function drawWave(svg) {
-
-  var sigData = svg.datum();
+  var sigData = signalWaveSVG.datum();
 
   function parseIntDef(intToPare, def) {
     if (isInt(intToPare)) {
@@ -478,12 +504,12 @@ function drawWave(svg) {
   }, []);
 
   // console.log(waveChangesIndex);
-  svg.classed(`wave-style-${sigData.waveStyle}`, true);
+  signalWaveSVG.classed(`wave-style-${sigData.waveStyle}`, true);
 
   if (sigData.waveStyle == 'bit') {
 
     // horizontal aka. timeholder:
-    var timeholders = svg.selectAll('.timeholder')
+    var timeholders = signalWaveSVG.selectAll('.timeholder')
       .data(waveChangesIndex);
 
     timeholders.exit().remove();
@@ -493,7 +519,7 @@ function drawWave(svg) {
       .classed('timeholder', true);
 
     // vertical aka. valuechanger
-    var valuechanger = svg.selectAll('.valuechanger')
+    var valuechanger = signalWaveSVG.selectAll('.valuechanger')
       .data(waveChangesIndex);
 
     valuechanger.exit().remove();
@@ -503,7 +529,7 @@ function drawWave(svg) {
       .classed('valuechanger', true);
 
     // transparent rect
-    var transRect = svg.selectAll('.transparent-rect')
+    var transRect = signalWaveSVG.selectAll('.transparent-rect')
       .data(waveChangesIndex);
       
     transRect.exit().remove();
@@ -512,14 +538,14 @@ function drawWave(svg) {
       .append('rect')
       .classed('transparent-rect', true);
     
-    svg.selectAll('.transparent-rect')
+    signalWaveSVG.selectAll('.transparent-rect')
       .attr('x', d => initialTimeScale(d[WAVEARRAY][d[IDX]].time))
       .attr('y', d => bitWaveScale(parseIntDef(d[WAVEARRAY][d[IDX]].val)))
       .attr('width', d => initialTimeScale(d[WAVEARRAY][d[IDX]+1].time - d[WAVEARRAY][d[IDX]].time))
       .attr('height', d => bitWaveScale(1-parseIntDef(d[WAVEARRAY][d[IDX]].val)) - 2 )
       .style("fill", d => value2Color(d[WAVEARRAY][d[IDX]].val));
 
-    svg.selectAll('.timeholder')
+    signalWaveSVG.selectAll('.timeholder')
       .attr('x1', d => initialTimeScale(d[WAVEARRAY][d[IDX]].time))
       .attr('y1', d => bitWaveScale(parseIntDef(d[WAVEARRAY][d[IDX]].val)))
       .attr('x2', d => initialTimeScale(d[WAVEARRAY][d[IDX]+1].time))
@@ -527,7 +553,7 @@ function drawWave(svg) {
       .style("stroke", d => value2Color(d[WAVEARRAY][d[IDX]].val))
       .attr('vector-effect', 'non-scaling-stroke');
 
-    svg.selectAll('.valuechanger')
+    signalWaveSVG.selectAll('.valuechanger')
       .attr('x1', d => initialTimeScale(d[WAVEARRAY][d[IDX]+1].time))
       .attr('y1', d => bitWaveScale(parseIntDef(d[WAVEARRAY][d[IDX]].val)))
       .attr('x2', d => initialTimeScale(d[WAVEARRAY][d[IDX]+1].time))
@@ -536,7 +562,7 @@ function drawWave(svg) {
       .attr('vector-effect', 'non-scaling-stroke');
 
   } else if (sigData.waveStyle == 'bus') {
-    var busPath = svg.selectAll('path')
+    var busPath = signalWaveSVG.selectAll('path')
       .data(waveChangesIndex);
 
     busPath.exit().remove();
@@ -545,7 +571,7 @@ function drawWave(svg) {
       .append('path')
       .classed('bus-path', true);
 
-    svg.selectAll('.bus-path')
+    signalWaveSVG.selectAll('.bus-path')
       .attr('vector-effect', 'non-scaling-stroke')
       .style("stroke", d => value2Color(d[WAVEARRAY][d[IDX]].val))
       .style("fill", d => value2Color(d[WAVEARRAY][d[IDX]].val))
@@ -566,12 +592,12 @@ function drawWave(svg) {
       
   } else {
 
-    svg
+    signalWaveSVG
       .append('rect')
       .attr('height', default_row_height)
       .attr('width', now)
       .attr('fill', 'rgba(180, 0, 0, 0.5)');
-    svg.append('text')
+    signalWaveSVG.append('text')
       .text(`Unsupported waveStyle: ${sigData.waveStyle}`)
       .attr("y", default_row_height / 2)
       .attr("x", 10)
@@ -579,28 +605,53 @@ function drawWave(svg) {
       .attr('alignment-baseline', 'middle');
     return;
   }
-
 }
 
-function signals2Wave(signals) {
-  return signals.reduce((signalsWave, signal) => {
-    var sigWave = {
-      name: signal.name,
-      wave: []
+
+/******************************************************************************
+ * 
+ * OTHER / UTIL FUNCTIONS
+ * 
+ ******************************************************************************/
+
+/**
+ * applies the JQuery-UI sortable to names-col
+ */
+$("#names-col").sortable({
+    update: function (event, ui) {
+      reOrderSignals(d3.select("#names-col").selectAll('.signal-name').data());
     }
+});
+  
+/**
+ * applies the JQuery-UI sortable to values-col
+ */
+$("#values-col").sortable({
+    update: function (event, ui) {
+      reOrderSignals(d3.select("#values-col").selectAll('.signal-value').data());
+    }
+});
 
-    sigWave.id = encodeURI(signal.name)
+  
+function isInt(value) {
+    return !isNaN(value) &&
+      parseInt(Number(value)) == value &&
+      !isNaN(parseInt(value, 10));
+  }
 
-    signal.wave.forEach((wave) => {
-      sigWave.wave.push({
-        time: wave.time,
-        val: wave.val * 20
-      });
+/**
+ * Filter value change elements, pass which are inside the rendering region.
+ *
+ * @param {Object} waveChange a wave change element, to filter
+ * @return {boolean} true if the waveChange element inside the rendering region.
+ */
+function waveIInRenderRange(wave, i){
+  var t0 = wave[i].time,
+    t1 = wave[i+1].time,
+    domainMin = d3.min(renderTimeScale.domain()),
+    domainMax = d3.max(renderTimeScale.domain());
 
-    });
-    signalsWave.push(sigWave)
-    return signalsWave
-  }, []);
+  return t0 <= domainMax && t1 >= domainMin;
 }
 
 
