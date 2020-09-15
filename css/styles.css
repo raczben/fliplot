@@ -1,0 +1,198 @@
+
+
+/***********************************************************
+ * 
+ *    Basic styles
+ *
+ ***********************************************************/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+  --text-color-normal: hsl(210, 10%, 62%);
+  --text-color-light: hsl(210, 15%, 35%);
+  --text-color-richer: hsl(210, 50%, 72%);
+  --text-color-highlight: hsl(25, 70%, 45%);
+}
+
+
+/***********************************************************
+ * 
+ *    Page main layout
+ *
+ ***********************************************************/
+
+html, body{
+  height: 100%;
+  min-height: 100%;
+  background-color: #333;
+  color: white;
+}
+
+body {
+  display: flex; 
+  flex-direction: column;
+}
+
+#main-container-scroll-y{
+  flex: auto;
+  overflow-y: scroll;
+  background-color: #333;
+}
+
+#main-container{
+  background-color: #333;
+  display: flex;
+  width: 100%;
+  min-height: 100%;
+}
+
+#wave-axis-container{
+  display: flex;
+  flex: auto;
+  flex-direction: column;
+  background-color: #222;
+  overflow-x: auto;
+  height: 100%;
+}
+
+.ui-resizable-handle {
+  background: #aaa;
+  padding: 0px;
+}
+
+.resizable-col{
+  width: 100px;
+  padding: 0px 3px 0px 7px;
+}
+
+footer {
+  display: flex;
+  height: 20px;
+  color: #aaa;
+  font-size: 11px;
+  margin-top:auto; 
+}
+
+
+/***********************************************************
+ * 
+ *    The navigation bar aka. menubar
+ *
+ ***********************************************************/
+
+.navbar-inverse{
+  background-color: #444; 
+}
+
+.toolbar{
+  border-top: 1px solid #888;
+}
+
+.tool-group-container{
+  display: inline-block;
+  border-right: 1px solid #888;
+  padding: 0px 4px 0px 2px;
+}
+
+.tool-group-name{
+  text-align: center;
+  color: #ccc;
+  font-size: 11px;
+}
+
+.navbar-btn{
+  min-width: 50px;
+}
+
+.check-group {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 12px;
+}
+
+
+/***********************************************************
+ * 
+ *    Signal names and values column
+ *
+ ***********************************************************/
+
+.structure,
+.signal-name,
+.signal-value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+  font-family: sans-serif;
+  height: 20px;
+  line-height: 20px; /* same as height! */
+}
+
+#structure-col,
+#names-col-container,
+#values-col-container {
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+
+/***********************************************************
+ * 
+ *    SVG styles for signals
+ *
+ ***********************************************************/
+
+.highlighted-signal {
+  background-color: #5589c5;
+}
+
+line.signal-valid{
+  stroke: rgb(0, 235, 0);
+}
+
+line.signal-x{
+  stroke: rgb(235, 0, 0);
+}
+
+line.signal-highz{
+  stroke: rgb(0, 0, 235);
+}
+
+/**
+ * Signal highlighter:
+ * 
+ * There are several ways to highlight a signal.
+ *   1: Change color using d3 selections in js
+ *   2: stronger-stroke:
+ *       1 -> 2 use with shape-rendering: crispEdges; (https://stackoverflow.com/a/34229584/2506522)
+ *       2 -> 3 (seems too strong for me)
+ *   3: Using opacity to make it darker ( 0.8 -> 1.0)
+ */
+.signalRow:not(.highlighted-signal) {
+  stroke-width: 2;
+  stroke-opacity: 0.8;
+}
+
+.signalRow.highlighted-signal {
+  stroke-width: 2;
+  stroke-opacity: 1.0;
+}
+
+#grid-gr{
+  color: #bbb;
+}
+
+.wave-style-bus{
+  fill-opacity: 0.04;
+}
+
+.wave-style-bit{
+  fill-opacity: 0.05;
+}
