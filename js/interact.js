@@ -9,7 +9,7 @@ import {
   dbg_setEnableRender
 } from './wave.js';
 
-
+// TODO should be moved somewhere else.
 export var config = {};
 export var now = 200;
 
@@ -37,8 +37,6 @@ $("#wiki").click(() => {
       setTimeout(() => {
         showSignals(drawDB)
       }, 0)
-
-      // alert("Data: " + data + "\nStatus: " + status);
     }
   })
 
@@ -69,7 +67,6 @@ $("#Axi").click(() => {
       },0)
     }
   })
-
 });
 
 $("#zoom-fit").click(() => {
@@ -111,8 +108,6 @@ $("#file-open-button").click(() => {
 $("#file-open-shadow").change(openFile);
 
 function vcdpy2draw(parsedContent) {
-  //  const drawDB = {...parsedContent}
-
   var positionY = 0;
 
   function traverse(node) {
@@ -138,39 +133,11 @@ function vcdpy2draw(parsedContent) {
       } else {
         nodeCpy.waveStyle = 'bus'
         console.log(`Unsupported width: ${node.width}`)
-        //        nodeCpy.wave.forEach( item => {
-        //          item.val: item.val*20
-        //        });
       }
       return nodeCpy;
     }
   };
   return traverse(parsedContent);
-}
-
-
-function vcd2draw(parsedContent) {
-  const drawDB = {
-    ...parsedContent
-  }
-  var positionY = 0;
-  drawDB.signal.forEach((sig) => {
-
-    sig.id = encodeURIComponent(sig.name).replace(/\./g, '_');
-    sig.waveStyle = 'bit';
-    sig.rowHeight = config.rowHeight;
-    sig.positionY = positionY;
-    positionY += sig.rowHeight;
-
-    sig.wave = sig.wave.reduce((acc, w) => {
-      acc.push({
-        time: w[0],
-        val: w[1]
-      })
-      return acc
-    }, []);
-  });
-  return drawDB;
 }
 
 $.ajax({

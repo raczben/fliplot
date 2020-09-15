@@ -167,29 +167,38 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='VCD Parser Server')
-    parser.add_argument('--test', action='store_true', help='Test mode')
+    parser.add_argument('--test', action='store_true', help='Test and exit')
+    parser.add_argument('--ignore-test', action='store_true', help='Do not exit on failed test')
+    parser.add_argument('--export-vcd', type=str, help='Export VCD file to parsed JSON')
     parser.add_argument('--port', nargs='?',
                         help='port of the server', type=int, default=7771)
     parser.add_argument('fname', nargs='?', default='wiki.vcd')
 
     args = parser.parse_args()
 
-    if args.test:
-        data = parseWith_vcdvcd(args.fname)
-        print(json.dumps(data,  indent=2, sort_keys=True))
-        print()
-        print()
-        print()
-        print()
-        data = parseFile(args.fname)
-        # data = parseFile('AxiRegTC_test_write.vcd')
-        # data = parseFile('wiki.vcd')
-        # print(data)
-        print(json.dumps(data,  indent=2, sort_keys=True))
+    if args.export_vcd:
+        data = parseWith_vcdvcd(args.export_vcd)
+        fname_no_ext = os.path.splitext(args.export_vcd)[0]
+        with open(f'{fname_no_ext}_parsed.json', 'w') as outfile:
+            json.dump(data, fp=outfile, indent=2, sort_keys=True)
+        sys.exit(0)
 
-    else:
-        
-
+    # Do test
+    fname_no_ext = 'test/AxiRegTC_test_write'
+    with open(f'{fname_no_ext}_parsed.json') as parsed_json_file:
+        reference_data = json.load(parsed_json_file)
+        data = parseWith_vcdvcd(f'{fname_no_ext}.vcd')
+        reference_data = json.dumps(reference_data, sort_keys=True)
+        data = json.dumps(data, sort_keys=True)
+        if reference_data == data:
+            print('Test Passed, reference matches')
+        else:
+            print('Test FAILED. Reference mismatches')
+            if not args.ignore_test:
+                sys.exit(-1)
+    
+    # Start the server
+    if not args.test:
         PORT = args.port
         my_server = socketserver.TCPServer(("localhost", PORT), MyHttpRequestHandler)
 
