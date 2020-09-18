@@ -1,8 +1,13 @@
 'use strict';
 import {
-  now,
   config
 } from './interact.js';
+import {
+  now,
+  drawDB,
+  getTimeAtI,
+  getValueAtI
+} from './core.js';
 
 var zoom = d3.zoom();
 var x_grid = d3.axisBottom();
@@ -168,12 +173,12 @@ export function zoomAutoscale() {
       if (signal.wave.length) {
         return acc + now / signal.wave.length
       } else {
-        return 0;
+        return 1;
       }
     }, 0) / signals.length;
 
     // The average change should be ~20px;
-    var scale = 20 / avgDelta;
+    var scale = 500 / avgDelta;
 
     var autozoom = d3.zoomIdentity;
     autozoom.k = scale;
@@ -481,7 +486,7 @@ function drawWave(signalWaveSVG) {
     if (isInt(intToPare)) {
       return parseInt(intToPare);
     } else {
-      return def;
+      return 0.5;
     }
   }
 
@@ -495,10 +500,8 @@ function drawWave(signalWaveSVG) {
   }
   
   var waveChangesIndex = sigData.wave.reduce((res, current, i, waveArr) => {
-    if(i< waveArr.length-1){
-      if (waveIInRenderRange(waveArr, i)) {
-        res.push([waveArr, i]);
-      }
+    if (waveIInRenderRange(waveArr, i)) {
+      res.push([waveArr, i]);
     }
     return res;
   }, []);
@@ -520,7 +523,7 @@ function drawWave(signalWaveSVG) {
 
     // vertical aka. valuechanger
     var valuechanger = signalWaveSVG.selectAll('.valuechanger')
-      .data(waveChangesIndex);
+      .data(waveChangesIndex.slice(1));
 
     valuechanger.exit().remove();
 
@@ -539,26 +542,26 @@ function drawWave(signalWaveSVG) {
       .classed('transparent-rect', true);
     
     signalWaveSVG.selectAll('.transparent-rect')
-      .attr('x', d => initialTimeScale(d[WAVEARRAY][d[IDX]].time))
-      .attr('y', d => bitWaveScale(parseIntDef(d[WAVEARRAY][d[IDX]].val)))
-      .attr('width', d => initialTimeScale(d[WAVEARRAY][d[IDX]+1].time - d[WAVEARRAY][d[IDX]].time))
-      .attr('height', d => bitWaveScale(1-parseIntDef(d[WAVEARRAY][d[IDX]].val)) - 2 )
-      .style("fill", d => value2Color(d[WAVEARRAY][d[IDX]].val));
+      .attr('x', d => initialTimeScale(getTimeAtI(d[WAVEARRAY], d[IDX])))
+      .attr('y', d => bitWaveScale(parseIntDef(getValueAtI(d[WAVEARRAY], d[IDX]))))
+      .attr('width', d => initialTimeScale((getTimeAtI(d[WAVEARRAY], d[IDX]+1)) - getTimeAtI(d[WAVEARRAY], d[IDX])))
+      .attr('height', d => bitWaveScale(1-parseIntDef(getValueAtI(d[WAVEARRAY], d[IDX]))) - 2 )
+      .style("fill", d => value2Color(getValueAtI(d[WAVEARRAY], d[IDX])));
 
     signalWaveSVG.selectAll('.timeholder')
-      .attr('x1', d => initialTimeScale(d[WAVEARRAY][d[IDX]].time))
-      .attr('y1', d => bitWaveScale(parseIntDef(d[WAVEARRAY][d[IDX]].val)))
-      .attr('x2', d => initialTimeScale(d[WAVEARRAY][d[IDX]+1].time))
-      .attr('y2', d => bitWaveScale(parseIntDef(d[WAVEARRAY][d[IDX]].val)))
-      .style("stroke", d => value2Color(d[WAVEARRAY][d[IDX]].val))
+      .attr('x1', d => initialTimeScale(getTimeAtI(d[WAVEARRAY], d[IDX])))
+      .attr('y1', d => bitWaveScale(parseIntDef(getValueAtI(d[WAVEARRAY], d[IDX]))))
+      .attr('x2', d => initialTimeScale(getTimeAtI(d[WAVEARRAY], d[IDX]+1)))
+      .attr('y2', d => bitWaveScale(parseIntDef(getValueAtI(d[WAVEARRAY], d[IDX]))))
+      .style("stroke", d => value2Color(getValueAtI(d[WAVEARRAY], d[IDX])))
       .attr('vector-effect', 'non-scaling-stroke');
 
     signalWaveSVG.selectAll('.valuechanger')
-      .attr('x1', d => initialTimeScale(d[WAVEARRAY][d[IDX]+1].time))
-      .attr('y1', d => bitWaveScale(parseIntDef(d[WAVEARRAY][d[IDX]].val)))
-      .attr('x2', d => initialTimeScale(d[WAVEARRAY][d[IDX]+1].time))
-      .attr('y2', d => bitWaveScale(parseIntDef(d[WAVEARRAY][d[IDX]+1].val)))
-      .style("stroke", d => value2Color(d[WAVEARRAY][d[IDX]+1].val))
+      .attr('x1', d => initialTimeScale(getTimeAtI(d[WAVEARRAY], d[IDX])))
+      .attr('y1', d => bitWaveScale(parseIntDef(d[WAVEARRAY][d[IDX]-1].val)))
+      .attr('x2', d => initialTimeScale(getTimeAtI(d[WAVEARRAY], d[IDX])))
+      .attr('y2', d => bitWaveScale(parseIntDef(getValueAtI(d[WAVEARRAY], d[IDX]))))
+      .style("stroke", d => value2Color(getValueAtI(d[WAVEARRAY], d[IDX])))
       .attr('vector-effect', 'non-scaling-stroke');
 
   } else if (sigData.waveStyle == 'bus') {
@@ -573,19 +576,19 @@ function drawWave(signalWaveSVG) {
 
     signalWaveSVG.selectAll('.bus-path')
       .attr('vector-effect', 'non-scaling-stroke')
-      .style("stroke", d => value2Color(d[WAVEARRAY][d[IDX]].val))
-      .style("fill", d => value2Color(d[WAVEARRAY][d[IDX]].val))
+      .style("stroke", d => value2Color(getValueAtI(d[WAVEARRAY], d[IDX])))
+      .style("fill", d => value2Color(getValueAtI(d[WAVEARRAY], d[IDX])))
       .style("stroke-width", "2")
       .attr('d', d => {
         var ret = '';
-        ret += `M${(d[WAVEARRAY][d[IDX]+1].time) - (timeScale.invert(2))},${bitWaveScale(1)} `
-        ret += `${(d[WAVEARRAY][d[IDX]].time) + (timeScale.invert(2))},${bitWaveScale(1)} `
-        ret += `${(d[WAVEARRAY][d[IDX]].time)},${bitWaveScale(0.5)} `
-        ret += `${(d[WAVEARRAY][d[IDX]].time) + (timeScale.invert(2))},${bitWaveScale(0)} `
-        ret += `${(d[WAVEARRAY][d[IDX]+1].time) - (timeScale.invert(2))},${bitWaveScale(0)} `
-        if (d[WAVEARRAY][d[IDX]+1].time < now) {
-          ret += `${(d[WAVEARRAY][d[IDX]+1].time)},${bitWaveScale(0.5)} `
-          ret += `${(d[WAVEARRAY][d[IDX]+1].time) - (timeScale.invert(2))},${bitWaveScale(1)} `
+        ret += `M${(getTimeAtI(d[WAVEARRAY], d[IDX]+1)) - (timeScale.invert(2))},${bitWaveScale(1)} `
+        ret += `${(getTimeAtI(d[WAVEARRAY], d[IDX])) + (timeScale.invert(2))},${bitWaveScale(1)} `
+        ret += `${(getTimeAtI(d[WAVEARRAY], d[IDX]))},${bitWaveScale(0.5)} `
+        ret += `${(getTimeAtI(d[WAVEARRAY], d[IDX])) + (timeScale.invert(2))},${bitWaveScale(0)} `
+        ret += `${(getTimeAtI(d[WAVEARRAY], d[IDX]+1)) - (timeScale.invert(2))},${bitWaveScale(0)} `
+        if (getTimeAtI(d[WAVEARRAY], d[IDX]+1) < now) {
+          ret += `${getTimeAtI(d[WAVEARRAY], d[IDX]+1)},${bitWaveScale(0.5)} `
+          ret += `${getTimeAtI(d[WAVEARRAY], d[IDX]+1) - (timeScale.invert(2))},${bitWaveScale(1)} `
         }
         return ret;
       });
@@ -646,8 +649,8 @@ function isInt(value) {
  * @return {boolean} true if the waveChange element inside the rendering region.
  */
 function waveIInRenderRange(wave, i){
-  var t0 = wave[i].time,
-    t1 = wave[i+1].time,
+  var t0 = getTimeAtI(wave, i),
+    t1 = getTimeAtI(wave, i+1),
     domainMin = d3.min(renderTimeScale.domain()),
     domainMax = d3.max(renderTimeScale.domain());
 
@@ -655,10 +658,10 @@ function waveIInRenderRange(wave, i){
 }
 
 
-export function showSignals(signals) {
+export function showSignals() {
   init();
-  generateTable(signals);
-  fillSignalNames(signals);
+  generateTable(drawDB);
+  fillSignalNames(drawDB);
   showValuesAt(0);
   zoomAutoscale();
 }

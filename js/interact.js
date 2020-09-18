@@ -9,9 +9,14 @@ import {
   dbg_setEnableRender
 } from './wave.js';
 
+import {
+  setDrawDB,
+  updateDBInitialX,
+  updateDBNow
+} from './core.js';
+
 // TODO should be moved somewhere else.
 export var config = {};
-export var now = 200;
 
 
 $("#wiki").click(() => {
@@ -30,12 +35,12 @@ $("#wiki").click(() => {
     success: (data, status) => {
       console.log(data);
       const drawDB = vcdpy2draw(data);
-      now = data.now;
+      setDrawDB(drawDB, data.now);
 
       console.log(drawDB);
 
       setTimeout(() => {
-        showSignals(drawDB)
+        showSignals()
       }, 0)
     }
   })
@@ -58,12 +63,14 @@ $("#Axi").click(() => {
     success: (data, status) => {
       console.log(data);
       const drawDB = vcdpy2draw(data);
-      now = data.now;
+      setDrawDB(drawDB, data.now);
+      updateDBInitialX();
+      updateDBNow();
 
       console.log(drawDB);
 
       setTimeout(()=>{
-        showSignals(drawDB)
+        showSignals()
       },0)
     }
   })
