@@ -196,3 +196,9 @@ line.signal-highz{
 .wave-style-bit{
   fill-opacity: 0.05;
 }
+
+#main-cursor{
+  stroke-width: 3;
+  stroke: #fc3;
+  stroke-opacity: 0.8;
+}
