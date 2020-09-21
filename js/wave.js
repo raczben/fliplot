@@ -377,11 +377,12 @@ function generateTable(signals) {
     .attr('x2', 10);
 
   d3.select('#mainSVG').on("click", function() {
-      var coords = d3.mouse(this);
+      const click_time = timeScale.invert(d3.mouse(this)[0]);
       d3.select('#cursorGr').select('#main-cursor')
-      .attr('x1', timeScale.invert(coords[0]))
-      .attr('x2', timeScale.invert(coords[0]));
-        // .attr(); 
+      .attr('x1', click_time)
+      .attr('x2', click_time);
+      
+      showValuesAt(click_time);
   });
 
 }
