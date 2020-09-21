@@ -270,7 +270,7 @@ function zoom_fast() {
   updateRenderRange();
   
   // Fast Zoom:
-  d3.selectAll('.signalWave')
+  d3.selectAll('.time-scale-group')
     .attr('transform', 'scale(' + d3.event.transform.k + ',1)');  
 
   updateAxis();
@@ -339,7 +339,7 @@ function generateTable(signals) {
   mainGr.selectAll('#grid-gr').remove();
   mainGr.append('g')
     .attr('id', 'grid-gr')
-    .attr('transform', (d, i) => `translate(0, ${config.rowHeight * signals.length})`);
+    .attr('transform', `translate(0, ${config.rowHeight * signals.length})`);
 
   var signalRow = mainGr.selectAll('.signalRow')
     .data(signals)
@@ -347,10 +347,9 @@ function generateTable(signals) {
     .append('g')
     .attr('transform', (d, i) => `translate(0, ${i * config.rowHeight})`)
     .attr('id', d => `signalRow_${d.id}`)
-    .attr('class', d => `signalRow ${d.id} signal-highlighter`)
-    .on('click', function (d) {
-      console.log(d3.event);
-    });
+    .attr('class', d => `signalRow ${d.id}`)
+    .append('g')
+    .attr('class', 'time-scale-group');
 
   var namesCol = d3.select('#names-col')
   namesCol.selectAll("*").remove();
@@ -361,7 +360,10 @@ function generateTable(signals) {
     .append('li')
     .attr('id', d => `signalName_${d.id}`)
     .attr('class', d => `signal-name ${d.id} signal-highlighter`)
-    .text(d => d.name);
+    .text(d => d.name)
+    .on('click', function (d) {
+      highlightSignal(d.id);
+    });
 
   var valuesCol = d3.select('#values-col')
   valuesCol.selectAll("*").remove();
@@ -373,17 +375,26 @@ function generateTable(signals) {
     .attr('id', d => `signalName_${d.id}`)
     .attr('class', d => `signal-value ${d.id} signal-highlighter`)
     .on('click', function (d) {
-      console.log(d3.select(d3.event.target).data());
-      console.log(d);
-      d3.selectAll('.highlighted-signal').classed('highlighted-signal', false);
-      d3.selectAll(`.${d.id}`).classed('highlighted-signal', true);
+      highlightSignal(d.id);
     });
 
-  var signalWave = signalRow
+  signalRow
     .append('g')
-    //    .attr('transform', (d, i) => `translate(150, 0)`)
     .attr('id', d => `signalWave_${d.id}`)
     .attr('class', d => `signalWave`);
+
+  signalRow
+    .append('g')
+    .attr('class', 'signal-highlighter-group')
+    .append('rect')
+    .attr('class', 'signal-highlighter')
+    .attr('x', 0)
+    .attr('y', 0)
+    .attr('width', initialTimeScale(now))
+    .attr('height', config.rowHeight)
+    .on('click', function (d, i) {
+      highlightSignal(d.id);
+    });
       
   mainGr.selectAll('#time-axis-gr').remove();
   mainGr.append('g')
@@ -655,6 +666,17 @@ $("#values-col").sortable({
       reOrderSignals(d3.select("#values-col").selectAll('.signal-value').data());
     }
 });
+
+/**
+ * Highlight a given signal. The highlighted signal has vivid blue background color, and the cursor
+ * will step on this signal's transients.
+ * 
+ * @param {string} signalID The ID of the signal that has to be highlighted 
+ */
+function highlightSignal(signalID){
+  d3.selectAll('.highlighted-signal').classed('highlighted-signal', false);
+  d3.selectAll(`.${signalID}`).classed('highlighted-signal', true);
+}
 
   
 function isInt(value) {

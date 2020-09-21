@@ -201,4 +201,9 @@ line.signal-highz{
   stroke-width: 3;
   stroke: #fc3;
   stroke-opacity: 0.8;
+  shape-rendering: crispedges;
+}
+
+rect.signal-highlighter {
+  opacity: 0;
 }
