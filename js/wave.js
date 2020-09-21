@@ -378,11 +378,7 @@ function generateTable(signals) {
 
   d3.select('#mainSVG').on("click", function() {
       const click_time = timeScale.invert(d3.mouse(this)[0]);
-      d3.select('#cursorGr').select('#main-cursor')
-      .attr('x1', click_time)
-      .attr('x2', click_time);
-      
-      showValuesAt(click_time);
+      moveCursorTo(click_time);
   });
 
 }
@@ -599,6 +595,14 @@ function drawWave(signalWaveSVG) {
  * 
  ******************************************************************************/
 
+export function moveCursorTo(sim_time){
+  d3.select('#cursorGr').select('#main-cursor')
+  .attr('x1', sim_time)
+  .attr('x2', sim_time);
+  
+  showValuesAt(sim_time);
+}
+
 /**
  * applies the JQuery-UI sortable to names-col
  */
@@ -655,6 +659,6 @@ export function showSignals() {
   init();
   generateTable(drawDB);
   fillSignalNames(drawDB);
-  showValuesAt(0);
+  moveCursorTo(0);
   zoomAutoscale();
 }

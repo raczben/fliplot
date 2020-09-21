@@ -6,13 +6,15 @@ import {
   zoomIn,
   removeAllSignals,
   dbg_setEnableUpdateRenderRange,
-  dbg_setEnableRender
+  dbg_setEnableRender,
+  moveCursorTo
 } from './wave.js';
 
 import {
   setDrawDB,
   updateDBInitialX,
-  updateDBNow
+  updateDBNow,
+  now
 } from './core.js';
 
 // TODO should be moved somewhere else.
@@ -94,6 +96,14 @@ $("#zoom-out").click(() => {
 
 $("#remove-all").click(() => {
   removeAllSignals();
+});
+
+$("#cursor-to-0").click(() => {
+  moveCursorTo(0);
+});
+
+$("#cursor-to-end").click(() => {
+  moveCursorTo(now);
 });
 
 $( ".resizable-col" ).resizable({
