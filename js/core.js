@@ -7,6 +7,11 @@ export function setDrawDB(db, n){
     now = n;
 }
 
+/**
+ * 
+ * @param {Object} vcdArr 
+ * @param {int} i 
+ */
 export function getTimeAtI(vcdArr, i) {
     if (i < 0){
         throw 'Negative index';
@@ -22,8 +27,11 @@ export function getTimeAtI(vcdArr, i) {
     }
 }
 
-export function getValueAtI(vcdArr, i) {
+export function getValueAtI(vcdArr, i, def) {
     if (i < 0){
+        if(def !== undefined){
+            return def;
+        }
         throw 'Negative index';
     }
     if (i >= vcdArr.length){
@@ -127,5 +135,29 @@ export function getValueAt(signal, time, def='- NA -') {
       catch (err) {
         return def;
       }
+}
+  
+  
+/**
+ * This function returns simulation time of the previous/next (arbirtary) transitition of the given
+ * signal.
+ * 
+ * @param {Object} signal 
+ * @param {int} time 
+ * @param {int} deltaTransition 
+ */
+export function getTimeAnyTransition(signal, time, deltaTransition) {
+    const idx = getChangeIndexAt(signal, time);
+    if(deltaTransition < 0){
+        // previous nth change
+        const changeT = getTimeAtI(signal.wave, idx);
+        if(changeT != time){
+            // cursor is not located at value change
+            deltaTransition++;
+        }
+    }
+    const t = getTimeAtI(signal.wave, idx+deltaTransition);
+    console.log(t)
+    return t;
 }
   

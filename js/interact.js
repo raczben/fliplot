@@ -7,14 +7,17 @@ import {
   removeAllSignals,
   dbg_setEnableUpdateRenderRange,
   dbg_setEnableRender,
-  moveCursorTo
+  moveCursorTo,
+  getCursorTime,
+  getHighlightedSignal
 } from './wave.js';
 
 import {
   setDrawDB,
   updateDBInitialX,
   updateDBNow,
-  now
+  now,
+  getTimeAnyTransition
 } from './core.js';
 
 // TODO should be moved somewhere else.
@@ -104,6 +107,20 @@ $("#cursor-to-0").click(() => {
 
 $("#cursor-to-end").click(() => {
   moveCursorTo(now);
+});
+
+$("#cursor-to-prev-transition").click(() => {
+  const tCurr = getCursorTime();
+  const sig = getHighlightedSignal();
+  const tNew = getTimeAnyTransition(sig, tCurr, -1);
+  moveCursorTo(tNew);
+});
+
+$("#cursor-to-next-transition").click(() => {
+  const tCurr = getCursorTime();
+  const sig = getHighlightedSignal();
+  const tNew = getTimeAnyTransition(sig, tCurr, +1);
+  moveCursorTo(tNew);
 });
 
 $( ".resizable-col" ).resizable({

@@ -372,9 +372,7 @@ function generateTable(signals) {
     .attr('id', 'main-cursor')
     .attr('vector-effect', 'non-scaling-stroke')
     .attr('y1', 0)
-    .attr('y2', config.rowHeight * signals.length)
-    .attr('x1', 10)
-    .attr('x2', 10);
+    .attr('y2', config.rowHeight * signals.length);
 
   d3.select('#mainSVG').on("click", function() {
       const click_time = timeScale.invert(d3.mouse(this)[0]);
@@ -597,10 +595,23 @@ function drawWave(signalWaveSVG) {
 
 export function moveCursorTo(sim_time){
   d3.select('#cursorGr').select('#main-cursor')
-  .attr('x1', sim_time)
-  .attr('x2', sim_time);
+  .datum(sim_time)
+  .attr('x1', d => d)
+  .attr('x2', d => d);
   
   showValuesAt(sim_time);
+}
+
+export function getHighlightedSignal(){
+  var sig = d3.select('.signal-name.highlighted-signal').datum();
+  console.log(sig);
+  return sig;
+}
+
+export function getCursorTime(){
+  var t = d3.select('#main-cursor').datum();
+  console.log(t);
+  return t;
 }
 
 /**
