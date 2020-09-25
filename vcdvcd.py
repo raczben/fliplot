@@ -10,7 +10,8 @@ class VCDVCD(object):
 
     def __init__(
         self,
-        vcd_path,
+        vcd_path=None,
+        vcd_content=None,
         only_sigs=False,
         print_deltas=False,
         print_dumps=False,
@@ -60,91 +61,93 @@ class VCDVCD(object):
         all_sigs = not signals
         cur_sig_vals = {}
         hier = []
-        num_sigs = 0
         references_to_ids = {}
         references_to_widths = {}
         time = 0
-        with open(vcd_path, 'r') as f:
-            while True:
-                line = f.readline()
-                if line == '':
+        
+        if vcd_path:
+            with open(vcd_path, 'r') as f:
+                vcd_content = f.read()
+
+        for line in vcd_content.splitlines():
+            if line == '':
+                break
+            line0 = line[0]
+            line = line.strip()
+            if line == '':
+                continue
+            if line0 in self._VECTOR_VALUE_CHANGE:
+                value, identifier_code = line[1:].split()
+                self._add_value_identifier_code(
+                    time, value, identifier_code,
+                    print_deltas, print_dumps, cur_sig_vals
+                )
+            elif line0 in self._VALUE:
+                value = line0
+                identifier_code = line[1:]
+                self._add_value_identifier_code(
+                    time, value, identifier_code,
+                    print_deltas, print_dumps, cur_sig_vals
+                )
+            elif line0 == '#':
+                if print_dumps and (not print_dumps_deltas or self._signal_changed):
+                    ss = []
+                    ss.append('{}'.format(time))
+                    for i, ref in enumerate(print_dumps_refs):
+                        identifier_code = references_to_ids[ref]
+                        value = cur_sig_vals[identifier_code]
+                        ss.append('{0:>{1}s}'.format(self._to_hex(value), references_to_widths[ref]))
+                    print(' '.join(ss))
+                time = int(line[1:])
+                self._endtime = time
+                self._signal_changed = False
+            elif '$enddefinitions' in line:
+                if only_sigs:
                     break
-                line0 = line[0]
-                line = line.strip()
-                if line == '':
-                    continue
-                if line0 in self._VECTOR_VALUE_CHANGE:
-                    value, identifier_code = line[1:].split()
-                    self._add_value_identifier_code(
-                        time, value, identifier_code,
-                        print_deltas, print_dumps, cur_sig_vals
-                    )
-                elif line0 in self._VALUE:
-                    value = line0
-                    identifier_code = line[1:]
-                    self._add_value_identifier_code(
-                        time, value, identifier_code,
-                        print_deltas, print_dumps, cur_sig_vals
-                    )
-                elif line0 == '#':
-                    if print_dumps and (not print_dumps_deltas or self._signal_changed):
-                        ss = []
-                        ss.append('{}'.format(time))
-                        for i, ref in enumerate(print_dumps_refs):
-                            identifier_code = references_to_ids[ref]
-                            value = cur_sig_vals[identifier_code]
-                            ss.append('{0:>{1}s}'.format(self._to_hex(value), references_to_widths[ref]))
-                        print(' '.join(ss))
-                    time = int(line[1:])
-                    self._endtime = time
-                    self._signal_changed = False
-                elif '$enddefinitions' in line:
-                    if only_sigs:
-                        break
+                if print_dumps:
+                    print('0 time')
+                    if signals:
+                        print_dumps_refs = signals
+                    else:
+                        print_dumps_refs = sorted(self._data[i]['references'][0] for i in cur_sig_vals.keys())
+                    for i, ref in enumerate(print_dumps_refs, 1):
+                        print('{} {}'.format(i, ref))
+                        if i == 0:
+                            i = 1
+                        identifier_code = references_to_ids[ref]
+                        size = int(self._data[identifier_code]['size'])
+                        width = max(((size // 4)), int(math.floor(math.log10(i))) + 1)
+                        references_to_widths[ref] = width
+                    print()
+                    print('0 '.format(i, ), end='')
+                    for i, ref in enumerate(print_dumps_refs, 1):
+                        print('{0:>{1}d} '.format(i, references_to_widths[ref]), end='')
+                    print()
+                    print('=' * (sum(references_to_widths.values()) + len(references_to_widths) + 1))
+            elif '$scope' in line:
+                hier.append(line.split()[2])
+            elif '$upscope' in line:
+                hier.pop()
+            elif '$var' in line:
+                ls = line.split()
+                type = ls[1]
+                size = ls[2]
+                identifier_code = ls[3]
+                name = ''.join(ls[4:-1])
+                path = '.'.join(hier)
+                reference = path + '.' + name
+                if (reference in signals) or all_sigs:
+                    self._signals.append(reference)
+                    if identifier_code not in self._data:
+                        self._data[identifier_code] = {
+                            'references': [],
+                            'size': size,
+                            'var_type': type,
+                        }
+                    self._data[identifier_code]['references'].append(reference)
+                    references_to_ids[reference] = identifier_code
                     if print_dumps:
-                        print('0 time')
-                        if signals:
-                            print_dumps_refs = signals
-                        else:
-                            print_dumps_refs = sorted(self._data[i]['references'][0] for i in cur_sig_vals.keys())
-                        for i, ref in enumerate(print_dumps_refs, 1):
-                            print('{} {}'.format(i, ref))
-                            if i == 0:
-                                i = 1
-                            identifier_code = references_to_ids[ref]
-                            size = int(self._data[identifier_code]['size'])
-                            width = max(((size // 4)), int(math.floor(math.log10(i))) + 1)
-                            references_to_widths[ref] = width
-                        print()
-                        print('0 '.format(i, ), end='')
-                        for i, ref in enumerate(print_dumps_refs, 1):
-                            print('{0:>{1}d} '.format(i, references_to_widths[ref]), end='')
-                        print()
-                        print('=' * (sum(references_to_widths.values()) + len(references_to_widths) + 1))
-                elif '$scope' in line:
-                    hier.append(line.split()[2])
-                elif '$upscope' in line:
-                    hier.pop()
-                elif '$var' in line:
-                    ls = line.split()
-                    type = ls[1]
-                    size = ls[2]
-                    identifier_code = ls[3]
-                    name = ''.join(ls[4:-1])
-                    path = '.'.join(hier)
-                    reference = path + '.' + name
-                    if (reference in signals) or all_sigs:
-                        self._signals.append(reference)
-                        if identifier_code not in self._data:
-                            self._data[identifier_code] = {
-                                'references': [],
-                                'size': size,
-                                'var_type': type,
-                            }
-                        self._data[identifier_code]['references'].append(reference)
-                        references_to_ids[reference] = identifier_code
-                        if print_dumps:
-                            cur_sig_vals[identifier_code] = 'x'
+                        cur_sig_vals[identifier_code] = 'x'
 
     def get_data(self):
         """

@@ -13,12 +13,12 @@ vcdParsers = []
 try:
     from pyDigitalWaveTools.vcd.parser import VcdParser
     vcdParsers.append('pyDigitalWaveTools')
-except:
+except ModuleNotFoundError:
     pass
 try:
     from vcdvcd import VCDVCD
     vcdParsers.append('vcdvcd')
-except:
+except ModuleNotFoundError:
     pass
 
 if not vcdParsers:
@@ -105,15 +105,15 @@ def parseWith_pyDigitalWaveTools(fname):
         data = vcd.scope.toJson()
         return format_pyDigitalWaveTools(data)
 
-def parseWith_vcdvcd(fname):
-    vcd = VCDVCD(fname)
+def parseWith_vcdvcd(fname=None, content=None):
+    vcd = VCDVCD(fname, content)
     data = vcd.get_data()
     return format_vcdvcd(data)
 
-def parseFile(fname):
+def parseFile(fname=None, content=None):
     try:
         print('Parse with parseWith_vcdvcd...')
-        ret = parseWith_vcdvcd(fname)
+        ret = parseWith_vcdvcd(fname, content)
         print('Parse with parseWith_vcdvcd... OK')
     except Exception as ex:
         print(ex)

@@ -139,7 +139,7 @@ $("#file-open-button").click(() => {
   $("#file-open-shadow").click();
 });
 
-$("#file-open-shadow").change(openFile);
+$("#file-open-shadow").on('change', openFile);
 
 function vcdpy2draw(parsedContent) {
   var positionY = 0;
@@ -190,20 +190,36 @@ $.ajax({
   }
 })
 
-
-var openFile = function (event) {
+function openFile(event) {
+  console.log('HEELOASD')
   var input = event.target;
-
   var reader = new FileReader();
-  reader.onload = function () {
-    var text = reader.result;
-    try {
-     /* parse(text).then((parsedContent) => {
-        console.log(parsedContent);
-      });*/
-    } catch (error) {
-      console.error(error);
-    }
+  reader.readAsText(input.files[0], "UTF-8");
+  reader.onload = function (evt) {
+    console.log(evt.target.result);
+    
+    $.ajax({
+      url: "parse-vcd",
+      type: "POST",
+      data: JSON.stringify({
+        fname: input.files[0].name,
+        content: evt.target.result
+      }),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: (data, status) => {
+        console.log(data);
+        const drawDB = vcdpy2draw(data);
+        setDrawDB(drawDB, data.now);
+
+        console.log(drawDB);
+
+        setTimeout(() => {
+          showSignals()
+        }, 0)
+      }
+    })
+
+  }
+  
   };
-  reader.readAsText(input.files[0]);
-};

@@ -17,23 +17,21 @@ def static_file():
 
 @app.route('/parse-vcd', methods = ['POST'])
 def parse_vcd():
-    print(request.json)
+    content = None
+    fname = None
 
-    fname = request.json['fname']
+    try:
+        content = request.json['content']
+    except:
+        fname = request.json['fname']
+
     logging.info(f'open file to parse: {fname}')
 
     try:
-        data = parseFile(fname)
+        data = parseFile(fname, content)
         return jsonify(data)  
     except Exception as e:
         logging.info(f'Error: {e}')
-        # self.send_error(500, f'Error: {e}')
-
-
-
-    # d = {'a':123}
-    # return jsonify(d)   
-     
     
 @app.route('/<path:path>')
 def send_f(path):
