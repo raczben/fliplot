@@ -26,6 +26,7 @@ if not vcdParsers:
     sys.exit(-1)
 
 print(f'Available VCD parsers: {vcdParsers}')
+here = os.path.dirname(os.path.realpath(__file__))
 
 
 logging.basicConfig(level=logging.INFO)
@@ -144,7 +145,7 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
             logging.info(f'Content: {content}')
             content_json = json.loads(content)
             fname = content_json['fname']
-
+            fname = os.path.join(here, fname)
             logging.info(f'open file to parse: {fname}')
 
             try:
