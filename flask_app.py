@@ -3,13 +3,15 @@
 import os
 import logging
 
+print(f'__name__: {__name__}')
 from flask import Flask, jsonify, send_file, request
 
-from app import parseFile
+from .core import parseFile
+here = os.path.dirname(os.path.realpath(__file__))
 
 logging.basicConfig(level=logging.INFO)
 
-app = Flask(__name__)
+app = Flask('fliplot')
 
 @app.route('/')
 def static_file():
@@ -28,7 +30,7 @@ def parse_vcd():
     logging.info(f'open file to parse: {fname}')
 
     try:
-        data = parseFile(fname, content)
+        data = parseFile(os.path.join(here, fname), content)
         return jsonify(data)  
     except Exception as e:
         logging.info(f'Error: {e}')
