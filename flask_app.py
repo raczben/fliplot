@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 
 import os
+import sys
 import logging
-
-print(f'__name__: {__name__}')
 from flask import Flask, jsonify, send_file, request
 
-from .core import parseFile
+here = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(os.path.join(here, '..'))
+
+from fliplot.core import parseFile
 here = os.path.dirname(os.path.realpath(__file__))
 
 logging.basicConfig(level=logging.INFO)
