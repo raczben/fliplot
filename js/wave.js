@@ -235,6 +235,10 @@ function zoom_fast() {
 
   d3.selectAll('#cursorGr')
     .attr('transform', 'scale(' + d3.event.transform.k + ',1)');  
+    
+  d3.selectAll('.bus-value')
+    .attr('x', d => timeScale(getTimeAtI(d[WAVEARRAY], d[IDX]) + getTimeAtI(d[WAVEARRAY], d[IDX]+1))/2)
+      
 }
 
 /**
@@ -299,14 +303,15 @@ function generateTable(signals) {
     .attr('id', 'grid-gr')
     .attr('transform', `translate(0, ${config.rowHeight * signals.length})`);
 
-  var signalRow = mainGr.selectAll('.signalRow')
+  const signalRow = mainGr.selectAll('.signalRow')
     .data(signals)
     .enter()
     .append('g')
     .attr('transform', (d, i) => `translate(0, ${i * config.rowHeight})`)
     .attr('id', d => `signalRow_${d.id}`)
-    .attr('class', d => `signalRow ${d.id}`)
-    .append('g')
+    .attr('class', d => `signalRow ${d.id}`);
+
+  const timeScaleGroup = signalRow.append('g')
     .attr('class', 'time-scale-group');
 
   var namesCol = d3.select('#names-col')
@@ -336,12 +341,16 @@ function generateTable(signals) {
       highlightSignal(d.id);
     });
 
-  signalRow
+  timeScaleGroup
     .append('g')
     .attr('id', d => `signalWave_${d.id}`)
     .attr('class', d => `signalWave`);
 
   signalRow
+    .append('g')
+    .attr('class', 'signalValues');
+
+  timeScaleGroup
     .append('g')
     .attr('class', 'signal-highlighter-group')
     .append('rect')
@@ -442,7 +451,7 @@ function showValuesAt(time) {
  */
 function drawWave2() {
   if(dbg_enableRender) {
-    d3.selectAll('.signalWave')
+    d3.selectAll('.signalRow')
       .each(function () {
         drawWave(d3.select(this));
       });
@@ -454,8 +463,10 @@ function drawWave2() {
  * 
  * @param {d3 Object} signalWaveSVG is the d3 object to be render
  */
-function drawWave(signalWaveSVG) {
+function drawWave(timeScaleGroup) {
 
+  const signalWaveSVG = timeScaleGroup.select('.signalWave')
+  const signalValuesSVG = timeScaleGroup.select('.signalValues')
   var sigData = signalWaveSVG.datum();
 
   function parseIntDef(intToPare, def) {
@@ -488,7 +499,7 @@ function drawWave(signalWaveSVG) {
   if (sigData.waveStyle == 'bit') {
 
     // horizontal aka. timeholder:
-    var timeholders = signalWaveSVG.selectAll('.timeholder')
+    const timeholders = signalWaveSVG.selectAll('.timeholder')
       .data(waveChangesIndex);
 
     timeholders.exit().remove();
@@ -498,7 +509,7 @@ function drawWave(signalWaveSVG) {
       .classed('timeholder', true);
 
     // vertical aka. valuechanger
-    var valuechanger = signalWaveSVG.selectAll('.valuechanger')
+    const valuechanger = signalWaveSVG.selectAll('.valuechanger')
       .data(waveChangesIndex.slice(1));
 
     valuechanger.exit().remove();
@@ -508,7 +519,7 @@ function drawWave(signalWaveSVG) {
       .classed('valuechanger', true);
 
     // transparent rect
-    var transRect = signalWaveSVG.selectAll('.transparent-rect')
+    const transRect = signalWaveSVG.selectAll('.transparent-rect')
       .data(waveChangesIndex);
       
     transRect.exit().remove();
@@ -541,14 +552,24 @@ function drawWave(signalWaveSVG) {
       .attr('vector-effect', 'non-scaling-stroke');
 
   } else if (sigData.waveStyle == 'bus') {
-    var busPath = signalWaveSVG.selectAll('path')
+    const busPath = signalWaveSVG.selectAll('path')
+      .data(waveChangesIndex);
+      
+    signalValuesSVG.selectAll('.bus-value-group').remove();
+    const busValue = signalValuesSVG.selectAll('.bus-value-group')
       .data(waveChangesIndex);
 
     busPath.exit().remove();
+    busValue.exit().remove();
 
     busPath.enter()
       .append('path')
       .classed('bus-path', true);
+    busValue.enter()
+      .append('g')
+      .classed('bus-value-group', true)
+      .append('text')
+      .classed('bus-value', true);
 
     signalWaveSVG.selectAll('.bus-path')
       .attr('vector-effect', 'non-scaling-stroke')
@@ -568,6 +589,16 @@ function drawWave(signalWaveSVG) {
         }
         return ret;
       });
+      
+    d3.selectAll('.bus-value')
+      .text(d => getValueAtI(d[WAVEARRAY], d[IDX]))
+      .attr("y", config.rowHeight / 2)
+      .attr('x', d => timeScale(getTimeAtI(d[WAVEARRAY], d[IDX]) + getTimeAtI(d[WAVEARRAY], d[IDX]+1))/2);
+
+
+    d3.selectAll('.bus-value').each(function(d){
+      wrap_fast(this, timeScale(getTimeAtI(d[WAVEARRAY], d[IDX]+1) - getTimeAtI(d[WAVEARRAY], d[IDX])));
+    });
       
   } else {
 
@@ -592,6 +623,23 @@ function drawWave(signalWaveSVG) {
  * OTHER / UTIL FUNCTIONS
  * 
  ******************************************************************************/
+
+/**
+ * Fast wrap of svg text. Exact wrap can be done as this:
+ * https://stackoverflow.com/a/27723752/2506522
+ * 
+ * @param {*} element DOM-SVG text element which should be wrapped
+ * @param {*} width the pixel width of the maximum text length.
+ */
+function wrap_fast(element, width) {
+  element = d3.select(element);
+  const maxCharLen = (width/10)-1;
+  var text = element.text();
+  if(text.length > maxCharLen){
+      text = text.slice(0, maxCharLen);
+      element.text(text + '...');
+  }
+}
 
 export function moveCursorTo(sim_time){
   d3.select('#cursorGr').select('#main-cursor')

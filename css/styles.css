@@ -165,6 +165,12 @@ line.signal-highz{
   stroke: rgb(0, 0, 235);
 }
 
+text.bus-value{
+  fill: white;
+  text-anchor: middle;
+  alignment-baseline: middle;
+}
+
 /**
  * Signal highlighter:
  * 
