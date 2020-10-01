@@ -593,10 +593,8 @@ function drawWave(timeScaleGroup) {
     d3.selectAll('.bus-value')
       .text(d => getValueAtI(d[WAVEARRAY], d[IDX]))
       .attr("y", config.rowHeight / 2)
-      .attr('x', d => timeScale(getTimeAtI(d[WAVEARRAY], d[IDX]) + getTimeAtI(d[WAVEARRAY], d[IDX]+1))/2);
-
-
-    d3.selectAll('.bus-value').each(function(d){
+      .attr('x', d => timeScale(getTimeAtI(d[WAVEARRAY], d[IDX]) + getTimeAtI(d[WAVEARRAY], d[IDX]+1))/2)
+      .each(function(d){
       wrap_fast(this, timeScale(getTimeAtI(d[WAVEARRAY], d[IDX]+1) - getTimeAtI(d[WAVEARRAY], d[IDX])));
     });
       

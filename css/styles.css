@@ -168,7 +168,7 @@ line.signal-highz{
 text.bus-value{
   fill: white;
   text-anchor: middle;
-  alignment-baseline: middle;
+  dominant-baseline: middle;
 }
 
 /**
