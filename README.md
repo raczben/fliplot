@@ -10,6 +10,7 @@ See demo at: http://raczben.pythonanywhere.com/
 
  - Radix (hex, dec, ...)
  - Wave style (analog, bus, ...)
+ - signal/interface API (rising/falling)
  - Add/remove signals
  - Create groups/bus, unbound bus
  - Support touch screen
@@ -18,4 +19,3 @@ See demo at: http://raczben.pythonanywhere.com/
  - Unique signal IDs (some click select multiple signals)
  - Add example gif to readme
  - CI/CD, test, etc...
- - signal/interface API (rising/falling)

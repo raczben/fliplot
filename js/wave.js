@@ -279,7 +279,10 @@ function generateTable(signals) {
 
   zoom
     .scaleExtent([200 / timeScale(now), 20])
-    .on("zoom", zoom_fast).filter(() => d3.event.ctrlKey)
+    .on("zoom", zoom_fast).filter(
+      // Use Ctrl+Wheel, with mouse to zoom (simple wheel will scrolls up/down)
+      // Or use touch gesture on touch devices
+      () => d3.event.ctrlKey | d3.event.type.startsWith("touch"))
     .on("end", zoom_end);
 
   // zoom
