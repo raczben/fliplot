@@ -6,6 +6,8 @@ make Fliplot *scriptable*, *pluginable*, *portable*.
 
 See demo at: http://raczben.pythonanywhere.com/
 
+![Demo of using http://raczben.pythonanywhere.com/](demo.gif)
+
 ## TODO
 
  - Radix (hex, dec, ...)
@@ -17,5 +19,4 @@ See demo at: http://raczben.pythonanywhere.com/
  - Optimaze render and zoom
  - Rerender on scrolling
  - Unique signal IDs (some click select multiple signals)
- - Add example gif to readme
  - CI/CD, test, etc...
