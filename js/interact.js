@@ -113,7 +113,6 @@ $("#file-open-button").click(() => {
 $("#file-open-shadow").on('change', openFile);
 
 function vcdpy2draw(parsedContent) {
-  var positionY = 0;
 
   function traverse(node) {
     node.id = encodeURIComponent(node.name).replace(/\./g, '_');
@@ -130,9 +129,6 @@ function vcdpy2draw(parsedContent) {
       var nodeCpy = {
         ...node
       };
-      nodeCpy.rowHeight = config.rowHeight;
-      nodeCpy.positionY = positionY;
-      positionY += nodeCpy.rowHeight;
       if (node.width == 1) {
         nodeCpy.waveStyle = 'bit'
       } else {
@@ -150,7 +146,6 @@ $.ajax({
   dataType: 'json',
   success: function (data) {
     config = data;
-    // showDemo();
 
     $( ".resizable-col" ).resizable({
       handles: "e"
@@ -162,7 +157,6 @@ $.ajax({
 })
 
 function openFile(event) {
-  console.log('HEELOASD')
   var input = event.target;
   var reader = new FileReader();
   reader.readAsText(input.files[0], "UTF-8");
@@ -192,5 +186,4 @@ function openFile(event) {
     })
 
   }
-  
-  };
+};

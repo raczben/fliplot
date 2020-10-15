@@ -58,6 +58,8 @@ body {
   background-color: #222;
   overflow-x: auto;
   height: 100%;
+  /* The resizer overflow the waves */
+  padding: 0px 5px;
 }
 
 .ui-resizable-handle {
@@ -169,6 +171,7 @@ text.bus-value{
   fill: white;
   text-anchor: middle;
   dominant-baseline: middle;
+  pointer-events: none;
 }
 
 /**
