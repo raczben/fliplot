@@ -58,8 +58,6 @@ body {
   background-color: #222;
   overflow-x: auto;
   height: 100%;
-  /* The resizer overflow the waves */
-  padding: 0px 5px;
 }
 
 .ui-resizable-handle {
@@ -124,6 +122,10 @@ footer {
  *    Signal names and values column
  *
  ***********************************************************/
+
+#mainGr{
+  transform: translateX(8px);
+}
 
 .structure,
 .signal-name,

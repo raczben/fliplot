@@ -294,19 +294,22 @@ function generateTable(signals) {
         d3.event.preventDefault()
     })
 
+  removeAllSignals();
+
   const mainSVG = d3.select('#mainSVG')
     .attr('width', now + 200)
     .attr('height', config.rowHeight * (signals.length+1));
 
   const mainGr = d3.select('#mainGr');
-  mainGr.selectAll("*").remove();
   
-  mainGr.selectAll('#grid-gr').remove();
   mainGr.append('g')
     .attr('id', 'grid-gr')
     .attr('transform', `translate(0, ${config.rowHeight * signals.length})`);
 
-  const signalRow = mainGr.selectAll('.signalRow')
+  const signalsTable = mainGr.append('g')
+    .attr('id', 'signals-table');
+
+  const signalRow = signalsTable.selectAll('.signalRow')
     .data(signals)
     .enter()
     .append('g')
@@ -317,8 +320,7 @@ function generateTable(signals) {
   const timeScaleGroup = signalRow.append('g')
     .attr('class', 'time-scale-group');
 
-  var namesCol = d3.select('#names-col')
-  namesCol.selectAll("*").remove();
+  var namesCol = d3.select('#names-col');
 
   namesCol.selectAll('.signal-name')
     .data(signals)
@@ -331,8 +333,7 @@ function generateTable(signals) {
       highlightSignal(d.id);
     });
 
-  var valuesCol = d3.select('#values-col')
-  valuesCol.selectAll("*").remove();
+  var valuesCol = d3.select('#values-col');
 
   valuesCol.selectAll('.signal-value')
     .data(signals)
@@ -366,7 +367,6 @@ function generateTable(signals) {
       highlightSignal(d.id);
     });
       
-  mainGr.selectAll('#time-axis-gr').remove();
   mainGr.append('g')
     .attr('id', 'time-axis-gr')
     .attr('transform', (d, i) => `translate(0, ${config.rowHeight * signals.length})`);
@@ -378,7 +378,9 @@ function generateTable(signals) {
     .tickFormat("");
   timeAxisGr.call(x_axis);
 
-  d3.select('#cursorGr').select('*').remove();
+  mainGr.append('g')
+    .attr('id', 'cursorGr');
+
   d3.select('#cursorGr').append('line')
     .classed('cursor', true)
     .attr('id', 'main-cursor')
@@ -386,7 +388,7 @@ function generateTable(signals) {
     .attr('y1', 0)
     .attr('y2', config.rowHeight * signals.length);
 
-  d3.select('#mainSVG').on("click", function() {
+  d3.select('#mainGr').on("click", function() {
       const click_time = timeScale.invert(d3.mouse(this)[0]);
       moveCursorTo(click_time);
   });
@@ -415,7 +417,7 @@ function reOrderSignals(signals) {
 
   reOrder('#names-col', '.signal-name');
   reOrder('#values-col', '.signal-value');
-  reOrder('#mainGr', '.signalRow');
+  reOrder('#signals-table', '.signalRow');
 
   d3.select('#mainSVG').selectAll('.signalRow')
     .attr('transform', (d, i) => {
