@@ -24,40 +24,12 @@ import {
 export var config = {};
 
 
-$("#wiki").click(() => {
+$(".demo-file-button").click(function () {
   $.ajax({
     url: "parse-vcd",
     type: "POST",
     data: JSON.stringify({
-      fname: "test/wiki.vcd",
-      other_fields: {
-        a: 1,
-        b: null
-      }
-    }),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    success: (data, status) => {
-      console.log(data);
-      const drawDB = vcdpy2draw(data);
-      setDrawDB(drawDB, data.now);
-
-      console.log(drawDB);
-
-      setTimeout(() => {
-        showSignals()
-      }, 0)
-    }
-  })
-
-});
-
-$("#Axi").click(() => {
-  $.ajax({
-    url: "parse-vcd",
-    type: "POST",
-    data: JSON.stringify({
-      fname: "test/AxiRegTC_test_write.vcd",
+      fname: $(this).attr('data-file'),
       other_fields: {
         a: 1,
         b: null
@@ -70,13 +42,12 @@ $("#Axi").click(() => {
       const drawDB = vcdpy2draw(data);
       setDrawDB(drawDB, data.now);
       updateDBInitialX();
-      updateDBNow();
 
       console.log(drawDB);
 
-      setTimeout(()=>{
+      setTimeout(() => {
         showSignals()
-      },0)
+      }, 0)
     }
   })
 });
