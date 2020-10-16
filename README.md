@@ -14,8 +14,10 @@ See demo at: http://raczben.pythonanywhere.com/
  - Wave style (analog, bus, ...)
  - signal/interface API (rising/falling)
  - Add/remove signals
+ - Renaming signals, short/long names
+ - hot-keys
+ - separete signal database from the draw database
  - Create groups/bus, unbound bus
- - Support touch screen
  - Optimaze render and zoom
  - Rerender on scrolling
  - Unique signal IDs (some click select multiple signals)

@@ -13,9 +13,8 @@ import {
 } from './wave.js';
 
 import {
-  setDrawDB,
+  setSimDB,
   updateDBInitialX,
-  updateDBNow,
   now,
   getTimeAnyTransition
 } from './core.js';
@@ -37,10 +36,10 @@ $(".demo-file-button").click(function () {
     }),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    success: (data, status) => {
+    success: (data) => {
       console.log(data);
-      const drawDB = vcdpy2draw(data);
-      setDrawDB(drawDB, data.now);
+      const drawDB = vcdpy2simDb(data);
+      setSimDB(drawDB, data.now);
       updateDBInitialX();
 
       console.log(drawDB);
@@ -83,14 +82,14 @@ $("#cursor-to-end").click(() => {
 $("#cursor-to-prev-transition").click(() => {
   const tCurr = getCursorTime();
   const sig = getHighlightedSignal();
-  const tNew = getTimeAnyTransition(sig, tCurr, -1);
+  const tNew = getTimeAnyTransition(sig.signal, tCurr, -1);
   moveCursorTo(tNew);
 });
 
 $("#cursor-to-next-transition").click(() => {
   const tCurr = getCursorTime();
   const sig = getHighlightedSignal();
-  const tNew = getTimeAnyTransition(sig, tCurr, +1);
+  const tNew = getTimeAnyTransition(sig.signal, tCurr, +1);
   moveCursorTo(tNew);
 });
 
@@ -112,33 +111,11 @@ $("#file-open-button").click(() => {
 
 $("#file-open-shadow").on('change', openFile);
 
-function vcdpy2draw(parsedContent) {
-
-  function traverse(node) {
-    node.id = encodeURIComponent(node.name).replace(/\./g, '_');
-
-    if (node.type == 'struct') {
-      return node.children.reduce((acc, child) => {
-        var children = traverse(child)
-        if (children) {
-          acc.push(children);
-        }
-        return acc;
-      }, []);
-    } else {
-      var nodeCpy = {
-        ...node
-      };
-      if (node.width == 1) {
-        nodeCpy.waveStyle = 'bit'
-      } else {
-        nodeCpy.waveStyle = 'bus'
-        console.log(`Unsupported width: ${node.width}`)
-      }
-      return nodeCpy;
-    }
-  };
-  return traverse(parsedContent);
+function vcdpy2simDb(parsedContent) {
+  parsedContent["signals"] = parsedContent["children"];
+  delete parsedContent["children"];
+  
+  return parsedContent;
 }
 
 $.ajax({
@@ -172,12 +149,12 @@ function openFile(event) {
       }),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      success: (data, status) => {
+      success: (data) => {
         console.log(data);
-        const drawDB = vcdpy2draw(data);
-        setDrawDB(drawDB, data.now);
+        const simDB = vcdpy2simDb(data);
+        setSimDB(simDB, data.now);
 
-        console.log(drawDB);
+        console.log(simDB);
 
         setTimeout(() => {
           showSignals()
@@ -186,4 +163,4 @@ function openFile(event) {
     })
 
   }
-};
+}

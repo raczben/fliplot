@@ -7,7 +7,8 @@ import {
   drawDB,
   getTimeAtI, 
   getValueAtI,
-  getValueAt
+  getValueAt,
+  simDB
 } from './core.js';
 
 var zoom = d3.zoom();
@@ -123,7 +124,7 @@ export function zoomOut() {
  * Autoscale: scale to show enough detail for humans
  */
 export function zoomAutoscale() {
-  var signals = d3.selectAll('.signalRow').data()
+  var signals = simDB.signals
 
   if(signals.length > 0) {
     // Average wave change times
@@ -275,7 +276,7 @@ export function removeAllSignals(){
  * 
  * @param {Object} signals is the drawing database, which contains the signals to be added.
  */
-function generateTable(signals) {
+function generateTable() {
 
   zoom
     .scaleExtent([200 / timeScale(now), 20])
@@ -298,19 +299,19 @@ function generateTable(signals) {
 
   const mainSVG = d3.select('#mainSVG')
     .attr('width', now + 200)
-    .attr('height', config.rowHeight * (signals.length+1));
+    .attr('height', config.rowHeight * (drawDB.rows.length+1));
 
   const mainGr = d3.select('#mainGr');
   
   mainGr.append('g')
     .attr('id', 'grid-gr')
-    .attr('transform', `translate(0, ${config.rowHeight * signals.length})`);
+    .attr('transform', `translate(0, ${config.rowHeight * drawDB.rows.length})`);
 
   const signalsTable = mainGr.append('g')
     .attr('id', 'signals-table');
 
   const signalRow = signalsTable.selectAll('.signalRow')
-    .data(signals)
+    .data(drawDB.rows)
     .enter()
     .append('g')
     .attr('transform', (d, i) => `translate(0, ${i * config.rowHeight})`)
@@ -323,7 +324,7 @@ function generateTable(signals) {
   var namesCol = d3.select('#names-col');
 
   namesCol.selectAll('.signal-name')
-    .data(signals)
+    .data(drawDB.rows)
     .enter()
     .append('li')
     .attr('id', d => `signalName_${d.id}`)
@@ -336,7 +337,7 @@ function generateTable(signals) {
   var valuesCol = d3.select('#values-col');
 
   valuesCol.selectAll('.signal-value')
-    .data(signals)
+    .data(drawDB.rows)
     .enter()
     .append('div')
     .attr('id', d => `signalName_${d.id}`)
@@ -369,12 +370,12 @@ function generateTable(signals) {
       
   mainGr.append('g')
     .attr('id', 'time-axis-gr')
-    .attr('transform', (d, i) => `translate(0, ${config.rowHeight * signals.length})`);
+    .attr('transform', (d, i) => `translate(0, ${config.rowHeight * drawDB.rows.length})`);
     
   const timeAxisGr = d3.select('#time-axis-gr');
   x_axis.scale(timeScale);
   x_grid
-    .tickSize(-config.rowHeight * signals.length)
+    .tickSize(-config.rowHeight * drawDB.rows.length)
     .tickFormat("");
   timeAxisGr.call(x_axis);
 
@@ -386,7 +387,7 @@ function generateTable(signals) {
     .attr('id', 'main-cursor')
     .attr('vector-effect', 'non-scaling-stroke')
     .attr('y1', 0)
-    .attr('y2', config.rowHeight * signals.length);
+    .attr('y2', config.rowHeight * drawDB.rows.length);
 
   d3.select('#mainGr').on("click", function() {
       const click_time = timeScale.invert(d3.mouse(this)[0]);
@@ -430,14 +431,14 @@ function reOrderSignals(signals) {
  * Show signal names in the names-col
  */
 function fillSignalNames() {
-    d3.selectAll('.signalName')
+    d3.selectAll('.signal-name')
       .append("text")
       .attr("y", config.rowHeight / 2)
       .attr("x", 10)
       .attr('text-anchor', 'left')
       .attr('alignment-baseline', 'central')
       .attr("class", "signalNameText")
-      .text(d => d.name);
+      .text(d => d.signal.name);
   }
   
   
@@ -448,7 +449,7 @@ function fillSignalNames() {
  */
 function showValuesAt(time) {
   d3.selectAll('.signal-value')
-    .text(d => getValueAt(d, time));
+    .text(d => getValueAt(d.signal, time));
 }
 
 /**
@@ -472,7 +473,7 @@ function drawWave(timeScaleGroup) {
 
   const signalWaveSVG = timeScaleGroup.select('.signalWave')
   const signalValuesSVG = timeScaleGroup.select('.signalValues')
-  var sigData = signalWaveSVG.datum();
+  const rowData = signalWaveSVG.datum();
 
   function parseIntDef(intToPare, def) {
     if (isInt(intToPare)) {
@@ -491,7 +492,7 @@ function drawWave(timeScaleGroup) {
       return "#FF0000";
   }
   
-  var waveChangesIndex = sigData.wave.reduce((res, current, i, waveArr) => {
+  var waveChangesIndex = rowData.signal.wave.reduce((res, current, i, waveArr) => {
     if (waveIInRenderRange(waveArr, i)) {
       res.push([waveArr, i]);
     }
@@ -499,9 +500,9 @@ function drawWave(timeScaleGroup) {
   }, []);
 
   // console.log(waveChangesIndex);
-  signalWaveSVG.classed(`wave-style-${sigData.waveStyle}`, true);
+  signalWaveSVG.classed(`wave-style-${rowData.waveStyle}`, true);
 
-  if (sigData.waveStyle == 'bit') {
+  if (rowData.waveStyle == 'bit') {
 
     // horizontal aka. timeholder:
     const timeholders = signalWaveSVG.selectAll('.timeholder')
@@ -556,7 +557,7 @@ function drawWave(timeScaleGroup) {
       .style("stroke", d => value2Color(getValueAtI(d[WAVEARRAY], d[IDX])))
       .attr('vector-effect', 'non-scaling-stroke');
 
-  } else if (sigData.waveStyle == 'bus') {
+  } else if (rowData.waveStyle == 'bus') {
     const busPath = signalWaveSVG.selectAll('path')
       .data(waveChangesIndex);
       
@@ -611,7 +612,7 @@ function drawWave(timeScaleGroup) {
       .attr('width', now)
       .attr('fill', 'rgba(180, 0, 0, 0.5)');
     signalWaveSVG.append('text')
-      .text(`Unsupported waveStyle: ${sigData.waveStyle}`)
+      .text(`Unsupported waveStyle: ${rowData.waveStyle}`)
       .attr("y", default_row_height / 2)
       .attr("x", 10)
       .attr('text-anchor', 'left')
@@ -719,8 +720,8 @@ function waveIInRenderRange(wave, i){
 
 export function showSignals() {
   init();
-  generateTable(drawDB);
-  fillSignalNames(drawDB);
+  generateTable();
+  fillSignalNames();
   moveCursorTo(0);
   zoomAutoscale();
 }

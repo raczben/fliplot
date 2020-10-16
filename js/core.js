@@ -1,11 +1,61 @@
 
+/**
+ * simDB is mainly the parsed VCD file.
+ * This contains all data from the simulation or from the VCD file. First of all it stores all
+ * signals with its values, the *now* pointer, the VCD file name, etc...
+ * 
+ * drawDB is mainly the wave.do file.
+ * This stores the drawing config. It stores entries for each visualized signals (a reference to
+ * the simDB) stores the radix, signal type, and other plotting related information.
+ * 
+ * Note, that if the same signal will be added twice to the wave-view, the simDB will be untouched.
+ * Only a new drawDB-entry will be created with a reference to that signals simDB's entry.
+ */
+export var simDB = {};
 export var drawDB = {};
-export var now = -1;
+export var now = -1; // Todo should be integrated to signalDB
 
-export function setDrawDB(db, n){
-    drawDB = db;
+// drawDB = {
+//     globalDrawcfg1
+//     globalDrawcfg2
+//     rows{
+//         wire{
+//              radix
+//              signal
+//         }
+//         bus
+//         separator
+//         virtualBus
+//         Group
+//     }
+// }
+export function setSimDB(db, n){
+    simDB = db;
+    drawDB = {rows:[]};
     now = n;
+    addAllWaveSignal();
 }
+
+export function insertWaveSignal(signalID, position=-1){
+    const rowItem = {
+        radix: 'bin',
+        signal: simDB.signals[signalID]
+    };
+    if (rowItem.signal.width == 1) {
+        rowItem.waveStyle = 'bit'
+      } else {
+        rowItem.waveStyle = 'bus'
+}
+    rowItem.id = encodeURIComponent(rowItem.signal.name).replace(/\./g, '_'); //TODO
+    drawDB.rows.splice(position, 0, rowItem);
+}
+
+export function addAllWaveSignal(){
+    simDB.signals.forEach((_element, index) => {
+        insertWaveSignal(index);
+    });
+}
+
 
 /**
  * 
@@ -43,32 +93,10 @@ export function getValueAtI(vcdArr, i, def) {
 export function updateDBNow(){
     // now = db.now;
     return;
-    drawDB.forEach(element => {
-        var wave = element.wave;
-        if(wave.length == 0){
-            // Empty array
-            wave.push({time:now});
-            return;
         }
-        if(wave[wave.length-1].val == now){
-            // There is a (real or phantom) change at now
-            return;
-        }
-        if(wave[wave.length-1].val === undefined){
-            // Update now value
-            wave[wave.length-1].time = now;
-            return;
-        }
-        else{
-            // Append the phantom now value.
-            wave.push({time:now});
-            return;
-        }
-    });
-}
 
 export function updateDBInitialX(){
-    drawDB.forEach(element => {
+    simDB.signals.forEach(element => {
         var wave = element.wave;
         if(wave.length == 0){
             // Empty array
