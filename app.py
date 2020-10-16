@@ -19,7 +19,7 @@ logging.basicConfig(level=logging.INFO)
 class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
     def address_string(self):
         logging.info(f'address_string: {self.path}')
-        host, port = self.client_address[:2]
+        host, _ = self.client_address[:2]
         #return socket.getfqdn(host)
         return host
 

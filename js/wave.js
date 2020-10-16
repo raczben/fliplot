@@ -57,34 +57,6 @@ export function dbg_setEnableRender(val){
 const WAVEARRAY = 0;
 const IDX = 1;
 
-// From: https://stackoverflow.com/a/9851769/2506522
-// Opera 8.0+
-var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
-
-// Firefox 1.0+
-var isFirefox = typeof InstallTrigger !== 'undefined';
-
-// Safari 3.0+ "[object HTMLElementConstructor]" 
-var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) {
-  return p.toString() === "[object SafariRemoteNotification]";
-})(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
-
-// Internet Explorer 6-11
-var isIE = /*@cc_on!@*/ false || !!document.documentMode;
-
-// Edge 20+
-var isEdge = !isIE && !!window.StyleMedia;
-
-// Chrome 1 - 79
-var isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
-
-// Edge (based on chromium) detection
-var isEdgeChromium = isChrome && (navigator.userAgent.indexOf("Edg") != -1);
-
-// Blink engine detection
-var isBlink = (isChrome || isOpera) && !!window.CSS;
-
-
 /******************************************************************************
  * 
  * EXPORTED API FUNCTIONS
@@ -297,7 +269,7 @@ function generateTable() {
 
   removeAllSignals();
 
-  const mainSVG = d3.select('#mainSVG')
+  d3.select('#mainSVG')
     .attr('width', now + 200)
     .attr('height', config.rowHeight * (drawDB.rows.length+1));
 
@@ -349,7 +321,7 @@ function generateTable() {
   timeScaleGroup
     .append('g')
     .attr('id', d => `signalWave_${d.id}`)
-    .attr('class', d => `signalWave`);
+    .attr('class', () => `signalWave`);
 
   signalRow
     .append('g')
@@ -364,13 +336,13 @@ function generateTable() {
     .attr('y', 0)
     .attr('width', initialTimeScale(now))
     .attr('height', config.rowHeight)
-    .on('click', function (d, i) {
+    .on('click', function (d) {
       highlightSignal(d.id);
     });
       
   mainGr.append('g')
     .attr('id', 'time-axis-gr')
-    .attr('transform', (d, i) => `translate(0, ${config.rowHeight * drawDB.rows.length})`);
+    .attr('transform', () => `translate(0, ${config.rowHeight * drawDB.rows.length})`);
     
   const timeAxisGr = d3.select('#time-axis-gr');
   x_axis.scale(timeScale);
@@ -475,11 +447,11 @@ function drawWave(timeScaleGroup) {
   const signalValuesSVG = timeScaleGroup.select('.signalValues')
   const rowData = signalWaveSVG.datum();
 
-  function parseIntDef(intToPare, def) {
+  function parseIntDef(intToPare, def=0.5) {
     if (isInt(intToPare)) {
       return parseInt(intToPare);
     } else {
-      return 0.5;
+      return def;
     }
   }
 
@@ -608,12 +580,12 @@ function drawWave(timeScaleGroup) {
 
     signalWaveSVG
       .append('rect')
-      .attr('height', default_row_height)
+      .attr('height', config.rowHeight)
       .attr('width', now)
       .attr('fill', 'rgba(180, 0, 0, 0.5)');
     signalWaveSVG.append('text')
       .text(`Unsupported waveStyle: ${rowData.waveStyle}`)
-      .attr("y", default_row_height / 2)
+      .attr("y", config.rowHeight / 2)
       .attr("x", 10)
       .attr('text-anchor', 'left')
       .attr('alignment-baseline', 'middle');
@@ -670,7 +642,7 @@ export function getCursorTime(){
  * applies the JQuery-UI sortable to names-col
  */
 $("#names-col").sortable({
-    update: function (event, ui) {
+    update: function () {
       reOrderSignals(d3.select("#names-col").selectAll('.signal-name').data());
     }
 });
@@ -679,7 +651,7 @@ $("#names-col").sortable({
  * applies the JQuery-UI sortable to values-col
  */
 $("#values-col").sortable({
-    update: function (event, ui) {
+    update: function () {
       reOrderSignals(d3.select("#values-col").selectAll('.signal-value').data());
     }
 });
