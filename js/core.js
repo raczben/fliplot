@@ -11,24 +11,42 @@
  * Note, that if the same signal will be added twice to the wave-view, the simDB will be untouched.
  * Only a new drawDB-entry will be created with a reference to that signals simDB's entry.
  */
+/**
+ * @type {simDB_t} simDB
+ */
 export var simDB = {};
+
+/**
+ * @type {drawDB_t} drawDB
+ */
 export var drawDB = {};
 export var now = -1; // Todo should be integrated to signalDB
 
-// drawDB = {
-//     globalDrawcfg1
-//     globalDrawcfg2
-//     rows{
-//         wire{
-//              radix
-//              signal
-//         }
-//         bus
-//         separator
-//         virtualBus
-//         Group
-//     }
-// }
+/**
+ * Signal type-definition.
+ * @typedef {Object} signal_t 
+ * @property {string[]} hierarcy
+ * @property {string} name
+ * @property {string[]} references
+ * @property {string} type
+ * @property {string} vcdid
+ * @property {Object[]} wave
+ * @property {number} width
+*/
+
+/**
+ * Draw-database type-definition
+ * @typedef {Object} drawDB_t
+ * @property {signal_t[]} rows
+*/
+
+/**
+ * Draw-database type-definition
+ * @typedef {Object} simDB_t
+ * @property {signal_t[]} signals
+ * @property {number} now
+*/
+
 export function setSimDB(db, n){
     simDB = db;
     drawDB = {rows:[]};
