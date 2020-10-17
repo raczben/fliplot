@@ -20,5 +20,4 @@ See demo at: http://raczben.pythonanywhere.com/
  - Create groups/bus, unbound bus
  - Optimaze render and zoom
  - Rerender on scrolling
- - Unique signal IDs (some click select multiple signals)
  - CI/CD, test, etc...

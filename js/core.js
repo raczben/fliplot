@@ -4,12 +4,12 @@
  * This contains all data from the simulation or from the VCD file. First of all it stores all
  * signals with its values, the *now* pointer, the VCD file name, etc...
  * 
- * drawDB is mainly the wave.do file.
+ * waveformDB is mainly the wave.do file.
  * This stores the drawing config. It stores entries for each visualized signals (a reference to
  * the simDB) stores the radix, signal type, and other plotting related information.
  * 
  * Note, that if the same signal will be added twice to the wave-view, the simDB will be untouched.
- * Only a new drawDB-entry will be created with a reference to that signals simDB's entry.
+ * Only a new waveformDB-entry will be created with a reference to that signals simDB's entry.
  */
 /**
  * @type {simDB_t} simDB
@@ -17,9 +17,9 @@
 export var simDB = {};
 
 /**
- * @type {drawDB_t} drawDB
+ * @type {waveformDB_t} waveformDB
  */
-export var drawDB = {};
+export var waveformDB = {};
 export var now = -1; // Todo should be integrated to signalDB
 
 /**
@@ -35,9 +35,20 @@ export var now = -1; // Todo should be integrated to signalDB
 */
 
 /**
+ * waveformRow type-definition.
+ * @typedef {Object} waveformRow_t 
+ * @property {string} type
+ * @property {string} id
+ * @property {signal_t} signal
+ * @property {string} radix
+ * @property {string} waveStyle
+*/
+
+/**
  * Draw-database type-definition
- * @typedef {Object} drawDB_t
- * @property {signal_t[]} rows
+ * @typedef {Object} waveformDB_t
+ * @property {waveformRow_t[]} rows
+ * @property {number} _idGenerator
 */
 
 /**
@@ -49,23 +60,25 @@ export var now = -1; // Todo should be integrated to signalDB
 
 export function setSimDB(db, n){
     simDB = db;
-    drawDB = {rows:[]};
+    waveformDB = {rows:[], _idGenerator:0};
     now = n;
     addAllWaveSignal();
 }
 
 export function insertWaveSignal(signalID, position=-1){
+    /** @type {waveformRow_t} rowItem */
     const rowItem = {
         radix: 'bin',
         signal: simDB.signals[signalID]
     };
     if (rowItem.signal.width == 1) {
         rowItem.waveStyle = 'bit'
-      } else {
+    } else {
         rowItem.waveStyle = 'bus'
-}
-    rowItem.id = encodeURIComponent(rowItem.signal.name).replace(/\./g, '_'); //TODO
-    drawDB.rows.splice(position, 0, rowItem);
+    }
+    rowItem.id = encodeURIComponent(rowItem.signal.name).replace(/\./g, '_') + `_${waveformDB._idGenerator++}`; //TODO
+    
+    waveformDB.rows.splice(position, 0, rowItem);
 }
 
 export function addAllWaveSignal(){

@@ -4,7 +4,7 @@ import {
 } from './interact.js';
 import {
   now,
-  drawDB,
+  waveformDB,
   getTimeAtI, 
   getValueAtI,
   getValueAt,
@@ -271,19 +271,19 @@ function generateTable() {
 
   d3.select('#mainSVG')
     .attr('width', now + 200)
-    .attr('height', config.rowHeight * (drawDB.rows.length+1));
+    .attr('height', config.rowHeight * (waveformDB.rows.length+1));
 
   const mainGr = d3.select('#mainGr');
   
   mainGr.append('g')
     .attr('id', 'grid-gr')
-    .attr('transform', `translate(0, ${config.rowHeight * drawDB.rows.length})`);
+    .attr('transform', `translate(0, ${config.rowHeight * waveformDB.rows.length})`);
 
   const signalsTable = mainGr.append('g')
     .attr('id', 'signals-table');
 
   const signalRow = signalsTable.selectAll('.signalRow')
-    .data(drawDB.rows)
+    .data(waveformDB.rows)
     .enter()
     .append('g')
     .attr('transform', (d, i) => `translate(0, ${i * config.rowHeight})`)
@@ -296,7 +296,7 @@ function generateTable() {
   var namesCol = d3.select('#names-col');
 
   namesCol.selectAll('.signal-name')
-    .data(drawDB.rows)
+    .data(waveformDB.rows)
     .enter()
     .append('li')
     .attr('id', d => `signalName_${d.id}`)
@@ -309,7 +309,7 @@ function generateTable() {
   var valuesCol = d3.select('#values-col');
 
   valuesCol.selectAll('.signal-value')
-    .data(drawDB.rows)
+    .data(waveformDB.rows)
     .enter()
     .append('div')
     .attr('id', d => `signalName_${d.id}`)
@@ -342,12 +342,12 @@ function generateTable() {
       
   mainGr.append('g')
     .attr('id', 'time-axis-gr')
-    .attr('transform', () => `translate(0, ${config.rowHeight * drawDB.rows.length})`);
+    .attr('transform', () => `translate(0, ${config.rowHeight * waveformDB.rows.length})`);
     
   const timeAxisGr = d3.select('#time-axis-gr');
   x_axis.scale(timeScale);
   x_grid
-    .tickSize(-config.rowHeight * drawDB.rows.length)
+    .tickSize(-config.rowHeight * waveformDB.rows.length)
     .tickFormat("");
   timeAxisGr.call(x_axis);
 
@@ -359,7 +359,7 @@ function generateTable() {
     .attr('id', 'main-cursor')
     .attr('vector-effect', 'non-scaling-stroke')
     .attr('y1', 0)
-    .attr('y2', config.rowHeight * drawDB.rows.length);
+    .attr('y2', config.rowHeight * waveformDB.rows.length);
 
   d3.select('#mainGr').on("click", function() {
       const click_time = timeScale.invert(d3.mouse(this)[0]);

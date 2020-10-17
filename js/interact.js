@@ -38,11 +38,11 @@ $(".demo-file-button").click(function () {
     dataType: "json",
     success: (data) => {
       console.log(data);
-      const drawDB = vcdpy2simDb(data);
-      setSimDB(drawDB, data.now);
+      const simDB = vcdpy2simDb(data);
+      setSimDB(simDB, data.now);
       updateDBInitialX();
 
-      console.log(drawDB);
+      console.log(simDB);
 
       setTimeout(() => {
         showSignals()
