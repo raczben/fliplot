@@ -42,14 +42,35 @@ export var now = -1; // Todo should be integrated to signalDB
  * @property {number} height
 */
 
-/**
- * Sim-database type-definition
- * @typedef {Object} simDB_t
- * @property {signal_t[]} signals
- * @property {number} now
- * @property {number} timePrecision
- * @property {number} timeUnit
-*/
+class SimDB{
+    constructor(db){
+        /** @type {signal_t[]} */
+        this.signals = [];
+        /** @type {number} */
+        this.now = -1;
+        /** @type {number} */
+        this.timePrecision = -1;
+        /** @type {number} */
+        this.timeUnit = -1;
+
+        Object.assign(this, db);    // Todo: Check valid keys
+    }
+
+    updateDBInitialX(){
+        this.signals.forEach(element => {
+            var wave = element.wave;
+            if(wave.length == 0){
+                // Empty array
+                wave.push({time:0, val:'x'});
+                return;
+            }
+            if(wave[0].time != 0){
+                // Append the phantom zero-th value.
+                wave.unshift({time:0, val:'x'});
+            }
+        });
+    }
+}
 
 class WaveformDB{
     constructor(){
@@ -93,31 +114,12 @@ class WaveformDB{
 }
 
 export function setSimDB(db, n){
-    simDB = db;
+    simDB = new SimDB(db);
     waveformDB = new WaveformDB();
     now = n;
     waveformDB.addAllWaveSignal();
 }
 
-export function updateDBNow(){
-    // now = db.now;
-    return;
-        }
-
-export function updateDBInitialX(){
-    simDB.signals.forEach(element => {
-        var wave = element.wave;
-        if(wave.length == 0){
-            // Empty array
-            wave.push({time:0, val:'x'});
-            return;
-        }
-        if(wave[0].time != 0){
-            // Append the phantom zero-th value.
-            wave.unshift({time:0, val:'x'});
-        }
-    });
-}
   
 /******************************************************************************
  * 
@@ -280,8 +282,5 @@ function binarySearch(ar, el, compare_fn) {
  * Note, that if the same signal will be added twice to the wave-view, the simDB will be untouched.
  * Only a new waveformDB-entry will be created with a reference to that signals simDB's entry.
  */
-/**
- * @type {simDB_t} simDB
- */
-export var simDB = {};
+export var simDB = new SimDB();
 export var waveformDB = new WaveformDB();

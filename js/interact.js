@@ -14,7 +14,7 @@ import {
 
 import {
   setSimDB,
-  updateDBInitialX,
+  simDB,
   now,
   getTimeAnyTransition
 } from './core.js';
@@ -38,9 +38,8 @@ $(".demo-file-button").click(function () {
     dataType: "json",
     success: (data) => {
       console.log(data);
-      const simDB = vcdpy2simDb(data);
-      setSimDB(simDB, data.now);
-      updateDBInitialX();
+      setSimDB(vcdpy2simDb(data), data.now);
+      simDB.updateDBInitialX();
 
       console.log(simDB);
 
