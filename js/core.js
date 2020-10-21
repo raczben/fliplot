@@ -53,7 +53,12 @@ class SimDB{
         /** @type {number} */
         this.timeUnit = -1;
 
-        Object.assign(this, db);    // Todo: Check valid keys
+        if(db){
+            this.signals = db.signals.reduce(function(acc, element) {
+                acc.push(new Signal(element));
+                return acc;
+            },[])
+        }
     }
 
     updateDBInitialX(){
@@ -110,7 +115,6 @@ class WaveformDB{
             this.insertWaveSignal(index);
         });
     }
-    
 }
 
 export function setSimDB(db, n){
@@ -127,19 +131,54 @@ export function setSimDB(db, n){
  * 
  ******************************************************************************/
 
-/**
- * 
- * @param {signal_t} signal 
- * @param {number} time 
- */
-export function getChangeIndexAt(signal, time) {
-    var idx = binarySearch(signal.wave, time, (time, wave) => {
-      return time - wave.time;
-    })
-    if (idx < 0) {
-      idx = -idx - 2;
+class Signal {
+    constructor(sig){
+        /** @type {string[]} */
+        this.hierarcy = [];
+        /** @type {string} */
+        this.name = undefined;
+        /** @type {string[]} */
+        this.references = [];
+        /** @type {string} */
+        this.type = undefined;
+        /** @type {string} */
+        this.vcdid = undefined;
+        /** @type {valueChange_t[]} */
+        this.wave = [];
+        /** @type {number} */
+        this.width = 1;
+
+        Object.assign(this, sig);
     }
-    return idx;
+    /**
+     * @param {number} time 
+     */
+    getChangeIndexAt(time) {
+        var idx = binarySearch(this.wave, time, (time, wave) => {
+        return time - wave.time;
+        })
+        if (idx < 0) {
+        idx = -idx - 2;
+        }
+        return idx;
+    }
+
+    /**
+     * 
+     * @param {number} time 
+     * @param {number} def 
+     */
+    getValueAt(time, def='- NA -') {
+        try {
+            const idx = this.getChangeIndexAt(time);
+            const wave = this.wave[idx];
+            return wave.val;
+        }
+        catch (err) {
+            return def;
+        }
+    }
+
 }
 
 /**
@@ -181,24 +220,6 @@ export function getValueAtI(vcdArr, i, def) {
     return vcdArr[i].val;
 }
 
-/**
- * 
- * @param {signal_t} signal 
- * @param {number} time 
- * @param {number} def 
- */
-export function getValueAt(signal, time, def='- NA -') {
-    try {
-        const idx = getChangeIndexAt(signal, time);
-        const wave = signal.wave[idx];
-        return wave.val;
-      }
-      catch (err) {
-        return def;
-      }
-}
-  
-
 /******************************************************************************
  * 
  * Interface API
@@ -215,7 +236,7 @@ export function getValueAt(signal, time, def='- NA -') {
  * @param {number} deltaTransition 
  */
 export function getTimeAnyTransition(signal, time, deltaTransition) {
-    const idx = getChangeIndexAt(signal, time);
+    const idx = signal.getChangeIndexAt(time);
     if(deltaTransition < 0){
         // previous nth change
         const changeT = getTimeAtI(signal.wave, idx);

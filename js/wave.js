@@ -7,7 +7,6 @@ import {
   waveformDB,
   getTimeAtI, 
   getValueAtI,
-  getValueAt,
   simDB
 } from './core.js';
 
@@ -421,7 +420,7 @@ function fillSignalNames() {
  */
 function showValuesAt(time) {
   d3.selectAll('.signal-value')
-    .text(d => getValueAt(d.signal, time));
+    .text(d => d.signal.getValueAt(time));
 }
 
 /**
