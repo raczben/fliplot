@@ -5,8 +5,6 @@ import {
 import {
   now,
   waveformDB,
-  getTimeAtI, 
-  getValueAtI,
   simDB
 } from './core.js';
 
@@ -209,7 +207,7 @@ function zoom_fast() {
     .attr('transform', 'scale(' + d3.event.transform.k + ',1)');  
     
   d3.selectAll('.bus-value')
-    .attr('x', d => timeScale(getTimeAtI(d[WAVEARRAY], d[IDX]) + getTimeAtI(d[WAVEARRAY], d[IDX]+1))/2)
+    .attr('x', d => timeScale(d[WAVEARRAY].getTimeAtI(d[IDX]) + d[WAVEARRAY].getTimeAtI(d[IDX]+1))/2)
       
 }
 
@@ -463,9 +461,9 @@ function drawWave(timeScaleGroup) {
       return "#FF0000";
   }
   
-  var waveChangesIndex = rowData.signal.wave.reduce((res, current, i, waveArr) => {
-    if (waveIInRenderRange(waveArr, i)) {
-      res.push([waveArr, i]);
+  var waveChangesIndex = rowData.signal.wave.reduce((res, current, i) => {
+    if (waveIInRenderRange(rowData.signal, i)) {
+      res.push([rowData.signal, i]);
     }
     return res;
   }, []);
@@ -506,26 +504,26 @@ function drawWave(timeScaleGroup) {
       .classed('transparent-rect', true);
     
     signalWaveSVG.selectAll('.transparent-rect')
-      .attr('x', d => initialTimeScale(getTimeAtI(d[WAVEARRAY], d[IDX])))
-      .attr('y', d => bitWaveScale(parseIntDef(getValueAtI(d[WAVEARRAY], d[IDX]))))
-      .attr('width', d => initialTimeScale((getTimeAtI(d[WAVEARRAY], d[IDX]+1)) - getTimeAtI(d[WAVEARRAY], d[IDX])))
-      .attr('height', d => bitWaveScale(1-parseIntDef(getValueAtI(d[WAVEARRAY], d[IDX]))) - 2 )
-      .style("fill", d => value2Color(getValueAtI(d[WAVEARRAY], d[IDX])));
+      .attr('x', d => initialTimeScale(d[WAVEARRAY].getTimeAtI(d[IDX])))
+      .attr('y', d => bitWaveScale(parseIntDef(d[WAVEARRAY].getValueAtI(d[IDX]))))
+      .attr('width', d => initialTimeScale((d[WAVEARRAY].getTimeAtI(d[IDX]+1)) - d[WAVEARRAY].getTimeAtI(d[IDX])))
+      .attr('height', d => bitWaveScale(1-parseIntDef(d[WAVEARRAY].getValueAtI(d[IDX]))) - 2 )
+      .style("fill", d => value2Color(d[WAVEARRAY].getValueAtI(d[IDX])));
 
     signalWaveSVG.selectAll('.timeholder')
-      .attr('x1', d => initialTimeScale(getTimeAtI(d[WAVEARRAY], d[IDX])))
-      .attr('y1', d => bitWaveScale(parseIntDef(getValueAtI(d[WAVEARRAY], d[IDX]))))
-      .attr('x2', d => initialTimeScale(getTimeAtI(d[WAVEARRAY], d[IDX]+1)))
-      .attr('y2', d => bitWaveScale(parseIntDef(getValueAtI(d[WAVEARRAY], d[IDX]))))
-      .style("stroke", d => value2Color(getValueAtI(d[WAVEARRAY], d[IDX])))
+      .attr('x1', d => initialTimeScale(d[WAVEARRAY].getTimeAtI(d[IDX])))
+      .attr('y1', d => bitWaveScale(parseIntDef(d[WAVEARRAY].getValueAtI(d[IDX]))))
+      .attr('x2', d => initialTimeScale(d[WAVEARRAY].getTimeAtI(d[IDX]+1)))
+      .attr('y2', d => bitWaveScale(parseIntDef(d[WAVEARRAY].getValueAtI(d[IDX]))))
+      .style("stroke", d => value2Color(d[WAVEARRAY].getValueAtI(d[IDX])))
       .attr('vector-effect', 'non-scaling-stroke');
 
     signalWaveSVG.selectAll('.valuechanger')
-      .attr('x1', d => initialTimeScale(getTimeAtI(d[WAVEARRAY], d[IDX])))
-      .attr('y1', d => bitWaveScale(parseIntDef(d[WAVEARRAY][d[IDX]-1].val)))
-      .attr('x2', d => initialTimeScale(getTimeAtI(d[WAVEARRAY], d[IDX])))
-      .attr('y2', d => bitWaveScale(parseIntDef(getValueAtI(d[WAVEARRAY], d[IDX]))))
-      .style("stroke", d => value2Color(getValueAtI(d[WAVEARRAY], d[IDX])))
+      .attr('x1', d => initialTimeScale(d[WAVEARRAY].getTimeAtI(d[IDX])))
+      .attr('y1', d => bitWaveScale(parseIntDef(d[WAVEARRAY].getValueAtI([d[IDX]-1]))))
+      .attr('x2', d => initialTimeScale(d[WAVEARRAY].getTimeAtI(d[IDX])))
+      .attr('y2', d => bitWaveScale(parseIntDef(d[WAVEARRAY].getValueAtI(d[IDX]))))
+      .style("stroke", d => value2Color(d[WAVEARRAY].getValueAtI(d[IDX])))
       .attr('vector-effect', 'non-scaling-stroke');
 
   } else if (rowData.waveStyle == 'bus') {
@@ -550,29 +548,29 @@ function drawWave(timeScaleGroup) {
 
     signalWaveSVG.selectAll('.bus-path')
       .attr('vector-effect', 'non-scaling-stroke')
-      .style("stroke", d => value2Color(getValueAtI(d[WAVEARRAY], d[IDX])))
-      .style("fill", d => value2Color(getValueAtI(d[WAVEARRAY], d[IDX])))
+      .style("stroke", d => value2Color(d[WAVEARRAY].getValueAtI(d[IDX])))
+      .style("fill", d => value2Color(d[WAVEARRAY].getValueAtI(d[IDX])))
       .style("stroke-width", "2")
       .attr('d', d => {
         var ret = '';
-        ret += `M${(getTimeAtI(d[WAVEARRAY], d[IDX]+1)) - (timeScale.invert(2))},${bitWaveScale(1)} `
-        ret += `${(getTimeAtI(d[WAVEARRAY], d[IDX])) + (timeScale.invert(2))},${bitWaveScale(1)} `
-        ret += `${(getTimeAtI(d[WAVEARRAY], d[IDX]))},${bitWaveScale(0.5)} `
-        ret += `${(getTimeAtI(d[WAVEARRAY], d[IDX])) + (timeScale.invert(2))},${bitWaveScale(0)} `
-        ret += `${(getTimeAtI(d[WAVEARRAY], d[IDX]+1)) - (timeScale.invert(2))},${bitWaveScale(0)} `
-        if (getTimeAtI(d[WAVEARRAY], d[IDX]+1) < now) {
-          ret += `${getTimeAtI(d[WAVEARRAY], d[IDX]+1)},${bitWaveScale(0.5)} `
-          ret += `${getTimeAtI(d[WAVEARRAY], d[IDX]+1) - (timeScale.invert(2))},${bitWaveScale(1)} `
+        ret += `M${(d[WAVEARRAY].getTimeAtI(d[IDX]+1)) - (timeScale.invert(2))},${bitWaveScale(1)} `
+        ret += `${(d[WAVEARRAY].getTimeAtI(d[IDX])) + (timeScale.invert(2))},${bitWaveScale(1)} `
+        ret += `${(d[WAVEARRAY].getTimeAtI(d[IDX]))},${bitWaveScale(0.5)} `
+        ret += `${(d[WAVEARRAY].getTimeAtI(d[IDX])) + (timeScale.invert(2))},${bitWaveScale(0)} `
+        ret += `${(d[WAVEARRAY].getTimeAtI(d[IDX]+1)) - (timeScale.invert(2))},${bitWaveScale(0)} `
+        if (d[WAVEARRAY].getTimeAtI(d[IDX]+1) < now) {
+          ret += `${d[WAVEARRAY].getTimeAtI(d[IDX]+1)},${bitWaveScale(0.5)} `
+          ret += `${d[WAVEARRAY].getTimeAtI(d[IDX]+1) - (timeScale.invert(2))},${bitWaveScale(1)} `
         }
         return ret;
       });
       
     d3.selectAll('.bus-value')
-      .text(d => getValueAtI(d[WAVEARRAY], d[IDX]))
+      .text(d => d[WAVEARRAY].getValueAtI(d[IDX]))
       .attr("y", config.rowHeight / 2)
-      .attr('x', d => timeScale(getTimeAtI(d[WAVEARRAY], d[IDX]) + getTimeAtI(d[WAVEARRAY], d[IDX]+1))/2)
+      .attr('x', d => timeScale(d[WAVEARRAY].getTimeAtI(d[IDX]) + d[WAVEARRAY].getTimeAtI(d[IDX]+1))/2)
       .each(function(d){
-      wrap_fast(this, timeScale(getTimeAtI(d[WAVEARRAY], d[IDX]+1) - getTimeAtI(d[WAVEARRAY], d[IDX])));
+      wrap_fast(this, timeScale(d[WAVEARRAY].getTimeAtI(d[IDX]+1) - d[WAVEARRAY].getTimeAtI(d[IDX])));
     });
       
   } else {
@@ -676,12 +674,12 @@ function isInt(value) {
 /**
  * Filter value change elements, pass which are inside the rendering region.
  *
- * @param {Object} waveChange a wave change element, to filter
+ * @param {Signal} signal a wave change element, to filter
  * @return {boolean} true if the waveChange element inside the rendering region.
  */
-function waveIInRenderRange(wave, i){
-  var t0 = getTimeAtI(wave, i),
-    t1 = getTimeAtI(wave, i+1),
+function waveIInRenderRange(signal, i){
+  var t0 = signal.getTimeAtI(i),
+    t1 = signal.getTimeAtI(i+1),
     domainMin = d3.min(renderTimeScale.domain()),
     domainMax = d3.max(renderTimeScale.domain());
 

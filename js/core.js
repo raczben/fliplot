@@ -179,46 +179,43 @@ class Signal {
         }
     }
 
-}
-
-/**
- * 
- * @param {valueChange_t[]} vcdArr 
- * @param {int} i 
- */
-export function getTimeAtI(vcdArr, i) {
-    if (i < 0){
-        throw 'Negative index';
-    }
-    if (i < vcdArr.length){
-        return vcdArr[i].time;
-    }
-    if (i == vcdArr.length){
-        return now;
-    }
-    else {
-        throw 'Index is too great';
-    }
-}
-
-/**
- * 
- * @param {valueChange_t[]} vcdArr 
- * @param {number} i 
- * @param {number} def 
- */
-export function getValueAtI(vcdArr, i, def) {
-    if (i < 0){
-        if(def !== undefined){
-            return def;
+    /**
+     * @param {number} i 
+     * @param {number} def 
+     */
+    getValueAtI(i, def) {
+        if (i < 0){
+            if(def !== undefined){
+                return def;
+            }
+            throw 'Negative index';
         }
-        throw 'Negative index';
+        if (i >= this.wave.length){
+            i = this.wave.length -1;
+        }
+        return this.wave[i].val;
     }
-    if (i >= vcdArr.length){
-        i = vcdArr.length -1;
+    
+    /**
+     * @param {int} i 
+     */
+    getTimeAtI(i) {
+        if (i < 0){
+            throw 'Negative index';
+        }
+        if (i < this.wave.length){
+            return this.wave[i].time;
+        }
+        if (i == this.wave.length){
+            return now;
+        }
+        else {
+            throw 'Index is too great';
+        }
     }
-    return vcdArr[i].val;
+
 }
+
 
 /******************************************************************************
  * 
@@ -239,13 +236,13 @@ export function getTimeAnyTransition(signal, time, deltaTransition) {
     const idx = signal.getChangeIndexAt(time);
     if(deltaTransition < 0){
         // previous nth change
-        const changeT = getTimeAtI(signal.wave, idx);
+        const changeT = signal.getTimeAtI(idx);
         if(changeT != time){
             // cursor is not located at value change
             deltaTransition++;
         }
     }
-    const t = getTimeAtI(signal.wave, idx+deltaTransition);
+    const t = signal.getTimeAtI(idx+deltaTransition);
     console.log(t)
     return t;
 }
