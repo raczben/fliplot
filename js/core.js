@@ -1,25 +1,3 @@
-
-/**
- * simDB is mainly the parsed VCD file.
- * This contains all data from the simulation or from the VCD file. First of all it stores all
- * signals with its values, the *now* pointer, the VCD file name, etc...
- * 
- * waveformDB is mainly the wave.do file.
- * This stores the drawing config. It stores entries for each visualized signals (a reference to
- * the simDB) stores the radix, signal type, and other plotting related information.
- * 
- * Note, that if the same signal will be added twice to the wave-view, the simDB will be untouched.
- * Only a new waveformDB-entry will be created with a reference to that signals simDB's entry.
- */
-/**
- * @type {simDB_t} simDB
- */
-export var simDB = {};
-
-/**
- * @type {waveformDB_t} waveformDB
- */
-export var waveformDB = {};
 export var now = -1; // Todo should be integrated to signalDB
 
 /**
@@ -61,17 +39,11 @@ export var now = -1; // Todo should be integrated to signalDB
  * @property {signal_t} signal
  * @property {string} radix
  * @property {string} waveStyle
+ * @property {number} height
 */
 
 /**
- * Draw-database type-definition
- * @typedef {Object} waveformDB_t
- * @property {waveformRow_t[]} rows
- * @property {number} _idGenerator
-*/
-
-/**
- * Draw-database type-definition
+ * Sim-database type-definition
  * @typedef {Object} simDB_t
  * @property {signal_t[]} signals
  * @property {number} now
@@ -79,42 +51,52 @@ export var now = -1; // Todo should be integrated to signalDB
  * @property {number} timeUnit
 */
 
+class WaveformDB{
+    constructor(){
+        /**  @type {waveformRow_t[]} */
+        this.rows = []; 
+        /**  @type {number} */
+        this._idGenerator=0;
+    }
+
+    /**
+     * Insert a new signal to waveform window.
+     * 
+     * @param {*} signalID 
+     * @param {number} position 
+     */
+    insertWaveSignal(signalID, position=-1){
+        /** @type {waveformRow_t} rowItem */
+        const rowItem = {
+            radix: 'bin',
+            signal: simDB.signals[signalID]
+        };
+        if (rowItem.signal.width == 1) {
+            rowItem.waveStyle = 'bit';
+        } else {
+            rowItem.waveStyle = 'bus';
+        }
+        rowItem.id = encodeURIComponent(rowItem.signal.name).replace(/\./g, '_') + `_${waveformDB._idGenerator++}`;
+        
+        this.rows.splice(position, 0, rowItem);
+    }
+
+    /**
+     * Add all signal from the simDB to the waveform window.
+     */
+    addAllWaveSignal(){
+        simDB.signals.forEach((_element, index) => {
+            this.insertWaveSignal(index);
+        });
+    }
+    
+}
+
 export function setSimDB(db, n){
     simDB = db;
-    waveformDB = {rows:[], _idGenerator:0};
+    waveformDB = new WaveformDB();
     now = n;
-    addAllWaveSignal();
-}
-
-/**
- * Insert a new signal to waveform window.
- * 
- * @param {*} signalID 
- * @param {number} position 
- */
-export function insertWaveSignal(signalID, position=-1){
-    /** @type {waveformRow_t} rowItem */
-    const rowItem = {
-        radix: 'bin',
-        signal: simDB.signals[signalID]
-    };
-    if (rowItem.signal.width == 1) {
-        rowItem.waveStyle = 'bit'
-    } else {
-        rowItem.waveStyle = 'bus'
-    }
-    rowItem.id = encodeURIComponent(rowItem.signal.name).replace(/\./g, '_') + `_${waveformDB._idGenerator++}`; //TODO
-    
-    waveformDB.rows.splice(position, 0, rowItem);
-}
-
-/**
- * Add all signal from the simDB to the waveform window.
- */
-export function addAllWaveSignal(){
-    simDB.signals.forEach((_element, index) => {
-        insertWaveSignal(index);
-    });
+    waveformDB.addAllWaveSignal();
 }
 
 export function updateDBNow(){
@@ -285,3 +267,21 @@ function binarySearch(ar, el, compare_fn) {
     }
     return -m - 1;
 }
+
+/**
+ * simDB is mainly the parsed VCD file.
+ * This contains all data from the simulation or from the VCD file. First of all it stores all
+ * signals with its values, the *now* pointer, the VCD file name, etc...
+ * 
+ * waveformDB is mainly the wave.do file.
+ * This stores the drawing config. It stores entries for each visualized signals (a reference to
+ * the simDB) stores the radix, signal type, and other plotting related information.
+ * 
+ * Note, that if the same signal will be added twice to the wave-view, the simDB will be untouched.
+ * Only a new waveformDB-entry will be created with a reference to that signals simDB's entry.
+ */
+/**
+ * @type {simDB_t} simDB
+ */
+export var simDB = {};
+export var waveformDB = new WaveformDB();
