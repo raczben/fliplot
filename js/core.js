@@ -168,22 +168,16 @@ class Signal {
      * @param {number} time 
      * @param {number} def 
      */
-    getValueAt(time, def='- NA -') {
-        try {
-            const idx = this.getChangeIndexAt(time);
-            const wave = this.wave[idx];
-            return wave.val;
-        }
-        catch (err) {
-            return def;
-        }
+    getValueAt(time, radix, def='- NA -') {
+        const idx = this.getChangeIndexAt(time);
+        return this.getValueAtI(idx, radix, def);
     }
 
     /**
      * @param {number} i 
      * @param {number} def 
      */
-    getValueAtI(i, def) {
+    getValueAtI(i, radix='val', def) {
         if (i < 0){
             if(def !== undefined){
                 return def;
@@ -193,7 +187,11 @@ class Signal {
         if (i >= this.wave.length){
             i = this.wave.length -1;
         }
-        return this.wave[i].val;
+        
+        if(this.wave[i][radix] === undefined){
+            this.wave[i][radix] = bin2radix(this.wave[i].val, radix);
+        }
+        return this.wave[i][radix];
     }
     
     /**
@@ -216,6 +214,69 @@ class Signal {
 
 }
 
+/**
+ * 
+ * @param {string} bin 
+ * @param {string} radix 
+ */
+function bin2radix(bin, radix){
+    if(radix == 'hex'){
+        return Bin2Hex2(bin); //TODO
+    } else if (radix == 'float'){
+        return NaN; //TODO
+    } else if (radix == 'double'){
+        return NaN; //TODO
+    } else{
+        const m=radix.match(/[us]\d+/)
+        if (m){
+            const signed = (m[1]=='s')
+            const digits = m[2]
+            return Bin2Dec2(bin); //TODO
+        }
+    }
+}
+
+/**
+ * From: https://stackoverflow.com/a/12987042/2506522
+ * 
+ *///Useful Functions
+ function checkBin(n){return/^[01]{1,64}$/.test(n)}
+//  function checkDec(n){return/^[0-9]{1,64}$/.test(n)}
+//  function checkHex(n){return/^[0-9A-Fa-f]{1,64}$/.test(n)}
+//  function pad(s,z){s=""+s;return s.length<z?pad("0"+s,z):s}
+//  function unpad(s){s=""+s;return s.replace(/^0+/,'')}
+ 
+ //Decimal operations
+//  function Dec2Bin(n){if(!checkDec(n)||n<0)return NaN;return n.toString(2)}
+//  function Dec2Hex(n){if(!checkDec(n)||n<0)return NaN;return n.toString(16)}
+ 
+ //Binary Operations
+ function Bin2Dec(n){if(!checkBin(n))return NaN;return parseInt(n,2).toString(10)}
+ function Bin2Hex(n){if(!checkBin(n))return NaN;return parseInt(n,2).toString(16)}
+ 
+ //Hexadecimal Operations
+//  function Hex2Bin(n){if(!checkHex(n))return NaN;return parseInt(n,16).toString(2)}
+//  function Hex2Dec(n){if(!checkHex(n))return NaN;return parseInt(n,16).toString(10)}
+ 
+function Bin2Hex2(n, len){
+    const ret = Bin2Hex(n)
+    if(isNaN(ret)){
+        // TODO: Should be splitted and converted by 4 bits.
+        return 'x'.repeat(Math.ceil(n.length / 4));
+    } else{
+        return ret;
+    }
+}
+ 
+function Bin2Dec2(n, len){
+    const ret = Bin2Dec(n)
+    if(isNaN(ret)){
+        // TODO: Should be splitted and converted by 4 bits.
+        return 'x'.repeat(Math.ceil(n.length / 4));
+    } else{
+        return ret;
+    }
+}
 
 /******************************************************************************
  * 
