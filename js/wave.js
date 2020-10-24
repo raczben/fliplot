@@ -418,7 +418,7 @@ function fillSignalNames() {
  */
 function showValuesAt(time) {
   d3.selectAll('.signal-value')
-    .text(d => d.signal.getValueAt(time));
+    .text(d => d.getValueAt(time));
 }
 
 /**

@@ -253,7 +253,7 @@ class WaveformRow{
  */
 function bin2radix(bin, radix){
     if(radix == 'hex'){
-        return Bin2Hex2(bin); //TODO
+        return '0x' + Bin2Hex2(bin); //TODO
     } else if (radix == 'float'){
         return NaN; //TODO
     } else if (radix == 'double'){
