@@ -43,7 +43,7 @@ def format_pyDigitalWaveTools(data):
         except KeyError:
             # No child:
             node['hierarcy'] = hierlist
-            node['wave'] = [{'time': item[0], 'val': item[1]}
+            node['wave'] = [{'time': item[0], 'bin': item[1]}
                             for item in node['data']]
             del node['data']
             now[0] = max(node['wave'][-1]['time'], now[0])
@@ -65,7 +65,7 @@ def format_vcdvcd(data):
             renameKey(signal, 'size', 'width')
             
             try:
-                signal['wave'] = [{'time': item[0], 'val': item[1]}
+                signal['wave'] = [{'time': item[0], 'bin': item[1]}
                                     for item in signal['tv']]
                 del signal['tv']
                 now[0] = max(signal['wave'][-1]['time'], now[0])

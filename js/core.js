@@ -6,15 +6,17 @@ export var now = -1; // Todo should be integrated to signalDB
  * 
  * @typedef {Object} valueChange_t 
  * @property {number} time Simulation time in the unit of the simulation timePrecision.
- * @property {string} val The raw value in binary. Each character represents a bit in the bitvector.
- * @property {string} [hex] A derived value from raw val. Optional: calculated only when the user
+ * @property {string} bin The raw value in binary form. Each character represents a bit in the
+ *      bitvector. All other (optional) value format is derived from this.
+ * @property {string} [hex] A derived value from raw bin. Optional: calculated only when the user
  *      wants to see hex values. Each hex digit will be X and Z if there is an X or Z bit value in
  *      its region.
- * @property {number} [s30] Fixed point float number. First character (s/u) note signed and unsigned
- *      format. The number of bits used to represent the integer value (the number of bits above the
- *      decimal point) Note, that the full word length is defined at signal level. So the len and
- *      this numbers are equal, the value is a fixed point integer. Derived, optional as above.
- *      Note, that if any X or Z located in the raw binary format, this value will be NaN.
+ * @property {number} [u30] Fixed point float number. First character (s/u) note signed and unsigned
+ *      format. The number of bits used to represent the fraction value (the number of bits below the
+ *      decimal point) This means, that u0 means that the whole bitvector represents a fixed point
+ *      unsigned integer. Note, that the full word length is defined at signal level. Derived,
+ *      optional as above. Note, that if any X or Z located in the raw binary format, this value
+ *      will be NaN.
  * @property {number} [float] Single point float number. Derived, optional as above.
  * @property {number} [double] Double point float number. Derived, optional as above.
 */
@@ -66,12 +68,12 @@ class SimDB{
             var wave = element.wave;
             if(wave.length == 0){
                 // Empty array
-                wave.push({time:0, val:'x'});
+                wave.push({time:0, bin:'x'});
                 return;
             }
             if(wave[0].time != 0){
                 // Append the phantom zero-th value.
-                wave.unshift({time:0, val:'x'});
+                wave.unshift({time:0, bin:'x'});
             }
         });
     }
@@ -177,7 +179,7 @@ class Signal {
      * @param {number} i 
      * @param {number} def 
      */
-    getValueAtI(i, radix='val', def) {
+    getValueAtI(i, radix='bin', def) {
         if (i < 0){
             if(def !== undefined){
                 return def;
@@ -189,7 +191,7 @@ class Signal {
         }
         
         if(this.wave[i][radix] === undefined){
-            this.wave[i][radix] = bin2radix(this.wave[i].val, radix);
+            this.wave[i][radix] = bin2radix(this.wave[i].bin, radix);
         }
         return this.wave[i][radix];
     }
