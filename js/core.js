@@ -21,32 +21,10 @@ export var now = -1; // Todo should be integrated to signalDB
  * @property {number} [double] Double point float number. Derived, optional as above.
 */
 
-/**
- * Signal type-definition.
- * @typedef {Object} signal_t 
- * @property {string[]} hierarcy
- * @property {string} name
- * @property {string[]} references
- * @property {string} type
- * @property {string} vcdid
- * @property {valueChange_t[]} wave
- * @property {number} width
-*/
-
-/**
- * waveformRow type-definition.
- * @typedef {Object} waveformRow_t 
- * @property {string} type
- * @property {string} id
- * @property {signal_t} signal
- * @property {string} radix
- * @property {string} waveStyle
- * @property {number} height
-*/
 
 class SimDB{
     constructor(db){
-        /** @type {signal_t[]} */
+        /** @type {Signal[]} */
         this.signals = [];
         /** @type {number} */
         this.now = -1;
@@ -81,7 +59,7 @@ class SimDB{
 
 class WaveformDB{
     constructor(){
-        /**  @type {waveformRow_t[]} */
+        /**  @type {WaveformRow[]} */
         this.rows = []; 
         /**  @type {number} */
         this._idGenerator=0;
@@ -94,16 +72,9 @@ class WaveformDB{
      * @param {number} position 
      */
     insertWaveSignal(signalID, position=-1){
-        /** @type {waveformRow_t} rowItem */
-        const rowItem = {
-            radix: 'bin',
-            signal: simDB.signals[signalID]
-        };
-        if (rowItem.signal.width == 1) {
-            rowItem.waveStyle = 'bit';
-        } else {
-            rowItem.waveStyle = 'bus';
-        }
+        /** @type {WaveformRow} rowItem */
+        const rowItem = new WaveformRow(simDB.signals[signalID])
+        
         rowItem.id = encodeURIComponent(rowItem.signal.name).replace(/\./g, '_') + `_${waveformDB._idGenerator++}`;
         
         this.rows.splice(position, 0, rowItem);
@@ -216,6 +187,65 @@ class Signal {
 
 }
 
+class WaveformRow{
+    /**
+     * 
+     * @param {Signal} signal 
+     */
+    constructor (signal){
+
+        /** @type {string} */
+        this.type = 'signal'
+        /** @type {string} */
+        this.id = 'ABC123'
+        /** @type {Signal} */
+        this.signal = signal
+        /** @type {string} */
+        this.radix = 'hex'
+        /** @type {string} */
+        this.waveStyle = ''
+        /** @type {number} */
+        this.height = -1
+        
+        if (signal.width == 1) {
+            this.waveStyle = 'bit';
+        } else {
+            this.waveStyle = 'bus';
+        }
+    }
+
+    /**
+     * @param {number} time 
+     */
+    getChangeIndexAt(time) {
+        return this.signal .getChangeIndexAt(time);
+    }
+
+    /**
+     * 
+     * @param {number} time 
+     * @param {number} def 
+     */
+    getValueAt(time, def='- NA -') {
+        return this.signal.getValueAt(time, this.radix, def);
+    }
+
+    /**
+     * @param {number} i 
+     * @param {number} def 
+     */
+    getValueAtI(i, def) {
+        return this.signal.getValueAtI(i, this.radix, def);
+    }
+    
+    /**
+     * @param {int} i 
+     */
+    getTimeAtI(i) {
+        return this.signal.getTimeAtI(i);
+    }
+}
+
 /**
  * 
  * @param {string} bin 
@@ -233,7 +263,7 @@ function bin2radix(bin, radix){
         if (m){
             const signed = (m[1]=='s')
             const digits = m[2]
-            return Bin2Dec2(bin); //TODO
+            return Bin2Dec2(bin, signed, digits);
         }
     }
 }
@@ -260,7 +290,7 @@ function bin2radix(bin, radix){
 //  function Hex2Bin(n){if(!checkHex(n))return NaN;return parseInt(n,16).toString(2)}
 //  function Hex2Dec(n){if(!checkHex(n))return NaN;return parseInt(n,16).toString(10)}
  
-function Bin2Hex2(n, len){
+function Bin2Hex2(n){
     const ret = Bin2Hex(n)
     if(isNaN(ret)){
         // TODO: Should be splitted and converted by 4 bits.
@@ -270,10 +300,15 @@ function Bin2Hex2(n, len){
     }
 }
  
-function Bin2Dec2(n, len){
+function Bin2Dec2(n, signed=false, fractionalDigits=0){
+    if(fractionalDigits != 0){
+        throw 'Non-zero number of fractional digits is not supported yet.'
+    }
+    if(signed){
+        throw 'Signed format is not supported yet.'
+    }
     const ret = Bin2Dec(n)
     if(isNaN(ret)){
-        // TODO: Should be splitted and converted by 4 bits.
         return 'x'.repeat(Math.ceil(n.length / 4));
     } else{
         return ret;
@@ -291,7 +326,7 @@ function Bin2Dec2(n, len){
  * This function returns simulation time of the previous/next (arbirtary) transitition of the given
  * signal.
  * 
- * @param {signal_t} signal 
+ * @param {Signal} signal 
  * @param {number} time 
  * @param {number} deltaTransition 
  */
