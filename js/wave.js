@@ -428,7 +428,9 @@ function drawWave2() {
   if(dbg_enableRender) {
     d3.selectAll('.signalRow')
       .each(function () {
-        drawWave(d3.select(this));
+        setTimeout(() => {
+          drawWave(d3.select(this));
+        }, 0);
       });
   }
 }
