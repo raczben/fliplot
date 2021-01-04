@@ -127,7 +127,6 @@ footer {
   transform: translateX(8px);
 }
 
-.structure,
 .signal-name,
 .signal-value {
   white-space: nowrap;
@@ -137,6 +136,14 @@ footer {
   font-family: sans-serif;
   height: 20px;
   line-height: 20px; /* same as height! */
+}
+
+#jstree {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+  font-family: sans-serif;
 }
 
 #structure-col,

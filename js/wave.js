@@ -5,7 +5,6 @@ import {
 import {
   now,
   waveformDB,
-  simDB
 } from './core.js';
 
 var zoom = d3.zoom();
@@ -93,17 +92,18 @@ export function zoomOut() {
  * Autoscale: scale to show enough detail for humans
  */
 export function zoomAutoscale() {
-  var signals = simDB.signals
+  var rows = waveformDB.rows
 
-  if(signals.length > 0) {
+  if(rows.length > 0) {
     // Average wave change times
-    var avgDelta = signals.reduce((acc, signal) => {
+    var avgDelta = rows.reduce((acc, row) => {
+      const signal = row.signal;
       if (signal.wave.length) {
         return acc + now / signal.wave.length
       } else {
         return 1;
       }
-    }, 0) / signals.length;
+    }, 0) / rows.length;
 
     // The average change should be ~20px;
     var scale = 500 / avgDelta;

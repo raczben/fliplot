@@ -22,10 +22,56 @@ export var now = -1; // Todo should be integrated to signalDB
 */
 
 
+class SimulationObject{
+    static Type = Object.freeze({
+        SIGNAL:'signal',
+        MODULE:'module'
+    })
+    static _idGenerator = 0;
+    
+    /**
+     * 
+     * @param {SimulationObject.Type} type 
+     * @param {sting[]} hierarchy 
+     * @param {*} data 
+     */
+    constructor(type, hierarchy, data, parent){
+        /** @type {SimulationObject.Type}  */
+        this.type = type;
+        /** @type {string[]}  */
+        this.hierarchy = hierarchy;
+        /** @type {SimulationObject}  */
+        this.parent = parent;
+        /** @type {Signal}  */
+        this.signal = undefined;
+
+        this.id = `${hierarchy.slice(-1)[0]}_${this._idGenerator++}`
+
+        if(data !== undefined ){
+            switch (this.type) {
+                case SimulationObject.Type.SIGNAL:
+                    if(data instanceof Signal){
+                        this.signal = data;
+                    } else {
+                        this.signal = new Signal(data);
+                    }
+                    break;
+                case SimulationObject.Type.MODULE:
+                    break;
+                default:
+                    throw `Unknown type ${this.type}`
+            }
+            /** @type {string} */
+            this.definedAt = data.definedAt;
+        }
+    }
+}
+
+
 class SimDB{
     constructor(db){
         /** @type {Signal[]} */
-        this.signals = [];
+        this.objects = [];
         /** @type {number} */
         this.now = -1;
         /** @type {number} */
@@ -34,15 +80,87 @@ class SimDB{
         this.timeUnit = -1;
 
         if(db){
-            this.signals = db.signals.reduce(function(acc, element) {
-                acc.push(new Signal(element));
-                return acc;
-            },[])
+            db.signals.forEach(sig => {
+                sig.references.forEach(ref => {
+                    const hierarchy = ref.split('.')
+                    this.addSignal(hierarchy, sig);
+                });
+            });
         }
     }
 
+    /**
+     * @param {string[]} hierarchy 
+     */
+    addSignal(hierarchy, signal){
+        const associativeIndex = hierarchy.join('.') + '__S';
+        var parent = this.addModule(hierarchy.slice(0,-1));
+
+        const child = new SimulationObject(SimulationObject.Type.SIGNAL, hierarchy, signal, parent);
+        this.objects[associativeIndex] = child;
+        return child;
+    }
+
+    /**
+     * @param {string[]} hierarchy 
+     */
+    addModule(hierarchy){
+        const associativeIndex = hierarchy.join('.');
+        var parent = null;
+        // if child exists:
+        var child = this.getObject(hierarchy);
+        if(child !== undefined){
+            return child;
+        }
+        
+        if(hierarchy.length > 1) {
+            parent = this.addModule(hierarchy.slice(0,-1));
+        }
+        child = new SimulationObject(SimulationObject.Type.MODULE, hierarchy, undefined, parent);
+        this.objects[associativeIndex] = child;
+        return child;
+    }
+
+    /**
+     * @param {string[]} hierarchy 
+     * @param {boolean} recursive 
+     */
+    isPathExist(hierarchy, recursive=true){
+        const associativeIndex = hierarchy.join('.');
+        var ret =  associativeIndex in this.objects;
+        if(recursive){
+            if(hierarchy.length == 1) {
+                return ret;
+            }
+            return ret && this.isPathExist(hierarchy.slice(0,-1));
+        }
+        return ret;
+    }
+
+    /**
+     * @param {string[]} hierarchy 
+     * @param {boolean} recursive 
+     */
+    getObject(hierarchy, recursive=true){
+        const associativeIndex = hierarchy.join('.');
+        return this.objects[associativeIndex];
+    }
+
+    getAllSignals(){
+        const ret = []
+        for (var key in this.objects) {
+            if (this.objects.hasOwnProperty(key)){
+                var obj = this.objects[key];
+                if(obj.type == SimulationObject.Type.SIGNAL){
+                    ret.push(obj.signal)
+                }
+            }
+        }
+        return ret;
+    }
+
     updateDBInitialX(){
-        this.signals.forEach(element => {
+        this.getAllSignals().forEach(element => {
             var wave = element.wave;
             if(wave.length == 0){
                 // Empty array
@@ -54,6 +172,20 @@ class SimDB{
                 wave.unshift({time:0, bin:'x'});
             }
         });
+    }
+
+    getStructure(){
+        function addPath(structure, path){
+            path.forEach(element => {
+                structure.push({'id': element})
+            })
+            structure
+        }
+
+        this.signal.reduce((structure, element) => {
+            node = 
+            structure.push(element);
+        }, []);
     }
 }
 
@@ -68,12 +200,13 @@ class WaveformDB{
     /**
      * Insert a new signal to waveform window.
      * 
-     * @param {*} signalID 
+     * @param {string[]} hierarchy 
      * @param {number} position 
      */
-    insertWaveSignal(signalID, position=-1){
+    insertWaveSignal(hierarchy, position=-1){
         /** @type {WaveformRow} rowItem */
-        const rowItem = new WaveformRow(simDB.signals[signalID])
+        const obj = simDB.getObject(hierarchy);
+        const rowItem = new WaveformRow(obj.signal)
         
         rowItem.id = encodeURIComponent(rowItem.signal.name).replace(/\./g, '_') + `_${waveformDB._idGenerator++}`;
         
@@ -84,9 +217,13 @@ class WaveformDB{
      * Add all signal from the simDB to the waveform window.
      */
     addAllWaveSignal(){
-        simDB.signals.forEach((_element, index) => {
-            this.insertWaveSignal(index);
-        });
+        for (var key in simDB.objects) {
+            if (simDB.objects.hasOwnProperty(key)){
+                if(simDB.objects[key].type == SimulationObject.Type.SIGNAL){
+                    this.insertWaveSignal(key.split("."));
+                }
+            }
+          }
     }
 }
 
@@ -107,31 +244,26 @@ export function setSimDB(db, n){
 class Signal {
     constructor(sig){
         /** @type {string[]} */
-        this.hierarcy = [];
+        this.references = sig.references;
         /** @type {string} */
-        this.name = undefined;
-        /** @type {string[]} */
-        this.references = [];
-        /** @type {string} */
-        this.type = undefined;
-        /** @type {string} */
-        this.vcdid = undefined;
-        /** @type {valueChange_t[]} */
-        this.wave = [];
-        /** @type {number} */
-        this.width = 1;
+        this.vcdid = sig.vcdid;
 
-        Object.assign(this, sig);
+        /** @type {string} */
+        this.type = sig.type;
+        /** @type {valueChange_t[]} */
+        this.wave = sig.wave;
+        /** @type {number} */
+        this.width = sig.width;
     }
     /**
      * @param {number} time 
      */
     getChangeIndexAt(time) {
         var idx = binarySearch(this.wave, time, (time, wave) => {
-        return time - wave.time;
+            return time - wave.time;
         })
         if (idx < 0) {
-        idx = -idx - 2;
+            idx = -idx - 2;
         }
         return idx;
     }

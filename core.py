@@ -74,9 +74,8 @@ def format_vcdvcd(data):
                 
 
             signal['vcdid'] = vcdID
-            signal['hierarcy'] = signal['references'][0].split('.')
-            signal['name'] = signal['hierarcy'][-1]
-            del signal['hierarcy'][-1]
+            hierarcy = signal['references'][0].split('.')
+            signal['name'] = hierarcy[-1]
         except:
             print(f'Error at: {vcdID}')
             raise
