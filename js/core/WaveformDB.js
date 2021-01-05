@@ -47,7 +47,7 @@ class WaveformDB{
         }
         
         for (var key in simDB.objects) {
-            if (simDB.objects.hasOwnProperty(key)){
+            if (Object.prototype.hasOwnProperty.call(simDB.objects, key)){
                 if(simDB.objects[key].type == SimulationObject.Type.SIGNAL){
                     this.insertWaveSignal(key.split("."));
                 }

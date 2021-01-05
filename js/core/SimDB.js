@@ -81,9 +81,8 @@ export class SimDB{
 
     /**
      * @param {string[]} hierarchy 
-     * @param {boolean} recursive 
      */
-    getObject(hierarchy, recursive=true){
+    getObject(hierarchy){
         const associativeIndex = hierarchy.join('.');
         return this.objects[associativeIndex];
     }
@@ -91,7 +90,7 @@ export class SimDB{
     getAllSignals(){
         const ret = []
         for (var key in this.objects) {
-            if (this.objects.hasOwnProperty(key)){
+            if (Object.prototype.hasOwnProperty.call(this.objects, key)){
                 var obj = this.objects[key];
                 if(obj.type == SimulationObject.Type.SIGNAL){
                     ret.push(obj.signal)

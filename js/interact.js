@@ -21,10 +21,6 @@ import {
 } from './core.js';
 
 import {
-  test,
-} from './core/Signal.js';
-
-import {
   waveformDB
 } from './core/WaveformDB.js';
 
