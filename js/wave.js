@@ -97,7 +97,7 @@ export function zoomAutoscale() {
   if(rows.length > 0) {
     // Average wave change times
     var avgDelta = rows.reduce((acc, row) => {
-      const signal = row.signal;
+      const signal = row.simObj.signal;
       if (signal.wave.length) {
         return acc + now / signal.wave.length
       } else {
@@ -407,7 +407,7 @@ function fillSignalNames() {
       .attr('text-anchor', 'left')
       .attr('alignment-baseline', 'central')
       .attr("class", "signalNameText")
-      .text(d => d.signal.name);
+      .text(d => d.name);
   }
   
   
@@ -461,9 +461,9 @@ function drawWave(timeScaleGroup) {
       return "#FF0000";
   }
   
-  var waveChangesIndex = rowData.signal.wave.reduce((res, current, i) => {
-    if (waveIInRenderRange(rowData.signal, i)) {
-      res.push([rowData.signal, i]);
+  var waveChangesIndex = rowData.simObj.signal.wave.reduce((res, current, i) => {
+    if (waveIInRenderRange(rowData.simObj.signal, i)) {
+      res.push([rowData.simObj.signal, i]);
     }
     return res;
   }, []);

@@ -65,6 +65,37 @@ class SimulationObject{
             this.definedAt = data.definedAt;
         }
     }
+
+    /**
+     * @param {number} time 
+     */
+    getChangeIndexAt(time) {
+        return this.signal.getChangeIndexAt(time);
+    }
+
+    /**
+     * 
+     * @param {number} time 
+     * @param {number} def 
+     */
+    getValueAt(time, radix, def='- NA -') {
+        return this.signal.getValueAt(time, radix, def);
+    }
+
+    /**
+     * @param {number} i 
+     * @param {number} def 
+     */
+    getValueAtI(i, radix, def) {
+        return this.signal.getValueAtI(i, radix, def);
+    }
+    
+    /**
+     * @param {int} i 
+     */
+    getTimeAtI(i) {
+        return this.signal.getTimeAtI(i);
+    }
 }
 
 
@@ -206,9 +237,9 @@ class WaveformDB{
     insertWaveSignal(hierarchy, position=-1){
         /** @type {WaveformRow} rowItem */
         const obj = simDB.getObject(hierarchy);
-        const rowItem = new WaveformRow(obj.signal)
+        const rowItem = new WaveformRow(obj)
         
-        rowItem.id = encodeURIComponent(rowItem.signal.name).replace(/\./g, '_') + `_${waveformDB._idGenerator++}`;
+        rowItem.id = encodeURIComponent(obj.signal.name).replace(/\./g, '_') + `_${waveformDB._idGenerator++}`;
         
         this.rows.splice(position, 0, rowItem);
     }
@@ -322,24 +353,26 @@ class Signal {
 class WaveformRow{
     /**
      * 
-     * @param {Signal} signal 
+     * @param {SimulationObject} simObj 
      */
-    constructor (signal){
+    constructor (simObj){
 
         /** @type {string} */
         this.type = 'signal'
         /** @type {string} */
         this.id = 'ABC123'
         /** @type {Signal} */
-        this.signal = signal
+        this.simObj = simObj
         /** @type {string} */
         this.radix = 'hex'
         /** @type {string} */
         this.waveStyle = ''
         /** @type {number} */
         this.height = -1
+        /** @type {string} */
+        this.name = simObj.hierarchy.join('.')
         
-        if (signal.width == 1) {
+        if (simObj.signal.width == 1) {
             this.waveStyle = 'bit';
         } else {
             this.waveStyle = 'bus';
@@ -350,7 +383,7 @@ class WaveformRow{
      * @param {number} time 
      */
     getChangeIndexAt(time) {
-        return this.signal .getChangeIndexAt(time);
+        return this.simObj.getChangeIndexAt(time);
     }
 
     /**
@@ -359,7 +392,7 @@ class WaveformRow{
      * @param {number} def 
      */
     getValueAt(time, def='- NA -') {
-        return this.signal.getValueAt(time, this.radix, def);
+        return this.simObj.getValueAt(time, this.radix, def);
     }
 
     /**
@@ -367,14 +400,14 @@ class WaveformRow{
      * @param {number} def 
      */
     getValueAtI(i, def) {
-        return this.signal.getValueAtI(i, this.radix, def);
+        return this.simObj.getValueAtI(i, this.radix, def);
     }
     
     /**
      * @param {int} i 
      */
     getTimeAtI(i) {
-        return this.signal.getTimeAtI(i);
+        return this.simObj.getTimeAtI(i);
     }
 }
 
