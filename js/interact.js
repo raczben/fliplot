@@ -42,19 +42,7 @@ $(".demo-file-button").click(function () {
     }),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    success: (data) => {
-      console.log(data);
-      simDB.init(vcdpy2simDb(data));
-      waveformDB.addAllWaveSignal();
-      simDB.updateDBInitialX();
-      showTree();
-
-      console.log(simDB);
-
-      setTimeout(() => {
-        showSignals()
-      }, 0)
-    }
+    success: initShow
   })
 });
 
@@ -116,6 +104,10 @@ $("#file-open-button").click(() => {
   $("#file-open-shadow").click();
 });
 
+$("#fileopenmenu").click(() => {
+  $("#file-open-shadow").click();
+});
+
 $("#file-open-shadow").on('change', openFile);
 
 function vcdpy2simDb(parsedContent) {
@@ -140,6 +132,20 @@ $.ajax({
   }
 })
 
+function initShow(data){
+  console.log(data);
+  simDB.init(vcdpy2simDb(data));
+  waveformDB.addAllWaveSignal();
+  simDB.updateDBInitialX();
+  showTree();
+
+  console.log(simDB);
+
+  setTimeout(() => {
+    showSignals()
+  }, 0)
+}
+
 function openFile(event) {
   var input = event.target;
   var reader = new FileReader();
@@ -156,19 +162,7 @@ function openFile(event) {
       }),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      success: (data) => {
-        console.log(data);
-        simDB.init(vcdpy2simDb(data));
-        waveformDB.addAllWaveSignal();
-        simDB.updateDBInitialX();
-        showTree();
-
-        console.log(simDB);
-
-        setTimeout(() => {
-          showSignals()
-        }, 0)
-      }
+      success: initShow
     })
 
   }

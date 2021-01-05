@@ -14,7 +14,9 @@ sys.path.append(os.path.join(here, '..'))
 
 from fliplot.core import parseFile, parseWith_vcdvcd
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
+    datefmt='%Y-%m-%d:%H:%M:%S',
+    level=logging.DEBUG)
 
 class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
     def address_string(self):

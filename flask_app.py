@@ -11,7 +11,9 @@ sys.path.append(os.path.join(here, '..'))
 from fliplot.core import parseFile
 here = os.path.dirname(os.path.realpath(__file__))
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s %(filename)s:%(lineno)d %(message)s',
+    datefmt='%Y-%m-%d:%H:%M:%S',
+    level=logging.DEBUG)
 
 app = Flask('fliplot')
 
@@ -26,8 +28,13 @@ def parse_vcd():
 
     try:
         content = request.json['content']
-    except:
+    except KeyError:
+        logging.info(f'No content, try to open the file locally.')
+
+    try:
         fname = request.json['fname']
+    except KeyError:
+        logging.info(f'No filename! So mysterious.')
 
     logging.info(f'open file to parse: {fname}')
 

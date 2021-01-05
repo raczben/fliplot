@@ -96,6 +96,8 @@ def parseWith_pyDigitalWaveTools(fname):
         return format_pyDigitalWaveTools(data)
 
 def parseWith_vcdvcd(fname=None, content=None):
+    if content:
+        fname = None
     vcd = VCDVCD(fname, content)
     data = vcd.get_data()
     return format_vcdvcd(data)
