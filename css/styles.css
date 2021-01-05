@@ -38,6 +38,20 @@ body {
   flex-direction: column;
 }
 
+#epic-container{
+  background-color: #333;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  overflow: hidden;
+}
+
+#structure-container-scroll-y{
+  flex: auto;
+  overflow-y: scroll;
+  background-color: #333;
+}
+
 #main-container-scroll-y{
   flex: auto;
   overflow-y: scroll;
@@ -140,13 +154,14 @@ footer {
 
 #jstree {
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
-  
   font-family: sans-serif;
 }
 
-#structure-col,
+#structure-col{
+  display: flex;
+}
+
 #names-col-container,
 #values-col-container {
   flex-shrink: 0;
