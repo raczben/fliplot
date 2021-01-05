@@ -91,14 +91,14 @@ $("#cursor-to-end").click(() => {
 $("#cursor-to-prev-transition").click(() => {
   const tCurr = getCursorTime();
   const sig = getHighlightedSignal();
-  const tNew = getTimeAnyTransition(sig.signal, tCurr, -1);
+  const tNew = getTimeAnyTransition(sig.simObj, tCurr, -1);
   moveCursorTo(tNew);
 });
 
 $("#cursor-to-next-transition").click(() => {
   const tCurr = getCursorTime();
   const sig = getHighlightedSignal();
-  const tNew = getTimeAnyTransition(sig.signal, tCurr, +1);
+  const tNew = getTimeAnyTransition(sig.simObj, tCurr, +1);
   moveCursorTo(tNew);
 });
 
