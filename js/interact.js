@@ -13,11 +13,20 @@ import {
 } from './wave.js';
 
 import {
-  setSimDB,
-  simDB,
-  now,
   getTimeAnyTransition
 } from './core.js';
+
+import {
+  simDB,
+} from './core.js';
+
+import {
+  test,
+} from './core/Signal.js';
+
+import {
+  waveformDB
+} from './core/WaveformDB.js';
 
 // TODO should be moved somewhere else.
 export var config = {};
@@ -38,7 +47,8 @@ $(".demo-file-button").click(function () {
     dataType: "json",
     success: (data) => {
       console.log(data);
-      setSimDB(vcdpy2simDb(data), data.now);
+      simDB.init(vcdpy2simDb(data));
+      waveformDB.addAllWaveSignal();
       simDB.updateDBInitialX();
 
       console.log(simDB);
@@ -75,7 +85,7 @@ $("#cursor-to-0").click(() => {
 });
 
 $("#cursor-to-end").click(() => {
-  moveCursorTo(now);
+  moveCursorTo(simDB.now);
 });
 
 $("#cursor-to-prev-transition").click(() => {
@@ -150,8 +160,9 @@ function openFile(event) {
       dataType: "json",
       success: (data) => {
         console.log(data);
-        const simDB = vcdpy2simDb(data);
-        setSimDB(simDB, data.now);
+        simDB.init(vcdpy2simDb(data));
+        waveformDB.addAllWaveSignal();
+        simDB.updateDBInitialX();
 
         console.log(simDB);
 

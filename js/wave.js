@@ -3,8 +3,10 @@ import {
   config
 } from './interact.js';
 import {
-  now,
   waveformDB,
+} from './core/WaveformDB.js';
+import {
+  simDB,
 } from './core.js';
 
 var zoom = d3.zoom();
@@ -20,18 +22,18 @@ var renderRange = [];
 var renderDomain = [];
 
 function init() {
-  renderRange = [0, now];
-  renderDomain = [0, now];
+  renderRange = [0, simDB.now];
+  renderDomain = [0, simDB.now];
 
   renderTimeScale
     .domain(renderDomain)
     .range(renderRange);
   initialTimeScale
-    .domain([0, now])
-    .range([0, now]);
+    .domain([0, simDB.now])
+    .range([0, simDB.now]);
   timeScale
-    .domain([0, now])
-    .range([0, now]);
+    .domain([0, simDB.now])
+    .range([0, simDB.now]);
   bitWaveScale
     .domain([0, 1])
     .range([config.rowHeight - config.bitWavePadding, config.bitWavePadding]);
@@ -65,7 +67,7 @@ const IDX = 1;
 export function zoomFit() {
   var width = $("#wave-axis-container").width();
   // The average change should be ~20px;
-  var scale = (width - 202) / now;
+  var scale = (width - 202) / simDB.now;
 
   var autozoom = d3.zoomIdentity;
   autozoom.k = scale;
@@ -99,7 +101,7 @@ export function zoomAutoscale() {
     var avgDelta = rows.reduce((acc, row) => {
       const signal = row.simObj.signal;
       if (signal.wave.length) {
-        return acc + now / signal.wave.length
+        return acc + simDB.now / signal.wave.length
       } else {
         return 1;
       }
@@ -187,10 +189,10 @@ function zoom_fast() {
   console.log(d3.event);
 
   const wrapper = d3.select('#wave-axis-container');
-  timeScale.range([0, now*d3.event.transform.k]);
+  timeScale.range([0, simDB.now*d3.event.transform.k]);
 
   d3.select('#mainSVG')
-  .attr('width', d3.event.transform.k * (now) + 200);
+  .attr('width', d3.event.transform.k * (simDB.now) + 200);
   
   // Move scrollbars.
   wrapper.node().scrollLeft = -d3.event.transform.x;
@@ -248,7 +250,7 @@ export function removeAllSignals(){
 function generateTable() {
 
   zoom
-    .scaleExtent([200 / timeScale(now), 20])
+    .scaleExtent([200 / timeScale(simDB.now), 20])
     .on("zoom", zoom_fast).filter(
       // Use Ctrl+Wheel, with mouse to zoom (simple wheel will scrolls up/down)
       // Or use touch gesture on touch devices
@@ -267,7 +269,7 @@ function generateTable() {
   removeAllSignals();
 
   d3.select('#mainSVG')
-    .attr('width', now + 200)
+    .attr('width', simDB.now + 200)
     .attr('height', config.rowHeight * (waveformDB.rows.length+1));
 
   const mainGr = d3.select('#mainGr');
@@ -331,7 +333,7 @@ function generateTable() {
     .attr('class', 'signal-highlighter')
     .attr('x', 0)
     .attr('y', 0)
-    .attr('width', initialTimeScale(now))
+    .attr('width', initialTimeScale(simDB.now))
     .attr('height', config.rowHeight)
     .on('click', function (d) {
       highlightSignal(d.id);
@@ -558,7 +560,7 @@ function drawWave(timeScaleGroup) {
         ret += `${(d[WAVEARRAY].getTimeAtI(d[IDX]))},${bitWaveScale(0.5)} `
         ret += `${(d[WAVEARRAY].getTimeAtI(d[IDX])) + (timeScale.invert(2))},${bitWaveScale(0)} `
         ret += `${(d[WAVEARRAY].getTimeAtI(d[IDX]+1)) - (timeScale.invert(2))},${bitWaveScale(0)} `
-        if (d[WAVEARRAY].getTimeAtI(d[IDX]+1) < now) {
+        if (d[WAVEARRAY].getTimeAtI(d[IDX]+1) < simDB.now) {
           ret += `${d[WAVEARRAY].getTimeAtI(d[IDX]+1)},${bitWaveScale(0.5)} `
           ret += `${d[WAVEARRAY].getTimeAtI(d[IDX]+1) - (timeScale.invert(2))},${bitWaveScale(1)} `
         }
@@ -578,7 +580,7 @@ function drawWave(timeScaleGroup) {
     signalWaveSVG
       .append('rect')
       .attr('height', config.rowHeight)
-      .attr('width', now)
+      .attr('width', simDB.now)
       .attr('fill', 'rgba(180, 0, 0, 0.5)');
     signalWaveSVG.append('text')
       .text(`Unsupported waveStyle: ${rowData.waveStyle}`)
