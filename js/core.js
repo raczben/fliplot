@@ -56,7 +56,6 @@ export function getTimeAnyTransition(signal, time, deltaTransition) {
         }
     }
     const t = signal.getTimeAtI(idx+deltaTransition);
-    console.log(t)
     return t;
 }
 

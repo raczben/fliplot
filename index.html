@@ -10,6 +10,7 @@
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css">
   <link rel="stylesheet" href="css/styles.css">
 
   <script src="https://d3js.org/d3.v5.js" charset="utf-8"></script>
@@ -17,143 +18,169 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
   <script src="js/jquery.ui.touch-punch.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+
   <script type="module" src="js/wave.js"></script>
   <script type="module" src="js/core.js"></script>
   <script type="module" src="js/interact.js"></script>
 </head>
 
 <body>
-    <nav class="navbar-inverse">
-      <div class="">
-        <ul class="nav navbar-nav">
-          <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">File<span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="#">Open</a></li>
-            </ul>
-          </li>
-          <li><a href="https://github.com/raczben/fliplot" target="_blank" title="Open the fliplot GitHub project in a new tab">GitHub</a></li>
-        </ul>
-      </div>
-    </nav>
-
-    <nav class="navbar-inverse toolbar">
-      <div class="">
-        <ul class="">
-          <div class="tool-group-container">
-            <div class="tool-group-tools">
-              <input type='file' accept='*' id='file-open-shadow' style="display: none">
-              <button id="file-open-button" type="button" class="btn btn-primary navbar-btn"><span class="glyphicon glyphicon-open-file" aria-hidden="true" title="Open a VCD file"></span></button>
-              <button id="remove-all" title="Remove all signals" type="button" class="btn btn-primary navbar-btn">rm *</button>
-            </div>
-            <div class="tool-group-name">
-              <div>
-                VCD
-              </div>
-            </div>
-          </div>
-          <div class="tool-group-container">
-            <div class="tool-group-tools">
-              <button title="Zoom in" id="zoom-in" type="button" class="btn btn-primary navbar-btn">
-                <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
-              </button>
-              <button title="Zoom out" id="zoom-out" type="button" class="btn btn-primary navbar-btn">
-                <span class="glyphicon glyphicon-zoom-out" aria-hidden="true"></span>
-              </button>
-              <button title="Zoom fit: show whole data" id="zoom-fit" type="button" class="btn btn-primary navbar-btn">
-                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-              </button>
-              <button title="Autoscale: scale to show enough detail for humans" id="zoom-autoscale" type="button" class="btn btn-primary navbar-btn">auto</button>
-            </div>
-            <div class="tool-group-name">
-              <div>
-                Zoom
-              </div>
-            </div>
-          </div>
-          <div class="tool-group-container">
-            <div class="tool-group-tools">
-              <button id="cursor-to-0" title="Move cursor to beginning of the simulation" type="button" class="btn btn-primary navbar-btn">HOME</button>
-              <button id="cursor-to-prev-fall" title="Move cursor to previous falling edge of the selected signal" type="button" class="btn btn-primary navbar-btn">&#x2B10;</button>
-              <button id="cursor-to-prev-rise" title="Move cursor to previous rising edge of the selected signal" type="button" class="btn btn-primary navbar-btn">&#x2B11;</button>
-              <button id="cursor-to-prev-transition" title="Move cursor to previous transition (any) of the selected signal" type="button" class="btn btn-primary navbar-btn">&lt;</button>
-              <button id="cursor-to-next-transition" title="Move cursor to next transition (any) of the selected signal" type="button" class="btn btn-primary navbar-btn">&gt;</button>
-              <button id="cursor-to-next-rise" title="Move cursor to next rising edge of the selected signal" type="button" class="btn btn-primary navbar-btn">&#x2B0F;</button>
-              <button id="cursor-to-next-fall" title="Move cursor to nexf falling edge of the selected signal" type="button" class="btn btn-primary navbar-btn">&#x2B0E;</button>
-              <button id="cursor-to-end" title="Move cursor to end of the simulation" type="button" class="btn btn-primary navbar-btn" data-toggle="button" >END</button>
-            </div>
-            <div class="tool-group-name">
-              <div>
-                Cursor
-              </div>
-            </div>
-          </div>
-          <div class="tool-group-container">
-            <div class="tool-group-tools">
-              <div class="check-group">
-                <input type="checkbox" id="dbg_updateRenderRange" checked>
-                <label for="dbg_updateRenderRange" title="Enable/Disable update render range to see what's happen under the hood.">UDT render range</label>
-              </div>
-              <div class="check-group">
-                <input type="checkbox" id="dbg_enableRender" checked>
-                <label for="dbg_enableRender" title="Enable/Disable re-render">Enable render</label>
-              </div>
-              <button id="add-analog" type="button" class="btn btn-primary navbar-btn">+Analog</button>
-              <button id="wiki" type="button" class="btn btn-primary navbar-btn demo-file-button" data-file="test/wiki.vcd">Send wiki.vcd</button>
-              <button id="Axi" type="button" class="btn btn-primary navbar-btn demo-file-button" data-file="test/AxiRegTC_test_write.vcd">AxiReg.vcd</button>
-            </div>
-            <div class="tool-group-name">
-              <div>
-                Development
-              </div>
-            </div>
-          </div>
-        </ul>
-      </div>
-    </nav>
-  
-<div id="main-container-scroll-y">
-  <div id="main-container">
-
-    <div id="structure-col" class="wave-table resizable-col"></div>
-    <div id="names-col-container" class="wave-table resizable-col">
-      <ul id="names-col" class="wave-table">
-        <!--
-      <li class="signal-name">Name1</li>
-      <li class="signal-name highlight-row">CLK1</li>
-      <li class="signal-name">Data</li>
-      <li class="signal-name">Vali8d</li>
--->
+  <nav class="navbar-inverse">
+    <div class="">
+      <ul class="nav navbar-nav">
+        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">File<span
+              class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Open</a></li>
+          </ul>
+        </li>
+        <li><a href="https://github.com/raczben/fliplot" target="_blank"
+            title="Open the fliplot GitHub project in a new tab">GitHub</a></li>
       </ul>
     </div>
-    <div id="values-col-container" class="wave-table resizable-col">
-      <ul id="values-col" class="wave-table">
-        <!--
-      <li class="signal-value">0</li>
-      <li class="signal-value highlight-row">XX</li>
-      <li class="signal-value">1234</li>
-      <li class="signal-value">3.1415</li>
--->
+  </nav>
+
+  <nav class="navbar-inverse toolbar">
+    <div class="">
+      <ul class="">
+        <div class="tool-group-container">
+          <div class="tool-group-tools">
+            <input type='file' accept='*' id='file-open-shadow' style="display: none">
+            <button id="file-open-button" type="button" class="btn btn-primary navbar-btn"><span
+                class="glyphicon glyphicon-open-file" aria-hidden="true" title="Open a VCD file"></span></button>
+            <button id="remove-all" title="Remove all signals" type="button" class="btn btn-primary navbar-btn">rm
+              *</button>
+          </div>
+          <div class="tool-group-name">
+            <div>
+              VCD
+            </div>
+          </div>
+        </div>
+        <div class="tool-group-container">
+          <div class="tool-group-tools">
+            <button title="Zoom in" id="zoom-in" type="button" class="btn btn-primary navbar-btn">
+              <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
+            </button>
+            <button title="Zoom out" id="zoom-out" type="button" class="btn btn-primary navbar-btn">
+              <span class="glyphicon glyphicon-zoom-out" aria-hidden="true"></span>
+            </button>
+            <button title="Zoom fit: show whole data" id="zoom-fit" type="button" class="btn btn-primary navbar-btn">
+              <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+            </button>
+            <button title="Autoscale: scale to show enough detail for humans" id="zoom-autoscale" type="button"
+              class="btn btn-primary navbar-btn">auto</button>
+          </div>
+          <div class="tool-group-name">
+            <div>
+              Zoom
+            </div>
+          </div>
+        </div>
+        <div class="tool-group-container">
+          <div class="tool-group-tools">
+            <button id="cursor-to-0" title="Move cursor to beginning of the simulation" type="button"
+              class="btn btn-primary navbar-btn">HOME</button>
+            <button id="cursor-to-prev-fall" title="Move cursor to previous falling edge of the selected signal"
+              type="button" class="btn btn-primary navbar-btn">&#x2B10;</button>
+            <button id="cursor-to-prev-rise" title="Move cursor to previous rising edge of the selected signal"
+              type="button" class="btn btn-primary navbar-btn">&#x2B11;</button>
+            <button id="cursor-to-prev-transition"
+              title="Move cursor to previous transition (any) of the selected signal" type="button"
+              class="btn btn-primary navbar-btn">&lt;</button>
+            <button id="cursor-to-next-transition" title="Move cursor to next transition (any) of the selected signal"
+              type="button" class="btn btn-primary navbar-btn">&gt;</button>
+            <button id="cursor-to-next-rise" title="Move cursor to next rising edge of the selected signal"
+              type="button" class="btn btn-primary navbar-btn">&#x2B0F;</button>
+            <button id="cursor-to-next-fall" title="Move cursor to nexf falling edge of the selected signal"
+              type="button" class="btn btn-primary navbar-btn">&#x2B0E;</button>
+            <button id="cursor-to-end" title="Move cursor to end of the simulation" type="button"
+              class="btn btn-primary navbar-btn" data-toggle="button">END</button>
+          </div>
+          <div class="tool-group-name">
+            <div>
+              Cursor
+            </div>
+          </div>
+        </div>
+        <div class="tool-group-container">
+          <div class="tool-group-tools">
+            <div class="check-group">
+              <input type="checkbox" id="dbg_updateRenderRange" checked>
+              <label for="dbg_updateRenderRange"
+                title="Enable/Disable update render range to see what's happen under the hood.">UDT render range</label>
+            </div>
+            <div class="check-group">
+              <input type="checkbox" id="dbg_enableRender" checked>
+              <label for="dbg_enableRender" title="Enable/Disable re-render">Enable render</label>
+            </div>
+            <button id="add-analog" type="button" class="btn btn-primary navbar-btn">+Analog</button>
+            <button id="wiki" type="button" class="btn btn-primary navbar-btn demo-file-button"
+              data-file="test/wiki.vcd">Send wiki.vcd</button>
+            <button id="Axi" type="button" class="btn btn-primary navbar-btn demo-file-button"
+              data-file="test/AxiRegTC_test_write.vcd">AxiReg.vcd</button>
+          </div>
+          <div class="tool-group-name">
+            <div>
+              Development
+            </div>
+          </div>
+        </div>
       </ul>
     </div>
-    <div id="wave-axis-container" class="wave-table">
-      <div id="wave-container" class="wave-table">
-        <svg id='mainSVG'>
-          <g id='mainGr'></g>
-        </svg>
-      </div>
+  </nav>
 
-<!--
-      <div id="time-axis-container" class="wave-table">
-        <svg id='time-axis-svg'>
-          <g id='time-axis-gr'></g>
-        </svg>
+  <div id="epic-container">
+    <div id="main-container-scroll-y">
+      
+      
+      <div id="main-container">
+        <div id="structure-col" class="wave-table resizable-col">
+          <div id="structure-container-scroll-y">
+            <div id="jstree"></div>
+          </div>
+        </div>
+
+        <div id="names-col-container" class="wave-table resizable-col">
+          <ul id="names-col" class="wave-table">
+            <!--
+        <li class="signal-name">Name1</li>
+        <li class="signal-name highlight-row">CLK1</li>
+        <li class="signal-name">Data</li>
+        <li class="signal-name">Vali8d</li>
+  -->
+          </ul>
+        </div>
+        <div id="values-col-container" class="wave-table resizable-col">
+          <ul id="values-col" class="wave-table">
+            <!--
+        <li class="signal-value">0</li>
+        <li class="signal-value highlight-row">XX</li>
+        <li class="signal-value">1234</li>
+        <li class="signal-value">3.1415</li>
+  -->
+          </ul>
+        </div>
+        <div id="wave-axis-container" class="wave-table">
+          <div id="wave-container" class="wave-table">
+            <svg id='mainSVG'>
+              <g id='mainGr'></g>
+            </svg>
+          </div>
+
+          <!--
+        <div id="time-axis-container" class="wave-table">
+          <svg id='time-axis-svg'>
+            <g id='time-axis-gr'></g>
+          </svg>
+        </div>
+  -->
+        </div>
+
       </div>
--->
     </div>
-
   </div>
-</div>
   <footer>
     <div>Credits: Benedek Racz</div>
   </footer>

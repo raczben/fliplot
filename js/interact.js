@@ -23,6 +23,7 @@ import {
 import {
   waveformDB
 } from './core/WaveformDB.js';
+import { showTree } from './tree.js';
 
 // TODO should be moved somewhere else.
 export var config = {};
@@ -46,6 +47,7 @@ $(".demo-file-button").click(function () {
       simDB.init(vcdpy2simDb(data));
       waveformDB.addAllWaveSignal();
       simDB.updateDBInitialX();
+      showTree();
 
       console.log(simDB);
 
@@ -159,6 +161,7 @@ function openFile(event) {
         simDB.init(vcdpy2simDb(data));
         waveformDB.addAllWaveSignal();
         simDB.updateDBInitialX();
+        showTree();
 
         console.log(simDB);
 

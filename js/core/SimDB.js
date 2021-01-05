@@ -10,7 +10,7 @@ export class SimDB{
     }
     
     init(db){
-        /** @type {Signal[]} */
+        /** @type {SimulationObject[]} */
         this.objects = [];
         /** @type {number} */
         this.now = -1;

@@ -27,7 +27,7 @@ export class SimulationObject{
         /** @type {Signal}  */
         this.signal = undefined;
 
-        this.id = `${hierarchy.slice(-1)[0]}_${this._idGenerator++}`
+        this.id = `${hierarchy.slice(-1)[0]}_${SimulationObject._idGenerator++}`
 
         if(data !== undefined ){
             switch (this.type) {
