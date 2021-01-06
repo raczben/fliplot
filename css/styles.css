@@ -48,36 +48,38 @@ body {
 
 #structure-container-scroll-y{
   flex: auto;
-  overflow-y: scroll;
-  background-color: #333;
+  overflow: auto;
 }
 
 #main-container-scroll-y{
   flex: auto;
-  overflow-y: scroll;
-  background-color: #333;
+  overflow-y: auto;
 }
 
 #main-container-tree,
 #main-container-wave
 {
-  background-color: #333;
   display: flex;
   width: 100%;
   min-height: 100%;
+}
+
+#main-container-wave
+{
+  background-color: #222;
 }
 
 #wave-axis-container{
   display: flex;
   flex: auto;
   flex-direction: column;
-  background-color: #222;
   overflow-x: auto;
   height: 100%;
 }
 
 .ui-resizable-handle {
-  background: #aaa;
+  width: 5px;
+  background: #bbb;
   padding: 0px;
 }
 

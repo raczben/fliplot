@@ -236,38 +236,61 @@ $(function() {
   $.contextMenu({
       selector: '.signal-context-menu', 
       callback: function(key, options) {
-        // The element what has been right-clicked, (which opened the context menu)
-        const element = options.$trigger;
-        var waveformRow = d3.select(element).datum();
-        console.log(waveformRow);
-        switch (key) {
-          case 'remove':
+        switch (true) {
+          case /remove/.test(key):
             waveformDB.removeRows(getHighlightedSignals())
             showSignals(false);
             break;
+          case /radix-.+/.test(key):
+            getHighlightedSignals()[0].radix = key.split('-')[1];
+            break;
+          case /waveStyle-.+/.test(key):
+            // getHighlightedSignals()[0].radix = key.split('-')[1];
+            break;
           default:
+            console.log(`unknown key: ${key}`);
             break;
           } 
       },
       
       build: function($triggerElement, e){
-        if($(e.target).hasClass('signal-highlighter')){
-          if(getHighlightedSignals().length<=1){
-            const waveformRow = d3.select(e.target).datum();
-            highlightSignal(waveformRow.id);
-          }
-        } else {
-          console.log(`undefined target: ${e.target}`)
+        // The element what has been right-clicked, (which opened the context menu)
+        var targ = e.target;
+        while(!$(targ).hasClass('signal-highlighter')){
+          targ = targ.parentElement;
+        }
+        if(getHighlightedSignals().length<=1){
+          const waveformRow = d3.select(e.target).datum();
+          highlightSignal(waveformRow.id);
         }
         return {
         };
       },
       zIndex: 1100,
       items: {
-          "remove": {name: "Remove", icon: "delete"},
+          "rename": {name: "Rename", icon: "edit"},
+          "waveStyle": {
+            name: "Wave Style",
+            items: {
+              "waveStyle-analog": {name: "analog"},
+              "waveStyle-bus": {name: "bus"},
+            }
+          },
+          "radix": {
+            name: "Radix", 
+            items: {
+              "radix-bin": {name: "bin"},
+              "radix-hex": {name: "hex"},
+              "radix-signed": {name: "signed"},
+              "radix-unsigned": {name: "unsigned"}
+            }
+          },
           "sep1": "---------",
-          "radix": {name: "Radix", icon: "Radix"},
-          "waveStyle": {name: "Wave Style", icon: "waveStyle"},
+          "group": {name: "New Group"},
+          "virtualBus": {name: "New Virtual Bus"},
+          "divider": {name: "New Divider"},
+          "sep2": "---------",
+          "remove": {name: "Remove", icon: "delete"}
       }
   });
 });
