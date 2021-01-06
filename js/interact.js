@@ -167,3 +167,31 @@ function openFile(event) {
 
   }
 }
+
+
+$(function() {
+  $.contextMenu({
+      selector: '.signal-name', 
+      callback: function(key, options) {
+          const id = options.$trigger.attr("id");
+          const element = document.getElementById(id);
+          var waveformRow = d3.select(element).datum();
+          console.log(waveformRow);
+          switch (key) {
+            case 'remove':
+              waveformDB.removeRow(waveformRow)
+              showSignals(false);
+              break;
+            default:
+              break;
+          } 
+      },
+      zIndex: 1100,
+      items: {
+          "remove": {name: "Remove", icon: "delete"},
+          "sep1": "---------",
+          "radix": {name: "Radix", icon: "Radix"},
+          "waveStyle": {name: "Wave Style", icon: "waveStyle"},
+      }
+  });
+});

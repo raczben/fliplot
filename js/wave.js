@@ -21,6 +21,9 @@ var bitWaveScale = d3.scaleLinear();
 var renderRange = [];
 var renderDomain = [];
 
+/**
+ * init function, call it when simDB has been updated.
+ */
 function init() {
   renderRange = [0, simDB.now];
   renderDomain = [0, simDB.now];
@@ -37,6 +40,23 @@ function init() {
   bitWaveScale
     .domain([0, 1])
     .range([config.rowHeight - config.bitWavePadding, config.bitWavePadding]);
+
+  // zoom
+  d3.select("#wave-axis-container")
+    .on('scroll', scrolled)
+    .call(zoom)
+    .on("wheel", () => {
+      if (d3.event.ctrlKey)
+        d3.event.preventDefault()
+    })
+    
+  zoom
+  .scaleExtent([200 / timeScale(simDB.now), 20])
+  .on("zoom", zoom_fast).filter(
+    // Use Ctrl+Wheel, with mouse to zoom (simple wheel will scrolls up/down)
+    // Or use touch gesture on touch devices
+    () => d3.event.ctrlKey | d3.event.type.startsWith("touch"))
+  .on("end", zoom_end);
 }
 
 /* Debug variables */
@@ -66,7 +86,6 @@ const IDX = 1;
  */
 export function zoomFit() {
   var width = $("#wave-axis-container").width();
-  // The average change should be ~20px;
   var scale = (width - 202) / simDB.now;
 
   var autozoom = d3.zoomIdentity;
@@ -249,23 +268,6 @@ export function removeAllSignals(){
  */
 function generateTable() {
 
-  zoom
-    .scaleExtent([200 / timeScale(simDB.now), 20])
-    .on("zoom", zoom_fast).filter(
-      // Use Ctrl+Wheel, with mouse to zoom (simple wheel will scrolls up/down)
-      // Or use touch gesture on touch devices
-      () => d3.event.ctrlKey | d3.event.type.startsWith("touch"))
-    .on("end", zoom_end);
-
-  // zoom
-  d3.select("#wave-axis-container")
-    .on('scroll', scrolled)
-    .call(zoom)
-    .on("wheel", () => {
-      if (d3.event.ctrlKey)
-        d3.event.preventDefault()
-    })
-
   removeAllSignals();
 
   d3.select('#mainSVG')
@@ -292,6 +294,9 @@ function generateTable() {
   const timeScaleGroup = signalRow.append('g')
     .attr('class', 'time-scale-group');
 
+  /*
+   * Signal names
+   */
   var namesCol = d3.select('#names-col');
 
   namesCol.selectAll('.signal-name')
@@ -305,6 +310,9 @@ function generateTable() {
       highlightSignal(d.id);
     });
 
+  /*
+   * Signal values
+   */
   var valuesCol = d3.select('#values-col');
 
   valuesCol.selectAll('.signal-value')
@@ -317,6 +325,9 @@ function generateTable() {
       highlightSignal(d.id);
     });
 
+  /*
+   * Axis
+   */
   timeScaleGroup
     .append('g')
     .attr('id', d => `signalWave_${d.id}`)
@@ -350,6 +361,9 @@ function generateTable() {
     .tickFormat("");
   timeAxisGr.call(x_axis);
 
+  /*
+   * Cursor
+   */
   mainGr.append('g')
     .attr('id', 'cursorGr');
 
@@ -616,13 +630,18 @@ function wrap_fast(element, width) {
   }
 }
 
-export function moveCursorTo(sim_time){
-  d3.select('#cursorGr').select('#main-cursor')
-  .datum(sim_time)
-  .attr('x1', d => d)
-  .attr('x2', d => d);
+export function moveCursorTo(simTime){
+  const cursor = d3.select('#cursorGr').select('#main-cursor');
+
+  if(simTime >= 0){
+    cursor.datum(simTime)
+  }
+
+  cursor
+    .attr('x1', d => d)
+    .attr('x2', d => d);
   
-  showValuesAt(sim_time);
+  showValuesAt(simTime);
 }
 
 export function getHighlightedSignal(){
@@ -689,10 +708,19 @@ function waveIInRenderRange(signal, i){
 }
 
 
-export function showSignals() {
-  init();
+export function showSignals(reset = true) {
+  if(reset){
+    init();
+  }
+
   generateTable();
   fillSignalNames();
-  moveCursorTo(0);
-  zoomAutoscale();
+  
+  if(reset){
+    moveCursorTo(0);
+    zoomAutoscale();
+  } else{
+    moveCursorTo(0); //TODO
+    zoom.scaleBy(d3.select("#wave-axis-container"), 1.0);
+  }
 }

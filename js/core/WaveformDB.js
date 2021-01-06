@@ -38,6 +38,23 @@ class WaveformDB{
     }
 
     /**
+     * Insert a new signal to waveform window.
+     * 
+     * @param {string[]} hierarchy 
+     * @param {number} position 
+     */
+    removeRow(waveformRow=undefined, position=-1){
+        if(position < 0){
+            for( var i = 0; i < this.rows.length; i++){ 
+                if ( this.rows[i] === waveformRow) {
+                    position = i;
+                }
+            }
+        }
+        this.rows.splice(position, 1);
+    }
+
+    /**
      * Add all signal from the simDB to the waveform window.
      */
     addAllWaveSignal(clear = true){
