@@ -38,9 +38,20 @@ class WaveformDB{
     }
 
     /**
-     * Insert a new signal to waveform window.
+     * Remove multiple rows from waveform window.
      * 
-     * @param {string[]} hierarchy 
+     * @param {waveformRow[]} waveformRow 
+     */
+    removeRows(waveformRows){
+        waveformRows.forEach(element => {
+            this.removeRow(element);
+        });
+    }
+
+    /**
+     * Remove a single row from waveform window.
+     * 
+     * @param {waveformRow} waveformRow 
      * @param {number} position 
      */
     removeRow(waveformRow=undefined, position=-1){

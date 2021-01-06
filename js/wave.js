@@ -1,6 +1,7 @@
 'use strict';
 import {
-  config
+  config,
+  updateHighlighterListener
 } from './interact.js';
 import {
   waveformDB,
@@ -305,10 +306,7 @@ function generateTable() {
     .append('li')
     .attr('id', d => `signalName_${d.id}`)
     .attr('class', d => `signal-name ${d.id} signal-highlighter signal-context-menu`)
-    .text(d => d.name)
-    .on('click', function (d) {
-      highlightSignal(d.id);
-    });
+    .text(d => d.name);
 
   /*
    * Signal values
@@ -320,10 +318,7 @@ function generateTable() {
     .enter()
     .append('div')
     .attr('id', d => `signalName_${d.id}`)
-    .attr('class', d => `signal-value ${d.id} signal-highlighter signal-context-menu`)
-    .on('click', function (d) {
-      highlightSignal(d.id);
-    });
+    .attr('class', d => `signal-value ${d.id} signal-highlighter signal-context-menu`);
 
   /*
    * Axis
@@ -345,10 +340,7 @@ function generateTable() {
     .attr('x', 0)
     .attr('y', 0)
     .attr('width', initialTimeScale(simDB.now))
-    .attr('height', config.rowHeight)
-    .on('click', function (d) {
-      highlightSignal(d.id);
-    });
+    .attr('height', config.rowHeight);
       
   mainGr.append('g')
     .attr('id', 'time-axis-gr')
@@ -379,6 +371,7 @@ function generateTable() {
       moveCursorTo(click_time);
   });
 
+  updateHighlighterListener();
 }
 
 
@@ -644,12 +637,6 @@ export function moveCursorTo(simTime){
   showValuesAt(simTime);
 }
 
-export function getHighlightedSignal(){
-  var sig = d3.select('.signal-name.highlighted-signal').datum();
-  console.log(sig);
-  return sig;
-}
-
 export function getCursorTime(){
   var t = d3.select('#main-cursor').datum();
   console.log(t);
@@ -674,18 +661,6 @@ $("#values-col").sortable({
     }
 });
 
-/**
- * Highlight a given signal. The highlighted signal has vivid blue background color, and the cursor
- * will step on this signal's transients.
- * 
- * @param {string} signalID The ID of the signal that has to be highlighted 
- */
-function highlightSignal(signalID){
-  d3.selectAll('.highlighted-signal').classed('highlighted-signal', false);
-  d3.selectAll(`.${signalID}`).classed('highlighted-signal', true);
-}
-
-  
 function isInt(value) {
     return !isNaN(value) &&
       parseInt(Number(value)) == value &&

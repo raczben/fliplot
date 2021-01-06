@@ -9,7 +9,6 @@ import {
   dbg_setEnableRender,
   moveCursorTo,
   getCursorTime,
-  getHighlightedSignal
 } from './wave.js';
 
 import {
@@ -76,14 +75,14 @@ $("#cursor-to-end").click(() => {
 
 $("#cursor-to-prev-transition").click(() => {
   const tCurr = getCursorTime();
-  const sig = getHighlightedSignal();
+  const sig = getActiveSignal();
   const tNew = getTimeAnyTransition(sig.simObj, tCurr, -1);
   moveCursorTo(tNew);
 });
 
 $("#cursor-to-next-transition").click(() => {
   const tCurr = getCursorTime();
-  const sig = getHighlightedSignal();
+  const sig = getActiveSignal();
   const tNew = getTimeAnyTransition(sig.simObj, tCurr, +1);
   moveCursorTo(tNew);
 });
@@ -146,6 +145,70 @@ function initShow(data){
   }, 0)
 }
 
+function getHighlightedSignals(){
+  var sig = d3.selectAll('.signal-name.highlighted-signal').data();
+  return sig;
+}
+
+function getActiveSignal(){
+  var sig = d3.select('.signal-name.active-signal').datum();
+  return sig;
+}
+
+/**
+ * Clear the highlight of a given (or all) signal. The highlighted signal has vivid blue background
+ * color, and the cursor will step on this signal's transients.
+ * 
+ * @param {string} signalID The ID of the signal that has to be de-highlighted or null to de
+ * highlight all signals.
+ */
+function deHighlightSignal(signalID=undefined){
+  if(signalID === undefined){
+    d3.selectAll('.highlighted-signal').classed('highlighted-signal', false);
+  } else {
+    d3.selectAll(`.${signalID}`).classed('highlighted-signal', false);
+  }
+}
+
+/**
+ * Highlight a given signal. The highlighted signal has vivid blue background color, and the cursor
+ * will step on this signal's transients.
+ * 
+ * @param {string} signalID The ID of the signal that has to be highlighted 
+ */
+function highlightSignal(signalID){
+  deHighlightSignal()
+  d3.selectAll(`.${signalID}`).classed('highlighted-signal', true);
+}
+
+/**
+ * Highlight a given signal. The highlighted signal has vivid blue background color, and the cursor
+ * will step on this signal's transients.
+ * 
+ * @param {string} signalID The ID of the signal that has to be highlighted 
+ */
+function toggleHighlightSignal(signalID, enableZeroSelection=false){
+  const signalDOM = d3.selectAll(`.${signalID}`);
+  signalDOM.classed('highlighted-signal', ! signalDOM.classed('highlighted-signal'));
+
+  if(!enableZeroSelection){
+    if(document.getElementsByClassName('highlighted-signal').length == 0){
+      highlightSignal(signalID);
+    }
+  }
+}
+
+/**
+ * Highlight a given signal. The highlighted signal has vivid blue background color, and the cursor
+ * will step on this signal's transients.
+ * 
+ * @param {string} signalID The ID of the signal that has to be highlighted 
+ */
+function activateSignal(signalID){
+  d3.selectAll('.active-signal').classed('active-signal', false);
+  d3.selectAll(`.${signalID}`).classed('active-signal', true);
+}
+  
 function openFile(event) {
   var input = event.target;
   var reader = new FileReader();
@@ -179,12 +242,25 @@ $(function() {
         console.log(waveformRow);
         switch (key) {
           case 'remove':
-            waveformDB.removeRow(waveformRow)
+            waveformDB.removeRows(getHighlightedSignals())
             showSignals(false);
             break;
           default:
             break;
           } 
+      },
+      
+      build: function($triggerElement, e){
+        if($(e.target).hasClass('signal-highlighter')){
+          if(getHighlightedSignals().length<=1){
+            const waveformRow = d3.select(e.target).datum();
+            highlightSignal(waveformRow.id);
+          }
+        } else {
+          console.log(`undefined target: ${e.target}`)
+        }
+        return {
+        };
       },
       zIndex: 1100,
       items: {
@@ -195,3 +271,22 @@ $(function() {
       }
   });
 });
+
+
+export function updateHighlighterListener() {
+  $('.signal-highlighter').click(function (e) {
+    var targ = $(this);
+    if(targ.hasClass('signal-highlighter')){
+      var waveformRow = d3.select(this).datum();
+      activateSignal(waveformRow.id);
+      if(e.ctrlKey){
+        toggleHighlightSignal(waveformRow.id);
+      } else{
+        highlightSignal(waveformRow.id);
+      }
+    } else {
+      console.log(`undefined target: ${targ}`)
+    }
+  }
+  )
+}
