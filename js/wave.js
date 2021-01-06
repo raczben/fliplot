@@ -304,7 +304,7 @@ function generateTable() {
     .enter()
     .append('li')
     .attr('id', d => `signalName_${d.id}`)
-    .attr('class', d => `signal-name ${d.id} signal-highlighter`)
+    .attr('class', d => `signal-name ${d.id} signal-highlighter signal-context-menu`)
     .text(d => d.name)
     .on('click', function (d) {
       highlightSignal(d.id);
@@ -320,7 +320,7 @@ function generateTable() {
     .enter()
     .append('div')
     .attr('id', d => `signalName_${d.id}`)
-    .attr('class', d => `signal-value ${d.id} signal-highlighter`)
+    .attr('class', d => `signal-value ${d.id} signal-highlighter signal-context-menu`)
     .on('click', function (d) {
       highlightSignal(d.id);
     });
@@ -341,7 +341,7 @@ function generateTable() {
     .append('g')
     .attr('class', 'signal-highlighter-group')
     .append('rect')
-    .attr('class', 'signal-highlighter')
+    .attr('class', 'signal-highlighter signal-context-menu')
     .attr('x', 0)
     .attr('y', 0)
     .attr('width', initialTimeScale(simDB.now))

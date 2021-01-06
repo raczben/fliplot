@@ -171,19 +171,19 @@ function openFile(event) {
 
 $(function() {
   $.contextMenu({
-      selector: '.signal-name', 
+      selector: '.signal-context-menu', 
       callback: function(key, options) {
-          const id = options.$trigger.attr("id");
-          const element = document.getElementById(id);
-          var waveformRow = d3.select(element).datum();
-          console.log(waveformRow);
-          switch (key) {
-            case 'remove':
-              waveformDB.removeRow(waveformRow)
-              showSignals(false);
-              break;
-            default:
-              break;
+        // The element what has been right-clicked, (which opened the context menu)
+        const element = options.$trigger;
+        var waveformRow = d3.select(element).datum();
+        console.log(waveformRow);
+        switch (key) {
+          case 'remove':
+            waveformDB.removeRow(waveformRow)
+            showSignals(false);
+            break;
+          default:
+            break;
           } 
       },
       zIndex: 1100,
