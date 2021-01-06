@@ -240,3 +240,24 @@ text.bus-value{
 rect.signal-highlighter {
   opacity: 0;
 }
+
+@media only screen and (max-width: 1299px) {
+  #tool-group-zoom{
+    display: none;
+  }
+
+  .tool-group-name{
+    display: none;
+  }
+
+  #navbar-menubar-normal{
+    display: none;
+  }
+  
+}
+
+@media only screen and (max-width: 999px) {
+  #tool-group-cursor{
+    display: none;
+  }
+}

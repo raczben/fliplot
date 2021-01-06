@@ -29,7 +29,7 @@
 </head>
 
 <body>
-  <nav class="navbar-inverse">
+  <nav id="navbar-menubar-normal" class="navbar-inverse">
     <div class="">
       <ul class="nav navbar-nav">
         <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">File<span
@@ -47,7 +47,7 @@
   <nav class="navbar-inverse toolbar">
     <div class="">
       <ul class="">
-        <div class="tool-group-container">
+        <div id="tool-group-file" class="tool-group-container">
           <div class="tool-group-tools">
             <input type='file' accept='*' id='file-open-shadow' style="display: none">
             <button id="file-open-button" type="button" class="btn btn-primary navbar-btn"><span
@@ -61,7 +61,7 @@
             </div>
           </div>
         </div>
-        <div class="tool-group-container">
+        <div id="tool-group-zoom" class="tool-group-container">
           <div class="tool-group-tools">
             <button title="Zoom in" id="zoom-in" type="button" class="btn btn-primary navbar-btn">
               <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
@@ -81,7 +81,7 @@
             </div>
           </div>
         </div>
-        <div class="tool-group-container">
+        <div id="tool-group-cursor" class="tool-group-container">
           <div class="tool-group-tools">
             <button id="cursor-to-0" title="Move cursor to beginning of the simulation" type="button"
               class="btn btn-primary navbar-btn">HOME</button>
@@ -107,16 +107,16 @@
             </div>
           </div>
         </div>
-        <div class="tool-group-container">
+        <div id="tool-group-development" class="tool-group-container">
           <div class="tool-group-tools">
             <div class="check-group">
               <input type="checkbox" id="dbg_updateRenderRange" checked>
               <label for="dbg_updateRenderRange"
-                title="Enable/Disable update render range to see what's happen under the hood.">UDT render range</label>
+                title="Enable/Disable update render range to see what's happen under the hood.">UDT range</label>
             </div>
             <div class="check-group">
               <input type="checkbox" id="dbg_enableRender" checked>
-              <label for="dbg_enableRender" title="Enable/Disable re-render">Enable render</label>
+              <label for="dbg_enableRender" title="Enable/Disable re-render">Render</label>
             </div>
             <button id="add-analog" type="button" class="btn btn-primary navbar-btn">+Analog</button>
             <button id="wiki" type="button" class="btn btn-primary navbar-btn demo-file-button"
