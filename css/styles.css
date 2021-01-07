@@ -152,8 +152,8 @@ footer {
   text-overflow: ellipsis;
   
   font-family: sans-serif;
-  height: 20px;
-  line-height: 20px; /* same as height! */
+  height: 24px;
+  line-height: 24px; /* same as height! */
 }
 
 #object-tree {
@@ -207,7 +207,7 @@ line.signal-highz{
 text.bus-value{
   fill: white;
   text-anchor: middle;
-  dominant-baseline: middle;
+  dominant-baseline: central;
   pointer-events: none;
 }
 
