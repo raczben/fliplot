@@ -15,20 +15,29 @@ export function showTree(){
             }
             treeObj['text'] = obj.hierarchy[obj.hierarchy.length-1];
 
+            treeObj['type'] = obj.type;
+
             tree.push(treeObj)
         }
     }
     
-    $('#jstree').jstree("destroy").empty();
-    $('#jstree').jstree({
-        'plugins': ['search', 'checkbox', 'wholerow'],
+    $('#object-tree').jstree("destroy").empty();
+    $('#object-tree').jstree({
+        'plugins': ['search', 'wholerow', 'types'],
         'core': {
             'data': tree,
-        'animation': false,
-        //'expand_selected_onload': true,
-        'themes': {
-            'icons': false,
-        }
+            'animation': false,
+        },
+
+        types: {
+            "module": {
+            "icon" : "glyphicon glyphicon-oil" // looks like an IC
+            },
+            "signal": {
+            "icon" : "glyphicon glyphicon-leaf"
+            },
+            "default" : {
+            }
         },
         'search': {
         'show_only_matches': true,
@@ -37,14 +46,14 @@ export function showTree(){
     })
     
     $('#search').on("keyup change", function () {
-        $('#jstree').jstree(true).search($(this).val())
+        $('#object-tree').jstree(true).search($(this).val())
     })
     
     $('#clear').click(function (e) {
         $('#search').val('').change().focus()
     })
     
-    $('#jstree').on('changed.jstree', function (e, data) {
+    $('#object-tree').on('changed.jstree', function (e, data) {
         var objects = data.instance.get_selected(true)
         var leaves = $.grep(objects, function (o) { return data.instance.is_leaf(o) })
         var list = $('#output')
@@ -53,4 +62,16 @@ export function showTree(){
         $('<li/>').text(o.text).appendTo(list)
         })
     })
+
+    
+    var to = false;
+    $('#structure-search').keyup(function () {
+        if(to) {
+            clearTimeout(to);
+        }
+        to = setTimeout(function () {
+            var v = $('#structure-search').val();
+            $('#object-tree').jstree(true).search(v);
+        }, 150);
+    });
 }

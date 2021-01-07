@@ -156,7 +156,7 @@ footer {
   line-height: 20px; /* same as height! */
 }
 
-#jstree {
+#object-tree {
   white-space: nowrap;
   text-overflow: ellipsis;
   font-family: sans-serif;
@@ -164,6 +164,15 @@ footer {
 
 #structure-col{
   display: flex;
+  flex-direction: column;
+}
+
+#structure-search{
+  background: #666;
+}
+
+#structure-search::placeholder{
+  color: #aaa;
 }
 
 #names-col-container,
