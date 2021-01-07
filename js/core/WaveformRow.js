@@ -1,3 +1,4 @@
+import { SimulationObject } from "./SimulationObject.js"
 
 export class WaveformRow{
     /**
@@ -10,7 +11,7 @@ export class WaveformRow{
         this.type = 'signal'
         /** @type {string} */
         this.id = 'ABC123'
-        /** @type {Signal} */
+        /** @type {SimulationObject} */
         this.simObj = simObj
         /** @type {string} */
         this.radix = 'hex'

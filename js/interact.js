@@ -162,7 +162,7 @@ function getActiveSignal(){
  * @param {string} signalID The ID of the signal that has to be de-highlighted or null to de
  * highlight all signals.
  */
-function deHighlightSignal(signalID=undefined){
+export function deHighlightSignal(signalID=undefined){
   if(signalID === undefined){
     d3.selectAll('.highlighted-signal').classed('highlighted-signal', false);
   } else {
@@ -176,9 +176,12 @@ function deHighlightSignal(signalID=undefined){
  * 
  * @param {string} signalID The ID of the signal that has to be highlighted 
  */
-function highlightSignal(signalID){
-  deHighlightSignal()
+export function highlightSignal(signalID, deHighlightOthers=true){
+  if(deHighlightOthers){
+    deHighlightSignal()
+  }
   d3.selectAll(`.${signalID}`).classed('highlighted-signal', true);
+  $('#names-col-container-scroll').jstree().select_node(`signal-name-${signalID}`);
 }
 
 /**
@@ -234,7 +237,7 @@ function openFile(event) {
 
 $(function() {
   $.contextMenu({
-      selector: '.signal-context-menu', 
+      selector: '.signal-context-menu, #names-col-container .jstree-node', 
       callback: function(key, options) {
         switch (true) {
           case /remove/.test(key):
@@ -258,6 +261,10 @@ $(function() {
         var targ = e.target;
         while(!$(targ).hasClass('signal-highlighter')){
           targ = targ.parentElement;
+          if(targ === null){
+            console.log('ERROR tarrg is null');
+            return {};
+          }
         }
         if(getHighlightedSignals().length<=1){
           const waveformRow = d3.select(e.target).datum();

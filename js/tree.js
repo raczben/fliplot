@@ -45,24 +45,6 @@ export function showTree(){
         }
     })
     
-    $('#search').on("keyup change", function () {
-        $('#object-tree').jstree(true).search($(this).val())
-    })
-    
-    $('#clear').click(function (e) {
-        $('#search').val('').change().focus()
-    })
-    
-    $('#object-tree').on('changed.jstree', function (e, data) {
-        var objects = data.instance.get_selected(true)
-        var leaves = $.grep(objects, function (o) { return data.instance.is_leaf(o) })
-        var list = $('#output')
-        list.empty()
-        $.each(leaves, function (i, o) {
-        $('<li/>').text(o.text).appendTo(list)
-        })
-    })
-
     
     var to = false;
     $('#structure-search').keyup(function () {

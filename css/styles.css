@@ -181,6 +181,10 @@ footer {
   flex-grow: 0;
 }
 
+#names-col-container-scroll{
+  overflow: auto;
+}
+
 
 /***********************************************************
  * 
@@ -273,4 +277,9 @@ rect.signal-highlighter {
   #tool-group-cursor{
     display: none;
   }
+}
+
+
+.vakata-context, .vakata-context ul {
+  z-index: 100;
 }

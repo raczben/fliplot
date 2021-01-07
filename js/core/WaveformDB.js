@@ -32,7 +32,7 @@ class WaveformDB{
         const obj = simDB.getObject(hierarchy);
         const rowItem = new WaveformRow(obj)
         
-        rowItem.id = encodeURIComponent(obj.signal.name).replace(/\./g, '_') + `_${waveformDB._idGenerator++}`;
+        rowItem.id = `waveform_row_${waveformDB._idGenerator++}`;
         
         this.rows.splice(position, 0, rowItem);
     }

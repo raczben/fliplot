@@ -1,7 +1,9 @@
 'use strict';
 import {
   config,
-  updateHighlighterListener
+  updateHighlighterListener,
+  highlightSignal,
+  deHighlightSignal
 } from './interact.js';
 import {
   waveformDB,
@@ -256,7 +258,7 @@ function scrolled() {
  */
 export function removeAllSignals(){
   d3.select('#mainGr').selectAll("*").remove();
-  d3.select('#names-col').selectAll("*").remove();
+  d3.select('#names-col-container-scroll').selectAll("*").remove();
   d3.select('#values-col').selectAll("*").remove();
 }
 
@@ -298,15 +300,54 @@ function generateTable() {
   /*
    * Signal names
    */
-  var namesCol = d3.select('#names-col');
+  const tree = []
+  waveformDB.rows.forEach(row => {
+      var treeObj = {};
+      treeObj['id'] = `signal-name-${row.id}`;
+      treeObj['parent'] = '#';
+      treeObj['text'] = row.name;
+      treeObj['data'] = row.id;
+      tree.push(treeObj)
+      if(row.waveStyle == 'bus'){
+        for(var idx=0; idx<row.simObj.signal.width; idx++){
+          treeObj = {};
+          treeObj['id'] = `row.id[${idx}]`;
+          treeObj['parent'] = `signal-name-${row.id}`;
+          treeObj['text'] = `[${idx}]`;
+          treeObj['data'] = row.id;
+          tree.push(treeObj)
+        }
+      }
+  });
 
-  namesCol.selectAll('.signal-name')
-    .data(waveformDB.rows)
-    .enter()
-    .append('li')
-    .attr('id', d => `signalName_${d.id}`)
-    .attr('class', d => `signal-name ${d.id} signal-highlighter signal-context-menu`)
-    .text(d => d.name);
+  $('#names-col-container-scroll').jstree("destroy").empty();
+  $('#names-col-container-scroll').jstree({
+      'plugins': ['wholerow', 'dnd', 'ui'],
+      'core': {
+          'data': tree,
+          'animation': false,
+          "themes":{
+            "icons":false
+          },
+          "check_callback" : function (op, node, par, pos, more) {
+            if(more && more.dnd) {
+              return more.pos !== "i" && par.id == node.parent;
+            }
+            return true;
+          },
+      },
+  }).on('open_node.jstree', function (e, data) {
+    alert("Open node_id: " + data.node.id);
+  }).on('changed.jstree', function(evt, data){
+    deHighlightSignal();
+    $(evt.currentTarget).jstree('get_selected', true).forEach(element => {
+      highlightSignal(element.data, false);
+    });
+  }).on('select_node.jstree', function(evt, data){
+    console.log(data);
+  }).on('loaded.jstree', function() {
+    // Do something here...
+  });
 
   /*
    * Signal values
@@ -316,7 +357,7 @@ function generateTable() {
   valuesCol.selectAll('.signal-value')
     .data(waveformDB.rows)
     .enter()
-    .append('div')
+    .append('li')
     .attr('id', d => `signalName_${d.id}`)
     .attr('class', d => `signal-value ${d.id} signal-highlighter signal-context-menu`);
 
@@ -378,7 +419,7 @@ function generateTable() {
 /**
  * Re-order the signals in the waveform.
  *
- * Updates the signals' order in both names-col, values-col and mainGr
+ * Updates the signals' order in both names-col-container-scroll, values-col and mainGr
  * 
  * @param {Object} signals contains the signals in the *wanted* order
  */
