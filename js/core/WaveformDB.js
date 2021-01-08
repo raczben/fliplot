@@ -82,6 +82,17 @@ class WaveformDB{
             }
           }
     }
+
+    /**
+     * Get signal by waveform id
+     */
+    get(id){
+        for(const i in this.rows){
+            if(this.rows[i].id == id){
+                return this.rows[i];
+            }
+        }
+    }
 }
 
 // The static / global instance:

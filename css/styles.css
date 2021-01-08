@@ -279,7 +279,7 @@ rect.signal-highlighter {
   }
 }
 
-
-.vakata-context, .vakata-context ul {
-  z-index: 100;
+ /* jstree workaround based on: https://stackoverflow.com/a/65616873/2506522 */
+#values-col-container i {
+  display: none;
 }

@@ -3,7 +3,9 @@ import {
   config,
   updateHighlighterListener,
   highlightSignal,
-  deHighlightSignal
+  deHighlightSignal,
+  openSignalGroup,
+  closeSignalGroup
 } from './interact.js';
 import {
   waveformDB,
@@ -311,7 +313,7 @@ function generateTable() {
       if(row.waveStyle == 'bus'){
         for(var idx=0; idx<row.simObj.signal.width; idx++){
           treeObj = {};
-          treeObj['id'] = `row.id[${idx}]`;
+          treeObj['id'] = `signal-name-${row.id}.${idx}`;
           treeObj['parent'] = `signal-name-${row.id}`;
           treeObj['text'] = `[${idx}]`;
           treeObj['data'] = row.id;
@@ -322,7 +324,7 @@ function generateTable() {
 
   $('#names-col-container-scroll').jstree("destroy").empty();
   $('#names-col-container-scroll').jstree({
-      'plugins': ['wholerow', 'dnd', 'ui'],
+      'plugins': ['wholerow', 'dnd', 'changed'],
       'core': {
           'data': tree,
           'animation': false,
@@ -336,30 +338,74 @@ function generateTable() {
             return true;
           },
       },
+  }).on('move_node.jstree', function (e, data, d) {
+    openSignalGroup(data.node.data);
   }).on('open_node.jstree', function (e, data) {
-    alert("Open node_id: " + data.node.id);
+    openSignalGroup(data.node.data);
+  }).on('close_node.jstree', function (e, data) {
+    closeSignalGroup(data.node.data);
   }).on('changed.jstree', function(evt, data){
-    deHighlightSignal();
-    $(evt.currentTarget).jstree('get_selected', true).forEach(element => {
-      highlightSignal(element.data, false);
+    data.changed.selected.forEach(element => {
+      const data = $('#names-col-container-scroll').jstree().get_node(element).data;
+      highlightSignal(data, false);
     });
-  }).on('select_node.jstree', function(evt, data){
-    console.log(data);
-  }).on('loaded.jstree', function() {
-    // Do something here...
+    data.changed.deselected.forEach(element => {
+      const data = $('#names-col-container-scroll').jstree().get_node(element).data;
+      deHighlightSignal(data, false);
+    });
   });
 
   /*
    * Signal values
    */
-  var valuesCol = d3.select('#values-col');
+  const tree_val = []
+  waveformDB.rows.forEach(row => {
+      var treeObj = {};
+      treeObj['id'] = `signal-value-${row.id}`;
+      treeObj['parent'] = '#';
+      treeObj['text'] = row.getValueAt(0);
+      treeObj['data'] = row.id;
+      tree_val.push(treeObj)
+      if(row.waveStyle == 'bus'){
+        for(var idx=0; idx<row.simObj.signal.width; idx++){
+          treeObj = {};
+          treeObj['id'] = `signal-value-${row.id}.${idx}`;
+          treeObj['parent'] = `signal-value-${row.id}`;
+          treeObj['text'] = '- NaN - ';
+          treeObj['data'] = row.id;
+          tree_val.push(treeObj)
+        }
+      }
+  });
 
-  valuesCol.selectAll('.signal-value')
-    .data(waveformDB.rows)
-    .enter()
-    .append('li')
-    .attr('id', d => `signalName_${d.id}`)
-    .attr('class', d => `signal-value ${d.id} signal-highlighter signal-context-menu`);
+  $('#values-col-container').jstree("destroy").empty();
+  $('#values-col-container').jstree({
+      'plugins': ['wholerow', 'dnd', 'ui', 'changed'],
+      'core': {
+          'data': tree_val,
+          'animation': false,
+          "themes":{
+            "icons":false
+          },
+          "check_callback" : function (op, node, par, pos, more) {
+            if(more && more.dnd) {
+              return more.pos !== "i" && par.id == node.parent;
+            }
+            return true;
+          },
+      },
+  }).on('open_node.jstree', function (e, data) {
+    openSignalGroup(data.node.id);
+  }).on('changed.jstree', function(evt, data){
+    data.changed.selected.forEach(element => {
+      const data = $('#values-col-container').jstree().get_node(element).data;
+      highlightSignal(data, false);
+    });
+    data.changed.deselected.forEach(element => {
+      const data = $('#values-col-container').jstree().get_node(element).data;
+      deHighlightSignal(data);
+    });
+  });
 
   /*
    * Axis
@@ -467,8 +513,9 @@ function fillSignalNames() {
  * @param {int} time the simulation time at the values must be shown.
  */
 function showValuesAt(time) {
-  d3.selectAll('.signal-value')
-    .text(d => d.getValueAt(time));
+  waveformDB.rows.forEach(row => {
+    $('#values-col-container').jstree().rename_node(`signal-value-${row.id}`, row.getValueAt(time));
+  });
 }
 
 /**
@@ -732,11 +779,13 @@ export function showSignals(reset = true) {
   generateTable();
   fillSignalNames();
   
-  if(reset){
-    moveCursorTo(0);
-    zoomAutoscale();
-  } else{
-    moveCursorTo(0); //TODO
-    zoom.scaleBy(d3.select("#wave-axis-container"), 1.0);
-  }
+  setTimeout(() => {
+    if(reset){
+      moveCursorTo(0);
+      zoomAutoscale();
+    } else{
+      moveCursorTo(0); //TODO
+      zoom.scaleBy(d3.select("#wave-axis-container"), 1.0);
+    }
+  }, 0)
 }

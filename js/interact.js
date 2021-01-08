@@ -145,14 +145,15 @@ function initShow(data){
   }, 0)
 }
 
-function getHighlightedSignals(){
-  var sig = d3.selectAll('.signal-name.highlighted-signal').data();
-  return sig;
+function getSelectedSignals(){
+  return $('#names-col-container-scroll').jstree('get_selected', true).map(
+    element => waveformDB.get(element.data)
+  );
 }
 
 function getActiveSignal(){
-  var sig = d3.select('.signal-name.active-signal').datum();
-  return sig;
+  const wfrow = waveformDB.get($('#names-col-container-scroll').jstree('get_selected', true)[0].data);
+  return wfrow;
 }
 
 /**
@@ -164,10 +165,21 @@ function getActiveSignal(){
  */
 export function deHighlightSignal(signalID=undefined){
   if(signalID === undefined){
-    d3.selectAll('.highlighted-signal').classed('highlighted-signal', false);
+    getSelectedSignals().forEach(row => {
+      deHighlightSignal(row.id);
+    });
   } else {
+    $('#names-col-container-scroll').jstree().deselect_node(`signal-name-${signalID}`);
+    $('#values-col-container').jstree().deselect_node(`signal-value-${signalID}`);
     d3.selectAll(`.${signalID}`).classed('highlighted-signal', false);
+
+    setTimeout(() => {
+      if (getSelectedSignals().length==0){
+        highlightSignal(signalID, false);
+      }
+    }, 10);
   }
+
 }
 
 /**
@@ -182,6 +194,7 @@ export function highlightSignal(signalID, deHighlightOthers=true){
   }
   d3.selectAll(`.${signalID}`).classed('highlighted-signal', true);
   $('#names-col-container-scroll').jstree().select_node(`signal-name-${signalID}`);
+  $('#values-col-container').jstree().select_node(`signal-value-${signalID}`);
 }
 
 /**
@@ -191,27 +204,13 @@ export function highlightSignal(signalID, deHighlightOthers=true){
  * @param {string} signalID The ID of the signal that has to be highlighted 
  */
 function toggleHighlightSignal(signalID, enableZeroSelection=false){
-  const signalDOM = d3.selectAll(`.${signalID}`);
-  signalDOM.classed('highlighted-signal', ! signalDOM.classed('highlighted-signal'));
-
-  if(!enableZeroSelection){
-    if(document.getElementsByClassName('highlighted-signal').length == 0){
-      highlightSignal(signalID);
-    }
+  if(getSelectedSignals().includes(waveformDB.get(signalID))){
+    deHighlightSignal(signalID);
+  } else {
+    highlightSignal(signalID, false);
   }
 }
 
-/**
- * Highlight a given signal. The highlighted signal has vivid blue background color, and the cursor
- * will step on this signal's transients.
- * 
- * @param {string} signalID The ID of the signal that has to be highlighted 
- */
-function activateSignal(signalID){
-  d3.selectAll('.active-signal').classed('active-signal', false);
-  d3.selectAll(`.${signalID}`).classed('active-signal', true);
-}
-  
 function openFile(event) {
   var input = event.target;
   var reader = new FileReader();
@@ -234,21 +233,31 @@ function openFile(event) {
   }
 }
 
+export function openSignalGroup(signalID){
+  // $('#names-col-container-scroll').jstree().select_node(`signal-name-${signalID}`);
+  $('#values-col-container').jstree().open_node(`signal-value-${signalID}`);
+}
+
+export function closeSignalGroup(signalID){
+  // $('#names-col-container-scroll').jstree().select_node(`signal-name-${signalID}`);
+  $('#values-col-container').jstree().close_node(`signal-value-${signalID}`);
+}
+
 
 $(function() {
   $.contextMenu({
-      selector: '.signal-context-menu, #names-col-container .jstree-node', 
+      selector: '.signal-context-menu, #names-col-container .jstree-node, #values-col-container .jstree-node', 
       callback: function(key, options) {
         switch (true) {
           case /remove/.test(key):
-            waveformDB.removeRows(getHighlightedSignals())
+            waveformDB.removeRows(getSelectedSignals())
             showSignals(false);
             break;
           case /radix-.+/.test(key):
-            getHighlightedSignals()[0].radix = key.split('-')[1];
+            getSelectedSignals()[0].radix = key.split('-')[1];
             break;
           case /waveStyle-.+/.test(key):
-            // getHighlightedSignals()[0].radix = key.split('-')[1];
+            // getSelectedSignals()[0].radix = key.split('-')[1];
             break;
           default:
             console.log(`unknown key: ${key}`);
@@ -266,7 +275,7 @@ $(function() {
             return {};
           }
         }
-        if(getHighlightedSignals().length<=1){
+        if(getSelectedSignals().length<=1){
           const waveformRow = d3.select(e.target).datum();
           highlightSignal(waveformRow.id);
         }
@@ -308,7 +317,6 @@ export function updateHighlighterListener() {
     var targ = $(this);
     if(targ.hasClass('signal-highlighter')){
       var waveformRow = d3.select(this).datum();
-      activateSignal(waveformRow.id);
       if(e.ctrlKey){
         toggleHighlightSignal(waveformRow.id);
       } else{
