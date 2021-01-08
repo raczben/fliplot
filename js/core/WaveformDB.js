@@ -84,11 +84,15 @@ class WaveformDB{
     }
 
     /**
-     * Get signal by waveform id
+     * Get signal by waveform id.
      */
-    get(id){
+    get(idOrRow){
+        if(this.rows.includes(idOrRow)){
+            // the id is a row
+            return idOrRow;
+        }
         for(const i in this.rows){
-            if(this.rows[i].id == id){
+            if(this.rows[i].id == idOrRow){
                 return this.rows[i];
             }
         }

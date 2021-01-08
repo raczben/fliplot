@@ -13,6 +13,7 @@ import {
 import {
   simDB,
 } from './core.js';
+import { NameCol } from './wave_table/NameCol.js';
 
 var zoom = d3.zoom();
 var x_grid = d3.axisBottom();
@@ -298,62 +299,6 @@ function generateTable() {
 
   const timeScaleGroup = signalRow.append('g')
     .attr('class', 'time-scale-group');
-
-  /*
-   * Signal names
-   */
-  const tree = []
-  waveformDB.rows.forEach(row => {
-      var treeObj = {};
-      treeObj['id'] = `signal-name-${row.id}`;
-      treeObj['parent'] = '#';
-      treeObj['text'] = row.name;
-      treeObj['data'] = row.id;
-      tree.push(treeObj)
-      if(row.waveStyle == 'bus'){
-        for(var idx=0; idx<row.simObj.signal.width; idx++){
-          treeObj = {};
-          treeObj['id'] = `signal-name-${row.id}.${idx}`;
-          treeObj['parent'] = `signal-name-${row.id}`;
-          treeObj['text'] = `[${idx}]`;
-          treeObj['data'] = row.id;
-          tree.push(treeObj)
-        }
-      }
-  });
-
-  $('#names-col-container-scroll').jstree("destroy").empty();
-  $('#names-col-container-scroll').jstree({
-      'plugins': ['wholerow', 'dnd', 'changed'],
-      'core': {
-          'data': tree,
-          'animation': false,
-          "themes":{
-            "icons":false
-          },
-          "check_callback" : function (op, node, par, pos, more) {
-            if(more && more.dnd) {
-              return more.pos !== "i" && par.id == node.parent;
-            }
-            return true;
-          },
-      },
-  }).on('move_node.jstree', function (e, data, d) {
-    openSignalGroup(data.node.data);
-  }).on('open_node.jstree', function (e, data) {
-    openSignalGroup(data.node.data);
-  }).on('close_node.jstree', function (e, data) {
-    closeSignalGroup(data.node.data);
-  }).on('changed.jstree', function(evt, data){
-    data.changed.selected.forEach(element => {
-      const data = $('#names-col-container-scroll').jstree().get_node(element).data;
-      highlightSignal(data, false);
-    });
-    data.changed.deselected.forEach(element => {
-      const data = $('#names-col-container-scroll').jstree().get_node(element).data;
-      deHighlightSignal(data, false);
-    });
-  });
 
   /*
    * Signal values

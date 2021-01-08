@@ -145,17 +145,6 @@ function initShow(data){
   }, 0)
 }
 
-function getSelectedSignals(){
-  return $('#names-col-container-scroll').jstree('get_selected', true).map(
-    element => waveformDB.get(element.data)
-  );
-}
-
-function getActiveSignal(){
-  const wfrow = waveformDB.get($('#names-col-container-scroll').jstree('get_selected', true)[0].data);
-  return wfrow;
-}
-
 /**
  * Clear the highlight of a given (or all) signal. The highlighted signal has vivid blue background
  * color, and the cursor will step on this signal's transients.
