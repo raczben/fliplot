@@ -81,7 +81,7 @@ export class WaveTable {
   }
 
   getActiveRow() {
-    this.nameCol.getActiveRow();
+    return this.nameCol.getActiveRow();
   }
 
   moveCursorTo(time){
@@ -89,5 +89,25 @@ export class WaveTable {
     this.valueCol.showValuesAt(time);
   }
 
+  getCursorTime() {
+    return this.wave.getCursorTime();
+  }
+
+  
+  zoomFit(){
+    this.wave.zoomFit();
+  }
+
+  zoomAutoscale(){
+    this.wave.zoomAutoscale();
+  }
+  
+  zoomIn(){
+    this.wave.zoomIn();
+  }
+
+  zoomOut(){
+    this.wave.zoomOut();
+  }
 }
 

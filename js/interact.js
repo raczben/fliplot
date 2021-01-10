@@ -39,45 +39,45 @@ $(".demo-file-button").click(function () {
 });
 
 $("#zoom-fit").click(() => {
-  zoomFit();
+  waveTable.zoomFit();
 });
 
 $("#zoom-autoscale").click(() => {
-  zoomAutoscale();
+  waveTable.zoomAutoscale();
 });
 
 $("#zoom-in").click(() => {
-  zoomIn();
+  waveTable.zoomIn();
 });
 
 $("#zoom-out").click(() => {
-  zoomOut();
+  waveTable.zoomOut();
 });
 
 $("#remove-all").click(() => {
-  removeAllSignals();
+  waveTable.removeAllSignals();
 });
 
 $("#cursor-to-0").click(() => {
-  moveCursorTo(0);
+  waveTable.moveCursorTo(0);
 });
 
 $("#cursor-to-end").click(() => {
-  moveCursorTo(simDB.now);
+  waveTable.moveCursorTo(simDB.now);
 });
 
 $("#cursor-to-prev-transition").click(() => {
-  const tCurr = getCursorTime();
-  const sig = getActiveSignal();
+  const tCurr = waveTable.getCursorTime();
+  const sig = waveTable.getActiveRow();
   const tNew = getTimeAnyTransition(sig.simObj, tCurr, -1);
-  moveCursorTo(tNew);
+  waveTable.moveCursorTo(tNew);
 });
 
 $("#cursor-to-next-transition").click(() => {
-  const tCurr = getCursorTime();
-  const sig = getActiveSignal();
+  const tCurr = waveTable.getCursorTime();
+  const sig = waveTable.getActiveRow();
   const tNew = getTimeAnyTransition(sig.simObj, tCurr, +1);
-  moveCursorTo(tNew);
+  waveTable.moveCursorTo(tNew);
 });
 
 $( ".resizable-col" ).resizable({

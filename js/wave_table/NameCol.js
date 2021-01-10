@@ -138,7 +138,7 @@ export class NameCol {
   }
 
   getActiveRow() {
-    return waveformDB.get($(this.containerName).get_selected(true)[0].data);
+    return waveformDB.get(this._getTree().get_selected(true)[0].data);
   }
 
   rename(rowId, name) {
