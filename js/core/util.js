@@ -103,3 +103,26 @@ export function bin2radix(bin, radix){
         }
     }
 }
+
+export function isInt(value) {
+    return !isNaN(value) &&
+      parseInt(Number(value)) == value &&
+      !isNaN(parseInt(value, 10));
+  }
+
+/**
+ * Fast wrap of svg text. Exact wrap can be done as this:
+ * https://stackoverflow.com/a/27723752/2506522
+ * 
+ * @param {*} element DOM-SVG text element which should be wrapped
+ * @param {*} width the pixel width of the maximum text length.
+ */
+export function wrap_fast(element, width) {
+    element = d3.select(element);
+    const maxCharLen = (width/10)-1;
+    var text = element.text();
+    if(text.length > maxCharLen){
+        text = text.slice(0, maxCharLen);
+        element.text(text + '...');
+    }
+  }

@@ -1,14 +1,7 @@
 import {
   showSignals,
-  zoomAutoscale,
-  zoomFit,
-  zoomOut,
-  zoomIn,
   removeAllSignals,
-  dbg_setEnableUpdateRenderRange,
-  dbg_setEnableRender,
-  moveCursorTo,
-  getCursorTime,
+  waveTable
 } from './wave.js';
 
 import {
@@ -154,7 +147,7 @@ function initShow(data){
  */
 export function deHighlightSignal(signalID=undefined){
   if(signalID === undefined){
-    getSelectedSignals().forEach(row => {
+    waveTable.getSelectedRows().forEach(row => {
       deHighlightSignal(row.id);
     });
   } else {
@@ -163,7 +156,7 @@ export function deHighlightSignal(signalID=undefined){
     d3.selectAll(`.${signalID}`).classed('highlighted-signal', false);
 
     setTimeout(() => {
-      if (getSelectedSignals().length==0){
+      if (waveTable.getSelectedRows().length==0){
         highlightSignal(signalID, false);
       }
     }, 10);
@@ -193,7 +186,7 @@ export function highlightSignal(signalID, deHighlightOthers=true){
  * @param {string} signalID The ID of the signal that has to be highlighted 
  */
 function toggleHighlightSignal(signalID, enableZeroSelection=false){
-  if(getSelectedSignals().includes(waveformDB.get(signalID))){
+  if(waveTable.getSelectedRows().includes(waveformDB.get(signalID))){
     deHighlightSignal(signalID);
   } else {
     highlightSignal(signalID, false);
@@ -239,14 +232,14 @@ $(function() {
       callback: function(key, options) {
         switch (true) {
           case /remove/.test(key):
-            waveformDB.removeRows(getSelectedSignals())
+            waveformDB.removeRows(waveTable.getSelectedRows())
             showSignals(false);
             break;
           case /radix-.+/.test(key):
-            getSelectedSignals()[0].radix = key.split('-')[1];
+            waveTable.getSelectedRows()[0].radix = key.split('-')[1];
             break;
           case /waveStyle-.+/.test(key):
-            // getSelectedSignals()[0].radix = key.split('-')[1];
+            // waveTable.getSelectedRows()[0].radix = key.split('-')[1];
             break;
           default:
             console.log(`unknown key: ${key}`);
@@ -264,7 +257,7 @@ $(function() {
             return {};
           }
         }
-        if(getSelectedSignals().length<=1){
+        if(waveTable.getSelectedRows().length<=1){
           const waveformRow = d3.select(e.target).datum();
           highlightSignal(waveformRow.id);
         }

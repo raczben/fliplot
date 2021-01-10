@@ -5,12 +5,12 @@ import { Wave } from "./Wave.js";
 
 export class WaveTable {
   constructor() {
-  }
-
-  reload() {
     this.nameCol = new NameCol(this);
     this.valueCol = new ValueCol(this);
     this.wave = new Wave(this);
+  }
+
+  reload() {
 
     this.nameCol.init();
     this.valueCol.init();
@@ -77,11 +77,16 @@ export class WaveTable {
   }
 
   getSelectedRows() {
-    this.nameCol.getSelectedRows();
+    return this.nameCol.getSelectedRows();
   }
 
   getActiveRow() {
     this.nameCol.getActiveRow();
+  }
+
+  moveCursorTo(time){
+    this.wave.moveCursorTo(time);
+    this.valueCol.showValuesAt(time);
   }
 
 }
