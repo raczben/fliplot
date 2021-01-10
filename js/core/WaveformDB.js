@@ -97,6 +97,23 @@ class WaveformDB{
             }
         }
     }
+
+    /**
+     * Get idx by waveform id.
+     */
+    getIdx(idOrRow){
+        for(const i in this.rows){
+            if(this.rows[i].id == idOrRow){
+                return i;
+            }
+        }
+    }
+
+    moveRow(row, pos){
+        // Based on: https://stackoverflow.com/a/7180095/2506522
+        const idx = this.getIdx(row);
+        this.rows.splice(pos, 0, this.rows.splice(idx, 1)[0]);
+    }
 }
 
 // The static / global instance:

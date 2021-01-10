@@ -1,11 +1,17 @@
 import { waveformDB } from "../core/WaveformDB.js";
+import { WaveTable } from "./WaveTable.js";
 
 export class NameCol {
-  constructor() {
-    this.containerName = '#names-col-container-scroll';
+  constructor(waveTable) {
+    /** @type {string} */
+    NameCol.containerName = '#names-col-container-scroll';
+    /** @type {WaveTable} */
+    NameCol.waveTable = waveTable;
+  }
 
-    $(this.containerName).jstree("destroy").empty();
-    $(this.containerName).jstree({
+  init(){
+    $(NameCol.containerName).jstree("destroy").empty();
+    $(NameCol.containerName).jstree({
       'plugins': ['wholerow', 'dnd', 'changed'],
       'core': {
         'data': [],
@@ -20,28 +26,27 @@ export class NameCol {
           return true;
         },
       },
-    }).on('move_node.jstree', function (e, data, d) {
-      openSignalGroup(data.node.data);
+    }).on('move_node.jstree', function (e, data) {
+      NameCol.waveTable.moveRow(data.node.data, data.position);
     }).on('open_node.jstree', function (e, data) {
-      waveformDB.openGroup(data.node.data);
-      // openSignalGroup(data.node.data);
+      NameCol.waveTable.openGroup(data.node.data);
     }).on('close_node.jstree', function (e, data) {
-      waveformDB.closeGroup(data.node.data);
-      // closeSignalGroup(data.node.data);
+      NameCol.waveTable.closeGroup(data.node.data);
     }).on('changed.jstree', function (evt, data) {
-      // waveformDB.selectionChanged(data.node.data);
-
       data.changed.selected.forEach(element => {
-        const data = $(this.containerName).jstree().get_node(element).data;
-        highlightSignal(data, false);
+        const data = $(NameCol.containerName).jstree().get_node(element).data;
+        NameCol.waveTable.selectRow(data);
       });
       data.changed.deselected.forEach(element => {
-        const data = $(this.containerName).jstree().get_node(element).data;
-        deHighlightSignal(data, false);
+        const data = $(NameCol.containerName).jstree().get_node(element).data;
+        NameCol.waveTable.deSelectRow(data);
       });
     });
 
-    this.reload();
+    setTimeout(() => {
+      
+      this.reload();
+    }, 100);
 
   }
 
@@ -66,25 +71,25 @@ export class NameCol {
       }
     });
 
-    $(this.containerName).jstree(true).settings.core.data = tree;
+    $(NameCol.containerName).jstree(true).settings.core.data = tree;
     this.refresh();
   }
 
   refresh(){
-    $(this.containerName).jstree(true).refresh();
+    $(NameCol.containerName).jstree(true).refresh();
   }
 
   clearAll() {
-    $(this.containerName).jstree("destroy").empty();
-    // d3.select(this.containerName).selectAll("*").remove();
+    $(NameCol.containerName).jstree("destroy").empty();
+    // d3.select(NameCol.containerName).selectAll("*").remove();
   }
 
   selectRow(rowId) {
-    $(this.containerName).jstree().select_node(`signal-name-${rowId}`);
+    $(NameCol.containerName).jstree().select_node(`signal-name-${rowId}`);
   }
 
   deSelectRow(rowId) {
-    $(this.containerName).jstree().deselect_node(`signal-name-${rowId}`);
+    $(NameCol.containerName).jstree().deselect_node(`signal-name-${rowId}`);
   }
 
   moveRow(rowId, pos) {
@@ -92,11 +97,11 @@ export class NameCol {
   }
 
   openGroup(rowId) {
-    $(this.containerName).jstree().open_node(`signal-name-${rowId}`);
+    $(NameCol.containerName).jstree().open_node(`signal-name-${rowId}`);
   }
 
   closeGroup(rowId) {
-    $(this.containerName).jstree().select_node(`signal-name-${rowId}`);
+    $(NameCol.containerName).jstree().select_node(`signal-name-${rowId}`);
   }
 
   insertRow(rowId, pos = 'last') {
@@ -108,7 +113,7 @@ export class NameCol {
     treeObj['text'] = row.name;
     treeObj['data'] = row.id;
     // tree.push(treeObj)
-    $(this.containerName).jstree().create_node('#', treeObj, pos);
+    $(NameCol.containerName).jstree().create_node('#', treeObj, pos);
     if (row.waveStyle == 'bus') {
       for (var idx = 0; idx < row.simObj.signal.width; idx++) {
         treeObj = {};
@@ -116,7 +121,7 @@ export class NameCol {
         treeObj['parent'] = `signal-name-${row.id}`;
         treeObj['text'] = `[${idx}]`;
         treeObj['data'] = row.id;
-        $(this.containerName).jstree().create_node(`signal-name-${row.id}`, treeObj, pos);
+        $(NameCol.containerName).jstree().create_node(`signal-name-${row.id}`, treeObj, pos);
       }
     }
   }
@@ -125,13 +130,13 @@ export class NameCol {
   }
 
   getSelectedRows() {
-    return $(this.containerName).jstree.get_selected(true).map(
+    return $(NameCol.containerName).jstree.get_selected(true).map(
       element => waveformDB.get(element.data)
     );
   }
 
   getActiveRow() {
-    return waveformDB.get($(this.containerName).get_selected(true)[0].data);
+    return waveformDB.get($(NameCol.containerName).get_selected(true)[0].data);
   }
 
   rename(rowId, name) {

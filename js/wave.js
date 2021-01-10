@@ -13,7 +13,10 @@ import {
 import {
   simDB,
 } from './core.js';
-import { NameCol } from './wave_table/NameCol.js';
+import { WaveTable } from './wave_table/WaveTable.js';
+
+
+const waveTable = new WaveTable();
 
 var zoom = d3.zoom();
 var x_grid = d3.axisBottom();
@@ -301,56 +304,9 @@ function generateTable() {
     .attr('class', 'time-scale-group');
 
   /*
-   * Signal values
+   * Signal names
    */
-  const tree_val = []
-  waveformDB.rows.forEach(row => {
-      var treeObj = {};
-      treeObj['id'] = `signal-value-${row.id}`;
-      treeObj['parent'] = '#';
-      treeObj['text'] = row.getValueAt(0);
-      treeObj['data'] = row.id;
-      tree_val.push(treeObj)
-      if(row.waveStyle == 'bus'){
-        for(var idx=0; idx<row.simObj.signal.width; idx++){
-          treeObj = {};
-          treeObj['id'] = `signal-value-${row.id}.${idx}`;
-          treeObj['parent'] = `signal-value-${row.id}`;
-          treeObj['text'] = '- NaN - ';
-          treeObj['data'] = row.id;
-          tree_val.push(treeObj)
-        }
-      }
-  });
-
-  $('#values-col-container').jstree("destroy").empty();
-  $('#values-col-container').jstree({
-      'plugins': ['wholerow', 'dnd', 'ui', 'changed'],
-      'core': {
-          'data': tree_val,
-          'animation': false,
-          "themes":{
-            "icons":false
-          },
-          "check_callback" : function (op, node, par, pos, more) {
-            if(more && more.dnd) {
-              return more.pos !== "i" && par.id == node.parent;
-            }
-            return true;
-          },
-      },
-  }).on('open_node.jstree', function (e, data) {
-    openSignalGroup(data.node.id);
-  }).on('changed.jstree', function(evt, data){
-    data.changed.selected.forEach(element => {
-      const data = $('#values-col-container').jstree().get_node(element).data;
-      highlightSignal(data, false);
-    });
-    data.changed.deselected.forEach(element => {
-      const data = $('#values-col-container').jstree().get_node(element).data;
-      deHighlightSignal(data);
-    });
-  });
+  waveTable.reload();
 
   /*
    * Axis
@@ -458,9 +414,7 @@ function fillSignalNames() {
  * @param {int} time the simulation time at the values must be shown.
  */
 function showValuesAt(time) {
-  waveformDB.rows.forEach(row => {
-    $('#values-col-container').jstree().rename_node(`signal-value-${row.id}`, row.getValueAt(time));
-  });
+  waveTable.valueCol.showValuesAt(time);
 }
 
 /**
