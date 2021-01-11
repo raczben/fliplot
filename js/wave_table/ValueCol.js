@@ -26,8 +26,6 @@ export class ValueCol {
           return true;
         },
       },
-    }).on('move_node.jstree', function (e, data, d) {
-      openSignalGroup(data.node.data);
     }).on('open_node.jstree', function (e, data) {
       self.waveTable.openGroup(data.node.data);
     }).on('close_node.jstree', function (e, data) {

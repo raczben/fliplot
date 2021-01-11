@@ -1,20 +1,6 @@
 'use strict';
-import {
-  config,
-  updateHighlighterListener,
-  highlightSignal,
-  deHighlightSignal,
-  openSignalGroup,
-  closeSignalGroup
-} from './interact.js';
-import {
-  waveformDB,
-} from './core/WaveformDB.js';
-import {
-  simDB,
-} from './core.js';
-import { WaveTable } from './wave_table/WaveTable.js';
 
+import { WaveTable } from './wave_table/WaveTable.js';
 
 export const waveTable = new WaveTable();
 
@@ -28,7 +14,7 @@ export const waveTable = new WaveTable();
 /**
  * Remove all signals from the waveform table.
  */
-export function removeAllSignals(){
+function removeAllSignals(){
   d3.select('#mainGr').selectAll("*").remove();
   d3.select('#names-col-container-scroll').selectAll("*").remove();
   d3.select('#values-col').selectAll("*").remove();
@@ -49,8 +35,6 @@ function generateTable() {
      * Signal names
      */
     waveTable.reload();
-
-  // updateHighlighterListener();
 }
 
   

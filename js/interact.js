@@ -1,6 +1,5 @@
 import {
   showSignals,
-  removeAllSignals,
   waveTable
 } from './wave.js';
 
@@ -145,7 +144,7 @@ function initShow(data){
  * @param {string} signalID The ID of the signal that has to be de-highlighted or null to de
  * highlight all signals.
  */
-export function deHighlightSignal(signalID=undefined){
+function deHighlightSignal(signalID=undefined){
   if(signalID === undefined){
     waveTable.getSelectedRows().forEach(rowid => {
       deHighlightSignal(rowid);
@@ -170,7 +169,7 @@ export function deHighlightSignal(signalID=undefined){
  * 
  * @param {string} signalID The ID of the signal that has to be highlighted 
  */
-export function highlightSignal(signalID, deHighlightOthers=true){
+function highlightSignal(signalID, deHighlightOthers=true){
   if(deHighlightOthers){
     deHighlightSignal()
   }
@@ -214,17 +213,6 @@ function openFile(event) {
 
   }
 }
-
-export function openSignalGroup(signalID){
-  // $('#names-col-container-scroll').jstree().select_node(`signal-name-${signalID}`);
-  $('#values-col-container').jstree().open_node(`signal-value-${signalID}`);
-}
-
-export function closeSignalGroup(signalID){
-  // $('#names-col-container-scroll').jstree().select_node(`signal-name-${signalID}`);
-  $('#values-col-container').jstree().close_node(`signal-value-${signalID}`);
-}
-
 
 $(function() {
   $.contextMenu({
@@ -291,21 +279,3 @@ $(function() {
       }
   });
 });
-
-
-export function updateHighlighterListener() {
-  $('.signal-highlighter').click(function (e) {
-    var targ = $(this);
-    if(targ.hasClass('signal-highlighter')){
-      var waveformRow = d3.select(this).datum();
-      if(e.ctrlKey){
-        toggleHighlightSignal(waveformRow.id);
-      } else{
-        highlightSignal(waveformRow.id);
-      }
-    } else {
-      console.log(`undefined target: ${targ}`)
-    }
-  }
-  )
-}
