@@ -204,6 +204,14 @@ export class Wave {
   }
 
   removeRow(rowId) {
+    d3.selectAll('.signalRow').filter(
+      d => d.id == rowId
+    ).remove();
+    
+    d3.selectAll('.signalRow')
+      .attr('transform', (d, i) => {
+        return `translate(0, ${i * config.rowHeight})`
+      });
   }
 
   getSelectedRows() {

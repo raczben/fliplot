@@ -147,8 +147,8 @@ function initShow(data){
  */
 export function deHighlightSignal(signalID=undefined){
   if(signalID === undefined){
-    waveTable.getSelectedRows().forEach(row => {
-      deHighlightSignal(row.id);
+    waveTable.getSelectedRows().forEach(rowid => {
+      deHighlightSignal(rowid);
     });
   } else {
     $('#names-col-container-scroll').jstree().deselect_node(`signal-name-${signalID}`);
@@ -232,8 +232,7 @@ $(function() {
       callback: function(key, options) {
         switch (true) {
           case /remove/.test(key):
-            waveformDB.removeRows(waveTable.getSelectedRows())
-            showSignals(false);
+            waveTable.removeRows(waveTable.getSelectedRows());
             break;
           case /radix-.+/.test(key):
             waveTable.getSelectedRows()[0].radix = key.split('-')[1];

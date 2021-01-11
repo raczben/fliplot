@@ -129,16 +129,21 @@ export class NameCol {
   }
 
   removeRow(rowId) {
+    this.removeRows(rowId);
+  }
+
+  removeRows(rowIds) {
+    this._getTree().delete_node(this.toId(rowIds));
   }
 
   getSelectedRows() {
     return this._getTree().get_selected(true).map(
-      element => waveformDB.get(element.data)
+      element => element.data
     );
   }
 
   getActiveRow() {
-    return waveformDB.get(this._getTree().get_selected(true)[0].data);
+    return this._getTree().get_selected(true)[0].data;
   }
 
   rename(rowId, name) {

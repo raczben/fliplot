@@ -71,13 +71,27 @@ export class WaveTable {
   }
 
   removeRow(rowId) {
+    waveformDB.removeRow(rowId);
     this.nameCol.removeRow(rowId);
     this.valueCol.removeRow(rowId);
     this.wave.removeRow(rowId);
   }
+  
+  removeRows(rowIds){
+    rowIds.forEach(element => {
+        this.removeRow(element);
+    });
+  }
 
-  getSelectedRows() {
-    return this.nameCol.getSelectedRows();
+  getSelectedRows(ids=true) {
+    if(ids){
+      return this.nameCol.getSelectedRows();
+    } else{
+      // return rows itself
+      return this.nameCol.getSelectedRows().map(
+        element => waveformDB.get(element)
+      );
+    }
   }
 
   getActiveRow() {

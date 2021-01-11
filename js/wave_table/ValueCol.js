@@ -127,6 +127,11 @@ export class ValueCol {
   }
 
   removeRow(rowId) {
+    this.removeRows(rowId);
+  }
+
+  removeRows(rowIds) {
+    this._getTree().delete_node(this.toId(rowIds));
   }
 
   getSelectedRows() {
