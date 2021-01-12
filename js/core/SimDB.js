@@ -83,7 +83,10 @@ export class SimDB{
      * @param {string[]} hierarchy 
      */
     getObject(hierarchy){
-        const associativeIndex = hierarchy.join('.');
+        var associativeIndex = hierarchy;
+        if(Array.isArray(hierarchy)){
+            associativeIndex = hierarchy.join('.');
+        }
         return this.objects[associativeIndex];
     }
 

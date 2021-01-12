@@ -35,6 +35,8 @@ class WaveformDB{
         rowItem.id = `waveform_row_${waveformDB._idGenerator++}`;
         
         this.rows.splice(position, 0, rowItem);
+
+        return rowItem.id;
     }
 
     /**
