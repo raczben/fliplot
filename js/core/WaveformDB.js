@@ -27,14 +27,26 @@ class WaveformDB{
      * @param {string[]} hierarchy 
      * @param {number} position 
      */
-    insertWaveSignal(hierarchy, position=-1){
-        /** @type {WaveformRow} rowItem */
+    insertWaveSignal(hierarchy, position=-1, busAsBus=true){
+        if(position<0){
+            position = this.rows.length;
+        }
+        /** @type {SimulationObject} obj */
         const obj = simDB.getObject(hierarchy);
+        /** @type {WaveformRow} rowItem */
         const rowItem = new WaveformRow(obj)
-        
         rowItem.id = `waveform_row_${waveformDB._idGenerator++}`;
         
         this.rows.splice(position, 0, rowItem);
+
+        if(busAsBus && rowItem.waveStyle=='bus'){
+            for(var i=0; i<obj.signal.width; i++){
+                const subObj = obj.cloneRange(i);
+                const subRowItem = new WaveformRow(subObj, rowItem);
+                subRowItem.id = `waveform_row_${waveformDB._idGenerator++}`;
+                this.rows.splice(position+i+1, 0, subRowItem);
+            }
+        }
 
         return rowItem.id;
     }
@@ -82,7 +94,7 @@ class WaveformDB{
                     this.insertWaveSignal(key.split("."));
                 }
             }
-          }
+        }
     }
 
     /**
@@ -116,6 +128,7 @@ class WaveformDB{
         const idx = this.getIdx(row);
         this.rows.splice(pos, 0, this.rows.splice(idx, 1)[0]);
     }
+
 }
 
 // The static / global instance:

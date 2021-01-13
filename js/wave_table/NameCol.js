@@ -57,20 +57,14 @@ export class NameCol {
     waveformDB.rows.forEach(row => {
       var treeObj = {};
       treeObj['id'] = this.toId(row.id);
-      treeObj['parent'] = '#';
+      if (row.parent) {
+        treeObj['parent'] = this.toId(row.parent.id);
+      } else {
+        treeObj['parent'] = '#';
+      }
       treeObj['text'] = row.name;
       treeObj['data'] = row.id;
       tree.push(treeObj)
-      if (row.waveStyle == 'bus') {
-        for (var idx = 0; idx < row.simObj.signal.width; idx++) {
-          treeObj = {};
-          treeObj['id'] = `signal-name-${row.id}.${idx}`;
-          treeObj['parent'] = this.toId(row.id);
-          treeObj['text'] = `[${idx}]`;
-          treeObj['data'] = row.id;
-          tree.push(treeObj)
-        }
-      }
     });
 
     this._getTree().settings.core.data = tree;
@@ -107,25 +101,7 @@ export class NameCol {
   }
 
   insertRow(rowId, pos = 'last') {
-    const tree = [];
-    const row = waveformDB.get(rowId)
-    var treeObj = {};
-    treeObj['id'] = this.toId(row.id);
-    // treeObj['parent'] = '#';
-    treeObj['text'] = row.name;
-    treeObj['data'] = row.id;
-    // tree.push(treeObj)
-    $(this.containerName).jstree().create_node('#', treeObj, pos);
-    if (row.waveStyle == 'bus') {
-      for (var idx = 0; idx < row.simObj.signal.width; idx++) {
-        treeObj = {};
-        treeObj['id'] = `signal-name-${row.id}.${idx}`;
-        treeObj['parent'] = this.toId(row.id);
-        treeObj['text'] = `[${idx}]`;
-        treeObj['data'] = row.id;
-        this._getTree().create_node(this.toId(row.id), treeObj, pos);
-      }
-    }
+    this.reload();
   }
 
   removeRow(rowId) {
@@ -147,7 +123,7 @@ export class NameCol {
   }
 
   rename(rowId, name) {
-    $('##names-col-container-scroll').jstree().rename_node(this.toId(rowId), name);
+    this._getTree().rename_node(this.toId(rowId), name);
   }
 
   toId(rowId){

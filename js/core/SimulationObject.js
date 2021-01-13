@@ -26,8 +26,7 @@ export class SimulationObject{
         this.parent = parent;
         /** @type {Signal}  */
         this.signal = undefined;
-
-        this.id = `${hierarchy.slice(-1)[0]}_${SimulationObject._idGenerator++}`
+        /** @type {String}  */
 
         if(data !== undefined ){
             switch (this.type) {
@@ -46,6 +45,20 @@ export class SimulationObject{
             /** @type {string} */
             this.definedAt = data.definedAt;
         }
+    }
+
+    cloneRange(from, to=-1){
+        if(to<0){to = from;}
+        var con = `[${from}]`;
+        if(to > from){
+            con = `[${to}:${from}]`;
+        }
+        const hierarchy = this.hierarchy.concat([con]);
+        const signal = this.signal.cloneRange(from, to);
+        const ret = new SimulationObject(
+            this.type, hierarchy, signal, this
+            );
+        return ret;
     }
 
     /**

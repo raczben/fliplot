@@ -1,4 +1,5 @@
 import { simDB } from "./core.js";
+import { waveTable } from "./wave.js";
 
 export class Tree{
     constructor(){
@@ -64,6 +65,30 @@ export class Tree{
             }, 150);
         });
 
+        const self = this;
+
+        $.contextMenu({
+            selector: '#main-container-tree', 
+            callback: function(key, options) {
+            switch (key) {
+                case 'addToWave':
+                waveTable.addObjects(self.getSelectedObjects());
+                break;
+                case 'showInWave':
+                // waveTable.selectRow(getSelectedRows());
+                break;
+                default:
+                console.log(`unknown key: ${key}`);
+                break;
+                } 
+            },
+            
+            zIndex: 1100,
+            items: {
+                "addToWave": {name: "Add to wave"},
+                "showInWave": {name: "Show in wave"}
+            }
+        });
     }
 
     getSelectedObjects(){

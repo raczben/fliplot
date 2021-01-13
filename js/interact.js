@@ -67,14 +67,14 @@ $("#cursor-to-end").click(() => {
 
 $("#cursor-to-prev-transition").click(() => {
   const tCurr = waveTable.getCursorTime();
-  const sig = waveTable.getActiveRow();
+  const sig = waveTable.getActiveRow(false);
   const tNew = getTimeAnyTransition(sig.simObj, tCurr, -1);
   waveTable.moveCursorTo(tNew);
 });
 
 $("#cursor-to-next-transition").click(() => {
   const tCurr = waveTable.getCursorTime();
-  const sig = waveTable.getActiveRow();
+  const sig = waveTable.getActiveRow(false);
   const tNew = getTimeAnyTransition(sig.simObj, tCurr, +1);
   waveTable.moveCursorTo(tNew);
 });

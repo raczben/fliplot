@@ -9,6 +9,7 @@ const IDX = 1;
 
 export class Wave {
   constructor(waveTable) {
+
     /** @type {WaveTable} */
     this.waveTable = waveTable;
 
@@ -69,24 +70,27 @@ export class Wave {
       .on("end", this.zoom_end.bind(this));
   }
 
-  reload() {
+  reload(render=false) {
+    
+    d3.select('#mainGr').selectAll("*").remove();
 
+    const rowsToPlot = this.waveTable.getVisibleRows();
 
     d3.select('#mainSVG')
       .attr('width', simDB.now + 200)
-      .attr('height', config.rowHeight * (waveformDB.rows.length + 1));
+      .attr('height', config.rowHeight * (rowsToPlot.length + 1));
 
     const mainGr = d3.select('#mainGr');
 
     mainGr.append('g')
       .attr('id', 'grid-gr')
-      .attr('transform', `translate(0, ${config.rowHeight * waveformDB.rows.length})`);
+      .attr('transform', `translate(0, ${config.rowHeight * rowsToPlot.length})`);
 
     const signalsTable = mainGr.append('g')
       .attr('id', 'signals-table');
 
     const signalRow = signalsTable.selectAll('.signalRow')
-      .data(waveformDB.rows)
+      .data(rowsToPlot)
       .enter()
       .append('g')
       .attr('transform', (d, i) => `translate(0, ${i * config.rowHeight})`)
@@ -121,12 +125,12 @@ export class Wave {
 
     mainGr.append('g')
       .attr('id', 'time-axis-gr')
-      .attr('transform', () => `translate(0, ${config.rowHeight * waveformDB.rows.length})`);
+      .attr('transform', () => `translate(0, ${config.rowHeight * rowsToPlot.length})`);
 
     const timeAxisGr = d3.select('#time-axis-gr');
     this.x_axis.scale(this.timeScale);
     this.x_grid
-      .tickSize(-config.rowHeight * waveformDB.rows.length)
+      .tickSize(-config.rowHeight * rowsToPlot.length)
       .tickFormat("");
     timeAxisGr.call(this.x_axis);
 
@@ -141,13 +145,17 @@ export class Wave {
       .attr('id', 'main-cursor')
       .attr('vector-effect', 'non-scaling-stroke')
       .attr('y1', 0)
-      .attr('y2', config.rowHeight * waveformDB.rows.length);
+      .attr('y2', config.rowHeight * rowsToPlot.length);
 
     const self = this;
     d3.select('#mainGr').on("click", function () {
       const click_time = self.timeScale.invert(d3.mouse(this)[0]);
       self.waveTable.moveCursorTo(click_time);
     });
+
+    if(render){
+      this.zoom.scaleBy(d3.select("#wave-axis-container"), 1.0);
+    }
   }
 
   refresh() {
@@ -165,7 +173,7 @@ export class Wave {
   }
 
   moveRow(rowId, pos) {
-    this.reOrderSignals(waveformDB.rows);
+    this.reOrderSignals();
   }
     
   /**
@@ -175,32 +183,25 @@ export class Wave {
    * 
    * @param {Object} signals contains the signals in the *wanted* order
    */
-  reOrderSignals(signals) {
-    function reOrder(containerSelector, childSelector) {
-      // originalSignals: contains the signals in the *original* order
-      var originalSignals = d3.select(containerSelector).selectAll(childSelector).data();
-      // indexMapping: contains the original indexes in the wanted order.
-      var indexMapping = signals.map(x => originalSignals.indexOf(x));
-
-      var containerElement = $(containerSelector);
-      var childrenList = containerElement.children(childSelector);
-      containerElement.append($.map(indexMapping, v => childrenList[v]));
-    }
-    reOrder('#signals-table', '.signalRow');
-
+  reOrderSignals() {
     d3.select('#mainSVG').selectAll('.signalRow')
+      .data(this.waveTable.getVisibleRows(), d=>d.id)
+      .order()
       .attr('transform', (d, i) => {
         return `translate(0, ${i * config.rowHeight})`
       });
   }
 
   openGroup(rowId) {
+    this.reload(true)
   }
 
   closeGroup(rowId) {
+    this.reload(true)
   }
 
-  insertRow(rowId, pos = 'last') {
+  insertRow(rowId, pos=-1) {
+    this.reload(true)
   }
 
   removeRow(rowId) {
@@ -262,7 +263,7 @@ export class Wave {
    * Autoscale: scale to show enough detail for humans
    */
   zoomAutoscale() {
-    var rows = waveformDB.rows
+    var rows = this.waveTable.getVisibleRows();
 
     if (rows.length > 0) {
       // Average wave change times

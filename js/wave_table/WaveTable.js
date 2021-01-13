@@ -53,12 +53,14 @@ export class WaveTable {
   }
 
   openGroup(rowId) {
+    waveformDB.get(rowId).openGroup();
     this.nameCol.openGroup(rowId);
     this.valueCol.openGroup(rowId);
     this.wave.openGroup(rowId);
   }
 
   closeGroup(rowId) {
+    waveformDB.get(rowId).closeGroup();
     this.nameCol.closeGroup(rowId);
     this.valueCol.closeGroup(rowId);
     this.wave.closeGroup(rowId);
@@ -83,6 +85,22 @@ export class WaveTable {
     });
   }
 
+  addObjects(hierarchies){
+    const newIds = hierarchies.map(hier => {
+      return waveformDB.insertWaveSignal(hier);
+    });
+    newIds.forEach(id => {
+      this.insertRow(id);
+    });
+  }
+
+  getVisibleRows(){
+    return waveformDB.rows.filter(
+      row => row.isVisible()
+      // row => this.nameCol.isVisible(row.id)
+    );
+  }
+
   getSelectedRows(ids=true) {
     if(ids){
       return this.nameCol.getSelectedRows();
@@ -94,8 +112,13 @@ export class WaveTable {
     }
   }
 
-  getActiveRow() {
-    return this.nameCol.getActiveRow();
+  getActiveRow(id=true) {
+    const activeId = this.nameCol.getActiveRow();
+    if(id){
+      return activeId;
+    } else {
+      return waveformDB.get(activeId);
+    }
   }
 
   moveCursorTo(time){

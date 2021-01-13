@@ -21,6 +21,18 @@ export class Signal {
         /** @type {number} */
         this.width = sig.width;
     }
+
+    cloneRange(from, to=-1){
+        if(to<0){
+            to = from;
+        }
+        const ret = new Signal(this);
+        ret.wave = [];
+        ret.width = to-from+1;
+        
+        return ret;
+    }
+    
     /**
      * @param {number} time 
      */
