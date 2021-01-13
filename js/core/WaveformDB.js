@@ -10,7 +10,7 @@ import {
 
 import {
     simDB
-} from '../core.js';
+} from '../interact.js';
 
 
 class WaveformDB{

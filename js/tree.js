@@ -1,4 +1,4 @@
-import { simDB } from "./core.js";
+import { simDB } from "./interact.js";
 
 export class Tree{
     constructor(waveTable){
@@ -73,7 +73,7 @@ export class Tree{
             callback: function(key, options) {
             switch (key) {
                 case 'addToWave':
-                waveTable.addObjects(self.getSelectedObjects());
+                self.waveTable.addObjects(self.getSelectedObjects());
                 break;
                 case 'showInWave':
                 // waveTable.selectRow(getSelectedRows());

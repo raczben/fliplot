@@ -1,6 +1,5 @@
-import { simDB } from "../core.js";
 import { waveformDB } from "../core/WaveformDB.js";
-import { config } from "../interact.js";
+import { config, simDB} from "../interact.js";
 import { isInt, wrap_fast } from "../core/util.js";
 
 /* index definitions for render data */

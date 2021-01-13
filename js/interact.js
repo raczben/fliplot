@@ -1,6 +1,6 @@
 import {
-  simDB,
-} from './core.js';
+  SimDB
+} from './core/SimDB.js';
 
 import {
   waveformDB
@@ -12,6 +12,7 @@ import { WaveTable } from './wave_table/WaveTable.js';
 export var config = {};
 
 const waveTable = new WaveTable();
+export var simDB = new SimDB();
 
 function showSignals() {
   waveTable.wave.init();

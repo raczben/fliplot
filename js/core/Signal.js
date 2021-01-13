@@ -5,7 +5,7 @@ import {
   } from './util.js';
 import {
     simDB
-  } from '../core.js';
+  } from '../interact.js';
 
 /**
  * Value change type builds up the wave list of the signal. Each element describes a value change of
