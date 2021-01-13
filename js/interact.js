@@ -1,9 +1,4 @@
 import {
-  showSignals,
-  waveTable
-} from './wave.js';
-
-import {
   simDB,
 } from './core.js';
 
@@ -11,9 +6,22 @@ import {
   waveformDB
 } from './core/WaveformDB.js';
 import { Tree } from './tree.js';
+import { WaveTable } from './wave_table/WaveTable.js';
 
 // TODO should be moved somewhere else.
 export var config = {};
+
+const waveTable = new WaveTable();
+
+function showSignals() {
+  waveTable.wave.init();
+  waveTable.reload();
+  
+  setTimeout(() => {
+    waveTable.moveCursorTo(0);
+    waveTable.wave.zoomAutoscale();
+  }, 0)
+}
 
 
 $(".demo-file-button").click(function () {
@@ -80,11 +88,11 @@ $( ".resizable-col" ).resizable({
   });
 
 $("#dbg_updateRenderRange").click(() => {
-  dbg_setEnableUpdateRenderRange($("#dbg_updateRenderRange").is(":checked"));
+  waveTable.wave.dbg_setEnableUpdateRenderRange($("#dbg_updateRenderRange").is(":checked"));
 });
 
 $("#dbg_enableRender").click(() => {
-  dbg_setEnableRender($("#dbg_enableRender").is(":checked"));
+  waveTable.wave.dbg_setEnableRender($("#dbg_enableRender").is(":checked"));
 });
 
 $("#file-open-button").click(() => {
@@ -124,7 +132,7 @@ function initShow(data){
   simDB.init(vcdpy2simDb(data));
   waveformDB.addAllWaveSignal();
   simDB.updateDBInitialX();
-  const tree = new Tree();
+  const tree = new Tree(waveTable);
   tree.showTree();
 
   console.log(simDB);

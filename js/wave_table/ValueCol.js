@@ -1,5 +1,4 @@
 import { waveformDB } from "../core/WaveformDB.js";
-// import { waveTable } from "./WaveTable.js";
 
 export class ValueCol {
   constructor(waveTable) {

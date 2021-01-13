@@ -1,10 +1,11 @@
 import { simDB } from "./core.js";
-import { waveTable } from "./wave.js";
 
 export class Tree{
-    constructor(){
+    constructor(waveTable){
         /** @type {string} */
         this.containerName = '#object-tree';
+
+        this.waveTable = waveTable;
     }
 
     showTree(){
