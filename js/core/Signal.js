@@ -7,6 +7,27 @@ import {
     simDB
   } from '../core.js';
 
+/**
+ * Value change type builds up the wave list of the signal. Each element describes a value change of
+ * a signal.
+ * 
+ * @typedef {Object} valueChange_t 
+ * @property {number} time Simulation time in the unit of the simulation timePrecision.
+ * @property {string} bin The raw value in binary form. Each character represents a bit in the
+ *      bitvector. All other (optional) value format is derived from this.
+ * @property {string} [hex] A derived value from raw bin. Optional: calculated only when the user
+ *      wants to see hex values. Each hex digit will be X and Z if there is an X or Z bit value in
+ *      its region.
+ * @property {number} [u30] Fixed point float number. First character (s/u) note signed and unsigned
+ *      format. The number of bits used to represent the fraction value (the number of bits below the
+ *      decimal point) This means, that u0 means that the whole bitvector represents a fixed point
+ *      unsigned integer. Note, that the full word length is defined at signal level. Derived,
+ *      optional as above. Note, that if any X or Z located in the raw binary format, this value
+ *      will be NaN.
+ * @property {number} [float] Single point float number. Derived, optional as above.
+ * @property {number} [double] Double point float number. Derived, optional as above.
+*/
+
 export class Signal {
     constructor(sig){
         /** @type {string[]} */
@@ -95,13 +116,6 @@ export class Signal {
         }
     }
     
-    test2(){
-        console.log('asdasdq');
-    }
-}
-
-export function test(){
-    console.log('asd');
 }
 
 // export var mySignal = new Signal();

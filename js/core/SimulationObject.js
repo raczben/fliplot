@@ -91,4 +91,24 @@ export class SimulationObject{
     getTimeAtI(i) {
         return this.signal.getTimeAtI(i);
     }
+    
+    /**
+     * This function returns simulation time of the previous/next (arbirtary) transitition of the given
+     * signal.
+     * @param {number} time 
+     * @param {number} deltaTransition 
+     */
+    getTimeAnyTransition(time, deltaTransition) {
+        const idx = this.getChangeIndexAt(time);
+        if(deltaTransition < 0){
+            // previous nth change
+            const changeT = this.getTimeAtI(idx);
+            if(changeT != time){
+                // cursor is not located at value change
+                deltaTransition++;
+            }
+        }
+        const t = this.getTimeAtI(idx+deltaTransition);
+        return t;
+    }
 }
