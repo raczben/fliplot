@@ -56,9 +56,9 @@ class WaveformDB{
      * 
      * @param {waveformRow[]} waveformRow 
      */
-    removeRows(waveformRows){
+    removeRows(waveformRows, recursive=true){
         waveformRows.forEach(element => {
-            this.removeRow(element);
+            this.removeRow(element, recursive);
         });
     }
 
@@ -66,17 +66,27 @@ class WaveformDB{
      * Remove a single row from waveform window.
      * 
      * @param {waveformRow} waveformRow 
-     * @param {number} position 
      */
-    removeRow(waveformRow=undefined, position=-1){
-        if(position < 0){
-            for( var i = 0; i < this.rows.length; i++){ 
-                if ( this.rows[i] === waveformRow) {
-                    position = i;
-                }
-            }
+    removeRow(waveformRow, recursive=true){
+        var idx = -1;
+        if(typeof waveformRow == 'number'){
+            idx = waveformRow;
+        } else {
+            idx = this.getIdx(waveformRow);
         }
-        this.rows.splice(position, 1);
+        waveformRow = this.rows[idx];
+        if(recursive){
+            this.removeRows(this.getChildren(waveformRow));
+        }
+        idx = this.getIdx(waveformRow);
+        this.rows.splice(idx, 1);
+    }
+
+    getChildren(parent){
+        parent = this.get(parent);
+        return this.rows.filter(
+            row => row.parent == parent
+        );
     }
 
     /**
@@ -117,7 +127,7 @@ class WaveformDB{
      */
     getIdx(idOrRow){
         for(const i in this.rows){
-            if(this.rows[i].id == idOrRow){
+            if(this.rows[i].id == idOrRow || this.rows[i] == idOrRow){
                 return i;
             }
         }

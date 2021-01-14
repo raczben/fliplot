@@ -196,7 +196,7 @@ export class Wave {
   }
 
   closeGroup(rowId) {
-    this.reload(true)
+    this.removeRow();
   }
 
   insertRow(rowId, pos=-1) {
@@ -205,13 +205,9 @@ export class Wave {
 
   removeRow(rowId) {
     d3.selectAll('.signalRow').filter(
-      d => d.id == rowId
+      d => !(this.waveTable.getVisibleRows().includes(d))
     ).remove();
-    
-    d3.selectAll('.signalRow')
-      .attr('transform', (d, i) => {
-        return `translate(0, ${i * config.rowHeight})`
-      });
+    this.reOrderSignals()
   }
 
   getSelectedRows() {
