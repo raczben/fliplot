@@ -89,7 +89,7 @@ export function binarySearch(ar, el, compare_fn) {
  */
 export function bin2radix(bin, radix){
     if(radix == 'hex'){
-        return '0x' + Bin2Hex2(bin); //TODO
+        return Bin2Hex2(bin); //TODO
     } else if (radix == 'float'){
         return NaN; //TODO
     } else if (radix == 'double'){

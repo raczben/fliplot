@@ -223,6 +223,9 @@ export class Wave {
   rename(rowId, name) {
   }
 
+  setRadix(rowId){
+    // this.reload(true)
+  }
 
   /******************************************************************************
    * 

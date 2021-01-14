@@ -231,10 +231,14 @@ $(function() {
             }, 0);
             break;
           case /remove/.test(key):
-            waveTable.removeRows(waveTable.getSelectedRows());
+            setTimeout(() => {
+              waveTable.removeRows();
+            }, 0);
             break;
           case /radix-.+/.test(key):
-            waveTable.getSelectedRows()[0].radix = key.split('-')[1];
+            setTimeout(() => {
+              waveTable.setRadix(key.split('-')[1]);
+            }, 0);
             break;
           case /waveStyle-.+/.test(key):
             // waveTable.getSelectedRows()[0].radix = key.split('-')[1];

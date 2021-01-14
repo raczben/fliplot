@@ -4,6 +4,7 @@ import { Wave } from "./Wave.js";
 
 export class WaveTable {
   constructor(waveformDB) {
+    /** @type {WaveformDB} */
     this.waveformDB = waveformDB;
     this.nameCol = new NameCol(this);
     this.valueCol = new ValueCol(this);
@@ -126,6 +127,17 @@ export class WaveTable {
   rename(rowId, name){
     this.waveformDB.get(rowId).name = name;
     this.nameCol.reload();
+  }
+
+  setRadix(radix, rowIds){
+    if(rowIds === undefined){
+      rowIds = this.getSelectedRows();
+    }
+    rowIds.forEach(element => {
+        this.waveformDB.get(element).setRadix(radix);
+        this.valueCol.setRadix(element);
+        this.wave.setRadix(element);
+    });
   }
 
   moveCursorTo(time){

@@ -1,8 +1,11 @@
 import { waveformDB } from "../core/WaveformDB.js";
+import { WaveTable } from "./WaveTable.js";
 
 export class ValueCol {
   constructor(waveTable) {
+    /**  @type {String} */
     this.containerName = '#values-col-container';
+    /**  @type {WaveTable} */
     this.waveTable = waveTable;
   }
 
@@ -118,6 +121,9 @@ export class ValueCol {
   }
 
   showValuesAt(time) {
+    if(time === undefined){
+      time = this.waveTable.getCursorTime();
+    }
     waveformDB.rows.forEach(row => {
       this._getTree().rename_node(this.toId(row.id), row.getValueAt(time));
     });
@@ -129,6 +135,10 @@ export class ValueCol {
   
   _getTree(arg = true){
     return $(this.containerName).jstree(arg);
+  }
+
+  setRadix(rowId){
+    this.showValuesAt();
   }
   
 }

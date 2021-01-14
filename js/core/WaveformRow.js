@@ -24,6 +24,8 @@ export class WaveformRow{
         /** @type {WaveformRow} */
         this.parent = parent;
         this.opened = false;
+
+        this.setRadix();
         
         if (simObj.signal.width == 1) {
             this.waveStyle = 'bit';
@@ -61,7 +63,7 @@ export class WaveformRow{
      * @param {number} def 
      */
     getValueAt(time, def='- NA -') {
-        return this.simObj.getValueAt(time, this.radix, def);
+        return this.radixPrefix + this.simObj.getValueAt(time, this.radix, def);
     }
 
     /**
@@ -69,7 +71,7 @@ export class WaveformRow{
      * @param {number} def 
      */
     getValueAtI(i, def) {
-        return this.simObj.getValueAtI(i, this.radix, def);
+        return this.radixPrefix + this.simObj.getValueAtI(i, this.radix, def);
     }
     
     /**
@@ -77,5 +79,34 @@ export class WaveformRow{
      */
     getTimeAtI(i) {
         return this.simObj.getTimeAtI(i);
+    }
+
+    /**
+     * @param {String} radix 
+     */
+    setRadix(radix, prefix){
+        if(this.simObj.signal.width==1){
+            this.radix = 'bin';
+            this.radixPrefix = '';
+            return;
+        }
+        if(radix === undefined){
+            radix = 'hex';
+        }
+        radix = radix.toLowerCase();
+        if(['unsigned', 'u'].includes(radix)){
+            radix = 'u0';
+            prefix = '';
+        } else if(['signed', 's', 'decimal'].includes(radix)){
+            radix = 's0';
+            prefix = '';
+        } else if(radix.startsWith('h')){
+            prefix = '0x'
+        } else if(radix.startsWith('b')){
+            prefix = '0b'
+        }
+
+        this.radix = radix;
+        this.radixPrefix = prefix;
     }
 }
