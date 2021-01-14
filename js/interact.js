@@ -225,6 +225,11 @@ $(function() {
       selector: '.signal-context-menu, #names-col-container .jstree-node, #values-col-container .jstree-node', 
       callback: function(key, options) {
         switch (true) {
+          case /rename/.test(key):
+            setTimeout(() => {
+              waveTable.nameCol.editName(waveTable.getActiveRow());
+            }, 0);
+            break;
           case /remove/.test(key):
             waveTable.removeRows(waveTable.getSelectedRows());
             break;

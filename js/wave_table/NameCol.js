@@ -133,4 +133,46 @@ export class NameCol {
   _getTree(arg = true){
     return $(this.containerName).jstree(arg);
   }
+
+  get_node(rowId){
+    return this._getTree().get_node(this.toId(rowId));
+  }
+
+  editName(rowId){
+    const nameEditorId="nameeditorinput";
+    const nameEditorId2=`#${nameEditorId}`;
+    const li = $(`#${this.toId(rowId)}`);
+    li.find('a').toggle();
+    li.find('div').toggle();
+    const input = $("<input></input>")
+      .attr('id', nameEditorId)
+      .val(this.get_node(rowId).text)
+      .keypress(e => {
+        if (e.which == 13) {
+          this.editNameEnd(rowId);
+        }
+        if(e.which == 27){
+          this.editNameEnd(rowId, false);
+        }
+      })
+      .focusout( e=>{
+        this.editNameEnd(rowId, false);
+      } );
+    li.append(input);
+    input.focus();
+    input[0].setSelectionRange(0, 1000);
+  }
+  
+
+  editNameEnd(rowId, accept=true){
+    const li = $(`#${this.toId(rowId)}`);
+    const input = li.find('input');
+    const val = input.val();
+    input.remove();
+    li.find('a').toggle();
+    li.find('div').toggle();
+    if(accept){
+      this.waveTable.rename(rowId, input.val());
+    }
+  }
 }

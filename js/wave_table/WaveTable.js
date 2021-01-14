@@ -11,7 +11,6 @@ export class WaveTable {
   }
 
   reload() {
-
     this.nameCol.init();
     this.valueCol.init();
     this.wave.init();
@@ -119,6 +118,11 @@ export class WaveTable {
     } else {
       return waveformDB.get(activeId);
     }
+  }
+
+  rename(rowId, name){
+    waveformDB.get(rowId).name = name;
+    this.nameCol.reload();
   }
 
   moveCursorTo(time){
