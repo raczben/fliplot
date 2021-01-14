@@ -1,10 +1,10 @@
-import { waveformDB } from "../core/WaveformDB.js";
 import { NameCol } from "./NameCol.js";
 import { ValueCol } from "./ValueCol.js";
 import { Wave } from "./Wave.js";
 
 export class WaveTable {
-  constructor() {
+  constructor(waveformDB) {
+    this.waveformDB = waveformDB;
     this.nameCol = new NameCol(this);
     this.valueCol = new ValueCol(this);
     this.wave = new Wave(this);
@@ -45,21 +45,21 @@ export class WaveTable {
   }
 
   moveRow(rowId, pos) {
-    waveformDB.moveRow(rowId, pos);
+    this.waveformDB.moveRow(rowId, pos);
     this.nameCol.moveRow(rowId, pos);
     this.valueCol.moveRow(rowId, pos);
     this.wave.moveRow(rowId, pos);
   }
 
   openGroup(rowId) {
-    waveformDB.get(rowId).openGroup();
+    this.waveformDB.get(rowId).openGroup();
     this.nameCol.openGroup(rowId);
     this.valueCol.openGroup(rowId);
     this.wave.openGroup(rowId);
   }
 
   closeGroup(rowId) {
-    waveformDB.get(rowId).closeGroup();
+    this.waveformDB.get(rowId).closeGroup();
     this.nameCol.closeGroup(rowId);
     this.valueCol.closeGroup(rowId);
     this.wave.closeGroup(rowId);
@@ -72,13 +72,16 @@ export class WaveTable {
   }
 
   removeRow(rowId) {
-    waveformDB.removeRow(rowId);
+    this.waveformDB.removeRow(rowId);
     this.nameCol.removeRow(rowId);
     this.valueCol.removeRow(rowId);
     this.wave.removeRow(rowId);
   }
   
   removeRows(rowIds){
+    if(rowIds === undefined){
+      rowIds = this.getSelectedRows();
+    }
     rowIds.forEach(element => {
         this.removeRow(element);
     });
@@ -86,7 +89,7 @@ export class WaveTable {
 
   addObjects(hierarchies){
     const newIds = hierarchies.map(hier => {
-      return waveformDB.insertWaveSignal(hier);
+      return this.waveformDB.insertWaveSignal(hier);
     });
     newIds.forEach(id => {
       this.insertRow(id);
@@ -94,7 +97,7 @@ export class WaveTable {
   }
 
   getVisibleRows(){
-    return waveformDB.rows.filter(
+    return this.waveformDB.rows.filter(
       row => row.isVisible()
       // row => this.nameCol.isVisible(row.id)
     );
@@ -106,7 +109,7 @@ export class WaveTable {
     } else{
       // return rows itself
       return this.nameCol.getSelectedRows().map(
-        element => waveformDB.get(element)
+        element => this.waveformDB.get(element)
       );
     }
   }
@@ -116,12 +119,12 @@ export class WaveTable {
     if(id){
       return activeId;
     } else {
-      return waveformDB.get(activeId);
+      return this.waveformDB.get(activeId);
     }
   }
 
   rename(rowId, name){
-    waveformDB.get(rowId).name = name;
+    this.waveformDB.get(rowId).name = name;
     this.nameCol.reload();
   }
 

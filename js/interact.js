@@ -11,7 +11,7 @@ import { WaveTable } from './wave_table/WaveTable.js';
 // TODO should be moved somewhere else.
 export var config = {};
 
-const waveTable = new WaveTable();
+const waveTable = new WaveTable(waveformDB);
 export var simDB = new SimDB();
 
 function showSignals() {
