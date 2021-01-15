@@ -16,9 +16,7 @@ import {
 class WaveformDB{
     constructor(){
         /**  @type {WaveformRow[]} */
-        this.rows = []; 
-        /**  @type {number} */
-        this._idGenerator=0;
+        this.rows = [];
     }
 
     /**
@@ -35,7 +33,6 @@ class WaveformDB{
         const obj = simDB.getObject(hierarchy);
         /** @type {WaveformRow} rowItem */
         const rowItem = new WaveformRow(obj)
-        rowItem.id = `waveform_row_${waveformDB._idGenerator++}`;
         
         this.rows.splice(position, 0, rowItem);
 
@@ -43,7 +40,6 @@ class WaveformDB{
             for(var i=0; i<obj.signal.width; i++){
                 const subObj = obj.cloneRange(i);
                 const subRowItem = new WaveformRow(subObj, rowItem);
-                subRowItem.id = `waveform_row_${waveformDB._idGenerator++}`;
                 this.rows.splice(position+i+1, 0, subRowItem);
             }
         }

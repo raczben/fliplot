@@ -1,6 +1,10 @@
 import { SimulationObject } from "./SimulationObject.js"
 
 export class WaveformRow{
+
+    /**  @type {number} */
+    static _idGenerator=0;
+
     /**
      * 
      * @param {SimulationObject} simObj 
@@ -10,7 +14,7 @@ export class WaveformRow{
         /** @type {string} */
         this.type = 'signal';
         /** @type {string} */
-        this.id = 'ABC123';
+        this.id = `wfr-${WaveformRow._idGenerator++}`;
         /** @type {SimulationObject} */
         this.simObj = simObj;
         /** @type {string} */
