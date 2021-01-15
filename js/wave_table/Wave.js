@@ -463,43 +463,43 @@ export class Wave {
     if (rowData.waveStyle == 'bit') {
 
       // horizontal aka. timeholder:
-      const timeholders = signalWaveSVG.selectAll('.timeholder')
-        .data(waveChangesIndex);
+      var timeholders = signalWaveSVG.selectAll('.timeholder')
+        .data(waveChangesIndex, d=> d[WAVEARRAY].getTimeAtI(d[IDX]));
 
       timeholders.exit().remove();
 
-      timeholders.enter()
+      timeholders = timeholders.enter()
         .append('line')
         .classed('timeholder', true);
 
       // vertical aka. valuechanger
-      const valuechanger = signalWaveSVG.selectAll('.valuechanger')
-        .data(waveChangesIndex.slice(1));
+      var valuechanger = signalWaveSVG.selectAll('.valuechanger')
+        .data(waveChangesIndex.slice(1), d=> d[WAVEARRAY].getTimeAtI(d[IDX]));
 
       valuechanger.exit().remove();
 
-      valuechanger.enter()
+      valuechanger = valuechanger.enter()
         .append('line')
         .classed('valuechanger', true);
 
       // transparent rect
-      const transRect = signalWaveSVG.selectAll('.transparent-rect')
-        .data(waveChangesIndex);
+      var transRect = signalWaveSVG.selectAll('.transparent-rect')
+        .data(waveChangesIndex, d=> d[WAVEARRAY].getTimeAtI(d[IDX]));
 
       transRect.exit().remove();
 
-      transRect.enter()
+      transRect = transRect.enter()
         .append('rect')
         .classed('transparent-rect', true);
 
-      signalWaveSVG.selectAll('.transparent-rect')
+      transRect
         .attr('x', d => this.initialTimeScale(d[WAVEARRAY].getTimeAtI(d[IDX])))
         .attr('y', d => this.bitWaveScale(parseIntDef(d[WAVEARRAY].getValueAtI(d[IDX]))))
         .attr('width', d => this.initialTimeScale((d[WAVEARRAY].getTimeAtI(d[IDX] + 1)) - d[WAVEARRAY].getTimeAtI(d[IDX])))
         .attr('height', d => this.bitWaveScale(1 - parseIntDef(d[WAVEARRAY].getValueAtI(d[IDX]))) - 2)
         .style("fill", d => value2Color(d[WAVEARRAY].getValueAtI(d[IDX])));
 
-      signalWaveSVG.selectAll('.timeholder')
+      timeholders
         .attr('x1', d => this.initialTimeScale(d[WAVEARRAY].getTimeAtI(d[IDX])))
         .attr('y1', d => this.bitWaveScale(parseIntDef(d[WAVEARRAY].getValueAtI(d[IDX]))))
         .attr('x2', d => this.initialTimeScale(d[WAVEARRAY].getTimeAtI(d[IDX] + 1)))
@@ -507,7 +507,7 @@ export class Wave {
         .style("stroke", d => value2Color(d[WAVEARRAY].getValueAtI(d[IDX])))
         .attr('vector-effect', 'non-scaling-stroke');
 
-      signalWaveSVG.selectAll('.valuechanger')
+      valuechanger
         .attr('x1', d => this.initialTimeScale(d[WAVEARRAY].getTimeAtI(d[IDX])))
         .attr('y1', d => this.bitWaveScale(parseIntDef(d[WAVEARRAY].getValueAtI([d[IDX] - 1]))))
         .attr('x2', d => this.initialTimeScale(d[WAVEARRAY].getTimeAtI(d[IDX])))
@@ -516,30 +516,32 @@ export class Wave {
         .attr('vector-effect', 'non-scaling-stroke');
 
     } else if (rowData.waveStyle == 'bus') {
-      const busPath = signalWaveSVG.selectAll('path')
-        .data(waveChangesIndex);
+      var busPath = signalWaveSVG.selectAll('path')
+        .data(waveChangesIndex, d=> d[WAVEARRAY].getTimeAtI(d[IDX]));
 
-      signalValuesSVG.selectAll('.bus-value-group').remove();
-      const busValue = signalValuesSVG.selectAll('.bus-value-group')
-        .data(waveChangesIndex);
+      // signalValuesSVG.selectAll('.bus-value-group').remove();
+      var busValue = signalValuesSVG.selectAll('.bus-value-group')
+        .data(waveChangesIndex, d=> d[WAVEARRAY].getTimeAtI(d[IDX]));
 
       busPath.exit().remove();
       busValue.exit().remove();
 
-      busPath.enter()
+      busPath = busPath.enter()
         .append('path')
         .classed('bus-path', true);
-      busValue.enter()
+      busValue = busValue.enter()
         .append('g')
         .classed('bus-value-group', true)
         .append('text')
         .classed('bus-value', true);
 
-      signalWaveSVG.selectAll('.bus-path')
+      busPath
         .attr('vector-effect', 'non-scaling-stroke')
         .style("stroke", d => value2Color(d[WAVEARRAY].getValueAtI(d[IDX])))
         .style("fill", d => value2Color(d[WAVEARRAY].getValueAtI(d[IDX])))
         .style("stroke-width", "2")
+      
+      signalWaveSVG.selectAll('.bus-path')
         .attr('d', d => {
           var ret = '';
           ret += `M${(d[WAVEARRAY].getTimeAtI(d[IDX] + 1)) - (this.timeScale.invert(2))},${this.bitWaveScale(1)} `
@@ -555,7 +557,7 @@ export class Wave {
         });
 
       const self = this;
-      d3.selectAll('.bus-value')
+      busValue
         .text(d => d[WAVEARRAY].getValueAtI(d[IDX]))
         .attr("y", config.rowHeight / 2)
         .attr('x', d => this.timeScale(d[WAVEARRAY].getTimeAtI(d[IDX]) + d[WAVEARRAY].getTimeAtI(d[IDX] + 1)) / 2)
