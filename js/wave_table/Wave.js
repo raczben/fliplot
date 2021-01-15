@@ -452,7 +452,7 @@ export class Wave {
 
     var waveChangesIndex = rowData.simObj.signal.wave.reduce((res, current, i) => {
       if (this.waveIInRenderRange(rowData.simObj.signal, i)) {
-        res.push([rowData.simObj.signal, i]);
+        res.push([rowData, i]);
       }
       return res;
     }, []);
