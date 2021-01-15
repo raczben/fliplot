@@ -285,3 +285,8 @@ rect.signal-highlighter {
 #values-col-container i {
   display: none;
 }
+
+.menu-label{
+  color: #222;
+  font-weight: 300;
+}

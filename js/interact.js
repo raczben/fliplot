@@ -88,12 +88,16 @@ $( ".resizable-col" ).resizable({
   handles: "e"
   });
 
-$("#dbg_updateRenderRange").click(() => {
-  waveTable.wave.dbg_setEnableUpdateRenderRange($("#dbg_updateRenderRange").is(":checked"));
+$(".dbg_updateRenderRange").click(function() {
+  const checked = $(this).is(":checked")
+  waveTable.wave.dbg_setEnableUpdateRenderRange(checked);
+  $(".dbg_updateRenderRange").prop('checked', checked);
 });
 
-$("#dbg_enableRender").click(() => {
-  waveTable.wave.dbg_setEnableRender($("#dbg_enableRender").is(":checked"));
+$(".dbg_enableRender").click(function() {
+  const checked = $(this).is(":checked")
+  waveTable.wave.dbg_setEnableRender(checked);
+  $(".dbg_enableRender").prop('checked', checked);
 });
 
 $("#file-open-button").click(() => {
