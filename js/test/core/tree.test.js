@@ -59,8 +59,8 @@ describe('Tree Test', function() {
 		assert.equal(t.getParent('b1'), b);
 		assert.equal(t.getParent('b2'), b);
 
-		expect(t.getChildren('a').map(n=>n.id)).to.eql([a, a0, a1].map(n=>n.id));
 		expect(t.getChildren('b', Tree.Traverse.SHALLOW)).to.eql([b0, b1, b2]);
+		expect(t.getChildren('a').map(n=>n.id)).to.eql([a0, a1].map(n=>n.id));
 
 		done();
 	});
@@ -126,7 +126,41 @@ describe('Tree Test', function() {
 		t.move('b', 3, 'a')
 		expect(t.get('b').children.map(n=>n.id)).to.eql(['b0', 'b1']);
 		expect(t.get('a').children.map(n=>n.id)).to.eql(['a0', 'a1', 'b2', 'b']);
+		expect(t.getChildren('#').map(n=>n.id)).to.eql(['a', 'a0', 'a1', 'b2', 'b', 'b0', 'b1']);
 
+		done();
+	});
+
+	it('remove', function(done) {
+        var t = new Tree();
+
+        t.insert('a');
+        t.insert('a0', 'a');
+		t.insert('a1', 'a');
+		
+        t.insert('b');
+        t.insert('b2', 'b', 0);
+        t.insert('b0', 'b', 0);
+		t.insert('b1', 'b', 1);
+		
+		
+		assert.equal(Object.keys(t.nodes).length, 8);
+		t.remove('b0', 1)
+		expect(t.get('b').children.map(n=>n.id)).to.eql(['b1', 'b2']);
+		assert.equal(Object.keys(t.nodes).length, 7);
+		
+		t.remove('b2', 1)
+		expect(t.get('b').children.map(n=>n.id)).to.eql(['b1']);
+		assert.equal(Object.keys(t.nodes).length, 6);
+		
+		t.remove('b', 0)
+		expect(t.getChildren('#').map(n=>n.id)).to.eql(['a', 'a0', 'a1']);
+		assert.equal(Object.keys(t.nodes).length, 4);
+		
+		t.remove('a', 0)
+		expect(t.getChildren('#').map(n=>n.id)).to.eql([]);
+		assert.equal(Object.keys(t.nodes).length, 1);
+		
 		done();
 	});
 

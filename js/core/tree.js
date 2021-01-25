@@ -54,28 +54,12 @@ export class Tree {
         parent.children.splice(pos, 0, child);
     }
 
-    remove(id) {
+    remove(node) {
         node = this.get(node);
-        const parChildren = this.getParent(id).children;
-        parChildren.splice(parChildren.indexOf(item), 1);
+        const parChildren = node.parent.children;
+        parChildren.splice(parChildren.indexOf(node), 1);
         this.getChildren(node).forEach(child => delete this.nodes[child.id]);
-    }
-
-    getChildren(node, traverse=Tree.Traverse.PREORDER, field=null){
-        node = this.get(node);
-        if(traverse == Tree.Traverse.SHALLOW){
-            var children = node.children;
-        } else if(traverse == Tree.Traverse.PREORDER){
-            children = [node]
-            children.push(...node.children.reduce((acc, child) => {
-                acc.push(...(this.getChildren(child, traverse, field)));
-                return acc;
-            }, []));
-        }
-        if(field){
-            return children.map(child => child[field]);
-        }
-        return children;
+        delete this.nodes[node.id]
     }
 
     move(node, pos, parent, force=false){
@@ -97,11 +81,56 @@ export class Tree {
         parent.children.splice(pos, 0, node);
     }
 
+    traverse(node, traverse=Tree.Traverse.PREORDER, getHidden=true){
+        node = this.get(node);
+        var children = [node];
+        if(traverse == Tree.Traverse.SHALLOW){
+            return children;
+        } else if(traverse == Tree.Traverse.PREORDER){
+            if(getHidden || node.opened){
+                children.push(...node.children.reduce((acc, child) => {
+                    acc.push(...(this.traverse(child, traverse)));
+                    return acc;
+                }, []));
+            }
+            return children;
+        }
+
+    }
+
+    getChildren(node, traverse=Tree.Traverse.PREORDER, field=null, getHidden=true){
+        node = this.get(node);
+        var children = node.children.reduce((acc, child) => 
+            acc.concat(this.traverse(child, traverse, getHidden)), []);
+            
+        if(field){
+            return children.map(child => child[field]);
+        }
+        return children;
+    }
+
+    getVisible(node, traverse=Tree.Traverse.PREORDER, field=null){
+        if(!node){
+            node = this._root;
+        }
+        this.getChildren(node, traverse, field, false);
+    }
+
     open(node, open=true){
         this.get(node).opened = open;
     }
 
     close(node){
         this.open(node, false);
+    }
+
+    openAll(open=true){
+        for(var id in this.nodes){
+            this.open(id, open);
+        }
+    }
+
+    closeAll(){
+        this.openAll(false);
     }
 }
