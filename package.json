@@ -3,17 +3,19 @@
   "version": "1.0.0",
   "description": "HTML based waveform viewer for HDL simulators",
   "private": true,
+  "type": "module",
   "directories": {
     "test": "test"
   },
-  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.2",
+    "chai": "^4.2.0",
     "eslint": "^7.11.0",
     "jshint": "^2.12.0",
+    "mocha": "^8.2.1",
     "webpack": "^5.13.0",
     "webpack-cli": "^4.3.1",
     "webpack-dev-server": "^3.11.2"

@@ -1,5 +1,3 @@
-const path = require('path');
-
 module.exports = {
     entry: './js/interact.js',
     module: {
