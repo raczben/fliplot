@@ -16,7 +16,8 @@ export class Tree {
     })
 
     constructor(id='#', data) {
-        this._root = new Node(id, data, null, []);;
+        this._root = new Node(id, data, null, []);
+        this._root.opened = true;
         this.nodes = {};
         this.nodes[id] = this._root;
     }
@@ -113,11 +114,16 @@ export class Tree {
         if(!node){
             node = this._root;
         }
-        this.getChildren(node, traverse, field, false);
+        return this.getChildren(node, traverse, field, false);
     }
 
     open(node, open=true){
-        this.get(node).opened = open;
+        node = this.get(node);
+        if(node === this._root){
+            return;
+        } else{
+            node.opened = open;
+        }
     }
 
     close(node){

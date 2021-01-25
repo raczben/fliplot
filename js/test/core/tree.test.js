@@ -164,6 +164,32 @@ describe('Tree Test', function() {
 		done();
 	});
 
+	it('open-close', function(done) {
+        var t = new Tree();
+
+        t.insert('a');
+        t.insert('a0', 'a');
+		t.insert('a1', 'a');
+		
+        t.insert('b');
+        t.insert('b2', 'b', 0);
+        t.insert('b0', 'b', 0);
+		t.insert('b1', 'b', 1);
+		
+		expect(t.getVisible().map(n=>n.id)).to.eql(['a', 'b']);
+		
+		t.open('a');
+		expect(t.getVisible().map(n=>n.id)).to.eql(['a', 'a0', 'a1', 'b']);
+		
+		t.openAll();
+		expect(t.getVisible().map(n=>n.id)).to.eql(['a', 'a0', 'a1', 'b', 'b0', 'b1', 'b2']);
+		
+		t.closeAll();
+		expect(t.getVisible().map(n=>n.id)).to.eql(['a', 'b']);
+		
+		done();
+	});
+
 
 });
 
