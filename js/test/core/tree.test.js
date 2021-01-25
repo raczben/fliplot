@@ -29,6 +29,14 @@ describe('Tree Test', function() {
         t.insert('b0', 'b', 0);
         t.insert('b1', 'b', 1);
 		
+		const a =  t.get('a');
+		const a0 = t.get('a0');
+		const a1 = t.get('a1');
+		const b =  t.get('b');
+		const b0 = t.get('b0');
+		const b1 = t.get('b1');
+		const b2 = t.get('b2');
+		
 		assert.equal(t.get('a'), t._root.children[0]);
 		assert.equal(t.get('b'), t._root.children[1]);
 		assert.equal(t.get('a0'), t.get('a').children[0]);
@@ -36,6 +44,23 @@ describe('Tree Test', function() {
 		assert.equal(t.get('b0'), t.get('b').children[0]);
 		assert.equal(t.get('b1'), t.get('b').children[1]);
 		assert.equal(t.get('b2'), t.get('b').children[2]);
+
+		assert.equal(t.getId('a'), 'a');
+		assert.equal(t.getId(b), 'b');
+		assert.equal(t.getId('a0'), 'a0');
+		assert.equal(t.getId('a1'), 'a1');
+		assert.equal(t.getId('b0'), 'b0');
+		assert.equal(t.getId('b1'), 'b1');
+		assert.equal(t.getId('b2'), 'b2');
+
+		assert.equal(t.getParent('a0'), a);
+		assert.equal(t.getParent('a1'), a);
+		assert.equal(t.getParent('b0'), b);
+		assert.equal(t.getParent('b1'), b);
+		assert.equal(t.getParent('b2'), b);
+
+		expect(t.getChildren('a').map(n=>n.id)).to.eql([a, a0, a1].map(n=>n.id));
+		expect(t.getChildren('b', Tree.Traverse.SHALLOW)).to.eql([b0, b1, b2]);
 
 		done();
 	});

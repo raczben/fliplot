@@ -10,6 +10,11 @@ export class Node {
 }
  
 export class Tree {
+    static Traverse = Object.freeze({
+        SHALLOW:'shallow',
+        PREORDER:'preorder'
+    })
+
     constructor(id='#', data) {
         this._root = new Node(id, data, null, []);;
         this.nodes = {};
@@ -41,7 +46,7 @@ export class Tree {
             parent = this.get(parent);
         }
         if(pos<0){
-            pos = this.getChildren(parent, false).length;
+            pos = parent.children.length;
         }
         var child = new Node(id, data, this.get(parent), []);
         this.nodes[id] = child;
@@ -56,11 +61,16 @@ export class Tree {
         this.getChildren(node).forEach(child => delete this.nodes[child.id]);
     }
 
-    getChildren(node, recursive=true, field=null){
+    getChildren(node, traverse=Tree.Traverse.PREORDER, field=null){
         node = this.get(node);
-        var children = node.children;
-        if(recursive){
-            children.push(children.map(n => this.getChildren(n, recursive, field)));
+        if(traverse == Tree.Traverse.SHALLOW){
+            var children = node.children;
+        } else if(traverse == Tree.Traverse.PREORDER){
+            children = [node]
+            children.push(...node.children.reduce((acc, child) => {
+                acc.push(...(this.getChildren(child, traverse, field)));
+                return acc;
+            }, []));
         }
         if(field){
             return children.map(child => child[field]);
