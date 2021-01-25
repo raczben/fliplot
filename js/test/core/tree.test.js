@@ -27,7 +27,7 @@ describe('Tree Test', function() {
         t.insert('b');
         t.insert('b2', 'b', 0);
         t.insert('b0', 'b', 0);
-        t.insert('b1', 'b', 1);
+		t.insert('b1', 'b', 1);
 		
 		const a =  t.get('a');
 		const a0 = t.get('a0');
@@ -97,6 +97,39 @@ describe('Tree Test', function() {
 
 		done();
 	});
+
+	it('move', function(done) {
+        var t = new Tree();
+
+        t.insert('a');
+        t.insert('a0', 'a');
+		t.insert('a1', 'a');
+		
+        t.insert('b');
+        t.insert('b2', 'b', 0);
+        t.insert('b0', 'b', 0);
+		t.insert('b1', 'b', 1);
+		
+		t.move('b0', 1)
+		expect(t.get('b').children.map(n=>n.id)).to.eql(['b1', 'b0', 'b2']);
+		
+		t.move('b0', 1)
+		expect(t.get('b').children.map(n=>n.id)).to.eql(['b1', 'b0', 'b2']);
+		
+		t.move('b0', 0)
+		expect(t.get('b').children.map(n=>n.id)).to.eql(['b0', 'b1', 'b2']);
+		
+		t.move('b2', 2, 'a')
+		expect(t.get('b').children.map(n=>n.id)).to.eql(['b0', 'b1']);
+		expect(t.get('a').children.map(n=>n.id)).to.eql(['a0', 'a1', 'b2']);
+		
+		t.move('b', 3, 'a')
+		expect(t.get('b').children.map(n=>n.id)).to.eql(['b0', 'b1']);
+		expect(t.get('a').children.map(n=>n.id)).to.eql(['a0', 'a1', 'b2', 'b']);
+
+		done();
+	});
+
 
 });
 

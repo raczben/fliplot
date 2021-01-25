@@ -78,11 +78,21 @@ export class Tree {
         return children;
     }
 
-    move(node, pos, parent){
+    move(node, pos, parent, force=false){
         node = this.get(node);
-        parent = this.get(parent);
-        const parChildren = this.getParent(id).children;
-        parChildren.splice(parChildren.indexOf(item), 1);
+        if(!parent){
+            parent = node.parent;
+        } else {
+            parent = this.get(parent);
+        }
+        const parChildren = node.parent.children;
+        const currentPos = parChildren.indexOf(node);
+        if(!force){
+            if(parent==node.parent && pos==currentPos){
+                return;
+            }
+        }
+        parChildren.splice(currentPos, 1);
         node.parent = parent;
         parent.children.splice(pos, 0, node);
     }
