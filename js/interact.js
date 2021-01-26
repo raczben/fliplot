@@ -5,7 +5,7 @@ import {
 import {
   waveformDB
 } from './core/WaveformDB.js';
-import { Tree } from './tree.js';
+import { ObjectTree } from './ObjectTree.js';
 import { WaveTable } from './wave_table/WaveTable.js';
 
 // TODO should be moved somewhere else.
@@ -137,7 +137,7 @@ function initShow(data){
   simDB.init(vcdpy2simDb(data));
   waveformDB.addAllWaveSignal();
   simDB.updateDBInitialX();
-  const tree = new Tree(waveTable);
+  const tree = new ObjectTree(waveTable);
   tree.showTree();
 
   console.log(simDB);

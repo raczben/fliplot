@@ -1,6 +1,6 @@
 import { simDB } from "./interact.js";
 
-export class Tree{
+export class ObjectTree{
     constructor(waveTable){
         /** @type {string} */
         this.containerName = '#object-tree';
