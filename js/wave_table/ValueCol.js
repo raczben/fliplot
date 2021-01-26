@@ -52,15 +52,15 @@ export class ValueCol {
 
   reload() {
     const tree = []
-    waveformDB.rows.forEach(row => {
+    waveformDB.rows.getChildren('#').forEach(row => {
       var treeObj = {};
       treeObj['id'] = this.toId(row.id);
-      if (row.parent) {
-        treeObj['parent'] = this.toId(row.parent.id);
-      } else {
+      if (row.parent.id == '#') {
         treeObj['parent'] = '#';
+      } else {
+        treeObj['parent'] = this.toId(row.parent.id);
       }
-      treeObj['text'] = row.getValueAt(0);
+      treeObj['text'] = row.data.getValueAt(0);
       treeObj['data'] = row.id;
       tree.push(treeObj)
     });
@@ -124,8 +124,8 @@ export class ValueCol {
     if(time === undefined){
       time = this.waveTable.getCursorTime();
     }
-    waveformDB.rows.forEach(row => {
-      this._getTree().rename_node(this.toId(row.id), row.getValueAt(time));
+    waveformDB.rows.nodeList().forEach(row => {
+      this._getTree().rename_node(this.toId(row.id), row.data.getValueAt(time));
     });
   }
 

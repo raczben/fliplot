@@ -54,15 +54,15 @@ export class NameCol {
 
   reload() {
     const tree = []
-    waveformDB.rows.forEach(row => {
+    waveformDB.rows.getChildren('#').forEach(row => {
       var treeObj = {};
       treeObj['id'] = this.toId(row.id);
-      if (row.parent) {
-        treeObj['parent'] = this.toId(row.parent.id);
-      } else {
+      if (row.parent.id == '#') {
         treeObj['parent'] = '#';
+      } else {
+        treeObj['parent'] = this.toId(row.parent.id);
       }
-      treeObj['text'] = row.name;
+      treeObj['text'] = row.data.name;
       treeObj['data'] = row.id;
       tree.push(treeObj)
     });

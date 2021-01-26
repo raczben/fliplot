@@ -96,7 +96,6 @@ export class Tree {
             }
             return children;
         }
-
     }
 
     getChildren(node, traverse=Tree.Traverse.PREORDER, field=null, getHidden=true){
@@ -138,5 +137,9 @@ export class Tree {
 
     closeAll(){
         this.openAll(false);
+    }
+
+    nodeList(){
+        return Object.values(this.nodes).filter(n => n!=this._root);
     }
 }

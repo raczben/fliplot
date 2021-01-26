@@ -11,12 +11,13 @@ import {
 import {
     simDB
 } from '../interact.js';
+import { Tree } from './tree.js';
 
 
 class WaveformDB{
     constructor(){
-        /**  @type {WaveformRow[]} */
-        this.rows = [];
+        /**  @type {Tree} */
+        this.rows = new Tree();
     }
 
     /**
@@ -25,22 +26,19 @@ class WaveformDB{
      * @param {string[]} hierarchy 
      * @param {number} position 
      */
-    insertWaveSignal(hierarchy, position=-1, busAsBus=true){
-        if(position<0){
-            position = this.rows.length;
-        }
+    insertWaveSignal(hierarchy, parent=null, position=-1, busAsBus=true){
         /** @type {SimulationObject} obj */
         const obj = simDB.getObject(hierarchy);
         /** @type {WaveformRow} rowItem */
         const rowItem = new WaveformRow(obj)
         
-        this.rows.splice(position, 0, rowItem);
+        this.rows.insert(rowItem.id, parent, position, rowItem);
 
         if(busAsBus && rowItem.waveStyle=='bus'){
             for(var i=0; i<obj.signal.width; i++){
                 const subObj = obj.cloneRange(i);
                 const subRowItem = new WaveformRow(subObj, rowItem);
-                this.rows.splice(position+i+1, 0, subRowItem);
+                this.rows.insert(subRowItem.id, rowItem.id, i, subRowItem);
             }
         }
 
@@ -63,26 +61,17 @@ class WaveformDB{
      * 
      * @param {waveformRow} waveformRow 
      */
-    removeRow(waveformRow, recursive=true){
-        var idx = -1;
-        if(typeof waveformRow == 'number'){
-            idx = waveformRow;
-        } else {
-            idx = this.getIdx(waveformRow);
-        }
-        waveformRow = this.rows[idx];
-        if(recursive){
-            this.removeRows(this.getChildren(waveformRow));
-        }
-        idx = this.getIdx(waveformRow);
-        this.rows.splice(idx, 1);
+    removeRow(id, recursive=true){
+        id = this.getId(id);
+        this.rows.remove(id);
+    }
+
+    getVisible(parent){
+        return this.rows.getVisible(parent).map(node => node.data)
     }
 
     getChildren(parent){
-        parent = this.get(parent);
-        return this.rows.filter(
-            row => row.parent == parent
-        );
+        return this.rows.getVisible(parent).map(node => node.data)
     }
 
     /**
@@ -90,8 +79,7 @@ class WaveformDB{
      */
     addAllWaveSignal(clear = true){
         if(clear){
-            /**  @type {WaveformRow[]} */
-            this.rows = []; 
+            this.rows = new Tree();
         }
         
         for (var key in simDB.objects) {
@@ -106,34 +94,45 @@ class WaveformDB{
     /**
      * Get signal by waveform id.
      */
-    get(idOrRow){
-        if(this.rows.includes(idOrRow)){
-            // the id is a row
-            return idOrRow;
+    get(id) {
+        if(id.constructor == WaveformRow){
+            id = id.id;
         }
-        for(const i in this.rows){
-            if(this.rows[i].id == idOrRow){
-                return this.rows[i];
-            }
-        }
+        return this.rows.get(id).data;
     }
 
     /**
-     * Get idx by waveform id.
+     * Get signal by waveform id.
      */
-    getIdx(idOrRow){
-        for(const i in this.rows){
-            if(this.rows[i].id == idOrRow || this.rows[i] == idOrRow){
-                return i;
-            }
+    getId(row) {
+        if(row.constructor != WaveformRow){
+            row = this.rows.get(row);
         }
+        return row.id;
     }
 
-    moveRow(row, pos){
-        // Based on: https://stackoverflow.com/a/7180095/2506522
-        const idx = this.getIdx(row);
-        this.rows.splice(pos, 0, this.rows.splice(idx, 1)[0]);
+
+    moveRow(row, pos, parent, force=false){
+        this.rows.move(row, pos, parent, force);
     }
+
+    open(id, open=true){
+        id = this.getId(id);
+        this.rows.open(id, open);
+    }
+
+    close(node){
+        this.open(node, false);
+    }
+
+    openAll(open=true){
+        this.rows.openAll(open);
+    }
+
+    closeAll(){
+        this.openAll(false);
+    }
+
 
 }
 

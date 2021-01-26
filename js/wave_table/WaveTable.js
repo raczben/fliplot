@@ -53,14 +53,14 @@ export class WaveTable {
   }
 
   openGroup(rowId) {
-    this.waveformDB.get(rowId).openGroup();
+    this.waveformDB.open(rowId);
     this.nameCol.openGroup(rowId);
     this.valueCol.openGroup(rowId);
     this.wave.openGroup(rowId);
   }
 
   closeGroup(rowId) {
-    this.waveformDB.get(rowId).closeGroup();
+    this.waveformDB.close(rowId);
     this.nameCol.closeGroup(rowId);
     this.valueCol.closeGroup(rowId);
     this.wave.closeGroup(rowId);
@@ -98,10 +98,7 @@ export class WaveTable {
   }
 
   getVisibleRows(){
-    return this.waveformDB.rows.filter(
-      row => row.isVisible()
-      // row => this.nameCol.isVisible(row.id)
-    );
+    return this.waveformDB.getChildren();
   }
 
   getSelectedRows(ids=true) {
