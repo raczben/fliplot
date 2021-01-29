@@ -23,6 +23,9 @@ export class Tree {
     }
 
     get(id) {
+        if(id == undefined){
+            return this._root;
+        }
         if(id.constructor == Node){
             id = id.id;
         }
@@ -30,7 +33,9 @@ export class Tree {
     }
 
     getId(node) {
-        if(node.constructor != Node){
+        if(node == undefined){
+            node = this._root;
+        } else if(node.constructor != Node){
             node = this.nodes[node];
         }
         return node.id;
@@ -41,15 +46,11 @@ export class Tree {
     }
 
     insert(id, parent, pos=-1, data=null) {
-        if(!parent){
-            parent = this._root;
-        } else {
-            parent = this.get(parent);
-        }
+        parent = this.get(parent);
         if(pos<0){
             pos = parent.children.length;
         }
-        var child = new Node(id, data, this.get(parent), []);
+        var child = new Node(id, data, parent, []);
         this.nodes[id] = child;
         child.parent = parent;
         parent.children.splice(pos, 0, child);

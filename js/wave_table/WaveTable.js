@@ -1,11 +1,19 @@
+import { SimDB } from "../core/SimDB.js";
+import { SimulationObject } from "../core/SimulationObject.js";
+import { Tree } from "../core/tree.js";
+import { WaveformRow } from "../core/WaveformRow.js";
 import { NameCol } from "./NameCol.js";
 import { ValueCol } from "./ValueCol.js";
 import { Wave } from "./Wave.js";
 
 export class WaveTable {
-  constructor(waveformDB) {
-    /** @type {WaveformDB} */
-    this.waveformDB = waveformDB;
+  constructor(simDB) {
+    if (simDB.constructor != SimDB) {
+      throw "ERROR";
+    }
+    this.simDB = simDB;
+    /**  @type {Tree} */
+    this.tree = new Tree();
     this.nameCol = new NameCol(this);
     this.valueCol = new ValueCol(this);
     this.wave = new Wave(this);
@@ -45,35 +53,36 @@ export class WaveTable {
     this.wave.deSelectRow(rowId);
   }
 
-  moveRow(rowId, pos) {
-    this.waveformDB.moveRow(rowId, pos);
-    this.nameCol.moveRow(rowId, pos);
-    this.valueCol.moveRow(rowId, pos);
-    this.wave.moveRow(rowId, pos);
+  moveRow(rowId, pos, parent) {
+    this.tree.move(rowId, pos, parent);
+    this.nameCol.moveRow(rowId, pos, parent);
+    this.valueCol.moveRow(rowId, pos, parent);
+    this.wave.moveRow(rowId, pos, parent);
   }
 
   openGroup(rowId) {
-    this.waveformDB.open(rowId);
+    this.tree.open(rowId);
     this.nameCol.openGroup(rowId);
     this.valueCol.openGroup(rowId);
     this.wave.openGroup(rowId);
   }
 
   closeGroup(rowId) {
-    this.waveformDB.close(rowId);
+    this.tree.close(rowId);
     this.nameCol.closeGroup(rowId);
     this.valueCol.closeGroup(rowId);
     this.wave.closeGroup(rowId);
   }
 
-  insertRow(rowId, pos = 'last') {
-    this.nameCol.insertRow(rowId, pos);
-    this.valueCol.insertRow(rowId, pos);
-    this.wave.insertRow(rowId, pos);
+  insertRow(row, parent, pos = "last") {
+    this.tree.insert(row.id, parent, pos, row);
+    this.nameCol.insertRow(row.id, parent, pos);
+    this.valueCol.insertRow(row.id, parent, pos);
+    this.wave.insertRow(row.id, parent, pos);
   }
 
   removeRow(rowId) {
-    this.waveformDB.removeRow(rowId);
+    this.tree.remove(rowId);
     this.nameCol.removeRow(rowId);
     this.valueCol.removeRow(rowId);
     this.wave.removeRow(rowId);
@@ -88,50 +97,100 @@ export class WaveTable {
     });
   }
 
-  addObjects(hierarchies){
-    const newIds = hierarchies.map(hier => {
-      return this.waveformDB.insertWaveSignal(hier);
-    });
-    newIds.forEach(id => {
-      this.insertRow(id);
-    });
+  /**
+   * Insert a new signal to waveform window.
+   *
+   * @param {string[]} hierarchy
+   * @param {number} position
+   */
+  insertWaveSignal(hierarchy, parent = null, position = -1, busAsBus = true) {
+    /** @type {SimulationObject} obj */
+    const obj = this.simDB.getObject(hierarchy);
+    /** @type {WaveformRow} rowItem */
+    const rowItem = new WaveformRow(obj);
+
+    this.insertRow(rowItem, parent, position);
+
+    if (busAsBus && rowItem.waveStyle == "bus") {
+      for (var i = 0; i < obj.signal.width; i++) {
+        const subObj = obj.cloneRange(i);
+        const subRowItem = new WaveformRow(subObj);
+        this.insertRow(subRowItem, rowItem.id, i);
+      }
+    }
+
+    return rowItem.id;
   }
 
-  getVisibleRows(){
-    return this.waveformDB.getChildren();
-  }
+  /**
+   * Add all signal from the simDB to the waveform window.
+   */
+  addAllWaveSignal(clear = true) {
+    if (clear) {
+      this.tree = new Tree();
+    }
 
-  getSelectedRows(ids=true) {
-    if(ids){
-      return this.nameCol.getSelectedRows();
-    } else{
-      // return rows itself
-      return this.nameCol.getSelectedRows().map(
-        element => this.waveformDB.get(element)
-      );
+    for (var key in this.simDB.objects) {
+      if (Object.prototype.hasOwnProperty.call(this.simDB.objects, key)) {
+        if (this.simDB.objects[key].type == SimulationObject.Type.SIGNAL) {
+          this.insertWaveSignal(key.split("."));
+  }
+      }
     }
   }
 
-  getActiveRow(id=true) {
+  addObjects(hierarchies) {
+    hierarchies.forEach((hier) => this.insertWaveSignal(hier));
+  }
+
+  getRows({
+    traverse = Tree.Traverse.PREORDER,
+    parent = null,
+    hidden = true,
+    content = false,
+  } = {}) {
+    var field = content ? "data" : null;
+    return this.tree.getChildren(parent, traverse, field, hidden);
+  }
+
+  getRow({id, content = false}) {
+    const n = this.get(id);
+    return content ? n.data : n;
+  }
+
+  getSelectedRows(ids = true) {
+    if (ids) {
+      return this.nameCol.getSelectedRows();
+    } else {
+      // return rows itself
+      return this.nameCol
+        .getSelectedRows()
+        .map((element) => this.tree.get(element).data);
+    }
+  }
+
+  getActiveRow(id = true) {
     const activeId = this.nameCol.getActiveRow();
-    if(id){
+    if (id) {
       return activeId;
     } else {
-      return this.waveformDB.get(activeId);
+      return this.tree.get(activeId).data;
     }
   }
 
-  rename(rowId, name){
-    this.waveformDB.get(rowId).name = name;
+  rename(rowId, name) {
+    this.tree.get(rowId).data.name = name;
     this.nameCol.reload();
   }
 
-  setRadix(radix, rowIds){
-    if(rowIds === undefined){
+  setRadix(radix, rowIds) {
+    if (rowIds === undefined) {
       rowIds = this.getSelectedRows();
     }
-    rowIds.forEach(element => {
-        this.waveformDB.get(element).setRadix(radix);
+    rowIds.forEach((element) => {
+      this.tree.get(element).forEach((n) => {
+        n.data.setRadix(radix);
+      });
         this.valueCol.setRadix(element);
         this.wave.setRadix(element);
     });

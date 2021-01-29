@@ -1,6 +1,6 @@
-import { waveformDB } from "../core/WaveformDB.js";
 import { config, simDB} from "../interact.js";
 import { isInt, wrap_fast } from "../core/util.js";
+import { WaveTable } from "./WaveTable.js";
 
 /* index definitions for render data */
 const WAVEARRAY = 0;
@@ -31,7 +31,6 @@ export class Wave {
     /* Debug variables */
     this.dbg_enableUpdateRenderRange = true;
     this.dbg_enableRender = true;
-
   }
 
   init() {
@@ -73,7 +72,7 @@ export class Wave {
     
     d3.select('#mainGr').selectAll("*").remove();
 
-    const rowsToPlot = this.waveTable.getVisibleRows();
+    const rowsToPlot = this.waveTable.getRows({hidden:false, content:true});
 
     d3.select('#mainSVG')
       .attr('width', simDB.now + 200)
@@ -184,7 +183,7 @@ export class Wave {
    */
   reOrderSignals() {
     d3.select('#mainSVG').selectAll('.signalRow')
-      .data(this.waveTable.getVisibleRows(), d=>d.id)
+      .data(this.waveTable.getRows({hidden:false, content:true}), d=>d.id)
       .order()
       .attr('transform', (d, i) => {
         return `translate(0, ${i * config.rowHeight})`
@@ -199,13 +198,13 @@ export class Wave {
     this.removeRow();
   }
 
-  insertRow(rowId, pos=-1) {
+  insertRow(rowId, parent, pos=-1) {
     this.reload(true)
   }
 
   removeRow(rowId) {
     d3.selectAll('.signalRow').filter(
-      d => !(this.waveTable.getVisibleRows().includes(d))
+      d => !(this.waveTable.getRows({hidden:false, content:true}).includes(d))
     ).remove();
     this.reOrderSignals()
   }
@@ -261,7 +260,7 @@ export class Wave {
    * Autoscale: scale to show enough detail for humans
    */
   zoomAutoscale() {
-    var rows = this.waveTable.getVisibleRows();
+    var rows = this.waveTable.getRows({hidden:false, content:true});
 
     if (rows.length > 0) {
       // Average wave change times

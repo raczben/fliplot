@@ -9,7 +9,7 @@ export class WaveformRow{
      * 
      * @param {SimulationObject} simObj 
      */
-    constructor (simObj, parent){
+    constructor (simObj){
 
         /** @type {string} */
         this.type = 'signal';
@@ -25,9 +25,6 @@ export class WaveformRow{
         this.height = -1;
         /** @type {string} */
         this.name = simObj.hierarchy.join('.');
-        /** @type {WaveformRow} */
-        this.parent = parent;
-        this.opened = false;
 
         this.setRadix();
         
@@ -36,22 +33,6 @@ export class WaveformRow{
         } else {
             this.waveStyle = 'bus';
         }
-    }
-
-    isVisible() {
-        if(this.parent){
-            return this.parent.isVisible() && this.parent.opened;
-        } else{
-            return true;
-        }
-    }
-
-    openGroup(){
-        this.opened = true;
-    }
-
-    closeGroup(){
-        this.opened = false;
     }
 
     /**

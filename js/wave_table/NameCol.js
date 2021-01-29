@@ -1,12 +1,15 @@
-import { waveformDB } from "../core/WaveformDB.js";
 import { WaveTable } from "./WaveTable.js";
 
 export class NameCol {
-  constructor(waveTable) {
+  constructor(waveTable, init=true) {
     /** @type {string} */
     this.containerName = '#names-col-container-scroll';
     /** @type {WaveTable} */
     this.waveTable = waveTable;
+
+    if(init){
+      this.init();
+    }
   }
 
   init(){
@@ -54,7 +57,7 @@ export class NameCol {
 
   reload() {
     const tree = []
-    waveformDB.rows.getChildren('#').forEach(row => {
+    this.waveTable.getRows().forEach(row => {
       var treeObj = {};
       treeObj['id'] = this.toId(row.id);
       if (row.parent.id == '#') {
@@ -67,8 +70,8 @@ export class NameCol {
       tree.push(treeObj)
     });
 
-    this._getTree().settings.core.data = tree;
-    this.refresh();
+      this._getTree().settings.core.data = tree;
+      this.refresh();
   }
 
   refresh(){
@@ -100,7 +103,7 @@ export class NameCol {
     this._getTree().select_node(this.toId(rowId));
   }
 
-  insertRow(rowId, pos = 'last') {
+  insertRow(rowId, parent, pos = 'last') {
     this.reload();
   }
 

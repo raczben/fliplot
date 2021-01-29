@@ -1,12 +1,15 @@
-import { waveformDB } from "../core/WaveformDB.js";
 import { WaveTable } from "./WaveTable.js";
 
 export class ValueCol {
-  constructor(waveTable) {
+  constructor(waveTable, init=true) {
     /**  @type {String} */
     this.containerName = '#values-col-container';
     /**  @type {WaveTable} */
     this.waveTable = waveTable;
+
+    if(init){
+      this.init();
+    }
   }
 
   init(){
@@ -52,7 +55,7 @@ export class ValueCol {
 
   reload() {
     const tree = []
-    waveformDB.rows.getChildren('#').forEach(row => {
+    this.waveTable.getRows().forEach(row => {
       var treeObj = {};
       treeObj['id'] = this.toId(row.id);
       if (row.parent.id == '#') {
@@ -98,7 +101,7 @@ export class ValueCol {
     this._getTree().close_node(this.toId(rowId));
   }
 
-  insertRow(rowId, pos = 'last') {
+  insertRow(rowId, parent, pos = 'last') {
     this.reload();
   }
 
@@ -112,19 +115,19 @@ export class ValueCol {
 
   getSelectedRows() {
     return this._getTree().get_selected(true).map(
-      element => waveformDB.get(element.data)
+      element => waveTable.get(element.data)
     );
   }
 
   getActiveRow() {
-    return waveformDB.get($(this.containerName).get_selected(true)[0].data);
+    return waveTable.get($(this.containerName).get_selected(true)[0].data);
   }
 
   showValuesAt(time) {
     if(time === undefined){
       time = this.waveTable.getCursorTime();
     }
-    waveformDB.rows.nodeList().forEach(row => {
+    this.waveTable.getRows().forEach(row => {
       this._getTree().rename_node(this.toId(row.id), row.data.getValueAt(time));
     });
   }
