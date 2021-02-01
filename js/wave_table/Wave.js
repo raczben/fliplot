@@ -463,7 +463,7 @@ export class Wave {
 
       // horizontal aka. timeholder:
       var timeholders = signalWaveSVG.selectAll('.timeholder')
-        .data(waveChangesIndex, d=> d[WAVEARRAY].getTimeAtI(d[IDX]));
+        .data(waveChangesIndex, d=> d[IDX]);
 
       timeholders.exit().remove();
 
@@ -473,7 +473,7 @@ export class Wave {
 
       // vertical aka. valuechanger
       var valuechanger = signalWaveSVG.selectAll('.valuechanger')
-        .data(waveChangesIndex.slice(1), d=> d[WAVEARRAY].getTimeAtI(d[IDX]));
+        .data(waveChangesIndex.slice(1), d=> d[IDX]);
 
       valuechanger.exit().remove();
 
@@ -483,7 +483,7 @@ export class Wave {
 
       // transparent rect
       var transRect = signalWaveSVG.selectAll('.transparent-rect')
-        .data(waveChangesIndex, d=> d[WAVEARRAY].getTimeAtI(d[IDX]));
+        .data(waveChangesIndex, d=> d[IDX]);
 
       transRect.exit().remove();
 
@@ -516,11 +516,11 @@ export class Wave {
 
     } else if (rowData.waveStyle == 'bus') {
       var busPath = signalWaveSVG.selectAll('path')
-        .data(waveChangesIndex, d=> d[WAVEARRAY].getTimeAtI(d[IDX]));
+        .data(waveChangesIndex, d=> d[IDX]);
 
       // signalValuesSVG.selectAll('.bus-value-group').remove();
       var busValue = signalValuesSVG.selectAll('.bus-value-group')
-        .data(waveChangesIndex, d=> d[WAVEARRAY].getTimeAtI(d[IDX]));
+        .data(waveChangesIndex, d=> d[IDX]);
 
       busPath.exit().remove();
       busValue.exit().remove();
