@@ -1,9 +1,5 @@
-// var chai = require('chai');
 import {Node, Tree} from '../../core/tree.js';
 import { inspect } from 'util';
-import chai from 'chai';
-const { assert } = chai;
-const { expect } = chai;
 
 describe('Tree Test', function() {
 	it('basic insert', function(done) {
@@ -11,8 +7,8 @@ describe('Tree Test', function() {
 
         t.insert('asd', null, 0);
 		
-		assert.equal(t.get('asd'), t.nodes.asd);
-		assert.equal(t.get('asd'), t._root.children[0]);
+		expect(t.get('asd')).toBe(t.nodes.asd);
+		expect(t.get('asd')).toBe(t._root.children[0]);
 
 		done();
 	});
@@ -37,30 +33,30 @@ describe('Tree Test', function() {
 		const b1 = t.get('b1');
 		const b2 = t.get('b2');
 		
-		assert.equal(t.get('a'), t._root.children[0]);
-		assert.equal(t.get('b'), t._root.children[1]);
-		assert.equal(t.get('a0'), t.get('a').children[0]);
-		assert.equal(t.get('a1'), t.get('a').children[1]);
-		assert.equal(t.get('b0'), t.get('b').children[0]);
-		assert.equal(t.get('b1'), t.get('b').children[1]);
-		assert.equal(t.get('b2'), t.get('b').children[2]);
+		expect(t.get('a')).toBe(t._root.children[0]);
+		expect(t.get('b')).toBe(t._root.children[1]);
+		expect(t.get('a0')).toBe(t.get('a').children[0]);
+		expect(t.get('a1')).toBe(t.get('a').children[1]);
+		expect(t.get('b0')).toBe(t.get('b').children[0]);
+		expect(t.get('b1')).toBe(t.get('b').children[1]);
+		expect(t.get('b2')).toBe(t.get('b').children[2]);
 
-		assert.equal(t.getId('a'), 'a');
-		assert.equal(t.getId(b), 'b');
-		assert.equal(t.getId('a0'), 'a0');
-		assert.equal(t.getId('a1'), 'a1');
-		assert.equal(t.getId('b0'), 'b0');
-		assert.equal(t.getId('b1'), 'b1');
-		assert.equal(t.getId('b2'), 'b2');
+		expect(t.getId('a')).toBe('a');
+		expect(t.getId(b)).toBe('b');
+		expect(t.getId('a0')).toBe('a0');
+		expect(t.getId('a1')).toBe('a1');
+		expect(t.getId('b0')).toBe('b0');
+		expect(t.getId('b1')).toBe('b1');
+		expect(t.getId('b2')).toBe('b2');
 
-		assert.equal(t.getParent('a0'), a);
-		assert.equal(t.getParent('a1'), a);
-		assert.equal(t.getParent('b0'), b);
-		assert.equal(t.getParent('b1'), b);
-		assert.equal(t.getParent('b2'), b);
+		expect(t.getParent('a0')).toBe(a);
+		expect(t.getParent('a1')).toBe(a);
+		expect(t.getParent('b0')).toBe(b);
+		expect(t.getParent('b1')).toBe(b);
+		expect(t.getParent('b2')).toBe(b);
 
-		expect(t.getChildren('b', Tree.Traverse.SHALLOW)).to.eql([b0, b1, b2]);
-		expect(t.getChildren('a').map(n=>n.id)).to.eql([a0, a1].map(n=>n.id));
+		expect(t.getChildren('b', Tree.Traverse.SHALLOW)).toEqual([b0, b1, b2]);
+		expect(t.getChildren('a').map(n=>n.id)).toEqual([a0, a1].map(n=>n.id));
 
 		done();
 	});
@@ -87,13 +83,13 @@ describe('Tree Test', function() {
         t.insert('b0', 'b', 0, databank['b0']);
         t.insert('b1', 'b', 1, databank['b1']);
 		
-		assert.equal(t.get('a').data, databank['a']);
-		assert.equal(t.get('b').data, databank['b']);
-		assert.equal(t.get('a0').data, databank['a0']);
-		assert.equal(t.get('a1').data, databank['a1']);
-		assert.equal(t.get('b0').data, databank['b0']);
-		assert.equal(t.get('b1').data, databank['b1']);
-		assert.equal(t.get('b2').data, databank['b2']);
+		expect(t.get('a').data).toBe(databank['a']);
+		expect(t.get('b').data).toBe(databank['b']);
+		expect(t.get('a0').data).toBe(databank['a0']);
+		expect(t.get('a1').data).toBe(databank['a1']);
+		expect(t.get('b0').data).toBe(databank['b0']);
+		expect(t.get('b1').data).toBe(databank['b1']);
+		expect(t.get('b2').data).toBe(databank['b2']);
 
 		done();
 	});
@@ -111,22 +107,22 @@ describe('Tree Test', function() {
 		t.insert('b1', 'b', 1);
 		
 		t.move('b0', 1)
-		expect(t.get('b').children.map(n=>n.id)).to.eql(['b1', 'b0', 'b2']);
+		expect(t.get('b').children.map(n=>n.id)).toEqual(['b1', 'b0', 'b2']);
 		
 		t.move('b0', 1)
-		expect(t.get('b').children.map(n=>n.id)).to.eql(['b1', 'b0', 'b2']);
+		expect(t.get('b').children.map(n=>n.id)).toEqual(['b1', 'b0', 'b2']);
 		
 		t.move('b0', 0)
-		expect(t.get('b').children.map(n=>n.id)).to.eql(['b0', 'b1', 'b2']);
+		expect(t.get('b').children.map(n=>n.id)).toEqual(['b0', 'b1', 'b2']);
 		
 		t.move('b2', 2, 'a')
-		expect(t.get('b').children.map(n=>n.id)).to.eql(['b0', 'b1']);
-		expect(t.get('a').children.map(n=>n.id)).to.eql(['a0', 'a1', 'b2']);
+		expect(t.get('b').children.map(n=>n.id)).toEqual(['b0', 'b1']);
+		expect(t.get('a').children.map(n=>n.id)).toEqual(['a0', 'a1', 'b2']);
 		
 		t.move('b', 3, 'a')
-		expect(t.get('b').children.map(n=>n.id)).to.eql(['b0', 'b1']);
-		expect(t.get('a').children.map(n=>n.id)).to.eql(['a0', 'a1', 'b2', 'b']);
-		expect(t.getChildren('#').map(n=>n.id)).to.eql(['a', 'a0', 'a1', 'b2', 'b', 'b0', 'b1']);
+		expect(t.get('b').children.map(n=>n.id)).toEqual(['b0', 'b1']);
+		expect(t.get('a').children.map(n=>n.id)).toEqual(['a0', 'a1', 'b2', 'b']);
+		expect(t.getChildren('#').map(n=>n.id)).toEqual(['a', 'a0', 'a1', 'b2', 'b', 'b0', 'b1']);
 
 		done();
 	});
@@ -144,22 +140,22 @@ describe('Tree Test', function() {
 		t.insert('b1', 'b', 1);
 		
 		
-		assert.equal(Object.keys(t.nodes).length, 8);
+		expect(Object.keys(t.nodes).length).toBe(8);
 		t.remove('b0', 1)
-		expect(t.get('b').children.map(n=>n.id)).to.eql(['b1', 'b2']);
-		assert.equal(Object.keys(t.nodes).length, 7);
+		expect(t.get('b').children.map(n=>n.id)).toEqual(['b1', 'b2']);
+		expect(Object.keys(t.nodes)).toHaveLength(7);
 		
 		t.remove('b2', 1)
-		expect(t.get('b').children.map(n=>n.id)).to.eql(['b1']);
-		assert.equal(Object.keys(t.nodes).length, 6);
+		expect(t.get('b').children.map(n=>n.id)).toEqual(['b1']);
+		expect(Object.keys(t.nodes)).toHaveLength(6);
 		
 		t.remove('b', 0)
-		expect(t.getChildren('#').map(n=>n.id)).to.eql(['a', 'a0', 'a1']);
-		assert.equal(Object.keys(t.nodes).length, 4);
+		expect(t.getChildren('#').map(n=>n.id)).toEqual(['a', 'a0', 'a1']);
+		expect(Object.keys(t.nodes)).toHaveLength(4);
 		
 		t.remove('a', 0)
-		expect(t.getChildren('#').map(n=>n.id)).to.eql([]);
-		assert.equal(Object.keys(t.nodes).length, 1);
+		expect(t.getChildren('#').map(n=>n.id)).toEqual([]);
+		expect(Object.keys(t.nodes)).toHaveLength(1);
 		
 		done();
 	});
@@ -176,20 +172,19 @@ describe('Tree Test', function() {
         t.insert('b0', 'b', 0);
 		t.insert('b1', 'b', 1);
 		
-		expect(t.getVisible().map(n=>n.id)).to.eql(['a', 'b']);
+		expect(t.getVisible().map(n=>n.id)).toEqual(['a', 'b']);
 		
 		t.open('a');
-		expect(t.getVisible().map(n=>n.id)).to.eql(['a', 'a0', 'a1', 'b']);
+		expect(t.getVisible().map(n=>n.id)).toEqual(['a', 'a0', 'a1', 'b']);
 		
 		t.openAll();
-		expect(t.getVisible().map(n=>n.id)).to.eql(['a', 'a0', 'a1', 'b', 'b0', 'b1', 'b2']);
+		expect(t.getVisible().map(n=>n.id)).toEqual(['a', 'a0', 'a1', 'b', 'b0', 'b1', 'b2']);
 		
 		t.closeAll();
-		expect(t.getVisible().map(n=>n.id)).to.eql(['a', 'b']);
+		expect(t.getVisible().map(n=>n.id)).toEqual(['a', 'b']);
 		
 		done();
 	});
 
 
 });
-
