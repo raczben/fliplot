@@ -48,6 +48,7 @@ describe('Tree Test', function() {
 		expect(t.getId('b0')).toBe('b0');
 		expect(t.getId('b1')).toBe('b1');
 		expect(t.getId('b2')).toBe('b2');
+		expect(t.getId()).toBe('#');
 
 		expect(t.getParent('a0')).toBe(a);
 		expect(t.getParent('a1')).toBe(a);
@@ -56,7 +57,8 @@ describe('Tree Test', function() {
 		expect(t.getParent('b2')).toBe(b);
 
 		expect(t.getChildren('b', Tree.Traverse.SHALLOW)).toEqual([b0, b1, b2]);
-		expect(t.getChildren('a').map(n=>n.id)).toEqual([a0, a1].map(n=>n.id));
+		expect(t.getChildren('a', Tree.Traverse.PREORDER, 'id')).toEqual(['a0', 'a1']);
+		expect(t.nodeList().map(n=>n.id).sort()).toEqual(['a', 'a0', 'a1', 'b', 'b0', 'b1', 'b2'].sort());
 
 		done();
 	});
@@ -179,6 +181,9 @@ describe('Tree Test', function() {
 		
 		t.openAll();
 		expect(t.getVisible().map(n=>n.id)).toEqual(['a', 'a0', 'a1', 'b', 'b0', 'b1', 'b2']);
+
+		t.close('b');
+		expect(t.getVisible().map(n=>n.id)).toEqual(['a', 'a0', 'a1', 'b']);
 		
 		t.closeAll();
 		expect(t.getVisible().map(n=>n.id)).toEqual(['a', 'b']);
