@@ -69,7 +69,11 @@ export class ValueCol {
     });
 
     this._getTree().settings.core.data = tree;
-    this.refresh();
+
+    clearTimeout(this.renderTimeout);
+    this.renderTimeout = setTimeout(() => {
+      this.refresh();
+    }, 10);
   }
 
   refresh(){

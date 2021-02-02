@@ -197,15 +197,28 @@ export class Wave {
   }
 
   openGroup(rowId) {
-    this.reload(true)
+    this.insertRow();
   }
 
   closeGroup(rowId) {
     this.removeRow();
   }
 
-  insertRow(rowId, parent, pos=-1) {
-    this.reload(true)
+  insertRow(rowId, parent, pos) {
+    const signalsTable = d3.select('#signals-table');
+    const rowsToPlot = this.waveTable.getRows({hidden:false, content:true});
+
+    const signalRow = signalsTable.selectAll('.signalRow')
+      .data(rowsToPlot, row => row.id)
+      .enter()
+      .append('g')
+      .attr('id', d => `signalRow_${d.id}`)
+      .attr('class', d => `signalRow ${d.id}`);
+
+    const timeScaleGroup = signalRow.append('g')
+      .attr('class', 'time-scale-group');
+
+    this.reOrderSignals();
   }
 
   removeRow(rowId) {
@@ -323,9 +336,9 @@ export class Wave {
   updateAxis() {
     const rangeWidth = this.renderTimeScale.range()[1] - this.renderTimeScale.range()[0];
 
-    var bottom = $('#main-container-scroll-y').height()+$('#main-container-scroll-y').scrollTop();
+    var bottom = $('#main-container-scroll-y').innerHeight()+$('#main-container-scroll-y').scrollTop();
 
-    bottom = Math.min($('#mainSVG').height(), bottom);
+    bottom = Math.min($('#wave-axis-container')[0].clientHeight, bottom);
 
     d3.select('#grid-gr')
       .attr('transform', `translate(0, ${bottom-20})`);

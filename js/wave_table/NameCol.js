@@ -70,8 +70,11 @@ export class NameCol {
       tree.push(treeObj)
     });
 
-      this._getTree().settings.core.data = tree;
+    this._getTree().settings.core.data = tree;
+    clearTimeout(this.renderTimeout);
+    this.renderTimeout = setTimeout(() => {
       this.refresh();
+    }, 10);
   }
 
   refresh(){

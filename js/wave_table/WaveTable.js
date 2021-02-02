@@ -79,7 +79,7 @@ export class WaveTable {
     this.wave.closeGroup(rowId);
   }
 
-  insertRow(row, parent, pos = "last") {
+  insertRow(row, parent, pos) {
     this.tree.insert(row.id, parent, pos, row);
     this.nameCol.insertRow(row.id, parent, pos);
     this.valueCol.insertRow(row.id, parent, pos);
