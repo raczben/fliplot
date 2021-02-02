@@ -118,6 +118,9 @@ export function isInt(value) {
  * @param {*} width the pixel width of the maximum text length.
  */
 export function wrap_fast(element, width) {
+    if(width < 5){
+        return '';
+    }
     element = d3.select(element);
     const maxCharLen = (width/10)-1;
     var text = element.text();

@@ -75,7 +75,11 @@ body {
   flex: auto;
   flex-direction: column;
   overflow-x: auto;
-  height: 100%;
+  min-height: 100%;
+}
+
+#mainSVG {
+  min-height: 100%;
 }
 
 .ui-resizable-handle {
@@ -258,6 +262,11 @@ text.bus-value{
 
 rect.signal-highlighter {
   opacity: 0;
+}
+
+rect.time-grid-shadow-rect {
+  opacity: 0.8;
+  fill: #222;
 }
 
 @media only screen and (max-width: 1299px) {

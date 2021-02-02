@@ -66,11 +66,37 @@ export class Wave {
         // Or use touch gesture on touch devices
         () => d3.event.ctrlKey | d3.event.type.startsWith("touch"))
       .on("end", this.zoom_end.bind(this));
+      
+    const mainGr = d3.select('#mainGr');
+
+    mainGr.append('g')
+    .attr('id', 'grid-gr');
+  
+    mainGr.append('g')
+      .attr('id', 'signals-table');
+
+    mainGr.append('g')
+      .attr('id', 'time-axis-gr-container')
+
+    mainGr.append('g')
+      .attr('id', 'cursorGr');
   }
 
   reload(render=false) {
     
-    d3.select('#mainGr').selectAll("*").remove();
+    d3.select('#mainGr').selectAll("g").selectAll("*").remove();
+    
+    const time_axis_gr_container = d3.select('#time-axis-gr-container');
+
+    time_axis_gr_container.append('rect')
+      .attr('class', 'time-grid-shadow-rect')
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('width', this.initialTimeScale(simDB.now))
+      .attr('height', 20);
+      
+    time_axis_gr_container.append('g')
+      .attr('id', 'time-axis-gr');
 
     const rowsToPlot = this.waveTable.getRows({hidden:false, content:true});
 
@@ -78,14 +104,7 @@ export class Wave {
       .attr('width', simDB.now + 200)
       .attr('height', config.rowHeight * (rowsToPlot.length + 1));
 
-    const mainGr = d3.select('#mainGr');
-
-    mainGr.append('g')
-      .attr('id', 'grid-gr')
-      .attr('transform', `translate(0, ${config.rowHeight * rowsToPlot.length})`);
-
-    const signalsTable = mainGr.append('g')
-      .attr('id', 'signals-table');
+    const signalsTable = d3.select('#signals-table');
 
     const signalRow = signalsTable.selectAll('.signalRow')
       .data(rowsToPlot)
@@ -121,22 +140,9 @@ export class Wave {
       .attr('width', this.initialTimeScale(simDB.now))
       .attr('height', config.rowHeight);
 
-    mainGr.append('g')
-      .attr('id', 'time-axis-gr')
-      .attr('transform', () => `translate(0, ${config.rowHeight * rowsToPlot.length})`);
-
-    const timeAxisGr = d3.select('#time-axis-gr');
-    this.x_axis.scale(this.timeScale);
-    this.x_grid
-      .tickSize(-config.rowHeight * rowsToPlot.length)
-      .tickFormat("");
-    timeAxisGr.call(this.x_axis);
-
     /*
      * Cursor
      */
-    mainGr.append('g')
-      .attr('id', 'cursorGr');
 
     d3.select('#cursorGr').append('line')
       .classed('cursor', true)
@@ -316,6 +322,20 @@ export class Wave {
    */
   updateAxis() {
     const rangeWidth = this.renderTimeScale.range()[1] - this.renderTimeScale.range()[0];
+
+    var bottom = $('#main-container-scroll-y').height()+$('#main-container-scroll-y').scrollTop();
+
+    bottom = Math.min($('#mainSVG').height(), bottom);
+
+    d3.select('#grid-gr')
+      .attr('transform', `translate(0, ${bottom-20})`);
+    
+    d3.select('#time-axis-gr-container')
+      .attr('transform', () => `translate(0, ${bottom-20})`);
+
+    this.x_grid
+      .tickSize(-$('#mainSVG').height())
+      .tickFormat("");
 
     this.x_axis
       .scale(this.renderTimeScale)

@@ -17,6 +17,11 @@ export class WaveTable {
     this.nameCol = new NameCol(this);
     this.valueCol = new ValueCol(this);
     this.wave = new Wave(this);
+
+    $('#main-container-scroll-y')
+      .scroll( () => this.wave.updateAxis() );
+    $(window)
+      .resize( () => this.wave.updateAxis() );
   }
 
   reload() {
