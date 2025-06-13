@@ -17,7 +17,7 @@ Here are the basic steps to start development.
  0. Clone and enter to this repo.
  1. Install javascript dependencies: `npm i`
  2. Bundle js sources: `npx webpack --mode=development --watch` 
- 3. Create and activate a new python virtual-environment (optional): `python3 -m  virtualenv .venv` `./.venv/bin/activate`
+ 3. Create and activate a new python virtual-environment (optional): `python3 -m  virtualenv .venv` `. ./.venv/bin/activate`
  4. Install python dependencies: `pip install flask`
  5. Start flask server:
     
