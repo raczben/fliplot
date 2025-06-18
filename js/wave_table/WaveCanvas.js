@@ -100,11 +100,6 @@ export class WaveCanvas {
    */
   zoomInOut(delta=0.3, fixPointX=-1) {
     const deltaRatio = delta + 1
-    // Zoom the waveform display by a given factor
-    if (deltaRatio > 5 || deltaRatio < 0.2) {
-      console.error("Zoom: delta is out of range:", delta);
-      return;
-    }
     if (fixPointX < 0) {
       // If no fix point is given, use the center of the canvas
       fixPointX = this.canvas.width / 2;
@@ -158,6 +153,12 @@ export class WaveCanvas {
       height: this.canvas.height
     };
   }
+
+  getTimeScale() {
+    // Get the current time scale of the waveform display
+    return this.timeScale;
+  }
+
 
   /**
    *  Returns the render range for the waveform display.

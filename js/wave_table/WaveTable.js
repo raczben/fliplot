@@ -83,28 +83,10 @@ export class WaveTable {
 
         // prevent default scrolling behavior
         e.preventDefault();
-
         // calculate zoom delta based on the wheel delta
         const delta = -e.deltaY / 1300 * 3; // deltaY is +/-138
-        let scroll = this.wave.zoomInOut(delta, fixPointX);
-        if (scroll < 0) {
-          scroll = 0;
-        }
-        
-        //if the scrollable containter has not enough width to scroll, just render the wave
-        if (this.waveAxisContainer.scrollWidth <= this.waveAxisContainer.clientWidth) {
-          this.wave.render();
-          return;
-        }
-      
-        // if there is no change in the scroll position, do rendering only
-        if (Math.abs(scroll - this.waveAxisContainer.scrollLeft) < 1) {
-          this.wave.render();
-          return;
-        }
-        // otherwise, scroll the wave axis container, which will trigger the horizontal scroll event
-        // scorll effectively the wave axis container DOM element
-        this.waveAxisContainer.scrollTo({left:scroll});
+        this.zoomInOut(delta, fixPointX);
+
       }
       // else: let normal scroll work
     }, { passive: false });
@@ -121,6 +103,36 @@ export class WaveTable {
     this.valueCol.showValuesAt(time);
     this.wave.render();
   }
+
+  /**
+   * Zoom in or out based on the wheel delta.
+   * Note this calls directly the wave.render() method to update the wave display.
+   * @param {number} delta - The zoom delta, positive for zoom in, negative for zoom out.
+   * @param {number} fixPointX - The x position within the wave axis container to use as the fix point for zooming.
+   * 
+   */
+  zoomInOut(delta=0.3, fixPointX=-1) {
+    let scroll = this.wave.zoomInOut(delta, fixPointX);
+    if (scroll < 0) {
+      scroll = 0;
+    }
+    
+    //if the scrollable containter has not enough width to scroll, just render the wave
+    if (this.waveAxisContainer.scrollWidth <= this.waveAxisContainer.clientWidth) {
+      this.wave.render();
+      return;
+    }
+
+    // if there is no change in the scroll position, do rendering only
+    if (Math.abs(scroll - this.waveAxisContainer.scrollLeft) < 1) {
+      this.wave.render();
+      return;
+    }
+    // otherwise, scroll the wave axis container, which will trigger the horizontal scroll event
+    // scorll effectively the wave axis container DOM element
+    this.waveAxisContainer.scrollTo({left:scroll});
+  }
+
 
   reload() {
     this.nameCol.init();
@@ -315,7 +327,14 @@ export class WaveTable {
 
 
   zoomFit() {
-    this.wave.zoomFit();
+    // Zoom to fit the entire waveform in the view.
+    // simDB.now should be the at the right edge of the waveform.
+    const width = this.waveAxisContainer.clientWidth - 10; // 10px padding
+    const timeScale = width / this.simDB.now;
+    // Workaround: calculate the delta scale based on the current zoom level
+    const currentScale = this.wave.getTimeScale();
+    const deltaScale = timeScale / currentScale-1;
+    this.zoomInOut(deltaScale);
   }
 
   zoomAutoscale() {
@@ -323,11 +342,11 @@ export class WaveTable {
   }
 
   zoomIn() {
-    this.wave.zoomIn();
+    this.zoomInOut(0.3);
   }
 
   zoomOut() {
-    this.wave.zoomOut();
+    this.zoomInOut(-0.3);
   }
 }
 
