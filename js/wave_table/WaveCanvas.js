@@ -90,20 +90,26 @@ export class WaveCanvas {
   clearAll() {
   }
 
-  /** * set the time scale for the waveform display, but do not render the canvas.
+  /** * Zoom in or out of the waveform display.
    * This is like zooming in or out of the waveform display.
-   * @param {number} timeScale - The new time scale factor (e.g., 1.0 for normal speed, 2.0 for double speed)
+   * @param {number} delta - The zoom factor
+   * * Positive values zoom in, negative values zoom out.
+   * * default is 0.3: zoomIn 30%
    */
-  setTmescale(timeScale) {
-    // Zoom the waveform display by a given time scale factor
-    if (timeScale <= 0) {
-      console.error("Invalid time scale factor:", timeScale);
+  zoomInOut(delta=0.3) {
+    const deltaRatio = delta + 1
+    // Zoom the waveform display by a given factor
+    if (deltaRatio > 5 || deltaRatio < 0.2) {
+      console.error("Zoom: delta is out of range:", delta);
       return;
     }
-    this.timeScale = timeScale;
-    console.log("Zoomed waveform display to time scale:", timeScale);
-    // Optionally, you can trigger a re-render here
-    this.render();
+    const newTimeScale = this.timeScale * deltaRatio;
+    // Protect time scale: the 'now' should be at least 50 pixels wide.
+    if (newTimeScale * simDB.now < 50) {
+      console.error("Zoom: time scale is too small:", this.timeScale * simDB.now);
+      return;
+    }
+    this.timeScale = newTimeScale;
   }
 
   /** * set the canvas size but not render it.
@@ -218,8 +224,6 @@ export class WaveCanvas {
       const t1 = signal.getTimeAtI(i+1);
       const v0 = signal.getValueAtI(i);
 
-      timeScale = 0.5;
-
       // trasform to pixel coordinates
       let x0 = t0 * timeScale - xOffset;
       let x1 = t1 * timeScale - xOffset;
@@ -289,8 +293,6 @@ export class WaveCanvas {
       const t0 = signal.getTimeAtI(i);
       const t1 = signal.getTimeAtI(i+1);
       const v0 = signal.getValueAtI(i);
-
-      timeScale = 0.5;
 
       // trasform to pixel coordinates
       let half = valueScale(0.5) + yOffset;

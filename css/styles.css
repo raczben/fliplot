@@ -58,9 +58,7 @@ body {
   overflow-y: auto;
 }
 
-#main-container-tree,
-#wave-time-placeholder
-{
+#main-container-tree{
   display: flex;
   width: 100%;
   min-height: 100%;
@@ -68,8 +66,15 @@ body {
 
 #wave-time-placeholder
 {
+  display: flex;
+  min-height: 100%;
   background-color: #222;
+
+  /* The resize bar is 5px wide */
+	left: 5px;
+	position: relative;
 }
+
 
 #wave-axis-container{
   position: sticky;
@@ -79,7 +84,6 @@ body {
   flex-direction: column;
   overflow-x: auto;
   min-height: 100%;
-	height: calc(100vh - 160px);
 }
 
 #wave-axis-canvas {

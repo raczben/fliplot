@@ -19,10 +19,12 @@ export class WaveTable {
     this.wave = new WaveCanvas(this);
 
     this.mainContainerScrolly = document.getElementById('main-container-scroll-y');
+    const waveAxisContainer = document.getElementById('wave-axis-container');
+
+    // Connect event listeners.
     if (this.mainContainerScrolly) {
       this.mainContainerScrolly.addEventListener('scroll', () => this.handleVerticalScroll());
     }
-    const waveAxisContainer = document.getElementById('wave-axis-container');
     if (waveAxisContainer) {
       waveAxisContainer.addEventListener('scroll', () => this.handleHorizontalScroll());
     }
@@ -31,6 +33,7 @@ export class WaveTable {
       resizeObserver.observe(waveAxisContainer);
       this._waveAxisResizeObserver = resizeObserver;
     }
+    this.attachZoomHandler();
   }
 
   /**
@@ -76,6 +79,21 @@ export class WaveTable {
     }, 0);
   }
 
+  // Handle zoom (Ctrl + mouse wheel) and allow normal scroll otherwise
+  attachZoomHandler() {
+    const waveAxisContainer = document.getElementById('wave-axis-container');
+    if (!waveAxisContainer) return;
+    waveAxisContainer.addEventListener('wheel', (e) => {
+      if (e.ctrlKey) {
+        e.preventDefault();
+        const delta = -e.deltaY / 1300 * 3; // deltaY is +/-138
+        this.wave.zoomInOut(delta);
+        this.wave.render();
+      }
+      // else: let normal scroll work
+    }, { passive: false });
+  }
+
   reload() {
     this.nameCol.init();
     this.valueCol.init();
@@ -86,7 +104,7 @@ export class WaveTable {
     this.wave.reload();
   }
 
-  refresh(){
+  refresh() {
     this.nameCol.refresh();
     this.valueCol.refresh();
     this.wave.refresh();
@@ -137,13 +155,13 @@ export class WaveTable {
     this.valueCol.removeRow(rowId);
     this.wave.removeRow(rowId);
   }
-  
-  removeRows(rowIds){
-    if(rowIds === undefined){
+
+  removeRows(rowIds) {
+    if (rowIds === undefined) {
       rowIds = this.getSelectedRows();
     }
     rowIds.forEach(element => {
-        this.removeRow(element);
+      this.removeRow(element);
     });
   }
 
@@ -169,7 +187,7 @@ export class WaveTable {
         this.tree.insert(subRowItem.id, rowItem.id, position, subRowItem);
       }
     }
-    
+
     if (render) {
       this.nameCol.reload();
       this.valueCol.reload();
@@ -217,7 +235,7 @@ export class WaveTable {
     return this.tree.getChildren(parent, traverse, field, hidden);
   }
 
-  getRow({id, content = false}) {
+  getRow({ id, content = false }) {
     const n = this.get(id);
     return content ? n.data : n;
   }
@@ -255,32 +273,32 @@ export class WaveTable {
       this.tree.get(element).forEach((n) => {
         n.data.setRadix(radix);
       });
-        this.valueCol.setRadix(element);
-        this.wave.setRadix(element);
+      this.valueCol.setRadix(element);
+      this.wave.setRadix(element);
     });
   }
 
-  moveCursorTo(time){
+  moveCursorTo(time) {
   }
 
   getCursorTime() {
     return this.wave.getCursorTime();
   }
 
-  
-  zoomFit(){
+
+  zoomFit() {
     this.wave.zoomFit();
   }
 
-  zoomAutoscale(){
+  zoomAutoscale() {
     this.wave.zoomAutoscale();
   }
-  
-  zoomIn(){
+
+  zoomIn() {
     this.wave.zoomIn();
   }
 
-  zoomOut(){
+  zoomOut() {
     this.wave.zoomOut();
   }
 }
