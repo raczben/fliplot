@@ -19,21 +19,19 @@ export class WaveTable {
     this.wave = new WaveCanvas(this);
 
     this.mainContainerScrolly = document.getElementById('main-container-scroll-y');
-    const waveAxisContainer = document.getElementById('wave-axis-container');
+    this.waveAxisContainer = document.getElementById('wave-axis-container');
+    if (!this.mainContainerScrolly || !this.waveAxisContainer) {
+      throw new Error("WaveTable: mainContainerScrolly or waveAxisContainer not found");
+    }
 
     // Connect event listeners.
-    if (this.mainContainerScrolly) {
-      this.mainContainerScrolly.addEventListener('scroll', () => this.handleVerticalScroll());
-    }
-    if (waveAxisContainer) {
-      waveAxisContainer.addEventListener('scroll', () => this.handleHorizontalScroll());
-    }
-    if (waveAxisContainer) {
-      const resizeObserver = new ResizeObserver(() => this.handleWaveAxisContainerResize());
-      resizeObserver.observe(waveAxisContainer);
-      this._waveAxisResizeObserver = resizeObserver;
-    }
+    this.mainContainerScrolly.addEventListener('scroll', () => this.handleVerticalScroll());
+    this.waveAxisContainer.addEventListener('scroll', () => this.handleHorizontalScroll());
+    const resizeObserver = new ResizeObserver(() => this.handleWaveAxisContainerResize());
+    resizeObserver.observe(this.waveAxisContainer);
+    this._waveAxisResizeObserver = resizeObserver;
     this.attachZoomHandler();
+    this.waveAxisContainer.addEventListener('click', (event) => this.handleClickOnWaveAxis(event));
   }
 
   /**
@@ -42,14 +40,12 @@ export class WaveTable {
    */
   handleWaveAxisContainerResize() {
     console.log("handleWaveAxisContainerResize");
-    const container = document.getElementById('wave-axis-container');
-    if (!container) return;
     // Throttle resize handling to avoid excessive calls
     if (this._resizeTimeout) {
       clearTimeout(this._resizeTimeout);
     }
     this._resizeTimeout = setTimeout(() => {
-      this.wave.setSize(container.clientWidth, container.clientHeight);
+      this.wave.setSize(this.waveAxisContainer.clientWidth, this.waveAxisContainer.clientHeight);
       this.wave.render();
       this._resizeTimeout = null;
     }, 100);
@@ -60,9 +56,7 @@ export class WaveTable {
    * Handles scroll events for the wave-axis-container.
    */
   handleHorizontalScroll() {
-    const container = document.getElementById('wave-axis-container');
-    if (!container) return;
-    const scrollLeft = container.scrollLeft;
+    const scrollLeft = this.waveAxisContainer.scrollLeft;
     setTimeout(() => {
       this.wave.setLeftOffset(scrollLeft);
       this.wave.render();
@@ -81,9 +75,7 @@ export class WaveTable {
 
   // Handle zoom (Ctrl + mouse wheel) and allow normal scroll otherwise
   attachZoomHandler() {
-    const waveAxisContainer = document.getElementById('wave-axis-container');
-    if (!waveAxisContainer) return;
-    waveAxisContainer.addEventListener('wheel', (e) => {
+    this.waveAxisContainer.addEventListener('wheel', (e) => {
       if (e.ctrlKey) {
         e.preventDefault();
         const delta = -e.deltaY / 1300 * 3; // deltaY is +/-138
@@ -92,6 +84,18 @@ export class WaveTable {
       }
       // else: let normal scroll work
     }, { passive: false });
+  }
+
+  /** handle Click on the wave axis and draw the cursor */
+  handleClickOnWaveAxis(event) {
+    const rect = this.waveAxisContainer.getBoundingClientRect();
+    const x = event.clientX - rect.left; // x position within the element
+    const time = this.wave.getTimeFromX(x);
+    this.wave.setCursorTime(time);
+    
+    //update values column to the clicked time
+    this.valueCol.showValuesAt(time);
+    this.wave.render();
   }
 
   reload() {

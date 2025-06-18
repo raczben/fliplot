@@ -69,10 +69,6 @@ body {
   display: flex;
   min-height: 100%;
   background-color: #222;
-
-  /* The resize bar is 5px wide */
-	left: 5px;
-	position: relative;
 }
 
 
@@ -84,6 +80,9 @@ body {
   flex-direction: column;
   overflow-x: auto;
   min-height: 100%;
+  
+  /* The resize bar is 5px wide */
+  margin-left: 5px;
 }
 
 #wave-axis-canvas {

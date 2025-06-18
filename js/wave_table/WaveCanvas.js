@@ -60,6 +60,7 @@ export class WaveCanvas {
     this.scrollTop = 0; // offset of the top of the canvas Unit: px.
     this.scrollLeft = 0; // offset of the left of the canvas Unit: px.
     this.timeScale = 1.0; // Ratio: simulation time units per pixel. Unit: px/simTimeUnit.
+    this.cursorTime = 0; // The time of the cursor in simulation time units. Unit: simTimeUnit.
 
     this.canvas = document.getElementById('wave-axis-canvas'); 
   }
@@ -139,6 +140,26 @@ export class WaveCanvas {
     return [offs / this.timeScale, (offs + width) / this.timeScale];
   }
 
+  /**
+   * Get the time in simulation time units from a given x-coordinate.
+   * @param {number} x - The x-coordinate in pixels
+   * @returns {number} - The time in simulation time units
+   */
+  getTimeFromX(x){
+    return (x + this.scrollLeft) / this.timeScale;
+  }
+
+  /**
+   * Set the cursor time in simulation time units.
+   * @param {number} time - The time in simulation time units
+   */
+  setCursorTime(time) {
+    if (time < 0) {
+      console.error("Invalid cursor time:", time);
+      return;
+    }
+    this.cursorTime = time;
+  }
   
 
   /**
@@ -187,7 +208,8 @@ export class WaveCanvas {
         ctx.fillText(`Unsupported: ${waveStyle}`, 10, yBase + config.rowHeight / 2);
       }
     });
-    this.drawAxis(ctx, this.scrollTop, this.scrollLeft, this.timeScale);
+    this.drawCursor(ctx, this.cursorTime, this.scrollLeft, this.timeScale);
+    this.drawAxis(ctx, this.scrollLeft, this.timeScale);
   }
 
 
@@ -326,7 +348,7 @@ export class WaveCanvas {
    * @param {number} xOffset - The horizontal offset (pixels from top)
    * @param {number} timeScale - Ratio: simulation time units per pixel
    */
-  drawAxis(ctx, yOffset, xOffset, timeScale) {
+  drawAxis(ctx, xOffset, timeScale) {
     // Always draw the axis 15px above the bottom edge of the canvas
     const axisY = this.canvas.height - 25;
 
@@ -372,6 +394,29 @@ export class WaveCanvas {
       ctx.stroke();
       tickIdx++;
     }
+  }
+
+  /**
+   * Draw the cursor on the waveform display.
+   * 
+   * @param {CanvasRenderingContext2D} ctx - Canvas 2D context
+   * @param {number} cursorTime - The time of the cursor in simulation time units
+   * @param {number} xOffset - The horizontal offset (pixels from top)
+   * @param {number} timeScale - Ratio: simulation time units per pixel
+   */
+  drawCursor(ctx, cursorTime, xOffset, timeScale) {
+    // Draw the cursor line at the current cursor time
+    const x = cursorTime * timeScale - xOffset;
+    if (x < 0 || x > this.canvas.width) {
+      return; // Cursor is out of bounds
+    }
+
+    ctx.strokeStyle = "rgba(251, 255, 0, 0.8)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, this.canvas.height);
+    ctx.stroke();
   }
 
 
