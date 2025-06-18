@@ -204,6 +204,11 @@ input {
   height: 100%;
 }
 
+/* placeholder for the axis */
+#names-col-placeholder,
+#values-col-placeholder {
+  height: 26px;
+}
 
 /***********************************************************
  * 

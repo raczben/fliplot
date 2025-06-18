@@ -129,3 +129,12 @@ export function wrap_fast(element, width) {
         element.text(text + '...');
     }
   }
+
+/** * Round a number to the nearest multiple of another number.
+ * @param {number} x - The number to round.
+ * @param {number} n - The multiple to round to.
+ * @returns {number} - The rounded number.
+ */
+export function ceiln(x, n){
+    return Math.ceil(x / n) * n;
+}

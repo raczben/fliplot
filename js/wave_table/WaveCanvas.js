@@ -1,5 +1,5 @@
 import { config, simDB} from "../interact.js";
-import { isInt, wrap_fast } from "../core/util.js";
+import { ceiln, isInt, wrap_fast } from "../core/util.js";
 import { WaveTable } from "./WaveTable.js";
 
 /* index definitions for render data */
@@ -175,10 +175,10 @@ export class WaveCanvas {
       if (waveStyle === 'bit') {
         // Draw bit wave as rectangles
         // setTimeout(() => {
-          this.drawBitSignal(row, yBase-this.scrollTop, this.scrollLeft, this.timeScale, ctx);
+          this.drawBitSignal(ctx, row, yBase-this.scrollTop, this.scrollLeft, this.timeScale);
         // },0);
       } else if (waveStyle === 'bus') {
-          this.drawBusSignal(row, yBase-this.scrollTop, this.scrollLeft, this.timeScale, ctx);
+          this.drawBusSignal(ctx, row, yBase-this.scrollTop, this.scrollLeft, this.timeScale);
       } else {
         // Unsupported style
         ctx.fillStyle = "rgba(150,70,60,0.5)";
@@ -187,18 +187,19 @@ export class WaveCanvas {
         ctx.fillText(`Unsupported: ${waveStyle}`, 10, yBase + config.rowHeight / 2);
       }
     });
+    this.drawAxis(ctx, this.scrollTop, this.scrollLeft, this.timeScale);
   }
 
 
   /**
    * Draw a single bit-style signal on the canvas.
+   * @param {CanvasRenderingContext2D} ctx - Canvas 2D context
    * @param {Object} row - The rowToPlot element (signal row object)
    * @param {number} yOffset - The vertical offset (pixels from top)
-   * @param {number} yOffset - The horizontal offset (pixels from top)
+   * @param {number} xOffset - The horizontal offset (pixels from top)
    * @param {number} timeScale - Ratio: simulation time units per pixel
-   * @param {CanvasRenderingContext2D} ctx - Canvas 2D context
    */
-  drawBitSignal(row, yOffset, xOffset, timeScale, ctx) {
+  drawBitSignal(ctx, row, yOffset, xOffset, timeScale) {
     const signal = row.simObj.signal;
     const rowHeight = config.rowHeight;
     const bitWavePadding = config.bitWavePadding || 2;
@@ -262,13 +263,13 @@ export class WaveCanvas {
 
   /**
    * Draw a single bit-style signal on the canvas.
+   * @param {CanvasRenderingContext2D} ctx - Canvas 2D context
    * @param {Object} row - The rowToPlot element (signal row object)
    * @param {number} yOffset - The vertical offset (pixels from top)
-   * @param {[number, number]} timeRange - [startTime, endTime] visible time range
+   * @param {number} xOffset - The horizontal offset (pixels from top)
    * @param {number} timeScale - Ratio: simulation time units per pixel
-   * @param {CanvasRenderingContext2D} ctx - Canvas 2D context
    */
-  drawBusSignal(row, yOffset, xOffset, timeScale, ctx) {
+  drawBusSignal(ctx, row, yOffset, xOffset, timeScale) {
     const signal = row.simObj.signal;
     const rowHeight = config.rowHeight;
     const bitWavePadding = config.bitWavePadding || 2;
@@ -318,145 +319,61 @@ export class WaveCanvas {
   }
 
   /**
-   * Render the given signal
+   * plot the time axis to the waveform display.
    * 
-   * @param {d3 Object} signalWaveSVG is the d3 object to be render
+   * @param {CanvasRenderingContext2D} ctx - Canvas 2D context
+   * @param {number} yOffset - The vertical offset (pixels from top)
+   * @param {number} xOffset - The horizontal offset (pixels from top)
+   * @param {number} timeScale - Ratio: simulation time units per pixel
    */
-  drawWave(timeScaleGroup) {
+  drawAxis(ctx, yOffset, xOffset, timeScale) {
+    // Always draw the axis 15px above the bottom edge of the canvas
+    const axisY = this.canvas.height - 25;
 
-    const signalWaveSVG = timeScaleGroup.select('.signalWave')
-    const signalValuesSVG = timeScaleGroup.select('.signalValues')
-    const rowData = signalWaveSVG.datum();
+    // Clear the axis area
+    ctx.clearRect(0, axisY, this.canvas.width, this.canvas.height - axisY);
 
-    var waveChangesIndex = rowData.simObj.signal.wave.reduce((res, current, i) => {
-      if (this.waveIInRenderRange(rowData.simObj.signal, i)) {
-        res.push([rowData, i]);
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.9)";
+    ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(0, axisY);
+    ctx.lineTo(this.canvas.width, axisY);
+    ctx.stroke();
+
+    // calculate the time step based on the time scale
+    //  the labels should be more or less 50 pixels apart
+    const orderOfMagnitude = Math.floor(Math.log10(timeScale));
+    let timeStep = Math.pow(10, -(orderOfMagnitude))*100;
+    if (timeStep * timeScale > 200) {
+      timeStep = timeStep/2;
+    }
+
+    // Draw time labels and ticks at each time step
+    const timeRange = this.getTimeRange(xOffset, this.canvas.width);
+    ctx.font = "12px sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    // Create a counter for ticks
+    let tickIdx = 0;
+
+    for (let t = ceiln(timeRange[0], timeStep); t <= timeRange[1]; t += timeStep) {
+      const x = (t - timeRange[0]) * timeScale;
+      ctx.fillText(t.toFixed(2), x + 2, axisY + 8);
+      ctx.beginPath();
+      ctx.moveTo(x, axisY);
+
+      if (tickIdx % 2 === 0) {
+        // Every even tick: draw tick to top of canvas
+        ctx.lineTo(x, 0);
+      } else {
+        ctx.lineTo(x, axisY + 5);
       }
-      return res;
-    }, []);
-
-    signalWaveSVG.classed(`wave-style-${rowData.waveStyle}`, true);
-
-    if (rowData.waveStyle == 'bit') {
-
-      // horizontal aka. timeholder:
-      var timeholders = signalWaveSVG.selectAll('.timeholder')
-        .data(waveChangesIndex, d=> d[IDX]);
-
-      timeholders.exit().remove();
-
-      timeholders = timeholders.enter()
-        .append('line')
-        .classed('timeholder', true);
-
-      // vertical aka. valuechanger
-      var valuechanger = signalWaveSVG.selectAll('.valuechanger')
-        .data(waveChangesIndex.slice(1), d=> d[IDX]);
-
-      valuechanger.exit().remove();
-
-      valuechanger = valuechanger.enter()
-        .append('line')
-        .classed('valuechanger', true);
-
-      // transparent rect
-      var transRect = signalWaveSVG.selectAll('.transparent-rect')
-        .data(waveChangesIndex, d=> d[IDX]);
-
-      transRect.exit().remove();
-
-      transRect = transRect.enter()
-        .append('rect')
-        .classed('transparent-rect', true);
-
-      transRect
-        .attr('x', d => this.initialTimeScale(d[WAVEARRAY].getTimeAtI(d[IDX])))
-        .attr('y', d => this.bitWaveScale(parseIntDef(d[WAVEARRAY].getValueAtI(d[IDX]))))
-        .attr('width', d => this.initialTimeScale((d[WAVEARRAY].getTimeAtI(d[IDX] + 1)) - d[WAVEARRAY].getTimeAtI(d[IDX])))
-        .attr('height', d => this.bitWaveScale(1 - parseIntDef(d[WAVEARRAY].getValueAtI(d[IDX]))) - 2)
-        .style("fill", d => value2Color(d[WAVEARRAY].getValueAtI(d[IDX])));
-
-      timeholders
-        .attr('x1', d => this.initialTimeScale(d[WAVEARRAY].getTimeAtI(d[IDX])))
-        .attr('y1', d => this.bitWaveScale(parseIntDef(d[WAVEARRAY].getValueAtI(d[IDX]))))
-        .attr('x2', d => this.initialTimeScale(d[WAVEARRAY].getTimeAtI(d[IDX] + 1)))
-        .attr('y2', d => this.bitWaveScale(parseIntDef(d[WAVEARRAY].getValueAtI(d[IDX]))))
-        .style("stroke", d => value2Color(d[WAVEARRAY].getValueAtI(d[IDX])))
-        .attr('vector-effect', 'non-scaling-stroke');
-
-      valuechanger
-        .attr('x1', d => this.initialTimeScale(d[WAVEARRAY].getTimeAtI(d[IDX])))
-        .attr('y1', d => this.bitWaveScale(parseIntDef(d[WAVEARRAY].getValueAtI([d[IDX] - 1]))))
-        .attr('x2', d => this.initialTimeScale(d[WAVEARRAY].getTimeAtI(d[IDX])))
-        .attr('y2', d => this.bitWaveScale(parseIntDef(d[WAVEARRAY].getValueAtI(d[IDX]))))
-        .style("stroke", d => value2Color(d[WAVEARRAY].getValueAtI(d[IDX])))
-        .attr('vector-effect', 'non-scaling-stroke');
-
-    } else if (rowData.waveStyle == 'bus') {
-      var busPath = signalWaveSVG.selectAll('path')
-        .data(waveChangesIndex, d=> d[IDX]);
-
-      // signalValuesSVG.selectAll('.bus-value-group').remove();
-      var busValue = signalValuesSVG.selectAll('.bus-value-group')
-        .data(waveChangesIndex, d=> d[IDX]);
-
-      busPath.exit().remove();
-      busValue.exit().remove();
-
-      busPath = busPath.enter()
-        .append('path')
-        .classed('bus-path', true);
-      busValue = busValue.enter()
-        .append('g')
-        .classed('bus-value-group', true)
-        .append('text')
-        .classed('bus-value', true);
-
-      busPath
-        .attr('vector-effect', 'non-scaling-stroke')
-        .style("stroke", d => value2Color(d[WAVEARRAY].getValueAtI(d[IDX])))
-        .style("fill", d => value2Color(d[WAVEARRAY].getValueAtI(d[IDX])))
-        .style("stroke-width", "2")
-      
-      signalWaveSVG.selectAll('.bus-path')
-        .attr('d', d => {
-          var ret = '';
-          ret += `M${(d[WAVEARRAY].getTimeAtI(d[IDX] + 1)) - (this.timeScale.invert(2))},${this.bitWaveScale(1)} `
-          ret += `${(d[WAVEARRAY].getTimeAtI(d[IDX])) + (this.timeScale.invert(2))},${this.bitWaveScale(1)} `
-          ret += `${(d[WAVEARRAY].getTimeAtI(d[IDX]))},${this.bitWaveScale(0.5)} `
-          ret += `${(d[WAVEARRAY].getTimeAtI(d[IDX])) + (this.timeScale.invert(2))},${this.bitWaveScale(0)} `
-          ret += `${(d[WAVEARRAY].getTimeAtI(d[IDX] + 1)) - (this.timeScale.invert(2))},${this.bitWaveScale(0)} `
-          if (d[WAVEARRAY].getTimeAtI(d[IDX] + 1) < simDB.now) {
-            ret += `${d[WAVEARRAY].getTimeAtI(d[IDX] + 1)},${this.bitWaveScale(0.5)} `
-            ret += `${d[WAVEARRAY].getTimeAtI(d[IDX] + 1) - (this.timeScale.invert(2))},${this.bitWaveScale(1)} `
-          }
-          return ret;
-        });
-
-      const self = this;
-      busValue
-        .text(d => d[WAVEARRAY].getValueAtI(d[IDX]))
-        .attr("y", config.rowHeight / 2)
-        .attr('x', d => this.timeScale(d[WAVEARRAY].getTimeAtI(d[IDX]) + d[WAVEARRAY].getTimeAtI(d[IDX] + 1)) / 2)
-        .each(function (d) {
-          wrap_fast(this, self.timeScale(d[WAVEARRAY].getTimeAtI(d[IDX] + 1) - d[WAVEARRAY].getTimeAtI(d[IDX])));
-        });
-
-    } else {
-
-      signalWaveSVG
-        .append('rect')
-        .attr('height', config.rowHeight)
-        .attr('width', simDB.now)
-        .attr('fill', 'rgba(180, 0, 0, 0.5)');
-      signalWaveSVG.append('text')
-        .text(`Unsupported waveStyle: ${rowData.waveStyle}`)
-        .attr("y", config.rowHeight / 2)
-        .attr("x", 10)
-        .attr('text-anchor', 'left')
-        .attr('alignment-baseline', 'middle');
-      return;
+      ctx.stroke();
+      tickIdx++;
     }
   }
+
+
 
 }
