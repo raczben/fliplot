@@ -53,33 +53,39 @@ body {
 }
 
 #main-container-scroll-y{
+  display: flex;
   flex: auto;
   overflow-y: auto;
 }
 
 #main-container-tree,
-#main-container-wave
+#wave-time-placeholder
 {
   display: flex;
   width: 100%;
   min-height: 100%;
 }
 
-#main-container-wave
+#wave-time-placeholder
 {
   background-color: #222;
 }
 
 #wave-axis-container{
+  position: sticky;
+  top: 0;
   display: flex;
   flex: auto;
   flex-direction: column;
   overflow-x: auto;
   min-height: 100%;
+	height: calc(100vh - 160px);
 }
 
-#mainSVG {
-  min-height: 100%;
+#wave-axis-canvas {
+	height: 100%;
+	position: sticky;
+	left: 0px;
 }
 
 .ui-resizable-handle {
@@ -182,11 +188,14 @@ input {
 
 #names-col-container,
 #values-col-container {
+  height: max-content;
+  min-height: 100%;
   flex-shrink: 0;
   flex-grow: 0;
 }
 
-#names-col-container-scroll{
+#names-col-container-scroll,
+#values-col-container-scroll{
   overflow: auto;
   height: 100%;
 }

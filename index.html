@@ -14,7 +14,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.9.2/jquery.contextMenu.min.css">
   <link rel="stylesheet" href="css/styles.css">
 
-  <script src="https://d3js.org/d3.v5.js" charset="utf-8"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
   <script src="js/jquery.ui.touch-punch.min.js"></script>
@@ -161,45 +160,32 @@
       </div>
     </div>
     <div id="main-container-scroll-y">
-      <div id="main-container-wave">
-
-        <div id="names-col-container" class="wave-table resizable-col">
-          <div id="names-col-container-scroll">
-            <!-- <ul id="names-col" class="wave-table"> -->
-              <!--
-              <li class="signal-name">Name1</li>
-              <li class="signal-name highlight-row">CLK1</li>
-              <li class="signal-name">Data</li>
-              <li class="signal-name">Vali8d</li>
-              -->
-            <!-- </ul> -->
-          </div>
+      <div id="names-col-container" class="wave-table resizable-col">
+        <div id="names-col-container-scroll">
+          <!-- <ul id="names-col" class="wave-table">
+            <li class="signal-name">Name1</li>
+            <li class="signal-name highlight-row">CLK1</li>
+          </ul> -->
         </div>
-        <div id="values-col-container" class="wave-table resizable-col">
+      </div>
+      <div id="values-col-container" class="wave-table resizable-col">
+        <div id="values-col-container-scroll">
           <ul id="values-col" class="wave-table">
             <!--
             <li class="signal-value">0</li>
-            <li class="signal-value highlight-row">XX</li>
-            <li class="signal-value">1234</li>
             <li class="signal-value">3.1415</li>
             -->
           </ul>
         </div>
-        <div id="wave-axis-container" class="wave-table">
-          <svg id='mainSVG'>
-            <g id='mainGr'></g>
-          </svg>
+      </div>
 
-          <!--
-        <div id="time-axis-container" class="wave-table">
-          <svg id='time-axis-svg'>
-            <g id='time-axis-gr'></g>
-          </svg>
-        </div>
-  -->
+      <div id="wave-axis-container" class="wave-table">
+        <div id="wave-time-placeholder">
+          <canvas id="wave-axis-canvas"></canvas>
         </div>
 
       </div>
+
     </div>
   </div>
   <footer>

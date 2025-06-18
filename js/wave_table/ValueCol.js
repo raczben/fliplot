@@ -3,7 +3,7 @@ import { WaveTable } from "./WaveTable.js";
 export class ValueCol {
   constructor(waveTable, init=true) {
     /**  @type {String} */
-    this.containerName = '#values-col-container';
+    this.containerName = '#values-col-container-scroll';
     /**  @type {WaveTable} */
     this.waveTable = waveTable;
 

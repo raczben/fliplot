@@ -7,7 +7,10 @@ import { WaveTable } from "./wave_table/WaveTable.js";
 export var config = {};
 
 export var simDB = new SimDB();
-const waveTable = new WaveTable(simDB);
+
+$(function () {
+  window.waveTable = new WaveTable(simDB);
+});
 
 function showSignals() {
   waveTable.wave.init();
@@ -15,7 +18,7 @@ function showSignals() {
 
   setTimeout(() => {
     waveTable.moveCursorTo(0);
-    waveTable.wave.zoomAutoscale();
+    waveTable.wave.render();
   }, 0);
 }
 

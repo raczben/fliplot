@@ -4,7 +4,7 @@ import { Tree } from "../core/tree.js";
 import { WaveformRow } from "../core/WaveformRow.js";
 import { NameCol } from "./NameCol.js";
 import { ValueCol } from "./ValueCol.js";
-import { Wave } from "./Wave.js";
+import { WaveCanvas } from "./WaveCanvas.js";
 
 export class WaveTable {
   constructor(simDB) {
@@ -16,12 +16,64 @@ export class WaveTable {
     this.tree = new Tree();
     this.nameCol = new NameCol(this);
     this.valueCol = new ValueCol(this);
-    this.wave = new Wave(this);
+    this.wave = new WaveCanvas(this);
 
-    $('#main-container-scroll-y')
-      .scroll( () => this.wave.updateAxis() );
-    $(window)
-      .resize( () => this.wave.updateAxis() );
+    this.mainContainerScrolly = document.getElementById('main-container-scroll-y');
+    if (this.mainContainerScrolly) {
+      this.mainContainerScrolly.addEventListener('scroll', () => this.handleVerticalScroll());
+    }
+    const waveAxisContainer = document.getElementById('wave-axis-container');
+    if (waveAxisContainer) {
+      waveAxisContainer.addEventListener('scroll', () => this.handleHorizontalScroll());
+    }
+    if (waveAxisContainer) {
+      const resizeObserver = new ResizeObserver(() => this.handleWaveAxisContainerResize());
+      resizeObserver.observe(waveAxisContainer);
+      this._waveAxisResizeObserver = resizeObserver;
+    }
+  }
+
+  /**
+   * Handles resize events for the wave-axis-container.
+   * Note: The wave-axis-container will be resized also when values-col or names-col are resized.
+   */
+  handleWaveAxisContainerResize() {
+    console.log("handleWaveAxisContainerResize");
+    const container = document.getElementById('wave-axis-container');
+    if (!container) return;
+    // Throttle resize handling to avoid excessive calls
+    if (this._resizeTimeout) {
+      clearTimeout(this._resizeTimeout);
+    }
+    this._resizeTimeout = setTimeout(() => {
+      this.wave.setSize(container.clientWidth, container.clientHeight);
+      this.wave.render();
+      this._resizeTimeout = null;
+    }, 100);
+    return;
+  }
+
+  /**
+   * Handles scroll events for the wave-axis-container.
+   */
+  handleHorizontalScroll() {
+    const container = document.getElementById('wave-axis-container');
+    if (!container) return;
+    const scrollLeft = container.scrollLeft;
+    setTimeout(() => {
+      this.wave.setLeftOffset(scrollLeft);
+      this.wave.render();
+    }, 0);
+  }
+
+  handleVerticalScroll() {
+    console.log("handleVerticalScroll");
+    // getting the scroll position
+    const scrollTop = this.mainContainerScrolly.scrollTop;
+    setTimeout(() => {
+      this.wave.setScrollTop(scrollTop);
+      this.wave.render();
+    }, 0);
   }
 
   reload() {
@@ -79,13 +131,6 @@ export class WaveTable {
     this.wave.closeGroup(rowId);
   }
 
-  insertRow(row, parent, pos) {
-    this.tree.insert(row.id, parent, pos, row);
-    this.nameCol.insertRow(row.id, parent, pos);
-    this.valueCol.insertRow(row.id, parent, pos);
-    this.wave.insertRow(row.id, parent, pos);
-  }
-
   removeRow(rowId) {
     this.tree.remove(rowId);
     this.nameCol.removeRow(rowId);
@@ -108,20 +153,26 @@ export class WaveTable {
    * @param {string[]} hierarchy
    * @param {number} position
    */
-  insertWaveSignal(hierarchy, parent = null, position = -1, busAsBus = true) {
+  insertWaveSignal(hierarchy, parent = null, position = -1, busAsBus = true, render = true) {
     /** @type {SimulationObject} obj */
     const obj = this.simDB.getObject(hierarchy);
     /** @type {WaveformRow} rowItem */
     const rowItem = new WaveformRow(obj);
 
-    this.insertRow(rowItem, parent, position);
+    this.tree.insert(rowItem.id, parent, position, rowItem);
 
     if (busAsBus && rowItem.waveStyle == "bus") {
+      // If the signal is a bus, insert all sub-signals
       for (var i = 0; i < obj.signal.width; i++) {
         const subObj = obj.cloneRange(i);
         const subRowItem = new WaveformRow(subObj);
-        this.insertRow(subRowItem, rowItem.id, i);
+        this.tree.insert(subRowItem.id, rowItem.id, position, subRowItem);
       }
+    }
+    
+    if (render) {
+      this.nameCol.reload();
+      this.valueCol.reload();
     }
 
     return rowItem.id;
@@ -138,10 +189,18 @@ export class WaveTable {
     for (var key in this.simDB.objects) {
       if (Object.prototype.hasOwnProperty.call(this.simDB.objects, key)) {
         if (this.simDB.objects[key].type == SimulationObject.Type.SIGNAL) {
-          this.insertWaveSignal(key.split("."));
-  }
+          this.insertWaveSignal(
+            key.split("."), // hierarchy
+            null,           // parent = null
+            -1,             // position = -1,
+            true,           // busAsBus = true
+            false           // render = false
+          );
+        }
       }
     }
+    this.nameCol.reload();
+    this.valueCol.reload();
   }
 
   addObjects(hierarchies) {
@@ -202,8 +261,6 @@ export class WaveTable {
   }
 
   moveCursorTo(time){
-    this.wave.moveCursorTo(time);
-    this.valueCol.showValuesAt(time);
   }
 
   getCursorTime() {
