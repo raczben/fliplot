@@ -77,10 +77,34 @@ export class WaveTable {
   attachZoomHandler() {
     this.waveAxisContainer.addEventListener('wheel', (e) => {
       if (e.ctrlKey) {
+        // get the mouse position to choose as fix point for zooming
+        const rect = this.waveAxisContainer.getBoundingClientRect();
+        const fixPointX = e.clientX - rect.left; // x position within the element
+
+        // prevent default scrolling behavior
         e.preventDefault();
+
+        // calculate zoom delta based on the wheel delta
         const delta = -e.deltaY / 1300 * 3; // deltaY is +/-138
-        this.wave.zoomInOut(delta);
-        this.wave.render();
+        let scroll = this.wave.zoomInOut(delta, fixPointX);
+        if (scroll < 0) {
+          scroll = 0;
+        }
+        
+        //if the scrollable containter has not enough width to scroll, just render the wave
+        if (this.waveAxisContainer.scrollWidth <= this.waveAxisContainer.clientWidth) {
+          this.wave.render();
+          return;
+        }
+      
+        // if there is no change in the scroll position, do rendering only
+        if (Math.abs(scroll - this.waveAxisContainer.scrollLeft) < 1) {
+          this.wave.render();
+          return;
+        }
+        // otherwise, scroll the wave axis container, which will trigger the horizontal scroll event
+        // scorll effectively the wave axis container DOM element
+        this.waveAxisContainer.scrollTo({left:scroll});
       }
       // else: let normal scroll work
     }, { passive: false });

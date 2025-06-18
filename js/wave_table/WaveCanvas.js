@@ -94,23 +94,41 @@ export class WaveCanvas {
   /** * Zoom in or out of the waveform display.
    * This is like zooming in or out of the waveform display.
    * @param {number} delta - The zoom factor
+   * @returns {number} - The new scroll position based on the fix point
    * * Positive values zoom in, negative values zoom out.
    * * default is 0.3: zoomIn 30%
    */
-  zoomInOut(delta=0.3) {
+  zoomInOut(delta=0.3, fixPointX=-1) {
     const deltaRatio = delta + 1
     // Zoom the waveform display by a given factor
     if (deltaRatio > 5 || deltaRatio < 0.2) {
       console.error("Zoom: delta is out of range:", delta);
       return;
     }
+    if (fixPointX < 0) {
+      // If no fix point is given, use the center of the canvas
+      fixPointX = this.canvas.width / 2;
+    } else if (fixPointX > this.canvas.width) {
+      // If the fix point is outside the canvas, clamp it to the canvas width
+      fixPointX = this.canvas.width;
+    } 
+
+    const oldTimeScale = this.timeScale;
     const newTimeScale = this.timeScale * deltaRatio;
     // Protect time scale: the 'now' should be at least 50 pixels wide.
     if (newTimeScale * simDB.now < 50) {
       console.error("Zoom: time scale is too small:", this.timeScale * simDB.now);
       return;
     }
+
+    // Calculate the new scroll position based on the fix point
+    const fixXAbs = fixPointX + this.scrollLeft; // absolute x position in pixels
+    const fixTime = fixXAbs / oldTimeScale; // time at the fix point in simulation time units
+    const newXAbs = fixTime * newTimeScale; // new x position in pixels at the fix point
+    const scrollLeft = newXAbs - fixPointX; // new scroll position in pixels
+
     this.timeScale = newTimeScale;
+    return scrollLeft;
   }
 
   /** * set the canvas size but not render it.
@@ -121,7 +139,24 @@ export class WaveCanvas {
     // Resize the canvas to fit the given dimensions
     this.canvas.width = width;
     this.canvas.height = height;
+
+    // fix blurry text in canvas
+    // https://stackoverflow.com/a/65124939/2506522:
+    this.canvas.style.width = width + "px";
+    this.canvas.style.height = height + "px";
     console.log("Resized canvas to:", { width, height });
+  }
+
+  /**
+   * Get the current size of the canvas.
+   * @return {Object} - An object containing the width and height of the canvas
+   */
+  getSize() {
+    // Get the current size of the canvas
+    return {
+      width: this.canvas.width,
+      height: this.canvas.height
+    };
   }
 
   /**
@@ -142,7 +177,7 @@ export class WaveCanvas {
 
   /**
    * Get the time in simulation time units from a given x-coordinate.
-   * @param {number} x - The x-coordinate in pixels
+   * @param {number} x - The x-coordinate in pixels (relative to the left edge of the canvas)
    * @returns {number} - The time in simulation time units
    */
   getTimeFromX(x){
@@ -255,12 +290,12 @@ export class WaveCanvas {
       let c0 = ctx.fillStyle = value2Color(v0);
 
       // --- Rectangle (transRect) ---
-      ctx.fillStyle = c0 + "20"; // Add transparency
+      ctx.fillStyle = c0 + "18"; // Add transparency
       const rectHeight = valueScale(1-parseIntDef(v0))-bitWavePadding;
       ctx.fillRect(x0, y0abbs, x1 - x0, rectHeight);
 
       // --- Horizontal line (timeholder) ---
-      ctx.strokeStyle = c0;
+      ctx.strokeStyle = c0 + "D0"; // Add transparency
       ctx.beginPath();
       ctx.moveTo(x0, y0abbs);
       ctx.lineTo(x1, y0abbs);
@@ -271,7 +306,6 @@ export class WaveCanvas {
         const vm1 = signal.getValueAtI(i - 1);
         const ym1r = valueScale(parseIntDef(vm1));
         const ym1abbs = ym1r + yOffset;
-        ctx.strokeStyle = c0;
         ctx.beginPath();
         ctx.moveTo(x0, ym1abbs);
         ctx.lineTo(x0, y0abbs);
@@ -337,6 +371,13 @@ export class WaveCanvas {
       ctx.lineTo(x0, half);
       ctx.lineCap = "round";
       ctx.stroke();
+
+      // write the value in the middle of the bus
+      ctx.fillStyle = "#fff";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "ideographic";
+      ctx.font = "12px sans-serif";
+      ctx.fillText(v0, (x0 + x1) / 2, zero);
     }
   }
 
