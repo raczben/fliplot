@@ -8,12 +8,14 @@
     "test": "test"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.10",
-    "@babel/preset-env": "^7.12.11",
+    "@babel/core": "^7.27.4",
+    "@babel/preset-env": "^7.27.2",
     "babel-eslint": "^10.1.0",
+    "babel-jest": "^30.0.1",
     "babel-loader": "^8.2.2",
     "chai": "^4.2.0",
     "eslint": "^7.11.0",
+    "jest": "^30.0.1",
     "jshint": "^2.12.0",
     "mocha": "^10.4.0",
     "webpack": "^5.13.0",
@@ -21,7 +23,7 @@
     "webpack-dev-server": "^5.0.4"
   },
   "scripts": {
-    "test": "npx mocha js/test/**/*js",
+    "test": "jest",
     "dev": "webpack --mode development"
   },
   "repository": {
