@@ -1,4 +1,4 @@
-const { binarySearch, isInt, ceiln } = require('./util.js');
+const { binarySearch, isInt, ceiln, bin2radix } = require('./util.js');
 
 describe('binarySearch', () => {
   const arr = [1, 3, 5, 7, 9];
@@ -42,5 +42,20 @@ describe('ceiln', () => {
     expect(ceiln(13, 4)).toBe(16);
     expect(ceiln(0, 3)).toBe(0);
     expect(ceiln(-2, 3)).toBe(-0);
+  });
+});
+
+describe('bin2radix ', () => {
+  test('converts binary to radix', () => {
+    expect(bin2radix('1010', 'hex')).toBe('a');
+    expect(bin2radix('1111', 'hex')).toBe('f');
+    expect(bin2radix('0000', 'hex')).toBe('0');
+    expect(bin2radix('001100', 'hex')).toBe('0c');
+    expect(bin2radix('0011x0', 'hex')).toBe('0x');
+    expect(bin2radix('0z1100', 'hex')).toBe('xc');
+  });
+
+  test('returns empty string for invalid input', () => {
+    expect(bin2radix('', 'hex')).toBe('');
   });
 });

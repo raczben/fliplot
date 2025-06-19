@@ -16,20 +16,26 @@
  
  //Binary Operations
  function Bin2Dec(n){if(!checkBin(n))return NaN;return parseInt(n,2).toString(10)}
- function Bin2Hex(n){if(!checkBin(n))return NaN;return parseInt(n,2).toString(16)}
+ function Bin2Hex(n){if(!checkBin(n))return 'x';return parseInt(n,2).toString(16)}
  
  //Hexadecimal Operations
 //  function Hex2Bin(n){if(!checkHex(n))return NaN;return parseInt(n,16).toString(2)}
 //  function Hex2Dec(n){if(!checkHex(n))return NaN;return parseInt(n,16).toString(10)}
  
 function Bin2Hex2(n){
-    const ret = Bin2Hex(n)
-    if(isNaN(ret)){
-        // TODO: Should be splitted and converted by 4 bits.
-        return 'x'.repeat(Math.ceil(n.length / 4));
-    } else{
-        return ret;
+    if(n.length % 4 != 0){
+        // Pad the binary string to the nearest 4 bits.
+        n = '0'.repeat(4 - (n.length % 4)) + n;
     }
+    // get each 4 bits and convert to hex
+    const hexChars = [];
+    for(let i = 0; i < n.length; i += 4){
+        const binChunk = n.slice(i, i + 4);
+        //append the hex character to the array
+        hexChars.push(Bin2Hex(binChunk));
+    }
+    // join the hex characters to a string
+    return hexChars.join('');
 }
  
 function Bin2Dec2(n, signed=false, fractionalDigits=0){
@@ -89,7 +95,7 @@ export function binarySearch(ar, el, compare_fn) {
  */
 export function bin2radix(bin, radix){
     if(radix == 'hex'){
-        return Bin2Hex2(bin); //TODO
+        return Bin2Hex2(bin);
     } else if (radix == 'float'){
         return NaN; //TODO
     } else if (radix == 'double'){
