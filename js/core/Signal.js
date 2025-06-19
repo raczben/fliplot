@@ -85,9 +85,6 @@ export class Signal {
             }
             throw 'Negative index';
         }
-        if (i >= this.wave.length){
-            i = this.wave.length -1;
-        }
         
         if(this.wave[i][radix] === undefined){
             this.wave[i][radix] = bin2radix(this.wave[i].bin, radix);

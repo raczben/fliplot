@@ -4,23 +4,44 @@ const { Signal } = require('./Signal.js');
 const now = 1234.5678;
 
 describe('Signal', () => {
-  const wave = [
+  const bit_wave = [
     { time: 0, bin: '0' },
     { time: 10, bin: '1' },
     { time: 20, bin: 'x' },
     { time: 30, bin: 'z' }
   ];
-  const sigObj = {
+
+  const bus_wave = [
+    { time: 1000, bin: '0000000000000000' },
+    { time: 1010, bin: '0000000000000001' },
+    { time: 1020, bin: '0000000000000010' },
+    { time: 1030, bin: '0000000000000011' },
+    { time: 1100, bin: '0000000000001011' },
+    { time: 1200, bin: '0101010101010101' },
+    { time: 1300, bin: '1010101010101010' },
+    { time: 1400, bin: '1100110011001100' },
+    { time: 1500, bin: '1111111111111111' }
+  ];
+
+  const bitSigObj = {
     references: ['sig'],
     vcdid: 'v1',
     type: 'wire',
-    wave: wave,
+    wave: bit_wave,
+    width: 1
+  };
+  const busSigObj = {
+    references: ['sig'],
+    vcdid: 'v1',
+    type: 'wire',
+    wave: bus_wave,
     width: 1
   };
 
   let signal;
   beforeEach(() => {
-    signal = new Signal(sigObj);
+    signal = new Signal(bitSigObj);
+    bus = new Signal(busSigObj);
   });
 
   test('getChangeIndexAt returns correct index', () => {
@@ -37,6 +58,19 @@ describe('Signal', () => {
     expect(signal.getValueAtI(1, 'bin')).toBe('1');
     expect(signal.getValueAtI(2, 'bin')).toBe('x');
     expect(signal.getValueAtI(3, 'bin')).toBe('z');
+    expect(signal.getValueAtI(3, 'bin')).toBe('z');
+  });
+
+  test('getValueAtI for bus values', () => {
+    expect(bus.getValueAtI(0, 'hex')).toBe('0000');
+    expect(bus.getValueAtI(1, 'hex')).toBe('0001');
+    expect(bus.getValueAtI(2, 'hex')).toBe('0002');
+    expect(bus.getValueAtI(3, 'hex')).toBe('0003');
+    expect(bus.getValueAtI(4, 'hex')).toBe('000b');
+    expect(bus.getValueAtI(5, 'hex')).toBe('5555');
+    expect(bus.getValueAtI(6, 'hex')).toBe('aaaa');
+    expect(bus.getValueAtI(7, 'hex')).toBe('cccc');
+    expect(bus.getValueAtI(8, 'hex')).toBe('ffff');
   });
 
   test('getValueAt returns correct value for time', () => {
