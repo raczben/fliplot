@@ -279,8 +279,9 @@ export class WaveCanvas {
     }
     for (let i = startIdx; i < signal.wave.length; i++) {
       // segment values:
-      const t0 = signal.getTimeAtI(i);
-      const t1 = signal.getTimeAtI(i+1);
+      const now = simDB.now;
+      const t0 = signal.getTimeAtI(i, now);
+      const t1 = signal.getTimeAtI(i+1, now);
       const v0 = signal.getValueAtI(i);
 
       // trasform to pixel coordinates
@@ -348,8 +349,9 @@ export class WaveCanvas {
     }
     for (let i = startIdx; i < signal.wave.length; i++) {
       // segment values:
-      const t0 = signal.getTimeAtI(i);
-      const t1 = signal.getTimeAtI(i+1);
+      const now = simDB.now;
+      const t0 = signal.getTimeAtI(i, now);
+      const t1 = signal.getTimeAtI(i+1, now);
       const v0 = signal.getValueAtI(i);
 
       // trasform to pixel coordinates

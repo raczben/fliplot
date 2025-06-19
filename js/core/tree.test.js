@@ -1,7 +1,5 @@
 
-// const { assert, expect } = chai;
 const { Tree } = require('./tree.js');
-// const chai = require('chai');
 
 describe('Tree Test', () => {
 	test('basic insert', ()	=> {

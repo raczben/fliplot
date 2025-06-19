@@ -3,9 +3,6 @@ import {
     binarySearch,
     bin2radix
   } from './util.js';
-import {
-    simDB
-  } from '../interact.js';
 
 /**
  * Value change type builds up the wave list of the signal. Each element describes a value change of
@@ -101,7 +98,7 @@ export class Signal {
     /**
      * @param {int} i 
      */
-    getTimeAtI(i) {
+    getTimeAtI(i, now=-1) {
         if (i < 0){
             throw 'Negative index';
         }
@@ -109,7 +106,7 @@ export class Signal {
             return this.wave[i].time;
         }
         if (i == this.wave.length){
-            return simDB.now;
+            return now;
         }
         else {
             throw 'Index is too great';

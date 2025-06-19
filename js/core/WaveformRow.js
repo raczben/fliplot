@@ -62,8 +62,8 @@ export class WaveformRow{
     /**
      * @param {int} i 
      */
-    getTimeAtI(i) {
-        return this.simObj.getTimeAtI(i);
+    getTimeAtI(i, now=-1) {
+        return this.simObj.getTimeAtI(i, now);
     }
 
     /**

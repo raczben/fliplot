@@ -88,8 +88,8 @@ export class SimulationObject{
     /**
      * @param {int} i 
      */
-    getTimeAtI(i) {
-        return this.signal.getTimeAtI(i);
+    getTimeAtI(i, now=-1) {
+        return this.signal.getTimeAtI(i, now);
     }
     
     /**
