@@ -63,6 +63,8 @@ export class WaveCanvas {
     this.cursorTime = 0; // The time of the cursor in simulation time units. Unit: simTimeUnit.
 
     this.canvas = document.getElementById('wave-axis-canvas'); 
+
+    this._renderScheduled = false;
   }
 
   init() {
@@ -123,6 +125,9 @@ export class WaveCanvas {
     const scrollLeft = newXAbs - fixPointX; // new scroll position in pixels
 
     this.timeScale = newTimeScale;
+
+    this.adjustWaveTimePlaceholder();
+
     return scrollLeft;
   }
 
@@ -197,17 +202,28 @@ export class WaveCanvas {
     this.cursorTime = time;
   }
   
-
-  /**
-   * Render all signals on a canvas.
-   */
-  render() {
-    // Set the width of the wave-time-placeholder element
+  /**   * Adjust the width of the wave-time-placeholder element based on the current time scale.
+   * This is used to visually represent the current simulation time in the waveform display.
+   * And fill the space for horisontal scroll bar.
+   */ 
+  adjustWaveTimePlaceholder() {
+      // Set the width of the wave-time-placeholder element
     const waveTimePlaceholder = document.getElementById('wave-time-placeholder');
     if (waveTimePlaceholder) {
       waveTimePlaceholder.style.width = (this.timeScale * simDB.now) + "px";
     }
+    else {
+      console.error("Wave time placeholder element not found");
+    }
+  } 
 
+
+  /**
+   * Render all signals on a canvas.
+   * Do not call this directly, use requestRender() instead.
+   */
+  render() {
+    console.debug("Rendering waveform display");
     const ctx = this.canvas.getContext('2d');
 
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -461,6 +477,24 @@ export class WaveCanvas {
     ctx.moveTo(x, 0);
     ctx.lineTo(x, this.canvas.height);
     ctx.stroke();
+  }
+
+  /**
+   * Request a render of the waveform display.
+   * 
+   * render() is called from different event which could be called (more or less) at the
+   * same time (like scrolling and resize). This requestRender garantees that render():
+   *  - not to be called too frequently
+   *  - to update and to be coerent with all request
+   */
+  requestRender() {
+    if (!this._renderScheduled) {
+      this._renderScheduled = true;
+      window.requestAnimationFrame(() => {
+        this._renderScheduled = false;
+        this.render();
+      });
+    }
   }
 
 

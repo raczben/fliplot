@@ -41,6 +41,7 @@ export class WaveTable {
   handleWaveAxisContainerResize() {
     console.log("handleWaveAxisContainerResize");
     // Throttle resize handling to avoid excessive calls
+    // this is necessary because resize is called multiple times
     if (this._resizeTimeout) {
       clearTimeout(this._resizeTimeout);
     }
@@ -48,7 +49,7 @@ export class WaveTable {
       this.wave.setSize(this.waveAxisContainer.clientWidth, this.waveAxisContainer.clientHeight);
       this.wave.render();
       this._resizeTimeout = null;
-    }, 100);
+    }, 10);
     return;
   }
 
@@ -57,20 +58,16 @@ export class WaveTable {
    */
   handleHorizontalScroll() {
     const scrollLeft = this.waveAxisContainer.scrollLeft;
-    setTimeout(() => {
-      this.wave.setLeftOffset(scrollLeft);
-      this.wave.render();
-    }, 0);
+    this.wave.setLeftOffset(scrollLeft);
+    this.wave.requestRender();
   }
 
   handleVerticalScroll() {
     console.log("handleVerticalScroll");
     // getting the scroll position
     const scrollTop = this.mainContainerScrolly.scrollTop;
-    setTimeout(() => {
-      this.wave.setScrollTop(scrollTop);
-      this.wave.render();
-    }, 0);
+    this.wave.setScrollTop(scrollTop);
+    this.wave.requestRender();
   }
 
   // Handle zoom (Ctrl + mouse wheel) and allow normal scroll otherwise
@@ -101,7 +98,7 @@ export class WaveTable {
     
     //update values column to the clicked time
     this.valueCol.showValuesAt(time);
-    this.wave.render();
+    this.wave.requestRender();
   }
 
   /**
@@ -116,18 +113,8 @@ export class WaveTable {
     if (scroll < 0) {
       scroll = 0;
     }
-    
-    //if the scrollable containter has not enough width to scroll, just render the wave
-    if (this.waveAxisContainer.scrollWidth <= this.waveAxisContainer.clientWidth) {
-      this.wave.render();
-      return;
-    }
-
-    // if there is no change in the scroll position, do rendering only
-    if (Math.abs(scroll - this.waveAxisContainer.scrollLeft) < 1) {
-      this.wave.render();
-      return;
-    }
+    this.wave.requestRender();
+ 
     // otherwise, scroll the wave axis container, which will trigger the horizontal scroll event
     // scorll effectively the wave axis container DOM element
     this.waveAxisContainer.scrollTo({left:scroll});
