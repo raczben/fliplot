@@ -7,6 +7,12 @@
   "directories": {
     "test": "test"
   },
+  "dependencies": {
+    "jquery": "^3.7.1",
+    "jquery-contextmenu": "^2.9.2",
+    "jquery-ui": "^1.14.1",
+    "jstree": "^3.3.17"
+  },
   "devDependencies": {
     "@babel/core": "^7.27.4",
     "@babel/preset-env": "^7.27.2",

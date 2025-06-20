@@ -1,3 +1,5 @@
+import $ from 'jquery';
+import 'jstree'; // extend jQuery with .jstree()
 import { WaveTable } from "./WaveTable.js";
 
 export class NameCol {

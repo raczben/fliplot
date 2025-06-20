@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import { WaveTable } from "./WaveTable.js";
 
 export class ValueCol {
@@ -82,7 +83,6 @@ export class ValueCol {
 
   clearAll() {
     $(this.containerName).jstree("destroy").empty();
-    // d3.select(this.containerName).selectAll("*").remove();
   }
 
   selectRow(rowId) {

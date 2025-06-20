@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import { simDB } from "./interact.js";
 
 export class ObjectTree{

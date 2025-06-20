@@ -1,3 +1,6 @@
+import $ from 'jquery';
+import "jquery-ui/ui/widgets/resizable.js";
+import "jquery-contextmenu/dist/jquery.contextMenu.js";
 import { SimDB } from "./core/SimDB.js";
 
 import { ObjectTree } from "./ObjectTree.js";
