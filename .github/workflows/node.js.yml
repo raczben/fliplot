@@ -2,9 +2,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "master", "canvas" ]
+    branches: [ "master", "canvas", "jsdom" ]
   pull_request:
-    branches: [ "master", "canvas" ]
+    branches: [ "master", "canvas", "jsdom" ]
 
 jobs:
   build:

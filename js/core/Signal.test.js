@@ -39,6 +39,7 @@ describe('Signal', () => {
   };
 
   let signal;
+  let bus;
   beforeEach(() => {
     signal = new Signal(bitSigObj);
     bus = new Signal(busSigObj);

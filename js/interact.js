@@ -1,8 +1,7 @@
 import $ from 'jquery';
-import "jquery-ui/ui/widgets/resizable.js";
-import "jquery-contextmenu/dist/jquery.contextMenu.js";
-import { SimDB } from "./core/SimDB.js";
+import "jquery-ui"
 
+import { SimDB } from "./core/SimDB.js";
 import { ObjectTree } from "./ObjectTree.js";
 import { WaveTable } from "./wave_table/WaveTable.js";
 
@@ -228,77 +227,77 @@ function openFile(event) {
   };
 }
 
-$(function () {
-  $.contextMenu({
-    selector:
-      ".signal-context-menu, #names-col-container .jstree-node, #values-col-container .jstree-node",
-    callback: function (key, options) {
-      switch (true) {
-        case /rename/.test(key):
-          setTimeout(() => {
-            waveTable.nameCol.editName(waveTable.getActiveRow());
-          }, 0);
-          break;
-        case /remove/.test(key):
-          setTimeout(() => {
-            waveTable.removeRows();
-          }, 0);
-          break;
-        case /radix-.+/.test(key):
-          setTimeout(() => {
-            waveTable.setRadix(key.split("-")[1]);
-          }, 0);
-          break;
-        case /waveStyle-.+/.test(key):
-          // waveTable.getSelectedRows()[0].radix = key.split('-')[1];
-          break;
-        default:
-          console.log(`unknown key: ${key}`);
-          break;
-      }
-    },
+// $(function () {
+//   $.contextMenu({
+//     selector:
+//       ".signal-context-menu, #names-col-container .jstree-node, #values-col-container .jstree-node",
+//     callback: function (key, options) {
+//       switch (true) {
+//         case /rename/.test(key):
+//           setTimeout(() => {
+//             waveTable.nameCol.editName(waveTable.getActiveRow());
+//           }, 0);
+//           break;
+//         case /remove/.test(key):
+//           setTimeout(() => {
+//             waveTable.removeRows();
+//           }, 0);
+//           break;
+//         case /radix-.+/.test(key):
+//           setTimeout(() => {
+//             waveTable.setRadix(key.split("-")[1]);
+//           }, 0);
+//           break;
+//         case /waveStyle-.+/.test(key):
+//           // waveTable.getSelectedRows()[0].radix = key.split('-')[1];
+//           break;
+//         default:
+//           console.log(`unknown key: ${key}`);
+//           break;
+//       }
+//     },
 
-    build: function ($triggerElement, e) {
-      // The element what has been right-clicked, (which opened the context menu)
-      var targ = e.target;
-      while (!$(targ).hasClass("signal-highlighter")) {
-        targ = targ.parentElement;
-        if (targ === null) {
-          console.log("ERROR tarrg is null");
-          return {};
-        }
-      }
-      if (waveTable.getSelectedRows().length <= 1) {
-        const waveformRow = d3.select(e.target).datum();
-        highlightSignal(waveformRow.id);
-      }
-      return {};
-    },
-    zIndex: 1100,
-    items: {
-      rename: { name: "Rename", icon: "edit" },
-      waveStyle: {
-        name: "Wave Style",
-        items: {
-          "waveStyle-analog": { name: "analog" },
-          "waveStyle-bus": { name: "bus" },
-        },
-      },
-      radix: {
-        name: "Radix",
-        items: {
-          "radix-bin": { name: "bin" },
-          "radix-hex": { name: "hex" },
-          "radix-signed": { name: "signed" },
-          "radix-unsigned": { name: "unsigned" },
-        },
-      },
-      sep1: "---------",
-      group: { name: "New Group" },
-      virtualBus: { name: "New Virtual Bus" },
-      divider: { name: "New Divider" },
-      sep2: "---------",
-      remove: { name: "Remove", icon: "delete" },
-    },
-  });
-});
+//     build: function ($triggerElement, e) {
+//       // The element what has been right-clicked, (which opened the context menu)
+//       var targ = e.target;
+//       while (!$(targ).hasClass("signal-highlighter")) {
+//         targ = targ.parentElement;
+//         if (targ === null) {
+//           console.log("ERROR tarrg is null");
+//           return {};
+//         }
+//       }
+//       if (waveTable.getSelectedRows().length <= 1) {
+//         const waveformRow = d3.select(e.target).datum();
+//         highlightSignal(waveformRow.id);
+//       }
+//       return {};
+//     },
+//     zIndex: 1100,
+//     items: {
+//       rename: { name: "Rename", icon: "edit" },
+//       waveStyle: {
+//         name: "Wave Style",
+//         items: {
+//           "waveStyle-analog": { name: "analog" },
+//           "waveStyle-bus": { name: "bus" },
+//         },
+//       },
+//       radix: {
+//         name: "Radix",
+//         items: {
+//           "radix-bin": { name: "bin" },
+//           "radix-hex": { name: "hex" },
+//           "radix-signed": { name: "signed" },
+//           "radix-unsigned": { name: "unsigned" },
+//         },
+//       },
+//       sep1: "---------",
+//       group: { name: "New Group" },
+//       virtualBus: { name: "New Virtual Bus" },
+//       divider: { name: "New Divider" },
+//       sep2: "---------",
+//       remove: { name: "Remove", icon: "delete" },
+//     },
+//   });
+// });
