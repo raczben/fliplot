@@ -1,6 +1,7 @@
-import $ from 'jquery';
-import "jquery-ui/ui/widgets/resizable.js";
-import "jquery-contextmenu/dist/jquery.contextMenu.js";
+import $ from "jquery"
+import 'jquery-ui/dist/jquery-ui'; // https://stackoverflow.com/a/75920162/2506522
+import "jquery-ui/ui/widgets/resizable";
+import "jquery-contextmenu";
 import { SimDB } from "./core/SimDB.js";
 
 import { ObjectTree } from "./ObjectTree.js";
