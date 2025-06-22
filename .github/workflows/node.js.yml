@@ -30,4 +30,4 @@ jobs:
     - name: bundle js code
       run: npx webpack --mode=production
     - name: run test
-      run: npm test -- --coverage
+      run: npm run ssat
