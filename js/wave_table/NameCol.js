@@ -9,6 +9,8 @@ export class NameCol {
     /** @type {WaveTable} */
     this.waveTable = waveTable;
 
+    this.ready = false;
+
     if(init){
       this.init();
     }
@@ -48,12 +50,13 @@ export class NameCol {
         const data = self._getTree().get_node(element).data;
         self.waveTable.deSelectRow(data);
       });
+    }).on('state_ready.jstree', function () {
+      this.ready = true;
     });
 
     setTimeout(() => {
-      
       this.reload();
-    }, 100);
+    }, 0);
 
   }
 
@@ -78,6 +81,11 @@ export class NameCol {
       this.refresh();
     }, 10);
   }
+
+  isLoaded(){
+    return this._getTree().defaults.core.loaded_state
+  }
+  
 
   refresh(){
     this._getTree().refresh();
