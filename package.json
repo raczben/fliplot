@@ -8,6 +8,7 @@
     "test": "test"
   },
   "dependencies": {
+    "http-server": "^14.1.1",
     "jquery": "^3.7.1",
     "jquery-contextmenu": "^2.9.2",
     "jquery-ui": "^1.14.1",
