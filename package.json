@@ -35,7 +35,9 @@
     "test": "jest --coverage",
     "dev": "webpack --mode development",
     "start-server": "FLASK_APP=flask_app.py flask run",
-    "ssat": "start-server-and-test start-server http://localhost:5000 test"
+    "ssat": "start-server-and-test start-server http://localhost:5000 test",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "repository": {
     "type": "git",
