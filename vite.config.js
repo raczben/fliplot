@@ -8,20 +8,19 @@ export default defineConfig({
         jQuery: 'jquery',
     })
   ],
-  // root: '.', // project root
-  // base: './', // relative paths for assets
+  root: '.', // project root
+  base: './', // relative paths for assets
   build: {
-    // outDir: 'dist',
-    // emptyOutDir: true,
-    // rollupOptions: {
-    //   input: 'index.html'
-    // },
-    //
+    outDir: 'dist',
+    emptyOutDir: true,
+    rollupOptions: {
+      input: 'index.html'
+    },
     // https://stackoverflow.com/a/75538477/2506522
     commonjsOptions: { transformMixedEsModules: true } // Change
   },
-  // server: {
-  //   open: true,
-  //   port: 5173
-  // }
+  server: {
+    open: true,
+    port: 5173
+  }
 });
