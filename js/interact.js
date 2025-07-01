@@ -2,6 +2,7 @@ import $ from "jquery"
 import 'jquery-ui/dist/jquery-ui'; // https://stackoverflow.com/a/75920162/2506522
 import "jquery-ui/ui/widgets/resizable";
 import "jquery-contextmenu";
+import {VCDParser} from "./core/VCDParser.js";
 import { SimDB } from "./core/SimDB.js";
 
 import { ObjectTree } from "./ObjectTree.js";
@@ -17,29 +18,29 @@ $(function () {
 });
 
 function showSignals() {
-  waveTable.wave.init();
-  waveTable.reload();
+  window.waveTable.wave.init();
+  window.waveTable.reload();
 
   setTimeout(() => {
-    waveTable.moveCursorTo(0);
-    waveTable.wave.render();
+    window.waveTable.moveCursorTo(0);
+    window.waveTable.wave.render();
   }, 0);
 }
-
+/**
+ *  Fetch the demo file from the server, parse it with VCDParser,
+ * and call initShow() to plot the signals.
+ */
 $(".demo-file-button").click(function () {
+  const fname = $(this).attr("data-file");
+  console.log(`Fetching demo file: ${fname}`);
   $.ajax({
-    url: "parse-vcd",
-    type: "POST",
-    data: JSON.stringify({
-      fname: $(this).attr("data-file"),
-      other_fields: {
-        a: 1,
-        b: null,
-      },
-    }),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    success: initShow,
+    url: `./${fname}`,
+    type: "GET",
+    dataType: "text",
+    success: parseInitShow,
+    error: function (xhr, status, error) {
+      alert(`Error fetching demo file ${fname}: ${error}`);
+    },
   });
 });
 
@@ -89,18 +90,6 @@ $(".resizable-col").resizable({
   handles: "e",
 });
 
-$(".dbg_updateRenderRange").click(function () {
-  const checked = $(this).is(":checked");
-  waveTable.wave.dbg_setEnableUpdateRenderRange(checked);
-  $(".dbg_updateRenderRange").prop("checked", checked);
-});
-
-$(".dbg_enableRender").click(function () {
-  const checked = $(this).is(":checked");
-  waveTable.wave.dbg_setEnableRender(checked);
-  $(".dbg_enableRender").prop("checked", checked);
-});
-
 $("#file-open-button").click(() => {
   $("#file-open-shadow").click();
 });
@@ -110,13 +99,6 @@ $("#fileopenmenu").click(() => {
 });
 
 $("#file-open-shadow").on("change", openFile);
-
-function vcdpy2simDb(parsedContent) {
-  parsedContent["signals"] = parsedContent["children"];
-  delete parsedContent["children"];
-
-  return parsedContent;
-}
 
 $.ajax({
   url: "defaults.json",
@@ -135,7 +117,7 @@ $.ajax({
 
 function initShow(data) {
   console.log(data);
-  simDB.init(vcdpy2simDb(data));
+  simDB.init(data);
   waveTable.addAllWaveSignal();
   simDB.updateDBInitialX();
   const tree = new ObjectTree(waveTable);
@@ -146,6 +128,17 @@ function initShow(data) {
   setTimeout(() => {
     showSignals();
   }, 0);
+}
+
+/**
+ * 
+ * @param {text} vcdcontent 
+ */
+function parseInitShow(vcdcontent){
+  console.log("Parsing VCD content");
+  const vcdparser = new VCDParser({'vcdcontent': vcdcontent});
+  const vcddata = vcdparser.getData();
+  initShow(vcddata);
 }
 
 /**
