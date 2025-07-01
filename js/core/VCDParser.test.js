@@ -7,7 +7,7 @@ describe('VCDParser', () => {
 
   beforeAll(() => {
     // Adjust the path as needed to point to your test/wiki.vcd file
-    const vcdPath = path.resolve(__dirname, '../../test/wiki.vcd');
+    const vcdPath = path.resolve(__dirname, '../../public/test/wiki.vcd');
     vcdContent = fs.readFileSync(vcdPath, 'utf8');
   });
 
@@ -43,8 +43,8 @@ describe('VCDParser', () => {
 
   // Test AxiRegTC_test_write.vcd and compare with AxiRegTC_test_write_parsed.json
     test('parses AxiRegTC_test_write.vcd and matches expected output', () => {
-        const vcdPath = path.resolve(__dirname, '../../test/AxiRegTC_test_write.vcd');
-        const expectedOutputPath = path.resolve(__dirname, '../../test/AxiRegTC_test_write_parsed.json');
+        const vcdPath = path.resolve(__dirname, '../../public/test/AxiRegTC_test_write.vcd');
+        const expectedOutputPath = path.resolve(__dirname, '../../public/test/AxiRegTC_test_write_parsed.json');
         const expectedOutput = JSON.parse(fs.readFileSync(expectedOutputPath, 'utf8'));
     
         const parser = new VCDParser({ vcdcontent: fs.readFileSync(vcdPath, 'utf8') });

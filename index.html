@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="css/styles.css">
 
   <!-- <script type="module" src="dist/main.js"></script> -->
+  <!-- <script type="module" src="dist/assets/index-DCYvreSf.js"></script> -->
   <script type="module" src="js/interact.js"></script>
 </head>
 
@@ -29,23 +30,6 @@
           </ul>
         </li>
       <ul class="nav navbar-nav">
-        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Debug<span
-              class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li>
-              <input type="checkbox" id="dbg_updateRenderRange-menu" class="dbg_updateRenderRange" checked>
-              <label for="dbg_updateRenderRange" class="menu-label"
-                title="Enable/Disable update render range to see what's happen under the hood.">
-                UDT range
-              </label>
-            </li>
-            <li>
-              <input type="checkbox" id="dbg_enableRender-menu" class="dbg_enableRender" checked>
-              <label for="dbg_enableRender" class="menu-label" title="Enable/Disable re-render">
-                Render</label>
-            </li>
-          </ul>
-        </li>
         <li><a href="https://github.com/raczben/fliplot" target="_blank"
             title="Open the fliplot GitHub project in a new tab">GitHub</a></li>
       </ul>
@@ -117,20 +101,11 @@
         </div>
         <div id="tool-group-development" class="tool-group-container">
           <div class="tool-group-tools">
-            <div class="check-group">
-              <input type="checkbox" id="dbg_updateRenderRange" class="dbg_updateRenderRange" checked>
-              <label for="dbg_updateRenderRange"
-                title="Enable/Disable update render range to see what's happen under the hood.">UDT range</label>
-            </div>
-            <div class="check-group">
-              <input type="checkbox" id="dbg_enableRender" class="dbg_enableRender" checked>
-              <label for="dbg_enableRender" title="Enable/Disable re-render">Render</label>
-            </div>
             <button id="add-analog" type="button" class="btn btn-primary navbar-btn">+Analog</button>
             <button id="wiki" type="button" class="btn btn-primary navbar-btn demo-file-button"
-              data-file="test/wiki.vcd">Send wiki.vcd</button>
+              data-file="test/wiki.vcd">Load wiki.vcd</button>
             <button id="Axi" type="button" class="btn btn-primary navbar-btn demo-file-button"
-              data-file="test/AxiRegTC_test_write.vcd">AxiReg.vcd</button>
+              data-file="test/AxiRegTC_test_write.vcd">Load AxiReg.vcd</button>
           </div>
           <div class="tool-group-name">
             <div>
