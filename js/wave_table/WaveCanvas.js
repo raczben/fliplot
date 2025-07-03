@@ -15,13 +15,31 @@ function parseIntDef(intToPare, def = 0.5) {
   }
 }
 
-function value2Color(val) {
+/**
+ * 
+ * @param {string} val 
+ * @param {boolean} selected 
+ * @returns 
+ */
+function value2Color(val, selected) {
+  var color;
   if (isInt(val))
-    return "#00FF00";
+    color = "#00FF00";
   else if (val == 'z')
-    return "#0000FF";
+    color = "#0000FF";
   else
-    return "#FF0000";
+    color = "#FF0000";
+  if (selected) {
+    // make the color not transparent if it is selected
+    const line_color = color + "FF";
+    const shadow_color = color + "18";
+    return { line_color, shadow_color };
+  } else {
+    // make the color transparent if it is not selected
+    const line_color = color + "D0";
+    const shadow_color = color + "18";
+    return { line_color, shadow_color };
+  }
 }
 
 // Linear scale: maps [domainMin, domainMax] to [rangeMin, rangeMax]
@@ -245,13 +263,20 @@ export class WaveCanvas {
         return; 
       }
 
+      const selected = this.waveTable.isSelected(row.id)
+      // draw light gray background for the selected signals:
+      if (selected) {
+        ctx.fillStyle = "rgba(200, 200, 200, 0.19)";
+        ctx.fillRect(0, yBase-this.scrollTop, this.canvas.width, rowHeight);
+      }
+
       if (waveStyle === 'bit') {
         // Draw bit wave as rectangles
         // setTimeout(() => {
-          this.drawBitSignal(ctx, row, yBase-this.scrollTop, this.scrollLeft, this.timeScale);
+          this.drawBitSignal(ctx, row, yBase-this.scrollTop, this.scrollLeft, this.timeScale, selected);
         // },0);
       } else if (waveStyle === 'bus') {
-          this.drawBusSignal(ctx, row, yBase-this.scrollTop, this.scrollLeft, this.timeScale);
+          this.drawBusSignal(ctx, row, yBase-this.scrollTop, this.scrollLeft, this.timeScale, selected);
       } else {
         // Unsupported style
         ctx.fillStyle = "rgba(150,70,60,0.5)";
@@ -272,8 +297,9 @@ export class WaveCanvas {
    * @param {number} yOffset - The vertical offset (pixels from top)
    * @param {number} xOffset - The horizontal offset (pixels from top)
    * @param {number} timeScale - Ratio: simulation time units per pixel
+   * @param {boolean} selected - Selected row is lighter
    */
-  drawBitSignal(ctx, row, yOffset, xOffset, timeScale) {
+  drawBitSignal(ctx, row, yOffset, xOffset, timeScale, selected) {
     const signal = row.simObj.signal;
     const rowHeight = config.rowHeight;
     const bitWavePadding = config.bitWavePadding || 2;
@@ -305,15 +331,15 @@ export class WaveCanvas {
       let x1 = t1 * timeScale - xOffset;
       let y0r = valueScale(parseIntDef(v0));
       let y0abbs = y0r + yOffset;
-      let c0 = ctx.fillStyle = value2Color(v0);
+      let {line_color, shadow_color} = ctx.fillStyle = value2Color(v0, selected);
 
       // --- Rectangle (transRect) ---
-      ctx.fillStyle = c0 + "18"; // Add transparency
+      ctx.fillStyle = shadow_color;
       const rectHeight = valueScale(1-parseIntDef(v0))-bitWavePadding;
       ctx.fillRect(x0, y0abbs, x1 - x0, rectHeight);
 
       // --- Horizontal line (timeholder) ---
-      ctx.strokeStyle = c0 + "D0"; // Add transparency
+      ctx.strokeStyle = line_color;
       ctx.beginPath();
       ctx.moveTo(x0, y0abbs);
       ctx.lineTo(x1, y0abbs);
@@ -342,8 +368,9 @@ export class WaveCanvas {
    * @param {number} yOffset - The vertical offset (pixels from top)
    * @param {number} xOffset - The horizontal offset (pixels from top)
    * @param {number} timeScale - Ratio: simulation time units per pixel
+   * @param {boolean} selected - Selected row is lighter
    */
-  drawBusSignal(ctx, row, yOffset, xOffset, timeScale) {
+  drawBusSignal(ctx, row, yOffset, xOffset, timeScale, selected) {
     const signal = row.simObj.signal;
     const rowHeight = config.rowHeight;
     const bitWavePadding = config.bitWavePadding || 2;
@@ -376,10 +403,10 @@ export class WaveCanvas {
       let zero = valueScale(0) + yOffset;
       let x0 = t0 * timeScale - xOffset;
       let x1 = t1 * timeScale - xOffset;
-      let c0 = ctx.fillStyle = value2Color(v0);
+      let {line_color, _} = value2Color(v0, selected);
 
       // --- the 'hexagon' of the bus ---
-      ctx.strokeStyle = c0;
+      ctx.strokeStyle = line_color;
       ctx.beginPath();
       ctx.moveTo(x0, half);
       ctx.lineTo(x0+2, one);

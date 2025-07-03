@@ -146,13 +146,13 @@ export class WaveTable {
   selectRow(rowId) {
     this.nameCol.selectRow(rowId);
     this.valueCol.selectRow(rowId);
-    this.wave.selectRow(rowId);
+    this.wave.requestRender();
   }
 
   deSelectRow(rowId) {
     this.nameCol.deSelectRow(rowId);
     this.valueCol.deSelectRow(rowId);
-    this.wave.deSelectRow(rowId);
+    this.wave.requestRender();
   }
 
   moveRow(rowId, pos, parent) {
@@ -196,7 +196,10 @@ export class WaveTable {
    * Insert a new signal to waveform window.
    *
    * @param {string[]} hierarchy
+   * @param {string|null} parent
    * @param {number} position
+   * @param {boolean} busAsBus
+   * @param {boolean} render
    */
   insertWaveSignal(hierarchy, parent = null, position = -1, busAsBus = true, render = true) {
     /** @type {SimulationObject} obj */
@@ -276,6 +279,15 @@ export class WaveTable {
         .getSelectedRows()
         .map((element) => this.tree.get(element).data);
     }
+  }
+
+  /**
+   * Returns if the given row is selected, fetching from the nameCol jsTree structure.
+   * @param {string} rowId - The ID of the row to check
+   * @returns {boolean} - True if the row is selected, false otherwise
+   */
+  isSelected(id) {
+    return this.nameCol.isSelected(id);
   }
 
   getActiveRow(id = true) {

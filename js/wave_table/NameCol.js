@@ -128,6 +128,15 @@ export class NameCol {
     );
   }
 
+  /**
+   * Check if the row is selected.
+   * @param {string} rowId - The ID of the row to check
+   * @returns {boolean} - True if the row is selected, false otherwise
+   */
+  isSelected(rowId) {
+    return this._getTree().is_selected(this.toId(rowId));
+  }
+
   getActiveRow() {
     return this._getTree().get_selected(true)[0].data;
   }
