@@ -401,8 +401,9 @@ export class WaveCanvas {
       const x0satured = Math.max(x0, 0);
       const x1satured = Math.min(x1, this.canvas.width);
       const xpos = (x0satured + x1satured)/ 2;
-      let truncedStr = truncateTextToWidth(ctx, v0, x1satured - x0satured - 4);
-      ctx.fillText(truncedStr, xpos, zero);
+      const txt = row.getValueAtI(i);
+      let truncedStr = truncateTextToWidth(ctx, txt, x1satured - x0satured - 4);
+      ctx.fillText(truncedStr, xpos, zero-1);
     }
   }
 
