@@ -35,8 +35,8 @@
   "scripts": {
     "test": "jest --coverage",
     "dev": "webpack --mode development",
-    "start-server": "FLASK_APP=flask_app.py flask run",
-    "ssat": "start-server-and-test start-server http://localhost:5000 test",
+    "start-server": "npx vite",
+    "ssat": "start-server-and-test start-server http://localhost:5173 test",
     "build": "vite build",
     "preview": "vite preview"
   },
