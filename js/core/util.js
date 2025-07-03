@@ -116,26 +116,6 @@ export function isInt(value) {
       !isNaN(parseInt(value, 10));
   }
 
-/**
- * Fast wrap of svg text. Exact wrap can be done as this:
- * https://stackoverflow.com/a/27723752/2506522
- * 
- * @param {*} element DOM-SVG text element which should be wrapped
- * @param {*} width the pixel width of the maximum text length.
- */
-export function wrap_fast(element, width) {
-    if(width < 5){
-        return '';
-    }
-    element = d3.select(element);
-    const maxCharLen = (width/10)-1;
-    var text = element.text();
-    if(text.length > maxCharLen){
-        text = text.slice(0, maxCharLen);
-        element.text(text + '...');
-    }
-  }
-
 /** * Round a number to the nearest multiple of another number.
  * @param {number} x - The number to round.
  * @param {number} n - The multiple to round to.
@@ -143,4 +123,28 @@ export function wrap_fast(element, width) {
  */
 export function ceiln(x, n){
     return Math.ceil(x / n) * n;
+}
+    
+/**
+ * Truncate text with ellipsis so it fits within maxWidth in a canvas context.
+ * https://stackoverflow.com/a/10511598/2506522
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {string} str
+ * @param {number} maxWidth
+ * @returns {string}
+ */
+export function truncateTextToWidth(ctx, str, maxWidth) {
+  var width = ctx.measureText(str).width;
+  var ellipsis = '…';
+  var ellipsisWidth = ctx.measureText(ellipsis).width;
+  if (width<=maxWidth || width<=ellipsisWidth) {
+    return str;
+  } else {
+    var len = str.length;
+    while (width>=maxWidth-ellipsisWidth && len-->0) {
+      str = str.substring(0, len);
+      width = ctx.measureText(str).width;
+    }
+    return str+ellipsis;
+  }
 }

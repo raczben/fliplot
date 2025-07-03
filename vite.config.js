@@ -20,7 +20,6 @@ export default defineConfig({
     commonjsOptions: { transformMixedEsModules: true } // Change
   },
   server: {
-    open: true,
     port: 5173
   }
 });

@@ -1,5 +1,5 @@
 import { config, simDB} from "../interact.js";
-import { ceiln, isInt, wrap_fast } from "../core/util.js";
+import { ceiln, isInt, truncateTextToWidth } from "../core/util.js";
 import { WaveTable } from "./WaveTable.js";
 
 /* index definitions for render data */
@@ -396,7 +396,13 @@ export class WaveCanvas {
       ctx.textAlign = "center";
       ctx.textBaseline = "ideographic";
       ctx.font = "12px sans-serif";
-      ctx.fillText(v0, (x0 + x1) / 2, zero);
+      // if the bus overflows the canvas' edges write the value
+      // in the middel of the visible area
+      const x0satured = Math.max(x0, 0);
+      const x1satured = Math.min(x1, this.canvas.width);
+      const xpos = (x0satured + x1satured)/ 2;
+      let truncedStr = truncateTextToWidth(ctx, v0, x1satured - x0satured - 4);
+      ctx.fillText(truncedStr, xpos, zero);
     }
   }
 
