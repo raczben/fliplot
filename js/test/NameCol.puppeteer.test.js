@@ -46,9 +46,7 @@ describe('NameCol integration (jsTree UI)', () => {
     const signalNames = await page.$$eval('#names-col-container-scroll li > a', els =>
       els.map(e => e.textContent.trim())
     );
-    await page.screenshot({
-      path: 'screenshots/hn.png',
-    });
+
     expect(signalNames.length).toBe(7);
 
     // Click the first signal
