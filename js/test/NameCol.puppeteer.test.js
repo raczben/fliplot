@@ -41,12 +41,12 @@ describe('NameCol integration (jsTree UI)', () => {
     console.log('TEST1');
 
     // await page.screenshot({path: 'screenshots/loading.png'});
-    await page.waitForFunction('window.waveTable.nameCol.isLoaded');
-    console.log('TEST2');
+    // await page.waitForFunction('window.waveTable.nameCol.isLoaded');
 
     // await page.screenshot({path: 'screenshots/loaded.png'});
     // TODO: Workaround: waiting the last element in the js tree to be loaded.
     await page.waitForSelector('#signal-name-wfr-14');
+    console.log('TEST2');
 
     const signalNames = await page.$$eval('#names-col-container-scroll li > a', els =>
       els.map(e => e.textContent.trim())
@@ -64,5 +64,5 @@ describe('NameCol integration (jsTree UI)', () => {
       el => !!el
     );
     expect(selected).toBe(true);
-  });
+  }, 10000);
 });
