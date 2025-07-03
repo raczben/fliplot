@@ -25,16 +25,8 @@ describe('NameCol integration (jsTree UI)', () => {
     // Wait for jsTree to render at least one node
     // await page.waitForSelector('#names-col-container-scroll li > a');
 
-    console.log('asdasd');
-
-    // Check that at least one signal is rendered
     // Wait for the jsTree 'ready.jstree' event to fire
-    await page.waitForFunction('() => {\
-      return window.waveTable.nameCol.ready;\
-    }'
-    );
-
-
+    await page.waitForFunction(() => window.waveTable.nameCol.isLoaded);
     const signalNames = await page.$$eval('#names-col-container-scroll li > a', els =>
       els.map(e => e.textContent.trim())
     );
