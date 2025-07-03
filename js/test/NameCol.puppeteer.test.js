@@ -17,8 +17,8 @@ describe('NameCol integration (jsTree UI)', () => {
       .on('console', message =>
         console.log(`${message.type().substr(0, 3).toUpperCase()} ${message.text()}`))
       .on('pageerror', ({ message }) => console.log(message))
-      .on('response', response =>
-        console.log(`${response.status()} ${response.url()}`))
+      // .on('response', response =>
+      //   console.log(`${response.status()} ${response.url()}`))
       .on('requestfailed', request =>
         console.log(`${request.failure().errorText} ${request.url()}`))
 
@@ -34,18 +34,24 @@ describe('NameCol integration (jsTree UI)', () => {
     // Wait for the names column container to appear
     await page.waitForSelector('#names-col-container-scroll');
 
+
+    // await page.screenshot({path: 'screenshots/empty_page.png'});
+    
     await page.click('#wiki');
-    // Wait for jsTree to render at least one node
-    // await page.waitForSelector('#names-col-container-scroll li > a');
+    console.log('TEST1');
 
-    // Wait for the jsTree 'ready.jstree' event to fire
+    // await page.screenshot({path: 'screenshots/loading.png'});
+    await page.waitForFunction('window.waveTable.nameCol.isLoaded');
+    console.log('TEST2');
 
-    await page.waitForFunction(() => window.waveTable.nameCol.isLoaded);
-
+    // await page.screenshot({path: 'screenshots/loaded.png'});
+    // TODO: Workaround: waiting the last element in the js tree to be loaded.
     await page.waitForSelector('#signal-name-wfr-14');
+
     const signalNames = await page.$$eval('#names-col-container-scroll li > a', els =>
       els.map(e => e.textContent.trim())
     );
+    console.log('TEST3');
 
     expect(signalNames.length).toBe(7);
 

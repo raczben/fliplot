@@ -50,8 +50,6 @@ export class NameCol {
         const data = self._getTree().get_node(element).data;
         self.waveTable.deSelectRow(data);
       });
-    }).on('state_ready.jstree', function () {
-      this.ready = true;
     });
 
     setTimeout(() => {
@@ -82,10 +80,6 @@ export class NameCol {
     }, 10);
   }
 
-  isLoaded(){
-    return this._getTree().defaults.core.loaded_state
-  }
-  
 
   refresh(){
     this._getTree().refresh();
