@@ -1,4 +1,5 @@
 const { binarySearch, isInt, ceiln, bin2radix } = require('./util.js');
+const { truncateTextToWidth } = require('./util.js');
 
 describe('binarySearch', () => {
   const arr = [1, 3, 5, 7, 9];
@@ -46,16 +47,113 @@ describe('ceiln', () => {
 });
 
 describe('bin2radix ', () => {
-  test('converts binary to radix', () => {
+  test('converts binary to hex', () => {
     expect(bin2radix('1010', 'hex')).toBe('a');
     expect(bin2radix('1111', 'hex')).toBe('f');
     expect(bin2radix('0000', 'hex')).toBe('0');
     expect(bin2radix('001100', 'hex')).toBe('0c');
     expect(bin2radix('0011x0', 'hex')).toBe('0x');
     expect(bin2radix('0z1100', 'hex')).toBe('xc');
+
+    // invalid formats
+    expect(bin2radix('', 'hex')).toBe('');
+  });
+  
+  test('converts binary to fixed point', () => {
+    expect(bin2radix('1010', 'u0')).toBe(10);
+    expect(bin2radix('01111111', 's0')).toBe(127);
+    expect(bin2radix('01000000', 's0')).toBe(64);
+    expect(bin2radix('00000001', 's0')).toBe(1);
+    expect(bin2radix('00000000', 's0')).toBe(0);
+    expect(bin2radix('11111111', 's0')).toBe(-1);
+    expect(bin2radix('10000001', 's0')).toBe(-127);
+    expect(bin2radix('10000000', 's0')).toBe(-128);
+
+    expect(bin2radix('01111100', 's4')).toBe(7.75);
+    expect(bin2radix('01000000', 's8')).toBe(0.25);
+
+    // invalid formats
+    expect(bin2radix('1010x1', 'u0')).toBe(NaN);
   });
 
-  test('returns empty string for invalid input', () => {
-    expect(bin2radix('', 'hex')).toBe('');
+  test('converts binary to single float', () => {
+    expect(bin2radix('11000000000000000000000000000000', 'float')).toBeCloseTo(-2, 10);
+    expect(bin2radix('00000000000000000000000000000000', 'float')).toBeCloseTo(0, 10);
+    expect(bin2radix('00111110101010101010101010101011', 'float')).toBeCloseTo(0.333333343267440796, 10);
+    expect(bin2radix('01000000010010010000111111011011', 'float')).toBeCloseTo(3.14159274101257324, 10);
+    expect(bin2radix('01000001010001010111000010100100', 'float')).toBeCloseTo(12.340000152587, 10);
+    expect(bin2radix('00000000000000000000000000000000', 'float')).toBeCloseTo(0.0, 10);
+    expect(bin2radix('00111111100000000000000000000000', 'float')).toBeCloseTo(1.0, 10);
+  
+    //invalid formats:
+    expect(bin2radix('0011111110000000000000000000000', 'float'))
+      .toBe(NaN);
+    expect(bin2radix('0011111110000000000000000000000s', 'float'))
+      .toBe(NaN);
+  });
+
+  test('converts binary to double', () => {
+    expect(bin2radix('0011111111110000000000000000000000000000000000000000000000000000', 'double'))
+      .toBeCloseTo(1.0, 20);
+    expect(bin2radix('0000000000000000000000000000000000000000000000000000000000000000', 'double'))
+      .toBeCloseTo(0, 20);
+    expect(bin2radix('0011111111110000000000000000000000000000000000000000000000000010', 'double'))
+      .toBeCloseTo(1.0000000000000004441, 20);
+    expect(bin2radix('0100000000000000000000000000000000000000000000000000000000000000', 'double'))
+      .toBeCloseTo(2, 20);
+    expect(bin2radix('1100000000000000000000000000000000000000000000000000000000000000', 'double'))
+      .toBeCloseTo(-2, 20);
+    expect(bin2radix('0100001101111011011010011011010010111010110011010000010111110001', 'double'))
+      .toBeCloseTo(123456789123456789, 20);
+    expect(bin2radix('1100001101111011011010011011010010111010110011010000010111110001', 'double'))
+      .toBeCloseTo(-123456789123456789, 20);
+    
+      //invalid formats:
+    expect(bin2radix('110000110111101101101001101101001011101011001101000001011111000', 'double'))
+      .toBe(NaN);
+    expect(bin2radix('110000110111101101101001101101001011101011001101000001011111000s', 'double'))
+      .toBe(NaN);
+
+  });
+});
+
+describe('truncateTextToWidth', () => {
+  // Mock CanvasRenderingContext2D
+  function mockCtx(charWidth = 10, ellipsisWidth = 10) {
+    return {
+      measureText: (str) => ({
+        width: str === '…' ? ellipsisWidth : str.length * charWidth
+      })
+    };
+  }
+
+
+  test('returns original string if it fits', () => {
+    const ctx = mockCtx(10);
+    expect(truncateTextToWidth(ctx, 'abc', 30)).toBe('abc');
+    expect(truncateTextToWidth(ctx, 'abc', 31)).toBe('abc');
+  });
+
+  test('returns original string if width <= ellipsisWidth', () => {
+    const ctx = mockCtx(10, 40);
+    expect(truncateTextToWidth(ctx, 'abc', 30)).toBe('abc');
+  });
+
+  test('truncates and adds ellipsis if string too wide', () => {
+    const ctx = mockCtx(10);
+    expect(truncateTextToWidth(ctx, 'abcdef', 45)).toBe('abc…');
+    expect(truncateTextToWidth(ctx, 'abcdef', 35)).toBe('ab…');
+    expect(truncateTextToWidth(ctx, 'abcdef', 25)).toBe('a…');
+    expect(truncateTextToWidth(ctx, 'abcdef', 15)).toBe('…');
+  });
+
+  test('returns original string if maxWidth is very large', () => {
+    const ctx = mockCtx(10);
+    expect(truncateTextToWidth(ctx, 'abcdef', 1000)).toBe('abcdef');
+  });
+
+  test('handles empty string', () => {
+    const ctx = mockCtx(10);
+    expect(truncateTextToWidth(ctx, '', 10)).toBe('');
   });
 });

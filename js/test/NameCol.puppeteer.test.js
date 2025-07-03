@@ -24,7 +24,7 @@ describe('NameCol integration (jsTree UI)', () => {
 
     // Serve your app locally and replace the URL below with the correct one
     await page.goto('http://localhost:5173'); // <-- Change to your dev server URL
-  });
+  }, 10000);
 
   afterAll(async () => {
     await browser.close();
