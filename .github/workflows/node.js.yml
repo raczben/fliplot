@@ -23,8 +23,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - name: install python dependecies
-      run: pip install flask
     - name: install js dependecies
       run: npm ci
     - name: run test
