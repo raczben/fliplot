@@ -37,6 +37,9 @@ $(".demo-file-button").click(function () {
     url: `./${fname}`,
     type: "GET",
     dataType: "text",
+    // ajax get XML Parsing Error: not well-formed
+    // https://stackoverflow.com/a/56521064/2506522
+    beforeSend: (xhr) => {  xhr.overrideMimeType( "text/plain; charset=x-user-defined" );},
     success: parseInitShow,
     error: function (xhr, status, error) {
       alert(`Error fetching demo file ${fname}: ${error}`);
@@ -201,25 +204,36 @@ function toggleHighlightSignal(signalID, enableZeroSelection = false) {
   }
 }
 
+/**
+ * Open a file from file input check the size (gives an alert above 1MB)
+ * The reads the content of the file and call the parseInitShow() function.
+ * 
+ * @param {*} event 
+ */
 function openFile(event) {
-  var input = event.target;
-  var reader = new FileReader();
-  reader.readAsText(input.files[0], "UTF-8");
-  reader.onload = function (evt) {
-    console.log(evt.target.result);
+  const file = event.target.files[0];
+  if (!file) {
+    console.log("No file selected");
+    return;
+  }
 
-    $.ajax({
-      url: "parse-vcd",
-      type: "POST",
-      data: JSON.stringify({
-        fname: input.files[0].name,
-        content: evt.target.result,
-      }),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      success: initShow,
-    });
+  if (file.size > 1024 * 1024) {
+    if (!confirm("The selected file is larger than 1MB. Do you want to continue parsing this potentially huge file?")) {
+      return;
+    }
+  }
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    const content = e.target.result;
+    parseInitShow(content);
   };
+  
+  reader.onerror = function (e) {
+    alert(`Error reading file: ${e.target.error.message}`);
+  };
+
+  reader.readAsText(file);
 }
 
 $(function () {
