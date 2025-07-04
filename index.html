@@ -20,21 +20,6 @@
 </head>
 
 <body>
-  <nav id="navbar-menubar-normal" class="navbar-inverse">
-    <div class="">
-      <ul class="nav navbar-nav">
-        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">File<span
-              class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#" id="fileopenmenu">Open</a></li>
-          </ul>
-        </li>
-      <ul class="nav navbar-nav">
-        <li><a href="https://github.com/raczben/fliplot" target="_blank"
-            title="Open the fliplot GitHub project in a new tab">GitHub</a></li>
-      </ul>
-    </div>
-  </nav>
 
   <nav class="navbar-inverse toolbar">
     <div class="">
@@ -42,7 +27,7 @@
         <div id="tool-group-file" class="tool-group-container">
           <div class="tool-group-tools">
             <input type='file' accept='*' id='file-open-shadow' style="display: none">
-            <button id="file-open-button" type="button" class="btn btn-primary navbar-btn"><span
+            <button id="file-open-button" title="Open a VCD file" type="button" class="btn btn-primary navbar-btn"><span
                 class="glyphicon glyphicon-open-file" aria-hidden="true" title="Open a VCD file"></span></button>
             <button id="remove-all" title="Remove all signals" type="button" class="btn btn-primary navbar-btn">rm
               *</button>
@@ -64,8 +49,6 @@
             <button title="Zoom fit: show whole data" id="zoom-fit" type="button" class="btn btn-primary navbar-btn">
               <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
             </button>
-            <button title="Autoscale: scale to show enough detail for humans" id="zoom-autoscale" type="button"
-              class="btn btn-primary navbar-btn">auto</button>
           </div>
           <div class="tool-group-name">
             <div>
@@ -158,7 +141,8 @@
     </div>
   </div>
   <footer>
-    <div>Credits: Benedek Racz</div>
+    <div>Credits: Benedek Racz: <a href="https://github.com/raczben/fliplot" target="_blank"
+            title="Open the fliplot GitHub project in a new tab">GitHub</a></div>
   </footer>
 
 </body>

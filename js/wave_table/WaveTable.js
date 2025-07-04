@@ -184,7 +184,7 @@ export class WaveTable {
     this.tree.move(rowId, pos, parent);
     this.nameCol.moveRow(rowId, pos, parent);
     this.valueCol.moveRow(rowId, pos, parent);
-    this.wave.moveRow(rowId, pos, parent);
+    this.wave.requestRender();
   }
 
   openGroup(rowId) {
