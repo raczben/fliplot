@@ -108,9 +108,6 @@ export class WaveCanvas {
   refresh() {
   }
 
-  clearAll() {
-  }
-
   /** * Zoom in or out of the waveform display.
    * This is like zooming in or out of the waveform display.
    * @param {number} delta - The zoom factor
@@ -218,6 +215,14 @@ export class WaveCanvas {
       return;
     }
     this.cursorTime = time;
+  }
+
+  /**
+   * Get the cursor time in simulation time units.
+   * @return {number} time - The time in simulation time units
+   */
+  getCursorTime() {
+    return this.cursorTime;
   }
   
   /**   * Adjust the width of the wave-time-placeholder element based on the current time scale.

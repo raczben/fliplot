@@ -30,7 +30,7 @@ function showSignals() {
  *  Fetch the demo file from the server, parse it with VCDParser,
  * and call initShow() to plot the signals.
  */
-$(".demo-file-button").click(function () {
+$(".demo-file-button").on('click', function () {
   const fname = $(this).attr("data-file");
   console.log(`Fetching demo file: ${fname}`);
   $.ajax({
@@ -47,45 +47,73 @@ $(".demo-file-button").click(function () {
   });
 });
 
-$("#zoom-fit").click(() => {
+$("#zoom-fit").on('click', () => {
   window.waveTable.zoomFit();
 });
 
-$("#zoom-autoscale").click(() => {
+$("#zoom-autoscale").on('click', () => {
   window.waveTable.zoomAutoscale();
 });
 
-$("#zoom-in").click(() => {
+$("#zoom-in").on('click', () => {
   window.waveTable.zoomIn();
 });
 
-$("#zoom-out").click(() => {
+$("#zoom-out").on('click', () => {
   window.waveTable.zoomOut();
 });
 
-$("#remove-all").click(() => {
-  window.waveTable.removeAllSignals();
+$("#remove-all").on('click', () => {
+  window.waveTable.clearAll();
 });
 
-$("#cursor-to-0").click(() => {
+$("#cursor-to-0").on('click', () => {
   window.waveTable.moveCursorTo(0);
 });
 
-$("#cursor-to-end").click(() => {
+$("#cursor-to-end").on('click', () => {
   window.waveTable.moveCursorTo(simDB.now);
 });
 
-$("#cursor-to-prev-transition").click(() => {
+$("#cursor-to-prev-transition").on('click', () => {
   const tCurr = window.waveTable.getCursorTime();
   const sig = window.waveTable.getActiveRow(false);
-  const tNew = sig.simObj.getTimeAnyTransition(tCurr, -1);
+  const tNew = sig.simObj.getTransitionTimeAny(tCurr, -1);
   window.waveTable.moveCursorTo(tNew);
 });
 
-$("#cursor-to-next-transition").click(() => {
+$("#cursor-to-next-transition").on('click', () => {
   const tCurr = window.waveTable.getCursorTime();
   const sig = window.waveTable.getActiveRow(false);
-  const tNew = sig.simObj.getTimeAnyTransition(tCurr, +1);
+  const tNew = sig.simObj.getTransitionTimeAny(tCurr, +1);
+  window.waveTable.moveCursorTo(tNew);
+});
+
+$("#cursor-to-next-rise").on('click', () => {
+  const tCurr = window.waveTable.getCursorTime();
+  const sig = window.waveTable.getActiveRow(false);
+  const tNew = sig.simObj.getTransitionTimeRising(tCurr, +1);
+  window.waveTable.moveCursorTo(tNew);
+});
+
+$("#cursor-to-prev-rise").on('click', () => {
+  const tCurr = window.waveTable.getCursorTime();
+  const sig = window.waveTable.getActiveRow(false);
+  const tNew = sig.simObj.getTransitionTimeRising(tCurr, -1);
+  window.waveTable.moveCursorTo(tNew);
+});
+
+$("#cursor-to-next-fall").on('click', () => {
+  const tCurr = window.waveTable.getCursorTime();
+  const sig = window.waveTable.getActiveRow(false);
+  const tNew = sig.simObj.getTransitionTimeFalling(tCurr, +1);
+  window.waveTable.moveCursorTo(tNew);
+});
+
+$("#cursor-to-prev-fall").on('click', () => {
+  const tCurr = window.waveTable.getCursorTime();
+  const sig = window.waveTable.getActiveRow(false);
+  const tNew = sig.simObj.getTransitionTimeFalling(tCurr, -1);
   window.waveTable.moveCursorTo(tNew);
 });
 
@@ -93,13 +121,12 @@ $(".resizable-col").resizable({
   handles: "e",
 });
 
-$("#file-open-button").click(() => {
-  $("#file-open-shadow").click();
+$("#file-open-button").on('click', () => {
+  // For multiple source there is a shadow button
+  // trigger it to open a file:
+  $("#file-open-shadow").trigger("click");
 });
 
-$("#fileopenmenu").click(() => {
-  $("#file-open-shadow").click();
-});
 
 $("#file-open-shadow").on("change", openFile);
 

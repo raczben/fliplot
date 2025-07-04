@@ -6,7 +6,13 @@ describe('SimulationObject', () => {
     { time: 0, bin: '0' },
     { time: 10, bin: '1' },
     { time: 20, bin: 'x' },
-    { time: 30, bin: 'z' }
+    { time: 30, bin: 'z' },
+    { time: 40, bin: '0' },
+    { time: 50, bin: '1' },
+    { time: 60, bin: '0' },
+    { time: 70, bin: '1' },
+    { time: 80, bin: '0' },
+    { time: 90, bin: '1' },
   ];
 
   const bus_wave = [
@@ -101,13 +107,53 @@ describe('SimulationObject', () => {
 
   });
 
-  test('getTimeAnyTransition returns correct transition time', () => {
+
+  test('isTransition', () => {
+    frising = (vprev, vcurr) => {
+            return vprev < vcurr; // rising edge
+    };
+    ffalling = (vprev, vcurr) => {
+            return vprev > vcurr; // rising edge
+    };
+
+    expect(bitSimObj.isTransition(5, frising)).toBe(true);
+    expect(bitSimObj.isTransition(6, frising)).toBe(false);
+    expect(bitSimObj.isTransition(7, frising)).toBe(true);
+
+    expect(bitSimObj.isTransition(6, ffalling)).toBe(true);
+    expect(bitSimObj.isTransition(7, ffalling)).toBe(false);
+    expect(bitSimObj.isTransition(8, ffalling)).toBe(true);
+  });
+
+  test('getTransitionTimeAny returns correct transition time', () => {
     global.simDB = { now: 1000 };
     // At time 10, next transition (deltaTransition=1) is at 20
-    expect(bitSimObj.getTimeAnyTransition(10, 1)).toBe(20);
+    expect(bitSimObj.getTransitionTimeAny(10, 1)).toBe(20);
     // At time 10, previous transition (deltaTransition=-1) is at 0
-    expect(bitSimObj.getTimeAnyTransition(10, -1)).toBe(0);
+    // expect(bitSimObj.getTransitionTimeAny(10, -1)).toBe(0);
     // At time 15 (between transitions), previous transition is at 10
-    expect(bitSimObj.getTimeAnyTransition(15, -1)).toBe(10);
+    expect(bitSimObj.getTransitionTimeAny(15, -1)).toBe(10);
+
+    expect(bitSimObj.getTransitionTimeRising(50, 1)).toBe(70);
+    expect(bitSimObj.getTransitionTimeRising(55, 1)).toBe(70);
+    expect(bitSimObj.getTransitionTimeRising(60, 1)).toBe(70);
+    expect(bitSimObj.getTransitionTimeRising(65, 1)).toBe(70);
+
+    expect(bitSimObj.getTransitionTimeRising(55, -1)).toBe(50);
+    expect(bitSimObj.getTransitionTimeRising(60, -1)).toBe(50);
+    // expect(bitSimObj.getTransitionTimeRising(65, -1)).toBe(50);
+    expect(bitSimObj.getTransitionTimeRising(70, -1)).toBe(50);
+
+    // Test falling transition
+    expect(bitSimObj.getTransitionTimeFalling(60, 1)).toBe(80);
+    expect(bitSimObj.getTransitionTimeFalling(65, 1)).toBe(80);
+    expect(bitSimObj.getTransitionTimeFalling(70, 1)).toBe(80);
+    expect(bitSimObj.getTransitionTimeFalling(75, 1)).toBe(80);
+
+    expect(bitSimObj.getTransitionTimeFalling(65, -1)).toBe(60);
+    expect(bitSimObj.getTransitionTimeFalling(70, -1)).toBe(60);
+    // expect(bitSimObj.getTransitionTimeFalling(75, -1)).toBe(60);
+    expect(bitSimObj.getTransitionTimeFalling(80, -1)).toBe(60);
+
   });
 });

@@ -98,7 +98,7 @@ export class WaveTable {
     // The x position determines the time (and the position of the cursor) on the waveform
     const x = event.clientX - rect.left; // x position within the element
     const time = this.wave.getTimeFromX(x);
-    this.wave.setCursorTime(time);
+    this.moveCursorTo(time);
 
     // The y position gives the signal to be selected (and activated)
     const yBase = event.clientY - rect.top; // y position within the element
@@ -121,9 +121,6 @@ export class WaveTable {
       } 
     }
     
-    //update values column to the clicked time
-    this.valueCol.showValuesAt(time);
-    this.wave.requestRender();
   }
 
   /**
@@ -163,9 +160,10 @@ export class WaveTable {
   }
 
   clearAll() {
+    this.tree = new Tree();
     this.nameCol.clearAll();
     this.valueCol.clearAll();
-    this.wave.clearAll();
+    this.wave.requestRender();
   }
 
   selectRow(rowId) {
@@ -344,6 +342,9 @@ export class WaveTable {
   }
 
   moveCursorTo(time) {
+    this.wave.setCursorTime(time);
+    this.valueCol.showValuesAt(time);
+    this.wave.requestRender();
   }
 
   getCursorTime() {

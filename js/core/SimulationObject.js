@@ -101,15 +101,27 @@ export class SimulationObject{
     getTimeAtI(i, now=-1) {
         return this.signal.getTimeAtI(i, now);
     }
+
+    isTransition(idx, fnc) {
+        // get values in fixed unsigned format
+        // TODO: should be used the custom radix 
+        let vprev = this.getValueAtI(idx-1, 'u0');
+        let vcurr = this.getValueAtI(idx, 'u0');
+        return fnc(vprev, vcurr);
+    }
     
     /**
-     * This function returns simulation time of the previous/next (arbirtary) transitition of the given
+     * This function returns simulation time of the previous/next transitition of the given
      * signal.
-     * @param {number} time 
-     * @param {number} deltaTransition 
+     * @param {number} time - the initial time to start searching for the transition.
+     * @param {number} deltaTransition - 1 for previous transition, +1 for next transition.
+     * @param {function} fnc - returns true at the desired transition.
      */
-    getTimeAnyTransition(time, deltaTransition) {
-        const idx = this.getChangeIndexAt(time);
+    getTransitionTime(time, deltaTransition, fnc=undefined) {
+        if(fnc === undefined){
+            fnc = (_v0, _v1) => {return true;}
+        }
+        let idx = this.getChangeIndexAt(time);
         if(deltaTransition < 0){
             // previous nth change
             const changeT = this.getTimeAtI(idx);
@@ -118,7 +130,67 @@ export class SimulationObject{
                 deltaTransition++;
             }
         }
-        const t = this.getTimeAtI(idx+deltaTransition);
+        let deltaTransitionAbs = Math.abs(deltaTransition);
+        const increment = deltaTransition < 0 ? -1 : 1;
+        while(deltaTransitionAbs > 0){
+            if (idx <0 ){
+                console.warn(`getTransitionTime: no previous transition at time ${time}`);
+                return -1; // no previous transition (TODO: Exception?)
+            } else if (idx >= this.signal.wave.length){
+                console.warn(`getTransitionTime: no next transition at time ${time}`);
+                return -1; // no previous transition (TODO: Exception?)
+            }
+            // get values in fixed unsigned format
+            // TODO: should be used the custom radix 
+            idx += increment;
+            if(this.isTransition(idx, fnc)){
+                deltaTransitionAbs--;
+            }
+        }
+        const t = this.getTimeAtI(idx);
         return t;
+    }
+
+
+    /**
+     * Wrapper for getTransitionTime():
+     * This function returns simulation time of the (previous/next) transitition in ANY type
+     * (rising falling, etc) of the given signal.
+     * 
+     * @param {number} time - the initial time to start searching for the transition.
+     * @param {number} deltaTransition - 1 for previous transition, +1 for next transition.
+     */
+    getTransitionTimeAny(time, deltaTransition) {
+        return this.getTransitionTime(time, deltaTransition);
+    }
+
+    /**
+     * Wrapper for getTransitionTime():
+     * This function returns simulation time of the (previous/next) transitition only RISING type
+     * of the given signal.
+     * 
+     * @param {number} time - the initial time to start searching for the transition.
+     * @param {number} deltaTransition - 1 for previous transition, +1 for next transition.
+     */
+    getTransitionTimeRising(time, deltaTransition) {
+        const frising = (vprev, vcurr) => {
+            return vprev < vcurr; // rising edge
+        };
+        return this.getTransitionTime(time, deltaTransition, frising);
+    }
+
+    /**
+     * Wrapper for getTransitionTime():
+     * This function returns simulation time of the (previous/next) transitition only FALLING type
+     * of the given signal.
+     * 
+     * @param {number} time - the initial time to start searching for the transition.
+     * @param {number} deltaTransition - 1 for previous transition, +1 for next transition.
+     */
+    getTransitionTimeFalling(time, deltaTransition) {
+        const ffalling = (vprev, vcurr) => {
+            return vprev > vcurr; // rising edge
+        };
+        return this.getTransitionTime(time, deltaTransition, ffalling);
     }
 }
