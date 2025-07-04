@@ -51,6 +51,9 @@ describe('Signal', () => {
     expect(signal.getChangeIndexAt(15)).toBe(1);
     expect(signal.getChangeIndexAt(20)).toBe(2);
     expect(signal.getChangeIndexAt(25)).toBe(2);
+
+    expect(bus.getChangeIndexAt(0)).toBe(-1);
+
   });
 
   test('getValueAtI returns correct value', () => {

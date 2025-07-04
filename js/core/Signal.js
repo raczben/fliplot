@@ -73,14 +73,20 @@ export class Signal {
     
     /**
      * @param {number} time 
+     * @return {number} The index of the last change value before the given time.
+     * If the time is before the first change, it returns -1.
      */
     getChangeIndexAt(time) {
         var idx = binarySearch(this.wave, time, (time, wave) => {
             return time - wave.time;
         })
+        // Binary search returns the exact index if time is found,
+        // and a negative value if not found.
+        // Calculate complement: (we need the index of the previous change value)
         if (idx < 0) {
             idx = -idx - 2;
         }
+        // if idx is -1, it means that the time is before the first change.
         return idx;
     }
 

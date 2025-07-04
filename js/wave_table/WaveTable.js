@@ -191,14 +191,14 @@ export class WaveTable {
     this.tree.open(rowId);
     this.nameCol.openGroup(rowId);
     this.valueCol.openGroup(rowId);
-    this.wave.openGroup(rowId);
+    this.wave.requestRender();
   }
 
   closeGroup(rowId) {
     this.tree.close(rowId);
     this.nameCol.closeGroup(rowId);
     this.valueCol.closeGroup(rowId);
-    this.wave.closeGroup(rowId);
+    this.wave.requestRender();
   }
 
   removeRow(rowId) {
@@ -236,7 +236,8 @@ export class WaveTable {
 
     if (busAsBus && rowItem.waveStyle == "bus") {
       // If the signal is a bus, insert all sub-signals
-      for (var i = 0; i < obj.signal.width; i++) {
+      // in reversed: little-endian order.
+      for (var i = obj.signal.width-1; i > -1; i--) {
         const subObj = obj.cloneRange(i);
         const subRowItem = new WaveformRow(subObj);
         this.tree.insert(subRowItem.id, rowItem.id, position, subRowItem);

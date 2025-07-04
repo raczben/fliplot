@@ -48,45 +48,45 @@ $(".demo-file-button").click(function () {
 });
 
 $("#zoom-fit").click(() => {
-  waveTable.zoomFit();
+  window.waveTable.zoomFit();
 });
 
 $("#zoom-autoscale").click(() => {
-  waveTable.zoomAutoscale();
+  window.waveTable.zoomAutoscale();
 });
 
 $("#zoom-in").click(() => {
-  waveTable.zoomIn();
+  window.waveTable.zoomIn();
 });
 
 $("#zoom-out").click(() => {
-  waveTable.zoomOut();
+  window.waveTable.zoomOut();
 });
 
 $("#remove-all").click(() => {
-  waveTable.removeAllSignals();
+  window.waveTable.removeAllSignals();
 });
 
 $("#cursor-to-0").click(() => {
-  waveTable.moveCursorTo(0);
+  window.waveTable.moveCursorTo(0);
 });
 
 $("#cursor-to-end").click(() => {
-  waveTable.moveCursorTo(simDB.now);
+  window.waveTable.moveCursorTo(simDB.now);
 });
 
 $("#cursor-to-prev-transition").click(() => {
-  const tCurr = waveTable.getCursorTime();
-  const sig = waveTable.getActiveRow(false);
+  const tCurr = window.waveTable.getCursorTime();
+  const sig = window.waveTable.getActiveRow(false);
   const tNew = sig.simObj.getTimeAnyTransition(tCurr, -1);
-  waveTable.moveCursorTo(tNew);
+  window.waveTable.moveCursorTo(tNew);
 });
 
 $("#cursor-to-next-transition").click(() => {
-  const tCurr = waveTable.getCursorTime();
-  const sig = waveTable.getActiveRow(false);
+  const tCurr = window.waveTable.getCursorTime();
+  const sig = window.waveTable.getActiveRow(false);
   const tNew = sig.simObj.getTimeAnyTransition(tCurr, +1);
-  waveTable.moveCursorTo(tNew);
+  window.waveTable.moveCursorTo(tNew);
 });
 
 $(".resizable-col").resizable({
@@ -121,9 +121,11 @@ $.ajax({
 function initShow(data) {
   console.log(data);
   simDB.init(data);
-  waveTable.addAllWaveSignal();
+  // TODO: I would like to remove it:
+  // Adds fantom 0th elements which are not present in the VCD file.
   simDB.updateDBInitialX();
-  const tree = new ObjectTree(waveTable);
+  window.waveTable.addAllWaveSignal();
+  const tree = new ObjectTree(window.waveTable);
   tree.showTree();
 
   console.log(simDB);
@@ -153,7 +155,7 @@ function parseInitShow(vcdcontent){
  */
 function deHighlightSignal(signalID = undefined) {
   if (signalID === undefined) {
-    waveTable.getSelectedRows().forEach((rowid) => {
+    window.waveTable.getSelectedRows().forEach((rowid) => {
       deHighlightSignal(rowid);
     });
   } else {
@@ -166,7 +168,7 @@ function deHighlightSignal(signalID = undefined) {
     d3.selectAll(`.${signalID}`).classed("highlighted-signal", false);
 
     setTimeout(() => {
-      if (waveTable.getSelectedRows().length == 0) {
+      if (window.waveTable.getSelectedRows().length == 0) {
         highlightSignal(signalID, false);
       }
     }, 10);
@@ -197,7 +199,7 @@ function highlightSignal(signalID, deHighlightOthers = true) {
  * @param {string} signalID The ID of the signal that has to be highlighted
  */
 function toggleHighlightSignal(signalID, enableZeroSelection = false) {
-  if (waveTable.getSelectedRows().includes(waveTable.get(signalID))) {
+  if (window.waveTable.getSelectedRows().includes(window.waveTable.get(signalID))) {
     deHighlightSignal(signalID);
   } else {
     highlightSignal(signalID, false);
@@ -244,21 +246,21 @@ $(function () {
       switch (true) {
         case /rename/.test(key):
           setTimeout(() => {
-            waveTable.nameCol.editName(waveTable.getActiveRow());
+            window.waveTable.nameCol.editName(window.waveTable.getActiveRow());
           }, 0);
           break;
         case /remove/.test(key):
           setTimeout(() => {
-            waveTable.removeRows();
+            window.waveTable.removeRows();
           }, 0);
           break;
         case /radix-.+/.test(key):
           setTimeout(() => {
-            waveTable.setRadix(key.split("-")[1]);
+            window.waveTable.setRadix(key.split("-")[1]);
           }, 0);
           break;
         case /waveStyle-.+/.test(key):
-          // waveTable.getSelectedRows()[0].radix = key.split('-')[1];
+          // window.waveTable.getSelectedRows()[0].radix = key.split('-')[1];
           break;
         default:
           console.log(`unknown key: ${key}`);
@@ -276,7 +278,7 @@ $(function () {
           return {};
         }
       }
-      if (waveTable.getSelectedRows().length <= 1) {
+      if (window.waveTable.getSelectedRows().length <= 1) {
         const waveformRow = d3.select(e.target).datum();
         highlightSignal(waveformRow.id);
       }

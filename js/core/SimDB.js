@@ -113,7 +113,7 @@ export class SimDB{
             }
             if(wave[0].time != 0){
                 // Append the phantom zero-th value.
-                wave.unshift({time:0, bin:'x'});
+                wave.unshift({time:0, bin:'x'.repeat(element.width)});
             }
         });
     }

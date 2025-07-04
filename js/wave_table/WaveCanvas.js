@@ -313,12 +313,12 @@ export class WaveCanvas {
     ctx.lineWidth = 2;
     ctx.lineCap = "round";
 
+
     // Find indices in wave that are within the visible time range
-    const startIdx = signal.getChangeIndexAt(timeRange[0]);
-    if (startIdx < 0) {
-      console.warn("No signal changes in visible time range", timeRange);
-      return;
-    }
+    // getChangeIndexAt returns -1 if the time is before the first change.
+    // in this case we start plot at the first change.
+    const startIdx = Math.max(0, signal.getChangeIndexAt(timeRange[0]));
+    
     for (let i = startIdx; i < signal.wave.length; i++) {
       // segment values:
       const now = simDB.now;
@@ -385,11 +385,10 @@ export class WaveCanvas {
     const timeRange = this.getTimeRange(xOffset, this.canvas.width);
 
     // Find indices in wave that are within the visible time range
-    const startIdx = signal.getChangeIndexAt(timeRange[0]);
-    if (startIdx < 0) {
-      console.warn("No signal changes in visible time range", timeRange);
-      return;
-    }
+    // getChangeIndexAt returns -1 if the time is before the first change.
+    // in this case we start plot at the first change.
+    const startIdx = Math.max(0, signal.getChangeIndexAt(timeRange[0]));
+
     for (let i = startIdx; i < signal.wave.length; i++) {
       // segment values:
       const now = simDB.now;
