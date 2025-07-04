@@ -31,8 +31,8 @@ describe('Signal', () => {
     width: 1
   };
   const busSigObj = {
-    references: ['sig'],
-    vcdid: 'v1',
+    references: ['bus'],
+    vcdid: 'b',
     type: 'wire',
     wave: bus_wave,
     width: 16

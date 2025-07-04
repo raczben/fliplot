@@ -47,8 +47,18 @@ export class SimulationObject{
         }
     }
 
+    /** Clones a range of a bus signal.
+     * 
+     * @param {number} from 
+     * @param {number} to 
+     * @returns 
+     */
     cloneRange(from, to=-1){
         if(to<0){to = from;}
+        const nOfBits = Math.abs(to-from)+1;
+        if(nOfBits > this.signal.width){
+            throw `Cannot clone range [${from}:${to}] of signal ${this.hierarchy.join('.')} with width ${this.signal.width}`;
+        }
         var con = `[${from}]`;
         if(to > from){
             con = `[${to}:${from}]`;
