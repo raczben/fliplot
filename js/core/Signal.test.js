@@ -35,7 +35,7 @@ describe('Signal', () => {
     vcdid: 'v1',
     type: 'wire',
     wave: bus_wave,
-    width: 1
+    width: 16
   };
 
   let signal;
@@ -88,22 +88,37 @@ describe('Signal', () => {
     expect(signal.getTimeAtI(4, now)).toBe(now); // simDB.now
   });
 
-  test('getTimeAtI throws on negative index', () => {
+  test('getTimeAtI strange args', () => {
     expect(() => signal.getTimeAtI(-1, now)).toThrow('Negative index');
-  });
-
-  test('getTimeAtI throws on too large index', () => {
     expect(() => signal.getTimeAtI(5, now)).toThrow('Index is too great');
-  });
-
-  test('getValueAtI returns default for negative index', () => {
     expect(signal.getValueAtI(-1, 'bin', 'default')).toBe('default');
   });
 
   test('cloneRange returns a new Signal with correct width', () => {
-    const clone = signal.cloneRange(1, 2);
-    expect(clone).toBeInstanceOf(Signal);
-    expect(clone.width).toBe(2);
-    expect(clone.wave).toEqual([]);
+    const clone1  = bus.cloneRange(0);
+    expect(clone1).toBeInstanceOf(Signal);
+    expect(clone1.width).toBe(1);
+    expect(clone1.getValueAt(10, 'bin')).toBe('- NA -');
+    expect(clone1.getValueAt(1000, 'bin')).toBe('0');
+    expect(clone1.getValueAt(1015, 'bin')).toBe('1');
+    expect(clone1.getValueAt(1025, 'bin')).toBe('0');
+    expect(clone1.getValueAt(1035, 'bin')).toBe('1');
+
+    const clone2  = bus.cloneRange(15, 8);
+    expect(clone2.width).toBe(8);
+    expect(clone2.getValueAt(10, 'bin')).toBe('- NA -');
+    expect(clone2.getValueAt(1000, 'bin')).toBe('00000000');
+    expect(clone2.getValueAt(1015, 'bin')).toBe('00000000');
+    expect(clone2.getValueAt(1025, 'bin')).toBe('00000000');
+    expect(clone2.getValueAt(1035, 'bin')).toBe('00000000');
+    expect(clone2.getValueAt(1100, 'bin')).toBe('00000000');
+    expect(clone2.getValueAt(1200, 'bin')).toBe('01010101');
+    expect(clone2.getValueAt(1300, 'bin')).toBe('10101010');
+    expect(clone2.getValueAt(1400, 'bin')).toBe('11001100');
+    expect(clone2.getValueAt(1500, 'bin')).toBe('11111111');
+
+    // Invalid args:
+    expect(() => signal.cloneRange(1, 2))
+      .toThrow("Cannot clone range [1:2] of signal sig with width 1");
   });
 });

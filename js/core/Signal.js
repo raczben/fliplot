@@ -44,10 +44,30 @@ export class Signal {
         if(to<0){
             to = from;
         }
-        const ret = new Signal(this);
-        ret.wave = [];
-        ret.width = to-from+1;
-        
+        if(from < to){
+            // Big endian
+            console.warn('Big endian not tested...')
+        }
+        const nOfBits = Math.abs(from-to)+1;
+        if(nOfBits > this.width){
+            throw `Cannot clone range [${from}:${to}] of signal ${this.references[0]} with width ${this.width}`;
+        }
+        const retType = (this.width == 1) ? 'bit' : 'bus';
+        const ret = new Signal(
+            {references: this.references.concat([`[${from}:${to}]`]),
+             vcdid: `${this.vcdid}-cloned[${from}:${to}]`,
+             type: retType,
+             wave: [],
+             width: nOfBits
+        });
+        // little endian conversion:
+        const fromLE = this.width - 1 - from;
+        const toLE = this.width - 1 - to;
+        this.wave.forEach(wi => {
+            const retWi = {time: wi.time, bin: wi.bin.substring(fromLE, toLE+1)};
+            ret.wave.push(retWi);
+        });
+        // ret.width = to-from+1;
         return ret;
     }
     
