@@ -5,6 +5,8 @@ import { WaveformRow } from "../core/WaveformRow.js";
 import { NameCol } from "./NameCol.js";
 import { ValueCol } from "./ValueCol.js";
 import { WaveCanvas } from "./WaveCanvas.js";
+import { config} from "../interact.js";
+
 
 export class WaveTable {
   constructor(simDB) {
@@ -92,9 +94,32 @@ export class WaveTable {
   /** handle Click on the wave axis and draw the cursor */
   handleClickOnWaveAxis(event) {
     const rect = this.waveAxisContainer.getBoundingClientRect();
+
+    // The x position determines the time (and the position of the cursor) on the waveform
     const x = event.clientX - rect.left; // x position within the element
     const time = this.wave.getTimeFromX(x);
     this.wave.setCursorTime(time);
+
+    // The y position gives the signal to be selected (and activated)
+    const yBase = event.clientY - rect.top; // y position within the element
+    const yAbbs = yBase + this.mainContainerScrolly.scrollTop; // y position within the entire wave axis container
+    const rowsToPlot = this.getRows({hidden:false, content:true});
+    var rowBottom = 0;
+    for(var row of rowsToPlot) {
+      // TODO each row could have different height...
+      const rowHeight = config.rowHeight;
+      rowBottom += rowHeight;
+      if (yAbbs < rowBottom) {
+        // we found the row that was clicked
+        // select the row in the nameCol and valueCol
+        const rowId = row.id;
+        this.nameCol.deSelectAllRows();
+        // this.valueCol.deSelectAllRows(); <-- not needed Names col will call it...
+        this.nameCol.selectRow(rowId);
+        // this.valueCol.selectRow(rowId); <-- not needed Names col will call it...
+        break;
+      } 
+    }
     
     //update values column to the clicked time
     this.valueCol.showValuesAt(time);

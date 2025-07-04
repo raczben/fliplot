@@ -86,11 +86,23 @@ export class ValueCol {
   }
 
   selectRow(rowId) {
+    const selRows = this.getSelectedRows();
+    if (selRows.includes(rowId)) {
+      // If already selected, do nothing.
+      // console.warn(`Row ${rowId} is already selected.`);
+      return;
+    }
     this._getTree().select_node(this.toId(rowId));
   }
 
   deSelectRow(rowId) {
-    this._getTree().deselect_node(this.toId(rowId));
+    const selRows = this.getSelectedRows();
+    if (selRows.includes(rowId)) {
+      this._getTree().deselect_node(this.toId(rowId));
+      return;
+    }
+    // If already de-selected, do nothing.
+    // console.warn(`Row ${rowId} is already DEselected.`);
   }
 
   moveRow(rowId, pos) {
@@ -119,7 +131,7 @@ export class ValueCol {
 
   getSelectedRows() {
     return this._getTree().get_selected(true).map(
-      element => waveTable.get(element.data)
+      element => element.data
     );
   }
 
