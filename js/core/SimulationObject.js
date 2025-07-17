@@ -4,6 +4,12 @@ import {
     Signal
   } from './Signal.js';
 
+/**
+ * Represents an object in the simulation, which can be either a signal or a module.
+ * Handles signal hierarchy, parent relationships, and provides methods for querying signal values and transitions.
+ *
+ * @class
+ */
 export class SimulationObject{
     static Type = Object.freeze({
         SIGNAL:'signal',
@@ -14,8 +20,9 @@ export class SimulationObject{
     /**
      * 
      * @param {SimulationObject.Type} type 
-     * @param {sting[]} hierarchy 
+     * @param {string[]} hierarchy 
      * @param {*} data 
+     * @param {SimulationObject} parent
      */
     constructor(type, hierarchy, data, parent){
         /** @type {SimulationObject.Type}  */
@@ -46,12 +53,11 @@ export class SimulationObject{
             this.definedAt = data.definedAt;
         }
     }
-
     /** Clones a range of a bus signal.
      * 
      * @param {number} from 
      * @param {number} to 
-     * @returns 
+     * @returns {SimulationObject}
      */
     cloneRange(from, to=-1){
         if(to<0){to = from;}
@@ -109,13 +115,12 @@ export class SimulationObject{
         let vcurr = this.getValueAtI(idx, 'u0');
         return fnc(vprev, vcurr);
     }
-    
     /**
-     * This function returns simulation time of the previous/next transitition of the given
+     * Returns the simulation time of the previous or next transition of the given
      * signal.
-     * @param {number} time - the initial time to start searching for the transition.
-     * @param {number} deltaTransition - 1 for previous transition, +1 for next transition.
-     * @param {function} fnc - returns true at the desired transition.
+     * @param {number} time - The initial time to start searching for the transition.
+     * @param {number} deltaTransition - -1 for previous transition, +1 for next transition.
+     * @param {function} fnc - Function that returns true at the desired transition.
      */
     getTransitionTime(time, deltaTransition, fnc=undefined) {
         if(fnc === undefined){
@@ -151,26 +156,24 @@ export class SimulationObject{
         return t;
     }
 
-
     /**
      * Wrapper for getTransitionTime():
-     * This function returns simulation time of the (previous/next) transitition in ANY type
-     * (rising falling, etc) of the given signal.
+     * Returns the simulation time of the previous or next transition of any type
+     * (rising, falling, etc.) of the given signal.
      * 
-     * @param {number} time - the initial time to start searching for the transition.
-     * @param {number} deltaTransition - 1 for previous transition, +1 for next transition.
+     * @param {number} time - The initial time to start searching for the transition.
+     * @param {number} deltaTransition - -1 for previous transition, +1 for next transition.
      */
     getTransitionTimeAny(time, deltaTransition) {
         return this.getTransitionTime(time, deltaTransition);
     }
-
     /**
      * Wrapper for getTransitionTime():
-     * This function returns simulation time of the (previous/next) transitition only RISING type
+     * Returns the simulation time of the previous or next transition of only the RISING type
      * of the given signal.
      * 
-     * @param {number} time - the initial time to start searching for the transition.
-     * @param {number} deltaTransition - 1 for previous transition, +1 for next transition.
+     * @param {number} time - The initial time to start searching for the transition.
+     * @param {number} deltaTransition - -1 for previous transition, +1 for next transition.
      */
     getTransitionTimeRising(time, deltaTransition) {
         const frising = (vprev, vcurr) => {
@@ -178,14 +181,13 @@ export class SimulationObject{
         };
         return this.getTransitionTime(time, deltaTransition, frising);
     }
-
     /**
      * Wrapper for getTransitionTime():
-     * This function returns simulation time of the (previous/next) transitition only FALLING type
+     * Returns the simulation time of the previous or next transition of only the FALLING type
      * of the given signal.
      * 
-     * @param {number} time - the initial time to start searching for the transition.
-     * @param {number} deltaTransition - 1 for previous transition, +1 for next transition.
+     * @param {number} time - The initial time to start searching for the transition.
+     * @param {number} deltaTransition - -1 for previous transition, +1 for next transition.
      */
     getTransitionTimeFalling(time, deltaTransition) {
         const ffalling = (vprev, vcurr) => {
