@@ -1,5 +1,3 @@
-
-
 /***********************************************************
  * 
  *    Basic styles
@@ -7,9 +5,9 @@
  ***********************************************************/
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html {
@@ -19,14 +17,14 @@ html {
   --text-color-highlight: hsl(25, 70%, 45%);
 }
 
-
 /***********************************************************
  * 
  *    Page main layout
  *
  ***********************************************************/
 
-html, body{
+html,
+body {
   height: 100%;
   min-height: 100%;
   background-color: #333;
@@ -34,11 +32,11 @@ html, body{
 }
 
 body {
-  display: flex; 
+  display: flex;
   flex-direction: column;
 }
 
-#epic-container{
+#epic-container {
   height: 100%;
   background-color: #333;
   display: flex;
@@ -47,33 +45,31 @@ body {
   overflow: hidden;
 }
 
-#structure-container-scroll-y{
+#structure-container-scroll-y {
   flex: auto;
   overflow: auto;
 }
 
-#main-container-scroll-y{
+#main-container-scroll-y {
   display: flex;
   flex: auto;
   overflow-y: auto;
 }
 
-#main-container-tree{
+#main-container-tree {
   display: flex;
   width: 100%;
   min-height: 100%;
 }
 
-#wave-time-placeholder
-{
+#wave-time-placeholder {
   display: flex;
   min-height: 100%;
   min-width: 100%;
   background-color: #222;
 }
 
-
-#wave-axis-container{
+#wave-axis-container {
   position: sticky;
   top: 0;
   display: flex;
@@ -81,15 +77,15 @@ body {
   flex-direction: column;
   overflow-x: auto;
   min-height: 100%;
-  
+
   /* The resize bar is 5px wide */
   margin-left: 5px;
 }
 
 #wave-axis-canvas {
-	height: 100%;
-	position: sticky;
-	left: 0px;
+  height: 100%;
+  position: sticky;
+  left: 0px;
 }
 
 .ui-resizable-handle {
@@ -98,7 +94,7 @@ body {
   padding: 0px;
 }
 
-.resizable-col{
+.resizable-col {
   width: 100px;
   padding: 0px 3px 0px 7px;
 }
@@ -108,9 +104,8 @@ footer {
   height: 20px;
   color: #aaa;
   font-size: 11px;
-  margin-top:auto; 
+  margin-top: auto;
 }
-
 
 /***********************************************************
  * 
@@ -118,27 +113,27 @@ footer {
  *
  ***********************************************************/
 
-.navbar-inverse{
-  background-color: #444; 
+.navbar-inverse {
+  background-color: #444;
 }
 
-.toolbar{
+.toolbar {
   border-top: 1px solid #888;
 }
 
-.tool-group-container{
+.tool-group-container {
   display: inline-block;
   border-right: 1px solid #888;
   padding: 0px 4px 0px 2px;
 }
 
-.tool-group-name{
+.tool-group-name {
   text-align: center;
   color: #ccc;
   font-size: 11px;
 }
 
-.navbar-btn{
+.navbar-btn {
   min-width: 50px;
 }
 
@@ -149,14 +144,13 @@ footer {
   font-size: 12px;
 }
 
-
 /***********************************************************
  * 
  *    Signal names and values column
  *
  ***********************************************************/
 
-#mainGr{
+#mainGr {
   transform: translateX(8px);
 }
 
@@ -165,7 +159,7 @@ footer {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  
+
   font-family: sans-serif;
   height: 24px;
   line-height: 24px; /* same as height! */
@@ -177,7 +171,7 @@ footer {
   font-family: sans-serif;
 }
 
-#structure-col{
+#structure-col {
   display: flex;
   flex-direction: column;
 }
@@ -186,7 +180,7 @@ input {
   background: #666;
 }
 
-#structure-search::placeholder{
+#structure-search::placeholder {
   color: #aaa;
 }
 
@@ -199,7 +193,7 @@ input {
 }
 
 #names-col-container-scroll,
-#values-col-container-scroll{
+#values-col-container-scroll {
   overflow: auto;
   height: 100%;
 }
@@ -220,19 +214,19 @@ input {
   background-color: #5589c5;
 }
 
-line.signal-valid{
+line.signal-valid {
   stroke: rgb(0, 235, 0);
 }
 
-line.signal-x{
+line.signal-x {
   stroke: rgb(235, 0, 0);
 }
 
-line.signal-highz{
+line.signal-highz {
   stroke: rgb(0, 0, 235);
 }
 
-text.bus-value{
+text.bus-value {
   fill: white;
   text-anchor: middle;
   dominant-baseline: central;
@@ -256,22 +250,22 @@ text.bus-value{
 
 .signalRow.highlighted-signal {
   stroke-width: 2;
-  stroke-opacity: 1.0;
+  stroke-opacity: 1;
 }
 
-#grid-gr{
+#grid-gr {
   color: #bbb;
 }
 
-.wave-style-bus{
+.wave-style-bus {
   fill-opacity: 0.04;
 }
 
-.wave-style-bit{
+.wave-style-bit {
   fill-opacity: 0.05;
 }
 
-#main-cursor{
+#main-cursor {
   stroke-width: 3;
   stroke: #fc3;
   stroke-opacity: 0.8;
@@ -288,32 +282,31 @@ rect.time-grid-shadow-rect {
 }
 
 @media only screen and (max-width: 1299px) {
-  #tool-group-zoom{
+  #tool-group-zoom {
     display: none;
   }
 
-  .tool-group-name{
+  .tool-group-name {
     display: none;
   }
 
-  #navbar-menubar-normal{
+  #navbar-menubar-normal {
     display: none;
   }
-  
 }
 
 @media only screen and (max-width: 999px) {
-  #tool-group-cursor{
+  #tool-group-cursor {
     display: none;
   }
 }
 
- /* jstree workaround based on: https://stackoverflow.com/a/65616873/2506522 */
+/* jstree workaround based on: https://stackoverflow.com/a/65616873/2506522 */
 #values-col-container i {
   display: none;
 }
 
-.menu-label{
+.menu-label {
   color: #222;
   font-weight: 300;
 }

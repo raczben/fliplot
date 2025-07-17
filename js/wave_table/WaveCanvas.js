@@ -1,11 +1,10 @@
-import { config, simDB} from "../interact.js";
+import { config, simDB } from "../interact.js";
 import { ceiln, isInt, truncateTextToWidth } from "../core/util.js";
 import { WaveTable } from "./WaveTable.js";
 
 /* index definitions for render data */
 const WAVEARRAY = 0;
 const IDX = 1;
-
 
 function parseIntDef(intToPare, def = 0.5) {
   if (isInt(intToPare)) {
@@ -16,19 +15,16 @@ function parseIntDef(intToPare, def = 0.5) {
 }
 
 /**
- * 
- * @param {string} val 
- * @param {boolean} selected 
- * @returns 
+ *
+ * @param {string} val
+ * @param {boolean} selected
+ * @returns
  */
 function value2Color(val, selected) {
   var color;
-  if (isInt(val))
-    color = "#00FF00";
-  else if (val == 'z')
-    color = "#0000FF";
-  else
-    color = "#FF0000";
+  if (isInt(val)) color = "#00FF00";
+  else if (val == "z") color = "#0000FF";
+  else color = "#FF0000";
   if (selected) {
     // make the color not transparent if it is selected
     const line_color = color + "FF";
@@ -58,7 +54,7 @@ function linearScale(domain, range) {
   }
 
   // Inverse: range -> domain
-  scale.invert = function(y) {
+  scale.invert = function (y) {
     return domainMin + ((y - rangeMin) / rangeSpan) * domainSpan;
   };
 
@@ -66,13 +62,12 @@ function linearScale(domain, range) {
 }
 export class WaveCanvas {
   constructor(waveTable) {
-
     /** @type {WaveTable} */
     this.waveTable = waveTable;
 
     /** @type {string} */
-    this.rowIdPrefix = '#signalRow_';
-    this.rowClass = '.signalRow';
+    this.rowIdPrefix = "#signalRow_";
+    this.rowClass = ".signalRow";
 
     // (Note that canvas fills only the visible area and scrolling is done by rendereing function.)
     this.scrollTop = 0; // offset of the top of the canvas Unit: px.
@@ -80,17 +75,15 @@ export class WaveCanvas {
     this.timeScale = 1.0; // Ratio: simulation time units per pixel. Unit: px/simTimeUnit.
     this.cursorTime = 0; // The time of the cursor in simulation time units. Unit: simTimeUnit.
 
-    this.canvas = document.getElementById('wave-axis-canvas'); 
+    this.canvas = document.getElementById("wave-axis-canvas");
 
     this._renderScheduled = false;
   }
 
-  init() {
-  }
+  init() {}
 
-  reload(render=false) {
+  reload(render = false) {
     console.log("Reloading waveform display", { render });
-    
   }
 
   setScrollTop(scrollTop) {
@@ -105,8 +98,7 @@ export class WaveCanvas {
     console.log("Render range set to:", this.renderRange);
   }
 
-  refresh() {
-  }
+  refresh() {}
 
   /** * Zoom in or out of the waveform display.
    * This is like zooming in or out of the waveform display.
@@ -115,15 +107,15 @@ export class WaveCanvas {
    * * Positive values zoom in, negative values zoom out.
    * * default is 0.3: zoomIn 30%
    */
-  zoomInOut(delta=0.3, fixPointX=-1) {
-    const deltaRatio = delta + 1
+  zoomInOut(delta = 0.3, fixPointX = -1) {
+    const deltaRatio = delta + 1;
     if (fixPointX < 0) {
       // If no fix point is given, use the center of the canvas
       fixPointX = this.canvas.width / 2;
     } else if (fixPointX > this.canvas.width) {
       // If the fix point is outside the canvas, clamp it to the canvas width
       fixPointX = this.canvas.width;
-    } 
+    }
 
     const oldTimeScale = this.timeScale;
     const newTimeScale = this.timeScale * deltaRatio;
@@ -179,13 +171,12 @@ export class WaveCanvas {
     return this.timeScale;
   }
 
-
   /**
    *  Returns the render range for the waveform display.
-   *  
+   *
    * @param {number} offs - The left offset in pixels from the start of the waveform
    * @param {number} width - The width of the render area in pixels
-   * @returns 
+   * @returns
    */
   getTimeRange(offs, width) {
     // Set the render range for the waveform display
@@ -201,7 +192,7 @@ export class WaveCanvas {
    * @param {number} x - The x-coordinate in pixels (relative to the left edge of the canvas)
    * @returns {number} - The time in simulation time units
    */
-  getTimeFromX(x){
+  getTimeFromX(x) {
     return (x + this.scrollLeft) / this.timeScale;
   }
 
@@ -224,22 +215,20 @@ export class WaveCanvas {
   getCursorTime() {
     return this.cursorTime;
   }
-  
+
   /**   * Adjust the width of the wave-time-placeholder element based on the current time scale.
    * This is used to visually represent the current simulation time in the waveform display.
    * And fill the space for horisontal scroll bar.
-   */ 
+   */
   adjustWaveTimePlaceholder() {
-      // Set the width of the wave-time-placeholder element
-    const waveTimePlaceholder = document.getElementById('wave-time-placeholder');
+    // Set the width of the wave-time-placeholder element
+    const waveTimePlaceholder = document.getElementById("wave-time-placeholder");
     if (waveTimePlaceholder) {
-      waveTimePlaceholder.style.width = (this.timeScale * simDB.now) + "px";
-    }
-    else {
+      waveTimePlaceholder.style.width = this.timeScale * simDB.now + "px";
+    } else {
       console.error("Wave time placeholder element not found");
     }
-  } 
-
+  }
 
   /**
    * Render all signals on a canvas.
@@ -247,7 +236,7 @@ export class WaveCanvas {
    */
   render() {
     console.debug("Rendering waveform display");
-    const ctx = this.canvas.getContext('2d');
+    const ctx = this.canvas.getContext("2d");
 
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -257,7 +246,7 @@ export class WaveCanvas {
       bottom: this.scrollTop + this.canvas.height
     };
     // Example: render each row in waveTable.rows
-    const rowsToPlot = this.waveTable.getRows({hidden:false, content:true});
+    const rowsToPlot = this.waveTable.getRows({ hidden: false, content: true });
     rowsToPlot.forEach((row, rowIdx) => {
       const waveStyle = row.waveStyle;
       const rowHeight = config.rowHeight;
@@ -265,23 +254,37 @@ export class WaveCanvas {
 
       // // Skip rows that are not in the visible range
       if (yBase + rowHeight < visibleRangeY.top || yBase > visibleRangeY.bottom) {
-        return; 
+        return;
       }
 
-      const selected = this.waveTable.isSelected(row.id)
+      const selected = this.waveTable.isSelected(row.id);
       // draw light gray background for the selected signals:
       if (selected) {
         ctx.fillStyle = "rgba(200, 200, 200, 0.19)";
-        ctx.fillRect(0, yBase-this.scrollTop, this.canvas.width, rowHeight);
+        ctx.fillRect(0, yBase - this.scrollTop, this.canvas.width, rowHeight);
       }
 
-      if (waveStyle === 'bit') {
+      if (waveStyle === "bit") {
         // Draw bit wave as rectangles
         // setTimeout(() => {
-          this.drawBitSignal(ctx, row, yBase-this.scrollTop, this.scrollLeft, this.timeScale, selected);
+        this.drawBitSignal(
+          ctx,
+          row,
+          yBase - this.scrollTop,
+          this.scrollLeft,
+          this.timeScale,
+          selected
+        );
         // },0);
-      } else if (waveStyle === 'bus') {
-          this.drawBusSignal(ctx, row, yBase-this.scrollTop, this.scrollLeft, this.timeScale, selected);
+      } else if (waveStyle === "bus") {
+        this.drawBusSignal(
+          ctx,
+          row,
+          yBase - this.scrollTop,
+          this.scrollLeft,
+          this.timeScale,
+          selected
+        );
       } else {
         // Unsupported style
         ctx.fillStyle = "rgba(150,70,60,0.5)";
@@ -293,7 +296,6 @@ export class WaveCanvas {
     this.drawCursor(ctx, this.cursorTime, this.scrollLeft, this.timeScale);
     this.drawAxis(ctx, this.scrollLeft, this.timeScale);
   }
-
 
   /**
    * Draw a single bit-style signal on the canvas.
@@ -310,25 +312,21 @@ export class WaveCanvas {
     const bitWavePadding = config.bitWavePadding || 2;
     const timeRange = this.getTimeRange(xOffset, this.canvas.width);
 
-    const valueScale = linearScale(
-      [0, 1],
-      [rowHeight - bitWavePadding, bitWavePadding]
-    );
+    const valueScale = linearScale([0, 1], [rowHeight - bitWavePadding, bitWavePadding]);
 
     ctx.lineWidth = 2;
     ctx.lineCap = "round";
-
 
     // Find indices in wave that are within the visible time range
     // getChangeIndexAt returns -1 if the time is before the first change.
     // in this case we start plot at the first change.
     const startIdx = Math.max(0, signal.getChangeIndexAt(timeRange[0]));
-    
+
     for (let i = startIdx; i < signal.wave.length; i++) {
       // segment values:
       const now = simDB.now;
       const t0 = signal.getTimeAtI(i, now);
-      const t1 = signal.getTimeAtI(i+1, now);
+      const t1 = signal.getTimeAtI(i + 1, now);
       const v0 = signal.getValueAtI(i);
 
       // trasform to pixel coordinates
@@ -336,11 +334,11 @@ export class WaveCanvas {
       let x1 = t1 * timeScale - xOffset;
       let y0r = valueScale(parseIntDef(v0));
       let y0abbs = y0r + yOffset;
-      let {line_color, shadow_color} = ctx.fillStyle = value2Color(v0, selected);
+      let { line_color, shadow_color } = (ctx.fillStyle = value2Color(v0, selected));
 
       // --- Rectangle (transRect) ---
       ctx.fillStyle = shadow_color;
-      const rectHeight = valueScale(1-parseIntDef(v0))-bitWavePadding;
+      const rectHeight = valueScale(1 - parseIntDef(v0)) - bitWavePadding;
       ctx.fillRect(x0, y0abbs, x1 - x0, rectHeight);
 
       // --- Horizontal line (timeholder) ---
@@ -380,10 +378,7 @@ export class WaveCanvas {
     const rowHeight = config.rowHeight;
     const bitWavePadding = config.bitWavePadding || 2;
 
-    const valueScale = linearScale(
-      [0, 1],
-      [rowHeight - bitWavePadding, bitWavePadding]
-    );
+    const valueScale = linearScale([0, 1], [rowHeight - bitWavePadding, bitWavePadding]);
 
     ctx.lineWidth = 2;
     ctx.lineCap = "round";
@@ -398,7 +393,7 @@ export class WaveCanvas {
       // segment values:
       const now = simDB.now;
       const t0 = signal.getTimeAtI(i, now);
-      const t1 = signal.getTimeAtI(i+1, now);
+      const t1 = signal.getTimeAtI(i + 1, now);
       const v0 = signal.getValueAtI(i);
 
       // trasform to pixel coordinates
@@ -407,17 +402,17 @@ export class WaveCanvas {
       let zero = valueScale(0) + yOffset;
       let x0 = t0 * timeScale - xOffset;
       let x1 = t1 * timeScale - xOffset;
-      let {line_color, _} = value2Color(v0, selected);
+      let { line_color, _ } = value2Color(v0, selected);
 
       // --- the 'hexagon' of the bus ---
       ctx.strokeStyle = line_color;
       ctx.beginPath();
       ctx.moveTo(x0, half);
-      ctx.lineTo(x0+2, one);
-      ctx.lineTo(x1-2, one);
+      ctx.lineTo(x0 + 2, one);
+      ctx.lineTo(x1 - 2, one);
       ctx.lineTo(x1, half);
-      ctx.lineTo(x1-2, zero);
-      ctx.lineTo(x0+2, zero);
+      ctx.lineTo(x1 - 2, zero);
+      ctx.lineTo(x0 + 2, zero);
       ctx.lineTo(x0, half);
       ctx.lineCap = "round";
       ctx.stroke();
@@ -431,16 +426,16 @@ export class WaveCanvas {
       // in the middel of the visible area
       const x0satured = Math.max(x0, 0);
       const x1satured = Math.min(x1, this.canvas.width);
-      const xpos = (x0satured + x1satured)/ 2;
+      const xpos = (x0satured + x1satured) / 2;
       const txt = row.getValueAtI(i);
       let truncedStr = truncateTextToWidth(ctx, txt, x1satured - x0satured - 4);
-      ctx.fillText(truncedStr, xpos, zero-1);
+      ctx.fillText(truncedStr, xpos, zero - 1);
     }
   }
 
   /**
    * plot the time axis to the waveform display.
-   * 
+   *
    * @param {CanvasRenderingContext2D} ctx - Canvas 2D context
    * @param {number} yOffset - The vertical offset (pixels from top)
    * @param {number} xOffset - The horizontal offset (pixels from top)
@@ -464,9 +459,9 @@ export class WaveCanvas {
     // calculate the time step based on the time scale
     //  the labels should be more or less 50 pixels apart
     const orderOfMagnitude = Math.floor(Math.log10(timeScale));
-    let timeStep = Math.pow(10, -(orderOfMagnitude))*100;
+    let timeStep = Math.pow(10, -orderOfMagnitude) * 100;
     if (timeStep * timeScale > 200) {
-      timeStep = timeStep/2;
+      timeStep = timeStep / 2;
     }
 
     // Draw time labels and ticks at each time step
@@ -496,7 +491,7 @@ export class WaveCanvas {
 
   /**
    * Draw the cursor on the waveform display.
-   * 
+   *
    * @param {CanvasRenderingContext2D} ctx - Canvas 2D context
    * @param {number} cursorTime - The time of the cursor in simulation time units
    * @param {number} xOffset - The horizontal offset (pixels from top)
@@ -519,7 +514,7 @@ export class WaveCanvas {
 
   /**
    * Request a render of the waveform display.
-   * 
+   *
    * render() is called from different event which could be called (more or less) at the
    * same time (like scrolling and resize). This requestRender garantees that render():
    *  - not to be called too frequently
@@ -534,7 +529,4 @@ export class WaveCanvas {
       });
     }
   }
-
-
-
 }

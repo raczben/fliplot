@@ -1,96 +1,102 @@
-import $ from 'jquery';
-import 'jstree'; // extend jQuery with .jstree()
+import $ from "jquery";
+import "jstree"; // extend jQuery with .jstree()
 import { WaveTable } from "./WaveTable.js";
 
 export class NameCol {
-  constructor(waveTable, init=true) {
+  constructor(waveTable, init = true) {
     /** @type {string} */
-    this.containerName = '#names-col-container-scroll';
+    this.containerName = "#names-col-container-scroll";
     /** @type {WaveTable} */
     this.waveTable = waveTable;
 
     this.ready = false;
 
-    if(init){
+    if (init) {
       this.init();
     }
   }
 
-  init(){
+  init() {
     const self = this;
 
     $(this.containerName).jstree("destroy").empty();
-    $(this.containerName).jstree({
-      'plugins': [
-        // wholerow: 
-        // Makes each node appear block level which makes selection easier.
-        // May cause slow down for large trees in old browsers.
-        'wholerow',
-        'dnd',      // drag and drop
-        //changed:
-        // This plugin adds additional information about selection changes.
-        // Once included in the plugins config option, each changed.jstree event data
-        // will contain a new property named changed, which will give information about
-        // selected and deselected nodes since the last changed.jstree event
-        'changed'
-      ],
-      'core': {
-        'data': [],
-        'animation': false,
-        "themes": {
-          "icons": false
-        },
-        "check_callback": function (op, node, par, pos, more) {
-          if (more && more.dnd) {
-            return more.pos !== "i" && par.id == node.parent;
+    $(this.containerName)
+      .jstree({
+        plugins: [
+          // wholerow:
+          // Makes each node appear block level which makes selection easier.
+          // May cause slow down for large trees in old browsers.
+          "wholerow",
+          "dnd", // drag and drop
+          //changed:
+          // This plugin adds additional information about selection changes.
+          // Once included in the plugins config option, each changed.jstree event data
+          // will contain a new property named changed, which will give information about
+          // selected and deselected nodes since the last changed.jstree event
+          "changed"
+        ],
+        core: {
+          data: [],
+          animation: false,
+          themes: {
+            icons: false
+          },
+          check_callback: function (op, node, par, pos, more) {
+            if (more && more.dnd) {
+              return more.pos !== "i" && par.id == node.parent;
+            }
+            return true;
           }
-          return true;
-        },
-      },
-    }).on('move_node.jstree', function (e, data) {
-      // console.log("NameCol: move_node.jstree", data);
-      self.waveTable.moveRow(data.node.data, data.position);
-    }).on('open_node.jstree', function (e, data) {
-      // console.log("NameCol: open_node.jstree", data);
-      self.waveTable.openGroup(data.node.data);
-    }).on('close_node.jstree', function (e, data) {
-      // console.log("NameCol: close_node.jstree", data);
-      self.waveTable.closeGroup(data.node.data);
-    }).on('changed.jstree', function (evt, data) {
-      // console.log("NameCol: changed.jstree", data);
-      data.changed.selected.forEach(element => {
-        const data = self._getTree().get_node(element).data;
-        self.waveTable.selectRow(data);
+        }
+      })
+      .on("move_node.jstree", function (e, data) {
+        // console.log("NameCol: move_node.jstree", data);
+        self.waveTable.moveRow(data.node.data, data.position);
+      })
+      .on("open_node.jstree", function (e, data) {
+        // console.log("NameCol: open_node.jstree", data);
+        self.waveTable.openGroup(data.node.data);
+      })
+      .on("close_node.jstree", function (e, data) {
+        // console.log("NameCol: close_node.jstree", data);
+        self.waveTable.closeGroup(data.node.data);
+      })
+      .on("changed.jstree", function (evt, data) {
+        // console.log("NameCol: changed.jstree", data);
+        data.changed.selected.forEach((element) => {
+          const data = self._getTree().get_node(element).data;
+          self.waveTable.selectRow(data);
+        });
+        data.changed.deselected.forEach((element) => {
+          const data = self._getTree().get_node(element).data;
+          self.waveTable.deSelectRow(data);
+        });
+      })
+      .on("ready.jstree", function (evt, data) {
+        console.log("NameCol: ready.jstree", data);
+      })
+      .on("load_all.jstree", function (evt, data) {
+        console.log("NameCol: load_all", data);
       });
-      data.changed.deselected.forEach(element => {
-        const data = self._getTree().get_node(element).data;
-        self.waveTable.deSelectRow(data);
-      });
-    }).on('ready.jstree', function (evt, data) {
-      console.log("NameCol: ready.jstree", data);
-    }).on('load_all.jstree', function (evt, data) {
-      console.log("NameCol: load_all", data);
-    });
 
     setTimeout(() => {
       this.reload();
     }, 0);
-
   }
 
   reload() {
-    const tree = []
-    this.waveTable.getRows().forEach(row => {
+    const tree = [];
+    this.waveTable.getRows().forEach((row) => {
       var treeObj = {};
-      treeObj['id'] = this.toId(row.id);
-      if (row.parent.id == '#') {
-        treeObj['parent'] = '#';
+      treeObj["id"] = this.toId(row.id);
+      if (row.parent.id == "#") {
+        treeObj["parent"] = "#";
       } else {
-        treeObj['parent'] = this.toId(row.parent.id);
+        treeObj["parent"] = this.toId(row.parent.id);
       }
-      treeObj['text'] = row.data.name;
-      treeObj['data'] = row.id;
-      tree.push(treeObj)
+      treeObj["text"] = row.data.name;
+      treeObj["data"] = row.id;
+      tree.push(treeObj);
     });
 
     this._getTree().settings.core.data = tree;
@@ -100,8 +106,7 @@ export class NameCol {
     }, 10);
   }
 
-
-  refresh(){
+  refresh() {
     this._getTree().refresh();
   }
 
@@ -109,7 +114,6 @@ export class NameCol {
     $(this.containerName).jstree("destroy").empty();
     // d3.select(this.containerName).selectAll("*").remove();
   }
-
 
   /**
    * Select the given row.
@@ -137,7 +141,7 @@ export class NameCol {
     // console.warn(`Row ${rowId} is already DEselected.`);
   }
 
-  deSelectAllRows(){
+  deSelectAllRows() {
     this._getTree().deselect_all();
   }
 
@@ -153,7 +157,7 @@ export class NameCol {
     this._getTree().select_node(this.toId(rowId));
   }
 
-  insertRow(rowId, parent, pos = 'last') {
+  insertRow(rowId, parent, pos = "last") {
     this.reload();
   }
 
@@ -166,9 +170,9 @@ export class NameCol {
   }
 
   getSelectedRows() {
-    return this._getTree().get_selected(true).map(
-      element => element.data
-    );
+    return this._getTree()
+      .get_selected(true)
+      .map((element) => element.data);
   }
 
   /**
@@ -188,52 +192,51 @@ export class NameCol {
     this._getTree().rename_node(this.toId(rowId), name);
   }
 
-  toId(rowId){
+  toId(rowId) {
     return `signal-name-${rowId}`;
   }
 
-  _getTree(arg = true){
+  _getTree(arg = true) {
     return $(this.containerName).jstree(arg);
   }
 
-  get_node(rowId){
+  get_node(rowId) {
     return this._getTree().get_node(this.toId(rowId));
   }
 
-  editName(rowId){
-    const nameEditorId="nameeditorinput";
-    const nameEditorId2=`#${nameEditorId}`;
+  editName(rowId) {
+    const nameEditorId = "nameeditorinput";
+    const nameEditorId2 = `#${nameEditorId}`;
     const li = $(`#${this.toId(rowId)}`);
-    li.find('a').toggle();
-    li.find('div').toggle();
+    li.find("a").toggle();
+    li.find("div").toggle();
     const input = $("<input></input>")
-      .attr('id', nameEditorId)
+      .attr("id", nameEditorId)
       .val(this.get_node(rowId).text)
-      .keypress(e => {
+      .keypress((e) => {
         if (e.which == 13) {
           this.editNameEnd(rowId);
         }
-        if(e.which == 27){
+        if (e.which == 27) {
           this.editNameEnd(rowId, false);
         }
       })
-      .focusout( e=>{
+      .focusout((e) => {
         this.editNameEnd(rowId, false);
-      } );
+      });
     li.append(input);
     input.focus();
     input[0].setSelectionRange(0, 1000);
   }
-  
 
-  editNameEnd(rowId, accept=true){
+  editNameEnd(rowId, accept = true) {
     const li = $(`#${this.toId(rowId)}`);
-    const input = li.find('input');
+    const input = li.find("input");
     const val = input.val();
     input.remove();
-    li.find('a').toggle();
-    li.find('div').toggle();
-    if(accept){
+    li.find("a").toggle();
+    li.find("div").toggle();
+    if (accept) {
       this.waveTable.rename(rowId, input.val());
     }
   }

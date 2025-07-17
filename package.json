@@ -25,6 +25,7 @@
     "eslint": "^7.11.0",
     "jest": "^30.0.1",
     "jshint": "^2.12.0",
+    "prettier": "^3.6.2",
     "puppeteer": "^24.10.2",
     "start-server-and-test": "^2.0.12",
     "vite": "^6.3.5"
@@ -54,5 +55,12 @@
   "bugs": {
     "url": "https://github.com/raczben/fliplot/issues"
   },
-  "homepage": "https://github.com/raczben/fliplot#readme"
+  "homepage": "https://github.com/raczben/fliplot#readme",
+  "prettier": {
+    "semi": true,
+    "singleQuote": false,
+    "trailingComma": "none",
+    "tabWidth": 2,
+    "printWidth": 100
+  }
 }

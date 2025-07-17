@@ -1,13 +1,9 @@
 {
   "signals": [
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "bus_aw_prot",
-      "references": [
-        "EpWithReg.bus_aw_prot"
-      ],
+      "references": ["EpWithReg.bus_aw_prot"],
       "type": "wire",
       "vcdid": "!",
       "wave": [
@@ -23,13 +19,9 @@
       "width": 3
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_bus_r_valid",
-      "references": [
-        "EpWithReg.sig_ep_bus_r_valid"
-      ],
+      "references": ["EpWithReg.sig_ep_bus_r_valid"],
       "type": "wire",
       "vcdid": "\"",
       "wave": [
@@ -41,13 +33,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_out_m_ar_valid",
-      "references": [
-        "EpWithReg.sig_reg_out_m_ar_valid"
-      ],
+      "references": ["EpWithReg.sig_reg_out_m_ar_valid"],
       "type": "wire",
       "vcdid": "#",
       "wave": [
@@ -59,13 +47,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "bus_aw_ready",
-      "references": [
-        "EpWithReg.bus_aw_ready"
-      ],
+      "references": ["EpWithReg.bus_aw_ready"],
       "type": "wire",
       "vcdid": "$",
       "wave": [
@@ -109,13 +93,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_bus_w_data",
-      "references": [
-        "EpWithReg.sig_ep_bus_w_data"
-      ],
+      "references": ["EpWithReg.sig_ep_bus_w_data"],
       "type": "wire",
       "vcdid": "%",
       "wave": [
@@ -143,13 +123,9 @@
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_out_m_aw_addr",
-      "references": [
-        "EpWithReg.sig_reg_out_m_aw_addr"
-      ],
+      "references": ["EpWithReg.sig_reg_out_m_aw_addr"],
       "type": "wire",
       "vcdid": "&",
       "wave": [
@@ -177,13 +153,9 @@
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "bus_aw_valid",
-      "references": [
-        "EpWithReg.bus_aw_valid"
-      ],
+      "references": ["EpWithReg.bus_aw_valid"],
       "type": "wire",
       "vcdid": "'",
       "wave": [
@@ -243,13 +215,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_bus_w_ready",
-      "references": [
-        "EpWithReg.sig_ep_bus_w_ready"
-      ],
+      "references": ["EpWithReg.sig_ep_bus_w_ready"],
       "type": "wire",
       "vcdid": "(",
       "wave": [
@@ -301,13 +269,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_out_m_aw_prot",
-      "references": [
-        "EpWithReg.sig_reg_out_m_aw_prot"
-      ],
+      "references": ["EpWithReg.sig_reg_out_m_aw_prot"],
       "type": "wire",
       "vcdid": ")",
       "wave": [
@@ -319,13 +283,9 @@
       "width": 3
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "bus_b_ready",
-      "references": [
-        "EpWithReg.bus_b_ready"
-      ],
+      "references": ["EpWithReg.bus_b_ready"],
       "type": "wire",
       "vcdid": "*",
       "wave": [
@@ -501,13 +461,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_bus_w_strb",
-      "references": [
-        "EpWithReg.sig_ep_bus_w_strb"
-      ],
+      "references": ["EpWithReg.sig_ep_bus_w_strb"],
       "type": "wire",
       "vcdid": "+",
       "wave": [
@@ -519,13 +475,9 @@
       "width": 4
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_out_m_aw_ready",
-      "references": [
-        "EpWithReg.sig_reg_out_m_aw_ready"
-      ],
+      "references": ["EpWithReg.sig_reg_out_m_aw_ready"],
       "type": "wire",
       "vcdid": ",",
       "wave": [
@@ -577,13 +529,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "bus_b_resp",
-      "references": [
-        "EpWithReg.bus_b_resp"
-      ],
+      "references": ["EpWithReg.bus_b_resp"],
       "type": "wire",
       "vcdid": "-",
       "wave": [
@@ -599,13 +547,9 @@
       "width": 2
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_bus_w_valid",
-      "references": [
-        "EpWithReg.sig_ep_bus_w_valid"
-      ],
+      "references": ["EpWithReg.sig_ep_bus_w_valid"],
       "type": "wire",
       "vcdid": ".",
       "wave": [
@@ -641,13 +585,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_out_m_aw_valid",
-      "references": [
-        "EpWithReg.sig_reg_out_m_aw_valid"
-      ],
+      "references": ["EpWithReg.sig_reg_out_m_aw_valid"],
       "type": "wire",
       "vcdid": "/",
       "wave": [
@@ -667,13 +607,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "bus_b_valid",
-      "references": [
-        "EpWithReg.bus_b_valid"
-      ],
+      "references": ["EpWithReg.bus_b_valid"],
       "type": "wire",
       "vcdid": "0",
       "wave": [
@@ -717,13 +653,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_clk",
-      "references": [
-        "EpWithReg.sig_ep_clk"
-      ],
+      "references": ["EpWithReg.sig_ep_clk"],
       "type": "wire",
       "vcdid": "1",
       "wave": [
@@ -1131,13 +1063,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_out_m_b_ready",
-      "references": [
-        "EpWithReg.sig_reg_out_m_b_ready"
-      ],
+      "references": ["EpWithReg.sig_reg_out_m_b_ready"],
       "type": "wire",
       "vcdid": "2",
       "wave": [
@@ -1189,39 +1117,27 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "bus_r_data",
-      "references": [
-        "EpWithReg.bus_r_data"
-      ],
+      "references": ["EpWithReg.bus_r_data"],
       "type": "wire",
       "vcdid": "3",
       "wave": [],
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_decoded_field0_din",
-      "references": [
-        "EpWithReg.sig_ep_decoded_field0_din"
-      ],
+      "references": ["EpWithReg.sig_ep_decoded_field0_din"],
       "type": "wire",
       "vcdid": "4",
       "wave": [],
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_out_m_b_resp",
-      "references": [
-        "EpWithReg.sig_reg_out_m_b_resp"
-      ],
+      "references": ["EpWithReg.sig_reg_out_m_b_resp"],
       "type": "wire",
       "vcdid": "5",
       "wave": [
@@ -1237,13 +1153,9 @@
       "width": 2
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "bus_r_ready",
-      "references": [
-        "EpWithReg.bus_r_ready"
-      ],
+      "references": ["EpWithReg.bus_r_ready"],
       "type": "wire",
       "vcdid": "6",
       "wave": [
@@ -1383,13 +1295,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_decoded_field0_dout_data",
-      "references": [
-        "EpWithReg.sig_ep_decoded_field0_dout_data"
-      ],
+      "references": ["EpWithReg.sig_ep_decoded_field0_dout_data"],
       "type": "wire",
       "vcdid": "7",
       "wave": [
@@ -1417,13 +1325,9 @@
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_out_m_b_valid",
-      "references": [
-        "EpWithReg.sig_reg_out_m_b_valid"
-      ],
+      "references": ["EpWithReg.sig_reg_out_m_b_valid"],
       "type": "wire",
       "vcdid": "8",
       "wave": [
@@ -1475,26 +1379,18 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "bus_r_resp",
-      "references": [
-        "EpWithReg.bus_r_resp"
-      ],
+      "references": ["EpWithReg.bus_r_resp"],
       "type": "wire",
       "vcdid": "9",
       "wave": [],
       "width": 2
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_decoded_field0_dout_vld",
-      "references": [
-        "EpWithReg.sig_ep_decoded_field0_dout_vld"
-      ],
+      "references": ["EpWithReg.sig_ep_decoded_field0_dout_vld"],
       "type": "wire",
       "vcdid": ":",
       "wave": [
@@ -1522,26 +1418,18 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_out_m_r_data",
-      "references": [
-        "EpWithReg.sig_reg_out_m_r_data"
-      ],
+      "references": ["EpWithReg.sig_reg_out_m_r_data"],
       "type": "wire",
       "vcdid": ";",
       "wave": [],
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "bus_r_valid",
-      "references": [
-        "EpWithReg.bus_r_valid"
-      ],
+      "references": ["EpWithReg.bus_r_valid"],
       "type": "wire",
       "vcdid": "<",
       "wave": [
@@ -1553,26 +1441,18 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_decoded_field1_din",
-      "references": [
-        "EpWithReg.sig_ep_decoded_field1_din"
-      ],
+      "references": ["EpWithReg.sig_ep_decoded_field1_din"],
       "type": "wire",
       "vcdid": "=",
       "wave": [],
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_out_m_r_ready",
-      "references": [
-        "EpWithReg.sig_reg_out_m_r_ready"
-      ],
+      "references": ["EpWithReg.sig_reg_out_m_r_ready"],
       "type": "wire",
       "vcdid": ">",
       "wave": [
@@ -1584,13 +1464,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "bus_w_data",
-      "references": [
-        "EpWithReg.bus_w_data"
-      ],
+      "references": ["EpWithReg.bus_w_data"],
       "type": "wire",
       "vcdid": "?",
       "wave": [
@@ -1622,13 +1498,9 @@
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_decoded_field1_dout_data",
-      "references": [
-        "EpWithReg.sig_ep_decoded_field1_dout_data"
-      ],
+      "references": ["EpWithReg.sig_ep_decoded_field1_dout_data"],
       "type": "wire",
       "vcdid": "@",
       "wave": [
@@ -1656,26 +1528,18 @@
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_out_m_r_resp",
-      "references": [
-        "EpWithReg.sig_reg_out_m_r_resp"
-      ],
+      "references": ["EpWithReg.sig_reg_out_m_r_resp"],
       "type": "wire",
       "vcdid": "A",
       "wave": [],
       "width": 2
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "bus_w_ready",
-      "references": [
-        "EpWithReg.bus_w_ready"
-      ],
+      "references": ["EpWithReg.bus_w_ready"],
       "type": "wire",
       "vcdid": "B",
       "wave": [
@@ -1727,13 +1591,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_decoded_field1_dout_vld",
-      "references": [
-        "EpWithReg.sig_ep_decoded_field1_dout_vld"
-      ],
+      "references": ["EpWithReg.sig_ep_decoded_field1_dout_vld"],
       "type": "wire",
       "vcdid": "C",
       "wave": [
@@ -1761,13 +1621,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_out_m_r_valid",
-      "references": [
-        "EpWithReg.sig_reg_out_m_r_valid"
-      ],
+      "references": ["EpWithReg.sig_reg_out_m_r_valid"],
       "type": "wire",
       "vcdid": "D",
       "wave": [
@@ -1779,13 +1635,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "bus_w_strb",
-      "references": [
-        "EpWithReg.bus_w_strb"
-      ],
+      "references": ["EpWithReg.bus_w_strb"],
       "type": "wire",
       "vcdid": "E",
       "wave": [
@@ -1801,13 +1653,9 @@
       "width": 4
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_rst_n",
-      "references": [
-        "EpWithReg.sig_ep_rst_n"
-      ],
+      "references": ["EpWithReg.sig_ep_rst_n"],
       "type": "wire",
       "vcdid": "F",
       "wave": [
@@ -1823,13 +1671,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_out_m_w_data",
-      "references": [
-        "EpWithReg.sig_reg_out_m_w_data"
-      ],
+      "references": ["EpWithReg.sig_reg_out_m_w_data"],
       "type": "wire",
       "vcdid": "G",
       "wave": [
@@ -1857,13 +1701,9 @@
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "bus_w_valid",
-      "references": [
-        "EpWithReg.bus_w_valid"
-      ],
+      "references": ["EpWithReg.bus_w_valid"],
       "type": "wire",
       "vcdid": "H",
       "wave": [
@@ -1915,13 +1755,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_clk",
-      "references": [
-        "EpWithReg.sig_reg_clk"
-      ],
+      "references": ["EpWithReg.sig_reg_clk"],
       "type": "wire",
       "vcdid": "I",
       "wave": [
@@ -2329,13 +2165,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_out_m_w_ready",
-      "references": [
-        "EpWithReg.sig_reg_out_m_w_ready"
-      ],
+      "references": ["EpWithReg.sig_reg_out_m_w_ready"],
       "type": "wire",
       "vcdid": "J",
       "wave": [
@@ -2387,13 +2219,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "clk",
-      "references": [
-        "EpWithReg.clk"
-      ],
+      "references": ["EpWithReg.clk"],
       "type": "wire",
       "vcdid": "K",
       "wave": [
@@ -2801,26 +2629,18 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_in_s_ar_addr",
-      "references": [
-        "EpWithReg.sig_reg_in_s_ar_addr"
-      ],
+      "references": ["EpWithReg.sig_reg_in_s_ar_addr"],
       "type": "wire",
       "vcdid": "L",
       "wave": [],
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_out_m_w_strb",
-      "references": [
-        "EpWithReg.sig_reg_out_m_w_strb"
-      ],
+      "references": ["EpWithReg.sig_reg_out_m_w_strb"],
       "type": "wire",
       "vcdid": "M",
       "wave": [
@@ -2832,39 +2652,27 @@
       "width": 4
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "decoded_field0_din",
-      "references": [
-        "EpWithReg.decoded_field0_din"
-      ],
+      "references": ["EpWithReg.decoded_field0_din"],
       "type": "wire",
       "vcdid": "N",
       "wave": [],
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_in_s_ar_prot",
-      "references": [
-        "EpWithReg.sig_reg_in_s_ar_prot"
-      ],
+      "references": ["EpWithReg.sig_reg_in_s_ar_prot"],
       "type": "wire",
       "vcdid": "O",
       "wave": [],
       "width": 3
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_out_m_w_valid",
-      "references": [
-        "EpWithReg.sig_reg_out_m_w_valid"
-      ],
+      "references": ["EpWithReg.sig_reg_out_m_w_valid"],
       "type": "wire",
       "vcdid": "P",
       "wave": [
@@ -2900,13 +2708,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "decoded_field0_dout_data",
-      "references": [
-        "EpWithReg.decoded_field0_dout_data"
-      ],
+      "references": ["EpWithReg.decoded_field0_dout_data"],
       "type": "wire",
       "vcdid": "Q",
       "wave": [
@@ -2934,13 +2738,9 @@
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_in_s_ar_ready",
-      "references": [
-        "EpWithReg.sig_reg_in_s_ar_ready"
-      ],
+      "references": ["EpWithReg.sig_reg_in_s_ar_ready"],
       "type": "wire",
       "vcdid": "R",
       "wave": [
@@ -2952,13 +2752,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_rst_n",
-      "references": [
-        "EpWithReg.sig_reg_rst_n"
-      ],
+      "references": ["EpWithReg.sig_reg_rst_n"],
       "type": "wire",
       "vcdid": "S",
       "wave": [
@@ -2974,13 +2770,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_in_s_ar_valid",
-      "references": [
-        "EpWithReg.sig_reg_in_s_ar_valid"
-      ],
+      "references": ["EpWithReg.sig_reg_in_s_ar_valid"],
       "type": "wire",
       "vcdid": "T",
       "wave": [
@@ -2992,13 +2784,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "decoded_field0_dout_vld",
-      "references": [
-        "EpWithReg.decoded_field0_dout_vld"
-      ],
+      "references": ["EpWithReg.decoded_field0_dout_vld"],
       "type": "wire",
       "vcdid": "U",
       "wave": [
@@ -3026,26 +2814,18 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "decoded_field1_din",
-      "references": [
-        "EpWithReg.decoded_field1_din"
-      ],
+      "references": ["EpWithReg.decoded_field1_din"],
       "type": "wire",
       "vcdid": "V",
       "wave": [],
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_in_s_aw_addr",
-      "references": [
-        "EpWithReg.sig_reg_in_s_aw_addr"
-      ],
+      "references": ["EpWithReg.sig_reg_in_s_aw_addr"],
       "type": "wire",
       "vcdid": "W",
       "wave": [
@@ -3077,13 +2857,9 @@
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "decoded_field1_dout_data",
-      "references": [
-        "EpWithReg.decoded_field1_dout_data"
-      ],
+      "references": ["EpWithReg.decoded_field1_dout_data"],
       "type": "wire",
       "vcdid": "X",
       "wave": [
@@ -3111,13 +2887,9 @@
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_in_s_aw_prot",
-      "references": [
-        "EpWithReg.sig_reg_in_s_aw_prot"
-      ],
+      "references": ["EpWithReg.sig_reg_in_s_aw_prot"],
       "type": "wire",
       "vcdid": "Y",
       "wave": [
@@ -3133,13 +2905,9 @@
       "width": 3
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "decoded_field1_dout_vld",
-      "references": [
-        "EpWithReg.decoded_field1_dout_vld"
-      ],
+      "references": ["EpWithReg.decoded_field1_dout_vld"],
       "type": "wire",
       "vcdid": "Z",
       "wave": [
@@ -3167,13 +2935,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_in_s_aw_ready",
-      "references": [
-        "EpWithReg.sig_reg_in_s_aw_ready"
-      ],
+      "references": ["EpWithReg.sig_reg_in_s_aw_ready"],
       "type": "wire",
       "vcdid": "[",
       "wave": [
@@ -3217,13 +2981,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "rst_n",
-      "references": [
-        "EpWithReg.rst_n"
-      ],
+      "references": ["EpWithReg.rst_n"],
       "type": "wire",
       "vcdid": "\\",
       "wave": [
@@ -3239,13 +2999,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_in_s_aw_valid",
-      "references": [
-        "EpWithReg.sig_reg_in_s_aw_valid"
-      ],
+      "references": ["EpWithReg.sig_reg_in_s_aw_valid"],
       "type": "wire",
       "vcdid": "]",
       "wave": [
@@ -3305,26 +3061,18 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_bus_ar_addr",
-      "references": [
-        "EpWithReg.sig_ep_bus_ar_addr"
-      ],
+      "references": ["EpWithReg.sig_ep_bus_ar_addr"],
       "type": "wire",
       "vcdid": "^",
       "wave": [],
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_in_s_b_ready",
-      "references": [
-        "EpWithReg.sig_reg_in_s_b_ready"
-      ],
+      "references": ["EpWithReg.sig_reg_in_s_b_ready"],
       "type": "wire",
       "vcdid": "_",
       "wave": [
@@ -3500,26 +3248,18 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_bus_ar_prot",
-      "references": [
-        "EpWithReg.sig_ep_bus_ar_prot"
-      ],
+      "references": ["EpWithReg.sig_ep_bus_ar_prot"],
       "type": "wire",
       "vcdid": "`",
       "wave": [],
       "width": 3
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_in_s_b_resp",
-      "references": [
-        "EpWithReg.sig_reg_in_s_b_resp"
-      ],
+      "references": ["EpWithReg.sig_reg_in_s_b_resp"],
       "type": "wire",
       "vcdid": "a",
       "wave": [
@@ -3535,13 +3275,9 @@
       "width": 2
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_bus_ar_ready",
-      "references": [
-        "EpWithReg.sig_ep_bus_ar_ready"
-      ],
+      "references": ["EpWithReg.sig_ep_bus_ar_ready"],
       "type": "wire",
       "vcdid": "b",
       "wave": [
@@ -3593,13 +3329,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_in_s_b_valid",
-      "references": [
-        "EpWithReg.sig_reg_in_s_b_valid"
-      ],
+      "references": ["EpWithReg.sig_reg_in_s_b_valid"],
       "type": "wire",
       "vcdid": "c",
       "wave": [
@@ -3643,13 +3375,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_bus_ar_valid",
-      "references": [
-        "EpWithReg.sig_ep_bus_ar_valid"
-      ],
+      "references": ["EpWithReg.sig_ep_bus_ar_valid"],
       "type": "wire",
       "vcdid": "d",
       "wave": [
@@ -3661,26 +3389,18 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_in_s_r_data",
-      "references": [
-        "EpWithReg.sig_reg_in_s_r_data"
-      ],
+      "references": ["EpWithReg.sig_reg_in_s_r_data"],
       "type": "wire",
       "vcdid": "e",
       "wave": [],
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_bus_aw_addr",
-      "references": [
-        "EpWithReg.sig_ep_bus_aw_addr"
-      ],
+      "references": ["EpWithReg.sig_ep_bus_aw_addr"],
       "type": "wire",
       "vcdid": "f",
       "wave": [
@@ -3708,13 +3428,9 @@
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_in_s_r_ready",
-      "references": [
-        "EpWithReg.sig_reg_in_s_r_ready"
-      ],
+      "references": ["EpWithReg.sig_reg_in_s_r_ready"],
       "type": "wire",
       "vcdid": "g",
       "wave": [
@@ -3854,13 +3570,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_bus_aw_prot",
-      "references": [
-        "EpWithReg.sig_ep_bus_aw_prot"
-      ],
+      "references": ["EpWithReg.sig_ep_bus_aw_prot"],
       "type": "wire",
       "vcdid": "h",
       "wave": [
@@ -3872,26 +3584,18 @@
       "width": 3
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_in_s_r_resp",
-      "references": [
-        "EpWithReg.sig_reg_in_s_r_resp"
-      ],
+      "references": ["EpWithReg.sig_reg_in_s_r_resp"],
       "type": "wire",
       "vcdid": "i",
       "wave": [],
       "width": 2
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_bus_aw_ready",
-      "references": [
-        "EpWithReg.sig_ep_bus_aw_ready"
-      ],
+      "references": ["EpWithReg.sig_ep_bus_aw_ready"],
       "type": "wire",
       "vcdid": "j",
       "wave": [
@@ -3943,13 +3647,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_in_s_r_valid",
-      "references": [
-        "EpWithReg.sig_reg_in_s_r_valid"
-      ],
+      "references": ["EpWithReg.sig_reg_in_s_r_valid"],
       "type": "wire",
       "vcdid": "k",
       "wave": [
@@ -3961,13 +3661,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_bus_aw_valid",
-      "references": [
-        "EpWithReg.sig_ep_bus_aw_valid"
-      ],
+      "references": ["EpWithReg.sig_ep_bus_aw_valid"],
       "type": "wire",
       "vcdid": "l",
       "wave": [
@@ -3987,13 +3683,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_in_s_w_data",
-      "references": [
-        "EpWithReg.sig_reg_in_s_w_data"
-      ],
+      "references": ["EpWithReg.sig_reg_in_s_w_data"],
       "type": "wire",
       "vcdid": "m",
       "wave": [
@@ -4025,13 +3717,9 @@
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_bus_b_ready",
-      "references": [
-        "EpWithReg.sig_ep_bus_b_ready"
-      ],
+      "references": ["EpWithReg.sig_ep_bus_b_ready"],
       "type": "wire",
       "vcdid": "n",
       "wave": [
@@ -4083,13 +3771,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_in_s_w_ready",
-      "references": [
-        "EpWithReg.sig_reg_in_s_w_ready"
-      ],
+      "references": ["EpWithReg.sig_reg_in_s_w_ready"],
       "type": "wire",
       "vcdid": "o",
       "wave": [
@@ -4141,13 +3825,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_bus_b_resp",
-      "references": [
-        "EpWithReg.sig_ep_bus_b_resp"
-      ],
+      "references": ["EpWithReg.sig_ep_bus_b_resp"],
       "type": "wire",
       "vcdid": "p",
       "wave": [
@@ -4163,13 +3843,9 @@
       "width": 2
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_in_s_w_strb",
-      "references": [
-        "EpWithReg.sig_reg_in_s_w_strb"
-      ],
+      "references": ["EpWithReg.sig_reg_in_s_w_strb"],
       "type": "wire",
       "vcdid": "q",
       "wave": [
@@ -4185,13 +3861,9 @@
       "width": 4
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_bus_b_valid",
-      "references": [
-        "EpWithReg.sig_ep_bus_b_valid"
-      ],
+      "references": ["EpWithReg.sig_ep_bus_b_valid"],
       "type": "wire",
       "vcdid": "r",
       "wave": [
@@ -4243,13 +3915,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_in_s_w_valid",
-      "references": [
-        "EpWithReg.sig_reg_in_s_w_valid"
-      ],
+      "references": ["EpWithReg.sig_reg_in_s_w_valid"],
       "type": "wire",
       "vcdid": "s",
       "wave": [
@@ -4301,39 +3969,27 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_bus_r_data",
-      "references": [
-        "EpWithReg.sig_ep_bus_r_data"
-      ],
+      "references": ["EpWithReg.sig_ep_bus_r_data"],
       "type": "wire",
       "vcdid": "t",
       "wave": [],
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_out_m_ar_addr",
-      "references": [
-        "EpWithReg.sig_reg_out_m_ar_addr"
-      ],
+      "references": ["EpWithReg.sig_reg_out_m_ar_addr"],
       "type": "wire",
       "vcdid": "u",
       "wave": [],
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_bus_r_ready",
-      "references": [
-        "EpWithReg.sig_ep_bus_r_ready"
-      ],
+      "references": ["EpWithReg.sig_ep_bus_r_ready"],
       "type": "wire",
       "vcdid": "v",
       "wave": [
@@ -4345,26 +4001,18 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_out_m_ar_prot",
-      "references": [
-        "EpWithReg.sig_reg_out_m_ar_prot"
-      ],
+      "references": ["EpWithReg.sig_reg_out_m_ar_prot"],
       "type": "wire",
       "vcdid": "w",
       "wave": [],
       "width": 3
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_reg_out_m_ar_ready",
-      "references": [
-        "EpWithReg.sig_reg_out_m_ar_ready"
-      ],
+      "references": ["EpWithReg.sig_reg_out_m_ar_ready"],
       "type": "wire",
       "vcdid": "x",
       "wave": [
@@ -4416,52 +4064,36 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "sig_ep_bus_r_resp",
-      "references": [
-        "EpWithReg.sig_ep_bus_r_resp"
-      ],
+      "references": ["EpWithReg.sig_ep_bus_r_resp"],
       "type": "wire",
       "vcdid": "y",
       "wave": [],
       "width": 2
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "bus_ar_addr",
-      "references": [
-        "EpWithReg.bus_ar_addr"
-      ],
+      "references": ["EpWithReg.bus_ar_addr"],
       "type": "wire",
       "vcdid": "z",
       "wave": [],
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "bus_ar_prot",
-      "references": [
-        "EpWithReg.bus_ar_prot"
-      ],
+      "references": ["EpWithReg.bus_ar_prot"],
       "type": "wire",
       "vcdid": "{",
       "wave": [],
       "width": 3
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "bus_ar_ready",
-      "references": [
-        "EpWithReg.bus_ar_ready"
-      ],
+      "references": ["EpWithReg.bus_ar_ready"],
       "type": "wire",
       "vcdid": "|",
       "wave": [
@@ -4473,13 +4105,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "bus_ar_valid",
-      "references": [
-        "EpWithReg.bus_ar_valid"
-      ],
+      "references": ["EpWithReg.bus_ar_valid"],
       "type": "wire",
       "vcdid": "}",
       "wave": [
@@ -4491,13 +4119,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg"
-      ],
+      "hierarchy": ["EpWithReg"],
       "name": "bus_aw_addr",
-      "references": [
-        "EpWithReg.bus_aw_addr"
-      ],
+      "references": ["EpWithReg.bus_aw_addr"],
       "type": "wire",
       "vcdid": "~",
       "wave": [
@@ -4529,14 +4153,9 @@
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "ep"
-      ],
+      "hierarchy": ["EpWithReg", "ep"],
       "name": "isBramAddr",
-      "references": [
-        "EpWithReg.ep.isBramAddr"
-      ],
+      "references": ["EpWithReg.ep.isBramAddr"],
       "type": "wire",
       "vcdid": "\"!",
       "wave": [
@@ -4548,70 +4167,45 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "ep"
-      ],
+      "hierarchy": ["EpWithReg", "ep"],
       "name": "rSt",
-      "references": [
-        "EpWithReg.ep.rSt"
-      ],
+      "references": ["EpWithReg.ep.rSt"],
       "type": "real",
       "vcdid": "\"\"",
       "wave": [],
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "ep"
-      ],
+      "hierarchy": ["EpWithReg", "ep"],
       "name": "rSt_next",
-      "references": [
-        "EpWithReg.ep.rSt_next"
-      ],
+      "references": ["EpWithReg.ep.rSt_next"],
       "type": "real",
       "vcdid": "\"#",
       "wave": [],
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "ep"
-      ],
+      "hierarchy": ["EpWithReg", "ep"],
       "name": "wSt",
-      "references": [
-        "EpWithReg.ep.wSt"
-      ],
+      "references": ["EpWithReg.ep.wSt"],
       "type": "real",
       "vcdid": "\"$",
       "wave": [],
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "ep"
-      ],
+      "hierarchy": ["EpWithReg", "ep"],
       "name": "wSt_next",
-      "references": [
-        "EpWithReg.ep.wSt_next"
-      ],
+      "references": ["EpWithReg.ep.wSt_next"],
       "type": "real",
       "vcdid": "\"%",
       "wave": [],
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "ep"
-      ],
+      "hierarchy": ["EpWithReg", "ep"],
       "name": "w_hs",
-      "references": [
-        "EpWithReg.ep.w_hs"
-      ],
+      "references": ["EpWithReg.ep.w_hs"],
       "type": "wire",
       "vcdid": "\"&",
       "wave": [
@@ -4663,42 +4257,27 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "ep"
-      ],
+      "hierarchy": ["EpWithReg", "ep"],
       "name": "arAddr",
-      "references": [
-        "EpWithReg.ep.arAddr"
-      ],
+      "references": ["EpWithReg.ep.arAddr"],
       "type": "wire",
       "vcdid": "\"'",
       "wave": [],
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "ep"
-      ],
+      "hierarchy": ["EpWithReg", "ep"],
       "name": "arAddr_next",
-      "references": [
-        "EpWithReg.ep.arAddr_next"
-      ],
+      "references": ["EpWithReg.ep.arAddr_next"],
       "type": "wire",
       "vcdid": "\"(",
       "wave": [],
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "ep"
-      ],
+      "hierarchy": ["EpWithReg", "ep"],
       "name": "awAddr",
-      "references": [
-        "EpWithReg.ep.awAddr"
-      ],
+      "references": ["EpWithReg.ep.awAddr"],
       "type": "wire",
       "vcdid": "\")",
       "wave": [
@@ -4726,14 +4305,9 @@
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "ep"
-      ],
+      "hierarchy": ["EpWithReg", "ep"],
       "name": "awAddr_next",
-      "references": [
-        "EpWithReg.ep.awAddr_next"
-      ],
+      "references": ["EpWithReg.ep.awAddr_next"],
       "type": "wire",
       "vcdid": "\"*",
       "wave": [
@@ -4761,14 +4335,9 @@
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_ar_reg_0_clk",
-      "references": [
-        "EpWithReg.reg.sig_gen_ar_reg_0_clk"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_ar_reg_0_clk"],
       "type": "wire",
       "vcdid": "\"+",
       "wave": [
@@ -5176,42 +4745,27 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_ar_reg_0_dataIn_addr",
-      "references": [
-        "EpWithReg.reg.sig_gen_ar_reg_0_dataIn_addr"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_ar_reg_0_dataIn_addr"],
       "type": "wire",
       "vcdid": "\",",
       "wave": [],
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_ar_reg_0_dataIn_prot",
-      "references": [
-        "EpWithReg.reg.sig_gen_ar_reg_0_dataIn_prot"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_ar_reg_0_dataIn_prot"],
       "type": "wire",
       "vcdid": "\"-",
       "wave": [],
       "width": 3
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_ar_reg_0_dataIn_ready",
-      "references": [
-        "EpWithReg.reg.sig_gen_ar_reg_0_dataIn_ready"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_ar_reg_0_dataIn_ready"],
       "type": "wire",
       "vcdid": "\".",
       "wave": [
@@ -5223,14 +4777,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_ar_reg_0_dataIn_valid",
-      "references": [
-        "EpWithReg.reg.sig_gen_ar_reg_0_dataIn_valid"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_ar_reg_0_dataIn_valid"],
       "type": "wire",
       "vcdid": "\"/",
       "wave": [
@@ -5242,42 +4791,27 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_ar_reg_0_dataOut_addr",
-      "references": [
-        "EpWithReg.reg.sig_gen_ar_reg_0_dataOut_addr"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_ar_reg_0_dataOut_addr"],
       "type": "wire",
       "vcdid": "\"0",
       "wave": [],
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_ar_reg_0_dataOut_prot",
-      "references": [
-        "EpWithReg.reg.sig_gen_ar_reg_0_dataOut_prot"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_ar_reg_0_dataOut_prot"],
       "type": "wire",
       "vcdid": "\"1",
       "wave": [],
       "width": 3
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_ar_reg_0_dataOut_ready",
-      "references": [
-        "EpWithReg.reg.sig_gen_ar_reg_0_dataOut_ready"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_ar_reg_0_dataOut_ready"],
       "type": "wire",
       "vcdid": "\"2",
       "wave": [
@@ -5329,14 +4863,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_ar_reg_0_dataOut_valid",
-      "references": [
-        "EpWithReg.reg.sig_gen_ar_reg_0_dataOut_valid"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_ar_reg_0_dataOut_valid"],
       "type": "wire",
       "vcdid": "\"3",
       "wave": [
@@ -5348,14 +4877,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_ar_reg_0_rst_n",
-      "references": [
-        "EpWithReg.reg.sig_gen_ar_reg_0_rst_n"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_ar_reg_0_rst_n"],
       "type": "wire",
       "vcdid": "\"4",
       "wave": [
@@ -5371,14 +4895,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_aw_reg_0_clk",
-      "references": [
-        "EpWithReg.reg.sig_gen_aw_reg_0_clk"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_aw_reg_0_clk"],
       "type": "wire",
       "vcdid": "\"5",
       "wave": [
@@ -5786,14 +5305,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_aw_reg_0_dataIn_addr",
-      "references": [
-        "EpWithReg.reg.sig_gen_aw_reg_0_dataIn_addr"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_aw_reg_0_dataIn_addr"],
       "type": "wire",
       "vcdid": "\"6",
       "wave": [
@@ -5825,14 +5339,9 @@
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_aw_reg_0_dataIn_prot",
-      "references": [
-        "EpWithReg.reg.sig_gen_aw_reg_0_dataIn_prot"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_aw_reg_0_dataIn_prot"],
       "type": "wire",
       "vcdid": "\"7",
       "wave": [
@@ -5848,14 +5357,9 @@
       "width": 3
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_aw_reg_0_dataIn_ready",
-      "references": [
-        "EpWithReg.reg.sig_gen_aw_reg_0_dataIn_ready"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_aw_reg_0_dataIn_ready"],
       "type": "wire",
       "vcdid": "\"8",
       "wave": [
@@ -5899,14 +5403,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_aw_reg_0_dataIn_valid",
-      "references": [
-        "EpWithReg.reg.sig_gen_aw_reg_0_dataIn_valid"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_aw_reg_0_dataIn_valid"],
       "type": "wire",
       "vcdid": "\"9",
       "wave": [
@@ -5966,14 +5465,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_aw_reg_0_dataOut_addr",
-      "references": [
-        "EpWithReg.reg.sig_gen_aw_reg_0_dataOut_addr"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_aw_reg_0_dataOut_addr"],
       "type": "wire",
       "vcdid": "\":",
       "wave": [
@@ -6001,14 +5495,9 @@
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_aw_reg_0_dataOut_prot",
-      "references": [
-        "EpWithReg.reg.sig_gen_aw_reg_0_dataOut_prot"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_aw_reg_0_dataOut_prot"],
       "type": "wire",
       "vcdid": "\";",
       "wave": [
@@ -6020,14 +5509,9 @@
       "width": 3
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_aw_reg_0_dataOut_ready",
-      "references": [
-        "EpWithReg.reg.sig_gen_aw_reg_0_dataOut_ready"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_aw_reg_0_dataOut_ready"],
       "type": "wire",
       "vcdid": "\"<",
       "wave": [
@@ -6079,14 +5563,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_aw_reg_0_dataOut_valid",
-      "references": [
-        "EpWithReg.reg.sig_gen_aw_reg_0_dataOut_valid"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_aw_reg_0_dataOut_valid"],
       "type": "wire",
       "vcdid": "\"=",
       "wave": [
@@ -6106,14 +5585,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_aw_reg_0_rst_n",
-      "references": [
-        "EpWithReg.reg.sig_gen_aw_reg_0_rst_n"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_aw_reg_0_rst_n"],
       "type": "wire",
       "vcdid": "\">",
       "wave": [
@@ -6129,14 +5603,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_b_reg_0_clk",
-      "references": [
-        "EpWithReg.reg.sig_gen_b_reg_0_clk"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_b_reg_0_clk"],
       "type": "wire",
       "vcdid": "\"?",
       "wave": [
@@ -6544,14 +6013,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_b_reg_0_dataIn_ready",
-      "references": [
-        "EpWithReg.reg.sig_gen_b_reg_0_dataIn_ready"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_b_reg_0_dataIn_ready"],
       "type": "wire",
       "vcdid": "\"@",
       "wave": [
@@ -6603,14 +6067,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_b_reg_0_dataIn_resp",
-      "references": [
-        "EpWithReg.reg.sig_gen_b_reg_0_dataIn_resp"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_b_reg_0_dataIn_resp"],
       "type": "wire",
       "vcdid": "\"A",
       "wave": [
@@ -6626,14 +6085,9 @@
       "width": 2
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_b_reg_0_dataIn_valid",
-      "references": [
-        "EpWithReg.reg.sig_gen_b_reg_0_dataIn_valid"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_b_reg_0_dataIn_valid"],
       "type": "wire",
       "vcdid": "\"B",
       "wave": [
@@ -6685,14 +6139,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_b_reg_0_dataOut_ready",
-      "references": [
-        "EpWithReg.reg.sig_gen_b_reg_0_dataOut_ready"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_b_reg_0_dataOut_ready"],
       "type": "wire",
       "vcdid": "\"C",
       "wave": [
@@ -6868,14 +6317,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_b_reg_0_dataOut_resp",
-      "references": [
-        "EpWithReg.reg.sig_gen_b_reg_0_dataOut_resp"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_b_reg_0_dataOut_resp"],
       "type": "wire",
       "vcdid": "\"D",
       "wave": [
@@ -6891,14 +6335,9 @@
       "width": 2
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_b_reg_0_dataOut_valid",
-      "references": [
-        "EpWithReg.reg.sig_gen_b_reg_0_dataOut_valid"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_b_reg_0_dataOut_valid"],
       "type": "wire",
       "vcdid": "\"E",
       "wave": [
@@ -6942,14 +6381,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_b_reg_0_rst_n",
-      "references": [
-        "EpWithReg.reg.sig_gen_b_reg_0_rst_n"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_b_reg_0_rst_n"],
       "type": "wire",
       "vcdid": "\"F",
       "wave": [
@@ -6965,14 +6399,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_r_reg_0_clk",
-      "references": [
-        "EpWithReg.reg.sig_gen_r_reg_0_clk"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_r_reg_0_clk"],
       "type": "wire",
       "vcdid": "\"G",
       "wave": [
@@ -7380,28 +6809,18 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_r_reg_0_dataIn_data",
-      "references": [
-        "EpWithReg.reg.sig_gen_r_reg_0_dataIn_data"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_r_reg_0_dataIn_data"],
       "type": "wire",
       "vcdid": "\"H",
       "wave": [],
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_r_reg_0_dataIn_ready",
-      "references": [
-        "EpWithReg.reg.sig_gen_r_reg_0_dataIn_ready"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_r_reg_0_dataIn_ready"],
       "type": "wire",
       "vcdid": "\"I",
       "wave": [
@@ -7413,28 +6832,18 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_r_reg_0_dataIn_resp",
-      "references": [
-        "EpWithReg.reg.sig_gen_r_reg_0_dataIn_resp"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_r_reg_0_dataIn_resp"],
       "type": "wire",
       "vcdid": "\"J",
       "wave": [],
       "width": 2
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_r_reg_0_dataIn_valid",
-      "references": [
-        "EpWithReg.reg.sig_gen_r_reg_0_dataIn_valid"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_r_reg_0_dataIn_valid"],
       "type": "wire",
       "vcdid": "\"K",
       "wave": [
@@ -7446,28 +6855,18 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_r_reg_0_dataOut_data",
-      "references": [
-        "EpWithReg.reg.sig_gen_r_reg_0_dataOut_data"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_r_reg_0_dataOut_data"],
       "type": "wire",
       "vcdid": "\"L",
       "wave": [],
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_r_reg_0_dataOut_ready",
-      "references": [
-        "EpWithReg.reg.sig_gen_r_reg_0_dataOut_ready"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_r_reg_0_dataOut_ready"],
       "type": "wire",
       "vcdid": "\"M",
       "wave": [
@@ -7607,28 +7006,18 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_r_reg_0_dataOut_resp",
-      "references": [
-        "EpWithReg.reg.sig_gen_r_reg_0_dataOut_resp"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_r_reg_0_dataOut_resp"],
       "type": "wire",
       "vcdid": "\"N",
       "wave": [],
       "width": 2
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_r_reg_0_dataOut_valid",
-      "references": [
-        "EpWithReg.reg.sig_gen_r_reg_0_dataOut_valid"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_r_reg_0_dataOut_valid"],
       "type": "wire",
       "vcdid": "\"O",
       "wave": [
@@ -7640,14 +7029,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_r_reg_0_rst_n",
-      "references": [
-        "EpWithReg.reg.sig_gen_r_reg_0_rst_n"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_r_reg_0_rst_n"],
       "type": "wire",
       "vcdid": "\"P",
       "wave": [
@@ -7663,14 +7047,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_w_reg_0_clk",
-      "references": [
-        "EpWithReg.reg.sig_gen_w_reg_0_clk"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_w_reg_0_clk"],
       "type": "wire",
       "vcdid": "\"Q",
       "wave": [
@@ -8078,14 +7457,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_w_reg_0_dataIn_data",
-      "references": [
-        "EpWithReg.reg.sig_gen_w_reg_0_dataIn_data"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_w_reg_0_dataIn_data"],
       "type": "wire",
       "vcdid": "\"R",
       "wave": [
@@ -8117,14 +7491,9 @@
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_w_reg_0_dataIn_ready",
-      "references": [
-        "EpWithReg.reg.sig_gen_w_reg_0_dataIn_ready"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_w_reg_0_dataIn_ready"],
       "type": "wire",
       "vcdid": "\"S",
       "wave": [
@@ -8176,14 +7545,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_w_reg_0_dataIn_strb",
-      "references": [
-        "EpWithReg.reg.sig_gen_w_reg_0_dataIn_strb"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_w_reg_0_dataIn_strb"],
       "type": "wire",
       "vcdid": "\"T",
       "wave": [
@@ -8199,14 +7563,9 @@
       "width": 4
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_w_reg_0_dataIn_valid",
-      "references": [
-        "EpWithReg.reg.sig_gen_w_reg_0_dataIn_valid"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_w_reg_0_dataIn_valid"],
       "type": "wire",
       "vcdid": "\"U",
       "wave": [
@@ -8258,14 +7617,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_w_reg_0_dataOut_data",
-      "references": [
-        "EpWithReg.reg.sig_gen_w_reg_0_dataOut_data"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_w_reg_0_dataOut_data"],
       "type": "wire",
       "vcdid": "\"V",
       "wave": [
@@ -8293,14 +7647,9 @@
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_w_reg_0_dataOut_ready",
-      "references": [
-        "EpWithReg.reg.sig_gen_w_reg_0_dataOut_ready"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_w_reg_0_dataOut_ready"],
       "type": "wire",
       "vcdid": "\"W",
       "wave": [
@@ -8352,14 +7701,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_w_reg_0_dataOut_strb",
-      "references": [
-        "EpWithReg.reg.sig_gen_w_reg_0_dataOut_strb"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_w_reg_0_dataOut_strb"],
       "type": "wire",
       "vcdid": "\"X",
       "wave": [
@@ -8371,14 +7715,9 @@
       "width": 4
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_w_reg_0_dataOut_valid",
-      "references": [
-        "EpWithReg.reg.sig_gen_w_reg_0_dataOut_valid"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_w_reg_0_dataOut_valid"],
       "type": "wire",
       "vcdid": "\"Y",
       "wave": [
@@ -8414,14 +7753,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg"
-      ],
+      "hierarchy": ["EpWithReg", "reg"],
       "name": "sig_gen_w_reg_0_rst_n",
-      "references": [
-        "EpWithReg.reg.sig_gen_w_reg_0_rst_n"
-      ],
+      "references": ["EpWithReg.reg.sig_gen_w_reg_0_rst_n"],
       "type": "wire",
       "vcdid": "\"Z",
       "wave": [
@@ -8437,15 +7771,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_ar_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_ar_reg_0"],
       "name": "latency1_reg_we",
-      "references": [
-        "EpWithReg.reg.gen_ar_reg_0.latency1_reg_we"
-      ],
+      "references": ["EpWithReg.reg.gen_ar_reg_0.latency1_reg_we"],
       "type": "wire",
       "vcdid": "\"[",
       "wave": [
@@ -8457,15 +7785,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_ar_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_ar_reg_0"],
       "name": "latency1_isOccupied_next",
-      "references": [
-        "EpWithReg.reg.gen_ar_reg_0.latency1_isOccupied_next"
-      ],
+      "references": ["EpWithReg.reg.gen_ar_reg_0.latency1_isOccupied_next"],
       "type": "wire",
       "vcdid": "\"\\",
       "wave": [
@@ -8477,30 +7799,18 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_ar_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_ar_reg_0"],
       "name": "latency1_reg_prot_next",
-      "references": [
-        "EpWithReg.reg.gen_ar_reg_0.latency1_reg_prot_next"
-      ],
+      "references": ["EpWithReg.reg.gen_ar_reg_0.latency1_reg_prot_next"],
       "type": "wire",
       "vcdid": "\"]",
       "wave": [],
       "width": 3
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_ar_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_ar_reg_0"],
       "name": "latency1_isOccupied",
-      "references": [
-        "EpWithReg.reg.gen_ar_reg_0.latency1_isOccupied"
-      ],
+      "references": ["EpWithReg.reg.gen_ar_reg_0.latency1_isOccupied"],
       "type": "wire",
       "vcdid": "\"^",
       "wave": [
@@ -8512,60 +7822,36 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_ar_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_ar_reg_0"],
       "name": "latency1_reg_prot",
-      "references": [
-        "EpWithReg.reg.gen_ar_reg_0.latency1_reg_prot"
-      ],
+      "references": ["EpWithReg.reg.gen_ar_reg_0.latency1_reg_prot"],
       "type": "wire",
       "vcdid": "\"_",
       "wave": [],
       "width": 3
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_ar_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_ar_reg_0"],
       "name": "latency1_reg_addr_next",
-      "references": [
-        "EpWithReg.reg.gen_ar_reg_0.latency1_reg_addr_next"
-      ],
+      "references": ["EpWithReg.reg.gen_ar_reg_0.latency1_reg_addr_next"],
       "type": "wire",
       "vcdid": "\"`",
       "wave": [],
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_ar_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_ar_reg_0"],
       "name": "latency1_reg_addr",
-      "references": [
-        "EpWithReg.reg.gen_ar_reg_0.latency1_reg_addr"
-      ],
+      "references": ["EpWithReg.reg.gen_ar_reg_0.latency1_reg_addr"],
       "type": "wire",
       "vcdid": "\"a",
       "wave": [],
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_aw_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_aw_reg_0"],
       "name": "latency1_reg_addr",
-      "references": [
-        "EpWithReg.reg.gen_aw_reg_0.latency1_reg_addr"
-      ],
+      "references": ["EpWithReg.reg.gen_aw_reg_0.latency1_reg_addr"],
       "type": "wire",
       "vcdid": "\"b",
       "wave": [
@@ -8593,15 +7879,9 @@
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_aw_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_aw_reg_0"],
       "name": "latency1_reg_we",
-      "references": [
-        "EpWithReg.reg.gen_aw_reg_0.latency1_reg_we"
-      ],
+      "references": ["EpWithReg.reg.gen_aw_reg_0.latency1_reg_we"],
       "type": "wire",
       "vcdid": "\"c",
       "wave": [
@@ -8661,15 +7941,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_aw_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_aw_reg_0"],
       "name": "latency1_isOccupied_next",
-      "references": [
-        "EpWithReg.reg.gen_aw_reg_0.latency1_isOccupied_next"
-      ],
+      "references": ["EpWithReg.reg.gen_aw_reg_0.latency1_isOccupied_next"],
       "type": "wire",
       "vcdid": "\"d",
       "wave": [
@@ -8721,15 +7995,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_aw_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_aw_reg_0"],
       "name": "latency1_reg_prot_next",
-      "references": [
-        "EpWithReg.reg.gen_aw_reg_0.latency1_reg_prot_next"
-      ],
+      "references": ["EpWithReg.reg.gen_aw_reg_0.latency1_reg_prot_next"],
       "type": "wire",
       "vcdid": "\"e",
       "wave": [
@@ -8741,15 +8009,9 @@
       "width": 3
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_aw_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_aw_reg_0"],
       "name": "latency1_isOccupied",
-      "references": [
-        "EpWithReg.reg.gen_aw_reg_0.latency1_isOccupied"
-      ],
+      "references": ["EpWithReg.reg.gen_aw_reg_0.latency1_isOccupied"],
       "type": "wire",
       "vcdid": "\"f",
       "wave": [
@@ -8769,15 +8031,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_aw_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_aw_reg_0"],
       "name": "latency1_reg_prot",
-      "references": [
-        "EpWithReg.reg.gen_aw_reg_0.latency1_reg_prot"
-      ],
+      "references": ["EpWithReg.reg.gen_aw_reg_0.latency1_reg_prot"],
       "type": "wire",
       "vcdid": "\"g",
       "wave": [
@@ -8789,15 +8045,9 @@
       "width": 3
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_aw_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_aw_reg_0"],
       "name": "latency1_reg_addr_next",
-      "references": [
-        "EpWithReg.reg.gen_aw_reg_0.latency1_reg_addr_next"
-      ],
+      "references": ["EpWithReg.reg.gen_aw_reg_0.latency1_reg_addr_next"],
       "type": "wire",
       "vcdid": "\"h",
       "wave": [
@@ -8833,15 +8083,9 @@
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_b_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_b_reg_0"],
       "name": "latency1_reg_we",
-      "references": [
-        "EpWithReg.reg.gen_b_reg_0.latency1_reg_we"
-      ],
+      "references": ["EpWithReg.reg.gen_b_reg_0.latency1_reg_we"],
       "type": "wire",
       "vcdid": "\"i",
       "wave": [
@@ -8893,15 +8137,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_b_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_b_reg_0"],
       "name": "latency1_isOccupied",
-      "references": [
-        "EpWithReg.reg.gen_b_reg_0.latency1_isOccupied"
-      ],
+      "references": ["EpWithReg.reg.gen_b_reg_0.latency1_isOccupied"],
       "type": "wire",
       "vcdid": "\"j",
       "wave": [
@@ -8945,15 +8183,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_b_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_b_reg_0"],
       "name": "latency1_isOccupied_next",
-      "references": [
-        "EpWithReg.reg.gen_b_reg_0.latency1_isOccupied_next"
-      ],
+      "references": ["EpWithReg.reg.gen_b_reg_0.latency1_isOccupied_next"],
       "type": "wire",
       "vcdid": "\"k",
       "wave": [
@@ -9013,15 +8245,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_b_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_b_reg_0"],
       "name": "latency1_reg_resp",
-      "references": [
-        "EpWithReg.reg.gen_b_reg_0.latency1_reg_resp"
-      ],
+      "references": ["EpWithReg.reg.gen_b_reg_0.latency1_reg_resp"],
       "type": "wire",
       "vcdid": "\"l",
       "wave": [
@@ -9037,15 +8263,9 @@
       "width": 2
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_b_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_b_reg_0"],
       "name": "latency1_reg_resp_next",
-      "references": [
-        "EpWithReg.reg.gen_b_reg_0.latency1_reg_resp_next"
-      ],
+      "references": ["EpWithReg.reg.gen_b_reg_0.latency1_reg_resp_next"],
       "type": "wire",
       "vcdid": "\"m",
       "wave": [
@@ -9061,15 +8281,9 @@
       "width": 2
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_r_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_r_reg_0"],
       "name": "latency1_reg_we",
-      "references": [
-        "EpWithReg.reg.gen_r_reg_0.latency1_reg_we"
-      ],
+      "references": ["EpWithReg.reg.gen_r_reg_0.latency1_reg_we"],
       "type": "wire",
       "vcdid": "\"n",
       "wave": [
@@ -9081,30 +8295,18 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_r_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_r_reg_0"],
       "name": "latency1_reg_resp_next",
-      "references": [
-        "EpWithReg.reg.gen_r_reg_0.latency1_reg_resp_next"
-      ],
+      "references": ["EpWithReg.reg.gen_r_reg_0.latency1_reg_resp_next"],
       "type": "wire",
       "vcdid": "\"o",
       "wave": [],
       "width": 2
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_r_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_r_reg_0"],
       "name": "latency1_isOccupied_next",
-      "references": [
-        "EpWithReg.reg.gen_r_reg_0.latency1_isOccupied_next"
-      ],
+      "references": ["EpWithReg.reg.gen_r_reg_0.latency1_isOccupied_next"],
       "type": "wire",
       "vcdid": "\"p",
       "wave": [
@@ -9116,30 +8318,18 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_r_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_r_reg_0"],
       "name": "latency1_reg_resp",
-      "references": [
-        "EpWithReg.reg.gen_r_reg_0.latency1_reg_resp"
-      ],
+      "references": ["EpWithReg.reg.gen_r_reg_0.latency1_reg_resp"],
       "type": "wire",
       "vcdid": "\"q",
       "wave": [],
       "width": 2
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_r_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_r_reg_0"],
       "name": "latency1_isOccupied",
-      "references": [
-        "EpWithReg.reg.gen_r_reg_0.latency1_isOccupied"
-      ],
+      "references": ["EpWithReg.reg.gen_r_reg_0.latency1_isOccupied"],
       "type": "wire",
       "vcdid": "\"r",
       "wave": [
@@ -9151,45 +8341,27 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_r_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_r_reg_0"],
       "name": "latency1_reg_data",
-      "references": [
-        "EpWithReg.reg.gen_r_reg_0.latency1_reg_data"
-      ],
+      "references": ["EpWithReg.reg.gen_r_reg_0.latency1_reg_data"],
       "type": "wire",
       "vcdid": "\"s",
       "wave": [],
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_r_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_r_reg_0"],
       "name": "latency1_reg_data_next",
-      "references": [
-        "EpWithReg.reg.gen_r_reg_0.latency1_reg_data_next"
-      ],
+      "references": ["EpWithReg.reg.gen_r_reg_0.latency1_reg_data_next"],
       "type": "wire",
       "vcdid": "\"t",
       "wave": [],
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_w_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_w_reg_0"],
       "name": "latency1_reg_data_next",
-      "references": [
-        "EpWithReg.reg.gen_w_reg_0.latency1_reg_data_next"
-      ],
+      "references": ["EpWithReg.reg.gen_w_reg_0.latency1_reg_data_next"],
       "type": "wire",
       "vcdid": "\"u",
       "wave": [
@@ -9217,15 +8389,9 @@
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_w_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_w_reg_0"],
       "name": "latency1_reg_strb_next",
-      "references": [
-        "EpWithReg.reg.gen_w_reg_0.latency1_reg_strb_next"
-      ],
+      "references": ["EpWithReg.reg.gen_w_reg_0.latency1_reg_strb_next"],
       "type": "wire",
       "vcdid": "\"v",
       "wave": [
@@ -9237,15 +8403,9 @@
       "width": 4
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_w_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_w_reg_0"],
       "name": "latency1_reg_data",
-      "references": [
-        "EpWithReg.reg.gen_w_reg_0.latency1_reg_data"
-      ],
+      "references": ["EpWithReg.reg.gen_w_reg_0.latency1_reg_data"],
       "type": "wire",
       "vcdid": "\"w",
       "wave": [
@@ -9273,15 +8433,9 @@
       "width": 32
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_w_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_w_reg_0"],
       "name": "latency1_isOccupied_next",
-      "references": [
-        "EpWithReg.reg.gen_w_reg_0.latency1_isOccupied_next"
-      ],
+      "references": ["EpWithReg.reg.gen_w_reg_0.latency1_isOccupied_next"],
       "type": "wire",
       "vcdid": "\"x",
       "wave": [
@@ -9317,15 +8471,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_w_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_w_reg_0"],
       "name": "latency1_reg_we",
-      "references": [
-        "EpWithReg.reg.gen_w_reg_0.latency1_reg_we"
-      ],
+      "references": ["EpWithReg.reg.gen_w_reg_0.latency1_reg_we"],
       "type": "wire",
       "vcdid": "\"y",
       "wave": [
@@ -9385,15 +8533,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_w_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_w_reg_0"],
       "name": "latency1_isOccupied",
-      "references": [
-        "EpWithReg.reg.gen_w_reg_0.latency1_isOccupied"
-      ],
+      "references": ["EpWithReg.reg.gen_w_reg_0.latency1_isOccupied"],
       "type": "wire",
       "vcdid": "\"z",
       "wave": [
@@ -9429,15 +8571,9 @@
       "width": 1
     },
     {
-      "hierarchy": [
-        "EpWithReg",
-        "reg",
-        "gen_w_reg_0"
-      ],
+      "hierarchy": ["EpWithReg", "reg", "gen_w_reg_0"],
       "name": "latency1_reg_strb",
-      "references": [
-        "EpWithReg.reg.gen_w_reg_0.latency1_reg_strb"
-      ],
+      "references": ["EpWithReg.reg.gen_w_reg_0.latency1_reg_strb"],
       "type": "wire",
       "vcdid": "\"{",
       "wave": [

@@ -1,0 +1,7 @@
+**/.git
+**/node_modules
+**/dist
+**/coverage
+
+package-lock.json
+jquery.ui.touch-punch.min.js

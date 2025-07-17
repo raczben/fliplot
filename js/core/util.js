@@ -1,71 +1,77 @@
-
-
 /**
  * From: https://stackoverflow.com/a/12987042/2506522
- * 
- *///Useful Functions
- function checkBin(n){return/^[01]{1,64}$/.test(n)}
+ *
+ */ //Useful Functions
+function checkBin(n) {
+  return /^[01]{1,64}$/.test(n);
+}
 //  function checkDec(n){return/^[0-9]{1,64}$/.test(n)}
 //  function checkHex(n){return/^[0-9A-Fa-f]{1,64}$/.test(n)}
 //  function pad(s,z){s=""+s;return s.length<z?pad("0"+s,z):s}
 //  function unpad(s){s=""+s;return s.replace(/^0+/,'')}
- 
- //Decimal operations
+
+//Decimal operations
 //  function Dec2Bin(n){if(!checkDec(n)||n<0)return NaN;return n.toString(2)}
 //  function Dec2Hex(n){if(!checkDec(n)||n<0)return NaN;return n.toString(16)}
- 
- //Binary Operations
- function Bin2Dec(n){if(!checkBin(n))return NaN;return parseInt(n,2).toString(10)}
- function Bin2Hex(n){if(!checkBin(n))return 'x';return parseInt(n,2).toString(16)}
- 
- //Hexadecimal Operations
+
+//Binary Operations
+function Bin2Dec(n) {
+  if (!checkBin(n)) return NaN;
+  return parseInt(n, 2).toString(10);
+}
+function Bin2Hex(n) {
+  if (!checkBin(n)) return "x";
+  return parseInt(n, 2).toString(16);
+}
+
+//Hexadecimal Operations
 //  function Hex2Bin(n){if(!checkHex(n))return NaN;return parseInt(n,16).toString(2)}
 //  function Hex2Dec(n){if(!checkHex(n))return NaN;return parseInt(n,16).toString(10)}
- 
-function Bin2Hex2(n){
-    if(n.length % 4 != 0){
-        // Pad the binary string to the nearest 4 bits.
-        n = '0'.repeat(4 - (n.length % 4)) + n;
-    }
-    // get each 4 bits and convert to hex
-    const hexChars = [];
-    for(let i = 0; i < n.length; i += 4){
-        const binChunk = n.slice(i, i + 4);
-        //append the hex character to the array
-        hexChars.push(Bin2Hex(binChunk));
-    }
-    // join the hex characters to a string
-    return hexChars.join('');
+
+function Bin2Hex2(n) {
+  if (n.length % 4 != 0) {
+    // Pad the binary string to the nearest 4 bits.
+    n = "0".repeat(4 - (n.length % 4)) + n;
+  }
+  // get each 4 bits and convert to hex
+  const hexChars = [];
+  for (let i = 0; i < n.length; i += 4) {
+    const binChunk = n.slice(i, i + 4);
+    //append the hex character to the array
+    hexChars.push(Bin2Hex(binChunk));
+  }
+  // join the hex characters to a string
+  return hexChars.join("");
 }
 
 /** * Generic binary to fixed point converter.
- * 
+ *
  * Bin2Dec2(bin) convert a simple unsigned binary (no fractional) to decimal
- * 
+ *
  * @param {string} bin - The binary string to be converted.
  * @param {boolean} signed - Twos complement signed format.
  * @param {number} fractionalDigits - Number of fractional digits in the binary number.
  * @returns number
  */
 function Bin2Dec2(bin, signed = false, fractionalDigits = 0) {
-    let ret = Bin2Dec(bin)
-    if (isNaN(ret)) {
-        return NaN;
+  let ret = Bin2Dec(bin);
+  if (isNaN(ret)) {
+    return NaN;
+  }
+  if (signed) {
+    const signBit = bin[0];
+    if (signBit === "1") {
+      ret = ret - Math.pow(2, bin.length);
     }
-    if (signed) {
-        const signBit = bin[0];
-        if (signBit === '1') {
-            ret = ret - Math.pow(2, bin.length);
-        }
-    }
-    ret = ret / Math.pow(2, fractionalDigits);
-    return ret;
+  }
+  ret = ret / Math.pow(2, fractionalDigits);
+  return ret;
 }
 
 /** * Convert a 32/64-bit binary string to a float using IEEE 754 format.
  * Call Bin2Float(bin, 32, 8, 127) for 32 bit single precision float.
  * Call Bin2Float(bin, 64, 11, 1023) for 64 bit double precision float.
- * 
+ *
  * @param {string} bin - The binary string to be converted.
  * @param {number} binLen - Length of the binary string (32 for single precision, 64 for double precision)
  * @param {number} expBits - Number of exponent bits (8 for single precision, 11 for double precision)
@@ -73,28 +79,28 @@ function Bin2Dec2(bin, signed = false, fractionalDigits = 0) {
  * @returns number
  */
 function Bin2Float(bin, binLen, expBits, expBias) {
-    if (!checkBin(bin)) {
-        console.warn('Invalid binary string for float conversion:', bin);
-        return NaN; // invalid binary string
+  if (!checkBin(bin)) {
+    console.warn("Invalid binary string for float conversion:", bin);
+    return NaN; // invalid binary string
+  }
+  if (bin.length !== binLen) {
+    console.warn("Binary string for float conversion must be 32 bits:", bin);
+    return NaN; // invalid length for float conversion
+  }
+  // Convert binary to float using IEEE 754 format
+  // This is a simplified version and may not handle all edge cases.
+  const sign = bin[0] === "1" ? -1 : 1;
+  const exponentBits = bin.slice(1, expBits + 1);
+  const mantissaBits = bin.slice(expBits + 1);
+  const exponent = parseInt(exponentBits, 2) - expBias; // Bias for single precision
+  let mantissa = 1; // Implicit leading 1 for normalized numbers
+  for (let i = 0; i < mantissaBits.length; i++) {
+    if (mantissaBits[i] === "1") {
+      mantissa += Math.pow(2, -(i + 1));
     }
-    if (bin.length !== binLen) {
-        console.warn('Binary string for float conversion must be 32 bits:', bin);
-        return NaN; // invalid length for float conversion
-    }
-    // Convert binary to float using IEEE 754 format
-    // This is a simplified version and may not handle all edge cases.
-    const sign = bin[0] === '1' ? -1 : 1;
-    const exponentBits = bin.slice(1, expBits+1);
-    const mantissaBits = bin.slice(expBits+1);
-    const exponent = parseInt(exponentBits, 2) - expBias; // Bias for single precision
-    let mantissa = 1; // Implicit leading 1 for normalized numbers
-    for (let i = 0; i < mantissaBits.length; i++) {
-        if (mantissaBits[i] === '1') {
-            mantissa += Math.pow(2, -(i + 1));
-        }
-    }
-    const value = sign * mantissa * Math.pow(2, exponent);
-    return value;
+  }
+  const value = sign * mantissa * Math.pow(2, exponent);
+  return value;
 }
 
 /*
@@ -114,61 +120,58 @@ function Bin2Float(bin, binLen, expBits, expBias) {
  * https://stackoverflow.com/a/29018745/2506522
  */
 export function binarySearch(ar, el, compare_fn) {
-    var m = 0;
-    var n = ar.length - 1;
-    while (m <= n) {
-      var k = (n + m) >> 1;
-      var cmp = compare_fn(el, ar[k]);
-      if (cmp > 0) {
-        m = k + 1;
-      } else if (cmp < 0) {
-        n = k - 1;
-      } else {
-        return k;
-      }
+  var m = 0;
+  var n = ar.length - 1;
+  while (m <= n) {
+    var k = (n + m) >> 1;
+    var cmp = compare_fn(el, ar[k]);
+    if (cmp > 0) {
+      m = k + 1;
+    } else if (cmp < 0) {
+      n = k - 1;
+    } else {
+      return k;
     }
-    return -m - 1;
+  }
+  return -m - 1;
 }
 
-
 /**
- * 
- * @param {string} bin 
- * @param {string} radix 
+ *
+ * @param {string} bin
+ * @param {string} radix
  */
 export function bin2radix(bin, radix) {
-    if (radix == 'hex') {
-        return Bin2Hex2(bin);
-    } else if (radix == 'float') {
-        return Bin2Float(bin, 32, 8, 127);
-    } else if (radix == 'double') {
-        return Bin2Float(bin, 64, 11, 1023);
-    } else {
-        // Fixed point binary to decimal convertion.
-        const m = radix.match(/([us])(\d+)/)
-        if (m) {
-            const signed = (m[1] == 's')
-            const digits = m[2]
-            return Bin2Dec2(bin, signed, digits);
-        }
+  if (radix == "hex") {
+    return Bin2Hex2(bin);
+  } else if (radix == "float") {
+    return Bin2Float(bin, 32, 8, 127);
+  } else if (radix == "double") {
+    return Bin2Float(bin, 64, 11, 1023);
+  } else {
+    // Fixed point binary to decimal convertion.
+    const m = radix.match(/([us])(\d+)/);
+    if (m) {
+      const signed = m[1] == "s";
+      const digits = m[2];
+      return Bin2Dec2(bin, signed, digits);
     }
+  }
 }
 
 export function isInt(value) {
-    return !isNaN(value) &&
-      parseInt(Number(value)) == value &&
-      !isNaN(parseInt(value, 10));
-  }
+  return !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10));
+}
 
 /** * Round a number to the nearest multiple of another number.
  * @param {number} x - The number to round.
  * @param {number} n - The multiple to round to.
  * @returns {number} - The rounded number.
  */
-export function ceiln(x, n){
-    return Math.ceil(x / n) * n;
+export function ceiln(x, n) {
+  return Math.ceil(x / n) * n;
 }
-    
+
 /**
  * Truncate text with ellipsis so it fits within maxWidth in a canvas context.
  * https://stackoverflow.com/a/10511598/2506522
@@ -179,16 +182,16 @@ export function ceiln(x, n){
  */
 export function truncateTextToWidth(ctx, str, maxWidth) {
   var width = ctx.measureText(str).width;
-  var ellipsis = '…';
+  var ellipsis = "…";
   var ellipsisWidth = ctx.measureText(ellipsis).width;
-  if (width<=maxWidth || width<=ellipsisWidth) {
+  if (width <= maxWidth || width <= ellipsisWidth) {
     return str;
   } else {
     var len = str.length;
-    while (width>=maxWidth-ellipsisWidth && len-->0) {
+    while (width >= maxWidth - ellipsisWidth && len-- > 0) {
       str = str.substring(0, len);
       width = ctx.measureText(str).width;
     }
-    return str+ellipsis;
+    return str + ellipsis;
   }
 }

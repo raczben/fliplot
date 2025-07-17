@@ -1,8 +1,8 @@
-import $ from "jquery"
-import 'jquery-ui/dist/jquery-ui'; // https://stackoverflow.com/a/75920162/2506522
+import $ from "jquery";
+import "jquery-ui/dist/jquery-ui"; // https://stackoverflow.com/a/75920162/2506522
 import "jquery-ui/ui/widgets/resizable";
 import "jquery-contextmenu";
-import {VCDParser} from "./core/VCDParser.js";
+import { VCDParser } from "./core/VCDParser.js";
 import { SimDB } from "./core/SimDB.js";
 
 import { ObjectTree } from "./ObjectTree.js";
@@ -30,7 +30,7 @@ function showSignals() {
  *  Fetch the demo file from the server, parse it with VCDParser,
  * and call initShow() to plot the signals.
  */
-$(".demo-file-button").on('click', function () {
+$(".demo-file-button").on("click", function () {
   const fname = $(this).attr("data-file");
   console.log(`Fetching demo file: ${fname}`);
   $.ajax({
@@ -39,78 +39,80 @@ $(".demo-file-button").on('click', function () {
     dataType: "text",
     // ajax get XML Parsing Error: not well-formed
     // https://stackoverflow.com/a/56521064/2506522
-    beforeSend: (xhr) => {  xhr.overrideMimeType( "text/plain; charset=x-user-defined" );},
+    beforeSend: (xhr) => {
+      xhr.overrideMimeType("text/plain; charset=x-user-defined");
+    },
     success: parseInitShow,
     error: function (xhr, status, error) {
       alert(`Error fetching demo file ${fname}: ${error}`);
-    },
+    }
   });
 });
 
-$("#zoom-fit").on('click', () => {
+$("#zoom-fit").on("click", () => {
   window.waveTable.zoomFit();
 });
 
-$("#zoom-autoscale").on('click', () => {
+$("#zoom-autoscale").on("click", () => {
   window.waveTable.zoomAutoscale();
 });
 
-$("#zoom-in").on('click', () => {
+$("#zoom-in").on("click", () => {
   window.waveTable.zoomIn();
 });
 
-$("#zoom-out").on('click', () => {
+$("#zoom-out").on("click", () => {
   window.waveTable.zoomOut();
 });
 
-$("#remove-all").on('click', () => {
+$("#remove-all").on("click", () => {
   window.waveTable.clearAll();
 });
 
-$("#cursor-to-0").on('click', () => {
+$("#cursor-to-0").on("click", () => {
   window.waveTable.moveCursorTo(0);
 });
 
-$("#cursor-to-end").on('click', () => {
+$("#cursor-to-end").on("click", () => {
   window.waveTable.moveCursorTo(simDB.now);
 });
 
-$("#cursor-to-prev-transition").on('click', () => {
+$("#cursor-to-prev-transition").on("click", () => {
   const tCurr = window.waveTable.getCursorTime();
   const sig = window.waveTable.getActiveRow(false);
   const tNew = sig.simObj.getTransitionTimeAny(tCurr, -1);
   window.waveTable.moveCursorTo(tNew);
 });
 
-$("#cursor-to-next-transition").on('click', () => {
+$("#cursor-to-next-transition").on("click", () => {
   const tCurr = window.waveTable.getCursorTime();
   const sig = window.waveTable.getActiveRow(false);
   const tNew = sig.simObj.getTransitionTimeAny(tCurr, +1);
   window.waveTable.moveCursorTo(tNew);
 });
 
-$("#cursor-to-next-rise").on('click', () => {
+$("#cursor-to-next-rise").on("click", () => {
   const tCurr = window.waveTable.getCursorTime();
   const sig = window.waveTable.getActiveRow(false);
   const tNew = sig.simObj.getTransitionTimeRising(tCurr, +1);
   window.waveTable.moveCursorTo(tNew);
 });
 
-$("#cursor-to-prev-rise").on('click', () => {
+$("#cursor-to-prev-rise").on("click", () => {
   const tCurr = window.waveTable.getCursorTime();
   const sig = window.waveTable.getActiveRow(false);
   const tNew = sig.simObj.getTransitionTimeRising(tCurr, -1);
   window.waveTable.moveCursorTo(tNew);
 });
 
-$("#cursor-to-next-fall").on('click', () => {
+$("#cursor-to-next-fall").on("click", () => {
   const tCurr = window.waveTable.getCursorTime();
   const sig = window.waveTable.getActiveRow(false);
   const tNew = sig.simObj.getTransitionTimeFalling(tCurr, +1);
   window.waveTable.moveCursorTo(tNew);
 });
 
-$("#cursor-to-prev-fall").on('click', () => {
+$("#cursor-to-prev-fall").on("click", () => {
   const tCurr = window.waveTable.getCursorTime();
   const sig = window.waveTable.getActiveRow(false);
   const tNew = sig.simObj.getTransitionTimeFalling(tCurr, -1);
@@ -118,15 +120,14 @@ $("#cursor-to-prev-fall").on('click', () => {
 });
 
 $(".resizable-col").resizable({
-  handles: "e",
+  handles: "e"
 });
 
-$("#file-open-button").on('click', () => {
+$("#file-open-button").on("click", () => {
   // For multiple source there is a shadow button
   // trigger it to open a file:
   $("#file-open-shadow").trigger("click");
 });
-
 
 $("#file-open-shadow").on("change", openFile);
 
@@ -137,12 +138,12 @@ $.ajax({
     config = data;
 
     $(".resizable-col").resizable({
-      handles: "e",
+      handles: "e"
     });
   },
   error: function (data, textStatus, errorThrown) {
     alert(`While getting defaults.json: ${textStatus} ${errorThrown}`);
-  },
+  }
 });
 
 function initShow(data) {
@@ -163,12 +164,12 @@ function initShow(data) {
 }
 
 /**
- * 
- * @param {text} vcdcontent 
+ *
+ * @param {text} vcdcontent
  */
-function parseInitShow(vcdcontent){
+function parseInitShow(vcdcontent) {
   console.log("Parsing VCD content");
-  const vcdparser = new VCDParser({'vcdcontent': vcdcontent});
+  const vcdparser = new VCDParser({ vcdcontent: vcdcontent });
   const vcddata = vcdparser.getData();
   initShow(vcddata);
 }
@@ -186,12 +187,8 @@ function deHighlightSignal(signalID = undefined) {
       deHighlightSignal(rowid);
     });
   } else {
-    $("#names-col-container-scroll")
-      .jstree()
-      .deselect_node(`signal-name-${signalID}`);
-    $("#values-col-container")
-      .jstree()
-      .deselect_node(`signal-value-${signalID}`);
+    $("#names-col-container-scroll").jstree().deselect_node(`signal-name-${signalID}`);
+    $("#values-col-container").jstree().deselect_node(`signal-value-${signalID}`);
     d3.selectAll(`.${signalID}`).classed("highlighted-signal", false);
 
     setTimeout(() => {
@@ -213,9 +210,7 @@ function highlightSignal(signalID, deHighlightOthers = true) {
     deHighlightSignal();
   }
   d3.selectAll(`.${signalID}`).classed("highlighted-signal", true);
-  $("#names-col-container-scroll")
-    .jstree()
-    .select_node(`signal-name-${signalID}`);
+  $("#names-col-container-scroll").jstree().select_node(`signal-name-${signalID}`);
   $("#values-col-container").jstree().select_node(`signal-value-${signalID}`);
 }
 
@@ -236,8 +231,8 @@ function toggleHighlightSignal(signalID, enableZeroSelection = false) {
 /**
  * Open a file from file input check the size (gives an alert above 1MB)
  * The reads the content of the file and call the parseInitShow() function.
- * 
- * @param {*} event 
+ *
+ * @param {*} event
  */
 function openFile(event) {
   const file = event.target.files[0];
@@ -247,7 +242,11 @@ function openFile(event) {
   }
 
   if (file.size > 1024 * 1024) {
-    if (!confirm("The selected file is larger than 1MB. Do you want to continue parsing this potentially huge file?")) {
+    if (
+      !confirm(
+        "The selected file is larger than 1MB. Do you want to continue parsing this potentially huge file?"
+      )
+    ) {
       return;
     }
   }
@@ -257,7 +256,7 @@ function openFile(event) {
     const content = e.target.result;
     parseInitShow(content);
   };
-  
+
   reader.onerror = function (e) {
     alert(`Error reading file: ${e.target.error.message}`);
   };
@@ -318,8 +317,8 @@ $(function () {
         name: "Wave Style",
         items: {
           "waveStyle-analog": { name: "analog" },
-          "waveStyle-bus": { name: "bus" },
-        },
+          "waveStyle-bus": { name: "bus" }
+        }
       },
       radix: {
         name: "Radix",
@@ -327,15 +326,15 @@ $(function () {
           "radix-bin": { name: "bin" },
           "radix-hex": { name: "hex" },
           "radix-signed": { name: "signed" },
-          "radix-unsigned": { name: "unsigned" },
-        },
+          "radix-unsigned": { name: "unsigned" }
+        }
       },
       sep1: "---------",
       group: { name: "New Group" },
       virtualBus: { name: "New Virtual Bus" },
       divider: { name: "New Divider" },
       sep2: "---------",
-      remove: { name: "Remove", icon: "delete" },
-    },
+      remove: { name: "Remove", icon: "delete" }
+    }
   });
 });

@@ -2,13 +2,12 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "master", "canvas", "vite" ]
+    branches: ["master", "canvas", "vite"]
   pull_request:
-    branches: [ "master", "canvas", "vite" ]
+    branches: ["master", "canvas", "vite"]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -17,13 +16,13 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - name: install js dependecies
-      run: npm ci
-    - name: run test
-      run: npm run ssat
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - name: install js dependecies
+        run: npm ci
+      - name: run test
+        run: npm run ssat

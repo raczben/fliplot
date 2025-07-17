@@ -4,7 +4,7 @@ export class VCDParser {
    *   opts.vcdcontent: string (VCD file content as text)
    */
   constructor(opts = {}) {
-    this.vcdcontent = opts.vcdcontent || '';
+    this.vcdcontent = opts.vcdcontent || "";
     this.data = null;
     if (this.vcdcontent) {
       this.data = this.parse(this.vcdcontent);
@@ -29,20 +29,20 @@ export class VCDParser {
       line = line.trim();
       if (!line) continue;
 
-      if (line.startsWith('$scope')) {
+      if (line.startsWith("$scope")) {
         // Example: $scope module top $end
         const parts = line.split(/\s+/);
         hierarchy.push(parts[2]);
-      } else if (line.startsWith('$upscope')) {
+      } else if (line.startsWith("$upscope")) {
         hierarchy.pop();
-      } else if (line.startsWith('$var')) {
+      } else if (line.startsWith("$var")) {
         // Example: $var wire 1 ! clk $end
         const parts = line.split(/\s+/);
         const type = parts[1];
         const width = parseInt(parts[2]);
         const id = parts[3];
-        const name = parts.slice(4, parts.length - 1).join(' ');
-        const fullName = [...hierarchy, name].join('.');
+        const name = parts.slice(4, parts.length - 1).join(" ");
+        const fullName = [...hierarchy, name].join(".");
         const signal = {
           vcdid: id,
           name: name,
@@ -54,7 +54,7 @@ export class VCDParser {
         };
         signals.push(signal);
         idToSignal[id] = signal;
-      } else if (line.startsWith('#')) {
+      } else if (line.startsWith("#")) {
         // Time marker
         currentTime = parseInt(line.slice(1), 10);
         endtime = currentTime;

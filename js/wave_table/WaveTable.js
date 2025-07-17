@@ -5,8 +5,7 @@ import { WaveformRow } from "../core/WaveformRow.js";
 import { NameCol } from "./NameCol.js";
 import { ValueCol } from "./ValueCol.js";
 import { WaveCanvas } from "./WaveCanvas.js";
-import { config} from "../interact.js";
-
+import { config } from "../interact.js";
 
 export class WaveTable {
   constructor(simDB) {
@@ -20,20 +19,20 @@ export class WaveTable {
     this.valueCol = new ValueCol(this);
     this.wave = new WaveCanvas(this);
 
-    this.mainContainerScrolly = document.getElementById('main-container-scroll-y');
-    this.waveAxisContainer = document.getElementById('wave-axis-container');
+    this.mainContainerScrolly = document.getElementById("main-container-scroll-y");
+    this.waveAxisContainer = document.getElementById("wave-axis-container");
     if (!this.mainContainerScrolly || !this.waveAxisContainer) {
       throw new Error("WaveTable: mainContainerScrolly or waveAxisContainer not found");
     }
 
     // Connect event listeners.
-    this.mainContainerScrolly.addEventListener('scroll', () => this.handleVerticalScroll());
-    this.waveAxisContainer.addEventListener('scroll', () => this.handleHorizontalScroll());
+    this.mainContainerScrolly.addEventListener("scroll", () => this.handleVerticalScroll());
+    this.waveAxisContainer.addEventListener("scroll", () => this.handleHorizontalScroll());
     const resizeObserver = new ResizeObserver(() => this.handleWaveAxisContainerResize());
     resizeObserver.observe(this.waveAxisContainer);
     this._waveAxisResizeObserver = resizeObserver;
     this.attachZoomHandler();
-    this.waveAxisContainer.addEventListener('click', (event) => this.handleClickOnWaveAxis(event));
+    this.waveAxisContainer.addEventListener("click", (event) => this.handleClickOnWaveAxis(event));
   }
 
   /**
@@ -74,21 +73,24 @@ export class WaveTable {
 
   // Handle zoom (Ctrl + mouse wheel) and allow normal scroll otherwise
   attachZoomHandler() {
-    this.waveAxisContainer.addEventListener('wheel', (e) => {
-      if (e.ctrlKey) {
-        // get the mouse position to choose as fix point for zooming
-        const rect = this.waveAxisContainer.getBoundingClientRect();
-        const fixPointX = e.clientX - rect.left; // x position within the element
+    this.waveAxisContainer.addEventListener(
+      "wheel",
+      (e) => {
+        if (e.ctrlKey) {
+          // get the mouse position to choose as fix point for zooming
+          const rect = this.waveAxisContainer.getBoundingClientRect();
+          const fixPointX = e.clientX - rect.left; // x position within the element
 
-        // prevent default scrolling behavior
-        e.preventDefault();
-        // calculate zoom delta based on the wheel delta
-        const delta = -e.deltaY / 1300 * 3; // deltaY is +/-138
-        this.zoomInOut(delta, fixPointX);
-
-      }
-      // else: let normal scroll work
-    }, { passive: false });
+          // prevent default scrolling behavior
+          e.preventDefault();
+          // calculate zoom delta based on the wheel delta
+          const delta = (-e.deltaY / 1300) * 3; // deltaY is +/-138
+          this.zoomInOut(delta, fixPointX);
+        }
+        // else: let normal scroll work
+      },
+      { passive: false }
+    );
   }
 
   /** handle Click on the wave axis and draw the cursor */
@@ -103,9 +105,9 @@ export class WaveTable {
     // The y position gives the signal to be selected (and activated)
     const yBase = event.clientY - rect.top; // y position within the element
     const yAbbs = yBase + this.mainContainerScrolly.scrollTop; // y position within the entire wave axis container
-    const rowsToPlot = this.getRows({hidden:false, content:true});
+    const rowsToPlot = this.getRows({ hidden: false, content: true });
     var rowBottom = 0;
-    for(var row of rowsToPlot) {
+    for (var row of rowsToPlot) {
       // TODO each row could have different height...
       const rowHeight = config.rowHeight;
       rowBottom += rowHeight;
@@ -118,9 +120,8 @@ export class WaveTable {
         this.nameCol.selectRow(rowId);
         // this.valueCol.selectRow(rowId); <-- not needed Names col will call it...
         break;
-      } 
+      }
     }
-    
   }
 
   /**
@@ -128,20 +129,19 @@ export class WaveTable {
    * Note this calls directly the wave.render() method to update the wave display.
    * @param {number} delta - The zoom delta, positive for zoom in, negative for zoom out.
    * @param {number} fixPointX - The x position within the wave axis container to use as the fix point for zooming.
-   * 
+   *
    */
-  zoomInOut(delta=0.3, fixPointX=-1) {
+  zoomInOut(delta = 0.3, fixPointX = -1) {
     let scroll = this.wave.zoomInOut(delta, fixPointX);
     if (scroll < 0) {
       scroll = 0;
     }
     this.wave.requestRender();
- 
+
     // otherwise, scroll the wave axis container, which will trigger the horizontal scroll event
     // scorll effectively the wave axis container DOM element
-    this.waveAxisContainer.scrollTo({left:scroll});
+    this.waveAxisContainer.scrollTo({ left: scroll });
   }
-
 
   reload() {
     this.nameCol.init();
@@ -210,7 +210,7 @@ export class WaveTable {
     if (rowIds === undefined) {
       rowIds = this.getSelectedRows();
     }
-    rowIds.forEach(element => {
+    rowIds.forEach((element) => {
       this.removeRow(element);
     });
   }
@@ -235,7 +235,7 @@ export class WaveTable {
     if (busAsBus && rowItem.waveStyle == "bus") {
       // If the signal is a bus, insert all sub-signals
       // in reversed: little-endian order.
-      for (var i = obj.signal.width-1; i > -1; i--) {
+      for (var i = obj.signal.width - 1; i > -1; i--) {
         const subObj = obj.cloneRange(i);
         const subRowItem = new WaveformRow(subObj);
         this.tree.insert(subRowItem.id, rowItem.id, position, subRowItem);
@@ -263,10 +263,10 @@ export class WaveTable {
         if (this.simDB.objects[key].type == SimulationObject.Type.SIGNAL) {
           this.insertWaveSignal(
             key.split("."), // hierarchy
-            null,           // parent = null
-            -1,             // position = -1,
-            true,           // busAsBus = true
-            false           // render = false
+            null, // parent = null
+            -1, // position = -1,
+            true, // busAsBus = true
+            false // render = false
           );
         }
       }
@@ -283,7 +283,7 @@ export class WaveTable {
     traverse = Tree.Traverse.PREORDER,
     parent = null,
     hidden = true,
-    content = false,
+    content = false
   } = {}) {
     var field = content ? "data" : null;
     return this.tree.getChildren(parent, traverse, field, hidden);
@@ -299,9 +299,7 @@ export class WaveTable {
       return this.nameCol.getSelectedRows();
     } else {
       // return rows itself
-      return this.nameCol
-        .getSelectedRows()
-        .map((element) => this.tree.get(element).data);
+      return this.nameCol.getSelectedRows().map((element) => this.tree.get(element).data);
     }
   }
 
@@ -351,7 +349,6 @@ export class WaveTable {
     return this.wave.getCursorTime();
   }
 
-
   zoomFit() {
     // Zoom to fit the entire waveform in the view.
     // simDB.now should be the at the right edge of the waveform.
@@ -359,7 +356,7 @@ export class WaveTable {
     const timeScale = width / this.simDB.now;
     // Workaround: calculate the delta scale based on the current zoom level
     const currentScale = this.wave.getTimeScale();
-    const deltaScale = timeScale / currentScale-1;
+    const deltaScale = timeScale / currentScale - 1;
     this.zoomInOut(deltaScale);
   }
 
@@ -375,4 +372,3 @@ export class WaveTable {
     this.zoomInOut(-0.3);
   }
 }
-

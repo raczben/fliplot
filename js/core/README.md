@@ -2,14 +2,14 @@ Core contains the browser side databases, and the operations on that databases.
 
 There are 2 databases: `SimDB` and `waveTable`. These databases are static (only one instance exists)
 
- - SimDB is the simulation database. simDB is mainly the parsed VCD file.
-This contains all data from the simulation or from the VCD file. First of all it stores all
-signals with its values, the *now* pointer, the VCD file name, etc...
+- SimDB is the simulation database. simDB is mainly the parsed VCD file.
+  This contains all data from the simulation or from the VCD file. First of all it stores all
+  signals with its values, the _now_ pointer, the VCD file name, etc...
 
- - waveTable contains all object which is wisible on the waveform. (It may contains the same object
- multiple times.) waveTable is mainly the wave.do file. This stores the drawing config. It stores
- entries for each visualized signals (a reference to the simDB) stores the radix, signal type, and
- other plotting related information.
+- waveTable contains all object which is wisible on the waveform. (It may contains the same object
+  multiple times.) waveTable is mainly the wave.do file. This stores the drawing config. It stores
+  entries for each visualized signals (a reference to the simDB) stores the radix, signal type, and
+  other plotting related information.
 
 (Note, that if the same signal will be added twice to the wave-view, the simDB will be untouched.
 Only a new waveTable-entry will be created with a reference to that signals simDB's entry.)
