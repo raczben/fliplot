@@ -181,6 +181,9 @@ export function ceiln(x, n) {
  * @returns {string}
  */
 export function truncateTextToWidth(ctx, str, maxWidth) {
+  if (maxWidth < 5) {
+    return "";
+  }
   var width = ctx.measureText(str).width;
   var ellipsis = "…";
   var ellipsisWidth = ctx.measureText(ellipsis).width;

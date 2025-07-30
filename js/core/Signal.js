@@ -66,9 +66,15 @@ export class Signal {
     // Little endian conversion:
     const fromLE = this.width - 1 - from;
     const toLE = this.width - 1 - to;
+    var retWi;
+    let retWiPrev = { time: -1, bin: "" };
     this.wave.forEach((wi) => {
-      const retWi = { time: wi.time, bin: wi.bin.substring(fromLE, toLE + 1) };
-      ret.wave.push(retWi);
+      retWi = { time: wi.time, bin: wi.bin.substring(fromLE, toLE + 1) };
+      if (retWi.bin != retWiPrev.bin) {
+        // instert the new value only if it is different from the previous one
+        ret.wave.push(retWi);
+      }
+      retWiPrev = retWi;
     });
     // ret.width = to-from+1;
     return ret;
