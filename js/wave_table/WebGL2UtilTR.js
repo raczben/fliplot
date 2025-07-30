@@ -1,6 +1,6 @@
 /**
  * WebGL2 Utility for rendering lines and rectangles with transparency
- * This is a simple version which renders lines using two triangles.
+ * This is a simple version which renders lines using triangles strip.
  */
 export class WebGL2UtilTR {
   constructor(canvas) {
@@ -11,6 +11,8 @@ export class WebGL2UtilTR {
     // Enable blending for transparency
     this.gl.enable(this.gl.BLEND);
     this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+    this.vertexData = [];
+    this.prevPoint = null;
 
     // Vertex shader
     const vsSource = `#version 300 es
@@ -49,6 +51,8 @@ export class WebGL2UtilTR {
     }
 
     // Buffers
+    this.vertices_strip = [];
+    this.colors_strip = [];
     this.vertices = [];
     this.colors = [];
     this.vertexBuffer = this.gl.createBuffer();
@@ -68,77 +72,58 @@ export class WebGL2UtilTR {
     return shader;
   }
 
-  calculate_vertices() {
-    // Compute perpendicular vector
+  begin_line(x, y) {
+    this.prevPoint = [x, y];
+  }
+
+  line_to(x, y, lineWidth, color) {
+    if (!this.prevPoint) return;
+
+    const [x1, y1] = this.prevPoint;
+    const [x2, y2] = [x, y];
+    this.prevPoint = [x2, y2];
+
     const dx = x2 - x1;
     const dy = y2 - y1;
     const len = Math.sqrt(dx * dx + dy * dy);
-    if (len === 0) return;
-    const nx = -dy / len;
-    const ny = dx / len;
-    const w = lineWidth / 2;
+    const nx = ((-dy / len) * lineWidth) / 2;
+    const ny = ((dx / len) * lineWidth) / 2;
 
-    // Offset points
-    const p1 = [x1 + nx * w, y1 + ny * w];
-    const p2 = [x1 - nx * w, y1 - ny * w];
-    const p3 = [x2 + nx * w, y2 + ny * w];
-    const p4 = [x2 - nx * w, y2 - ny * w];
-    return [p1, p2, p3, p4];
+    const p1a = [x1 + nx, y1 + ny];
+    const p1b = [x1 - nx, y1 - ny];
+    const p2a = [x2 + nx, y2 + ny];
+    const p2b = [x2 - nx, y2 - ny];
+
+    this.vertices_strip.push(...p1a, ...p1b, ...p2a, ...p2b);
+    for (let i = 0; i < 4; i++) {
+      this.colors_strip.push(...color);
+    }
   }
 
-  add_line(x1, y1, x2, y2, lineWidth, color) {
-    var p1, p2, p3, p4;
-    const w = lineWidth / 2;
-    if (y1 === y2) {
-      // Horizontal line optimization
-      p1 = [x1, y1 + w];
-      p2 = [x1, y1 - w];
-      p3 = [x2, y2 + w];
-      p4 = [x2, y2 - w];
-    } else if (x1 === x2) {
-      // Vertical line optimization
-      p1 = [x1 + w, y1];
-      p2 = [x1 - w, y1];
-      p3 = [x2 + w, y2];
-      p4 = [x2 - w, y2];
-    } else {
-      // general case:
-      // Compute perpendicular vector
-      const dx = x2 - x1;
-      const dy = y2 - y1;
-      const len = Math.sqrt(dx * dx + dy * dy);
-      if (len === 0) return;
-      const nx = -dy / len;
-      const ny = dx / len;
+  end_line() {
+    const gl = this.gl;
+    gl.useProgram(this.program);
+    // Set canvas size uniform
+    gl.uniform2f(this.uCanvasSizeLoc, this.canvas.width, this.canvas.height);
 
-      // Offset points
-      p1 = [x1 + nx * w, y1 + ny * w];
-      p2 = [x1 - nx * w, y1 - ny * w];
-      p3 = [x2 + nx * w, y2 + ny * w];
-      p4 = [x2 - nx * w, y2 - ny * w];
-    }
+    // Vertex buffer
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vertices_strip), gl.STREAM_DRAW);
+    const posLoc = gl.getAttribLocation(this.program, "aPosition");
+    gl.enableVertexAttribArray(posLoc);
+    gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
 
-    // Two triangles
-    // this.vertices[this.vertices.length] = p1[0];
-    // this.vertices[this.vertices.length] = p1[1];
-    // this.vertices[this.vertices.length] = p2[0];
-    // this.vertices[this.vertices.length] = p2[1];
-    // this.vertices[this.vertices.length] = p3[0];
-    // this.vertices[this.vertices.length] = p3[1];
-    // this.vertices[this.vertices.length] = p3[0];
-    // this.vertices[this.vertices.length] = p3[1];
-    // this.vertices[this.vertices.length] = p2[0];
-    // this.vertices[this.vertices.length] = p2[1];
-    // this.vertices[this.vertices.length] = p4[0];
-    // this.vertices[this.vertices.length] = p4[1];
-    this.vertices.push(...p1, ...p2, ...p3, ...p3, ...p2, ...p4);
-    for (let i = 0; i < 6; i++) {
-      // this.colors[this.colors.length] = color[0];
-      // this.colors[this.colors.length] = color[1];
-      // this.colors[this.colors.length] = color[2];
-      // this.colors[this.colors.length] = color[3];
-      this.colors.push(...color);
-    }
+    // Color buffer
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.colors_strip), gl.STREAM_DRAW);
+    const colorLoc = gl.getAttribLocation(this.program, "aColor");
+    gl.enableVertexAttribArray(colorLoc);
+    gl.vertexAttribPointer(colorLoc, 4, gl.FLOAT, false, 0, 0);
+
+    gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, this.vertices_strip.length / 2);
+
+    this.vertices_strip = [];
+    this.colors_strip = [];
   }
 
   add_rect(x1, y1, x2, y2, color) {
@@ -160,11 +145,8 @@ export class WebGL2UtilTR {
     for (let i = 0; i < 6; i++) this.colors.push(...color);
   }
 
-  render() {
+  draw() {
     const gl = this.gl;
-    gl.viewport(0, 0, this.canvas.width, this.canvas.height);
-    gl.clearColor(0.0, 0.0, 0.0, 0.0);
-    gl.clear(gl.COLOR_BUFFER_BIT);
 
     gl.useProgram(this.program);
 
@@ -189,5 +171,12 @@ export class WebGL2UtilTR {
 
     this.vertices = [];
     this.colors = [];
+  }
+
+  clear() {
+    const gl = this.gl;
+    gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+    gl.clearColor(0.0, 0.0, 0.0, 0.0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
   }
 }

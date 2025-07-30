@@ -57,7 +57,7 @@ function value2ColorWGL(val, selected) {
   let shadow_color = [...color];
   if (selected) {
     // make the color not transparent if it is selected
-    line_color[3] = 0.7;
+    line_color[3] = 1.0;
     shadow_color[3] = 0.1;
   } else {
     // make the color transparent if it is not selected
@@ -278,6 +278,8 @@ export class WaveCanvas {
 
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+    this.wglu.clear();
+
     // visible rangey:
     const visibleRangeY = {
       top: this.scrollTop,
@@ -310,7 +312,8 @@ export class WaveCanvas {
           yBase - this.scrollTop,
           this.scrollLeft,
           this.timeScale,
-          selected
+          selected,
+          2
         );
       } else if (waveStyle === "bus") {
         this.drawBusSignal(
@@ -320,7 +323,8 @@ export class WaveCanvas {
           yBase - this.scrollTop,
           this.scrollLeft,
           this.timeScale,
-          selected
+          selected,
+          2
         );
       } else {
         // Unsupported style
@@ -332,7 +336,7 @@ export class WaveCanvas {
     });
     this.drawCursor(ctx, this.cursorTime, this.scrollLeft, this.timeScale);
     this.drawAxis(ctx, this.scrollLeft, this.timeScale);
-    this.wglu.render();
+    this.wglu.draw();
   }
 
   /**
@@ -343,8 +347,9 @@ export class WaveCanvas {
    * @param {number} xOffset - The horizontal offset (pixels from top)
    * @param {number} timeScale - Ratio: simulation time units per pixel
    * @param {boolean} selected - Selected row is lighter
+   * @param {number} lineWidth - The line width of the signal.
    */
-  drawBitSignal(wglu, row, yOffset, xOffset, timeScale, selected) {
+  drawBitSignal(wglu, row, yOffset, xOffset, timeScale, selected, lineWidth) {
     const signal = row.simObj.signal;
     const rowHeight = config.rowHeight;
     const bitWavePadding = config.bitWavePadding || 2;
@@ -379,19 +384,26 @@ export class WaveCanvas {
         wglu.add_rect(x0, y0abbs, x1, y0abbs + rectHeight, shadow_color);
       }
 
-      // --- Horizontal line (timeholder) ---
-      wglu.add_line(x0, y0abbs, x1, y0abbs, 2, line_color);
-
       // --- Vertical line (valuechanger) ---
-      try {
-        const vm1 = signal.getValueAtI(i - 1);
-        const ym1r = valueScale(parseIntDef(vm1));
-        const ym1abbs = ym1r + yOffset;
-        wglu.add_line(x0, ym1abbs, x0, y0abbs, 2, line_color);
-      } catch (e) {
-        console.debug("negative index in valuechanger", e);
+      if (i != startIdx) {
+        try {
+          const vm1 = signal.getValueAtI(i - 1);
+          const ym1r = valueScale(parseIntDef(vm1));
+          const ym1abbs = ym1r + yOffset;
+          wglu.line_to(x0, ym1abbs, lineWidth, line_color);
+          wglu.line_to(x0, y0abbs, lineWidth, line_color);
+        } catch (e) {
+          console.debug("negative index in valuechanger", e);
+        }
       }
+
+      // --- Horizontal line (timeholder) ---
+      if (i == startIdx) {
+        wglu.begin_line(x0, y0abbs);
+      }
+      wglu.line_to(x1, y0abbs, lineWidth, line_color);
     }
+    wglu.end_line();
   }
 
   /**
@@ -402,8 +414,9 @@ export class WaveCanvas {
    * @param {number} xOffset - The horizontal offset (pixels from top)
    * @param {number} timeScale - Ratio: simulation time units per pixel
    * @param {boolean} selected - Selected row is lighter
+   * @param {number} lineWidth - The line width of the signal.
    */
-  drawBusSignal(ctx, wglu, row, yOffset, xOffset, timeScale, selected) {
+  drawBusSignal(ctx, wglu, row, yOffset, xOffset, timeScale, selected, lineWidth) {
     const signal = row.simObj.signal;
     const rowHeight = config.rowHeight;
     const bitWavePadding = config.bitWavePadding || 2;
@@ -434,12 +447,19 @@ export class WaveCanvas {
       let { line_color, _ } = value2ColorWGL(v0, selected);
 
       // --- the 'hexagon' of the bus ---
-      wglu.add_line(x0, half, x0 + 2, one, 2, line_color);
-      wglu.add_line(x0 + 2, one, x1 - 2, one, 2, line_color);
-      wglu.add_line(x1 - 2, one, x1, half, 2, line_color);
-      wglu.add_line(x1, half, x1 - 2, zero, 2, line_color);
-      wglu.add_line(x1 - 2, zero, x0 + 2, zero, 2, line_color);
-      wglu.add_line(x0 + 2, zero, x0, half, 2, line_color);
+      if (i == startIdx) {
+        wglu.begin_line(x0, half);
+      } else {
+        // add a trasparent line to the begin.
+        wglu.line_to(x0, half, lineWidth, [0, 0, 0, 0]);
+      }
+      // wglu.add_line(x0, half, x0 + 2, one, lineWidth, line_color);
+      wglu.line_to(x0 + 2, one, lineWidth, line_color);
+      wglu.line_to(x1 - 2, one, lineWidth, line_color);
+      wglu.line_to(x1, half, lineWidth, line_color);
+      wglu.line_to(x1 - 2, zero, lineWidth, line_color);
+      wglu.line_to(x0 + 2, zero, lineWidth, line_color);
+      wglu.line_to(x0, half, lineWidth, line_color);
 
       // write the value in the middle of the bus
       ctx.fillStyle = "#fff";
@@ -455,6 +475,7 @@ export class WaveCanvas {
       let truncedStr = truncateTextToWidth(ctx, txt, x1satured - x0satured - 4);
       ctx.fillText(truncedStr, xpos, zero - 1);
     }
+    wglu.end_line();
   }
 
   /**
