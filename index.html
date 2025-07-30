@@ -225,7 +225,12 @@
 
         <div id="wave-axis-container" class="wave-table">
           <div id="wave-time-placeholder">
-            <canvas id="wave-axis-canvas"></canvas>
+            <div id="wave-axis-canvas-sticky">
+              <div id="wave-axis-canvas-relative">
+                <canvas id="wave-axis-canvas-webgl2"></canvas>
+                <canvas id="wave-axis-canvas"></canvas>
+              </div>
+            </div>
           </div>
         </div>
       </div>

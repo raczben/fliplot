@@ -82,10 +82,35 @@ body {
   margin-left: 5px;
 }
 
-#wave-axis-canvas {
+#wave-axis-canvas-sticky {
   height: 100%;
+  width: 100%;
   position: sticky;
   left: 0px;
+}
+
+/* Create two canvas on top of each other
+https://stackoverflow.com/a/2941203/2506522 */
+#wave-axis-canvas-relative {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+#wave-axis-canvas-webgl2,
+#wave-axis-canvas {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+#wave-axis-canvas-webgl2 {
+  z-index: 1;
+}
+
+#wave-axis-canvas {
+  z-index: 10;
 }
 
 .ui-resizable-handle {
