@@ -3,10 +3,6 @@ import { ceiln, isInt, truncateTextToWidth } from "../core/util.js";
 import { WaveTable } from "./WaveTable.js";
 import { WebGL2UtilTR } from "./WebGL2UtilTR.js";
 
-/* index definitions for render data */
-const WAVEARRAY = 0;
-const IDX = 1;
-
 function parseIntDef(intToPare, def = 0.5) {
   if (isInt(intToPare)) {
     return parseInt(intToPare);
@@ -44,13 +40,13 @@ function value2Color(val, selected) {
  * @param {boolean} selected
  * @returns
  */
-function value2ColorWGL(val, selected) {
+function value2ColorWGL(bin, selected) {
   var color;
-  if (isInt(val))
-    color = [0.0, 1.0, 0.0, 1.0]; //"#00FF00";
-  else if (val == "z")
+  if (bin.toLowerCase().includes("x"))
+    color = [1.0, 0.0, 0.0, 1.0]; // "#FF0000";
+  else if (bin.toLowerCase().includes("z"))
     color = [0.0, 0.0, 1.0, 1.0]; // "#0000FF";
-  else color = [1.0, 0.0, 0.0, 1.0]; // "#FF0000";
+  else color = [0.0, 1.0, 0.0, 1.0]; //"#00FF00";
 
   // copy array:
   let line_color = [...color];

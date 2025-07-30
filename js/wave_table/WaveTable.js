@@ -48,7 +48,7 @@ export class WaveTable {
     }
     this._resizeTimeout = setTimeout(() => {
       this.wave.setSize(this.waveAxisContainer.clientWidth, this.waveAxisContainer.clientHeight);
-      this.wave.render();
+      this.wave.requestRender();
       this._resizeTimeout = null;
     }, 10);
     return;
@@ -203,7 +203,7 @@ export class WaveTable {
     this.tree.remove(rowId);
     this.nameCol.removeRow(rowId);
     this.valueCol.removeRow(rowId);
-    this.wave.removeRow(rowId);
+    this.wave.requestRender();
   }
 
   removeRows(rowIds) {
@@ -313,11 +313,16 @@ export class WaveTable {
   }
 
   getActiveRow(id = true) {
-    const activeId = this.nameCol.getActiveRow();
-    if (id) {
-      return activeId;
-    } else {
-      return this.tree.get(activeId).data;
+    try {
+      const activeId = this.nameCol.getActiveRow();
+      if (id) {
+        return activeId;
+      } else {
+        return this.tree.get(activeId).data;
+      }
+    } catch (e) {
+      console.warn("No active row found in WaveTable.");
+      return null;
     }
   }
 
@@ -331,11 +336,9 @@ export class WaveTable {
       rowIds = this.getSelectedRows();
     }
     rowIds.forEach((element) => {
-      this.tree.get(element).forEach((n) => {
-        n.data.setRadix(radix);
-      });
+      this.tree.get(element).data.setRadix(radix);
       this.valueCol.setRadix(element);
-      this.wave.setRadix(element);
+      this.wave.requestRender();
     });
   }
 
@@ -358,10 +361,6 @@ export class WaveTable {
     const currentScale = this.wave.getTimeScale();
     const deltaScale = timeScale / currentScale - 1;
     this.zoomInOut(deltaScale);
-  }
-
-  zoomAutoscale() {
-    this.wave.zoomAutoscale();
   }
 
   zoomIn() {

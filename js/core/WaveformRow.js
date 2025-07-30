@@ -54,7 +54,8 @@ export class WaveformRow {
    * @param {number} def
    */
   getValueAtI(i, def) {
-    return this.radixPrefix + this.simObj.getValueAtI(i, this.radix, def);
+    const ret = this.radixPrefix + this.simObj.getValueAtI(i, this.radix, def);
+    return ret;
   }
 
   /**
@@ -82,6 +83,9 @@ export class WaveformRow {
       prefix = "";
     } else if (["signed", "s", "decimal"].includes(radix)) {
       radix = "s0";
+      prefix = "";
+    } else if ("float" === radix) {
+      radix = "float";
       prefix = "";
     } else if (radix.startsWith("h")) {
       prefix = "0x";

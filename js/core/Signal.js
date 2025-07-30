@@ -81,6 +81,14 @@ export class Signal {
   }
 
   /**
+   *
+   * @return {number} The width of the signal in bits.
+   */
+  getWidth() {
+    return this.width;
+  }
+
+  /**
    * Returns the index of the last value change before the given time.
    * @param {number} time
    * @return {number} The index of the last value change before the given time.

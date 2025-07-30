@@ -326,7 +326,16 @@ $(function () {
           "radix-bin": { name: "bin" },
           "radix-hex": { name: "hex" },
           "radix-signed": { name: "signed" },
-          "radix-unsigned": { name: "unsigned" }
+          "radix-unsigned": { name: "unsigned" },
+          // Add floating point option conditionally:
+          // only a 32 bit signal can be set to float
+          "radix-float": {
+            name: "float",
+            visible: function () {
+              const row = window.waveTable.getActiveRow(false);
+              return row && row.simObj.getWidth() === 32;
+            }
+          }
         }
       },
       sep1: "---------",

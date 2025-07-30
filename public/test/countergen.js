@@ -5,11 +5,13 @@ import { writeFileSync } from "fs";
 
 // Parameters:
 const cntrPeriod = 10; // in ns
-const cntrStart = 0; // in ns
-const cntrEnd = 100000; // in ns
-const bitWidth = 16; // Width of the counter in bits
+const cntrStart = 0; // init value of the counter
+const cntrEnd = 500; // last value of the counter
+const cntrStep = 1; // step of the counter (use fraction for float values)
+const bitWidth = 32; // Width of the counter in bits
 const cntrName = "cntr"; // Name of the clock signal
 const vcdId = "`c";
+const number_format = "float";
 
 function intToBinString(num, width) {
   let binStr = num.toString(2);
@@ -17,6 +19,15 @@ function intToBinString(num, width) {
     binStr = "0" + binStr;
   }
   return binStr;
+}
+
+function floatToBinString(num) {
+  // Convert float to binary string (32-bit representation)
+  const buffer = new ArrayBuffer(4);
+  const view = new Float32Array(buffer);
+  view[0] = num;
+  const intView = new Uint32Array(buffer);
+  return intView[0].toString(2).padStart(32, "0");
 }
 
 function generateCounterVCD() {
@@ -28,11 +39,22 @@ function generateCounterVCD() {
   vcdLines.push("$enddefinitions $end");
   vcdLines.push("$dumpvars");
 
+  //check the arguments:
+  if (number_format === "float" && bitWidth !== 32) {
+    throw new Error("For float format, the bit width must be 32.");
+  }
+
   // Generate clock signal
-  for (let i = cntrStart; i <= cntrEnd; i++) {
+  var binValue;
+  for (let i = cntrStart; i <= cntrEnd; i += cntrStep) {
     const time = i * cntrPeriod;
     vcdLines.push(`#${time}`);
-    const binValue = intToBinString(i, bitWidth);
+
+    if (number_format === "float") {
+      binValue = floatToBinString(i);
+    } else {
+      binValue = intToBinString(i, bitWidth);
+    }
     vcdLines.push(`b${binValue} ${vcdId}`);
   }
 

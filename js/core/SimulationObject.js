@@ -74,6 +74,14 @@ export class SimulationObject {
   }
 
   /**
+   *
+   * @return {number} The width of the signal in bits.
+   */
+  getWidth() {
+    return this.signal.getWidth();
+  }
+
+  /**
    * @param {number} time
    */
   getChangeIndexAt(time) {
