@@ -51,8 +51,11 @@ export class WebGL2UtilTR {
     }
 
     // Buffers
-    this.vertices_strip = [];
-    this.colors_strip = [];
+    const NOF_VERITICES = 2048;
+    this.vertices_strip_len = 0;
+    this.colors_strip_len = 0;
+    this.vertices_strip = new Float32Array(NOF_VERITICES * 2); // x, y pairs
+    this.colors_strip = new Float32Array(NOF_VERITICES * 4); // rgb colors
     this.vertices = [];
     this.colors = [];
     this.vertexBuffer = this.gl.createBuffer();
@@ -70,6 +73,34 @@ export class WebGL2UtilTR {
       throw new Error(this.gl.getShaderInfoLog(shader));
     }
     return shader;
+  }
+
+  /**
+   * Add new vertices to the strip array.
+   */
+  _add(x, y, color) {
+    //check arguments
+    if (
+      typeof x !== "number" ||
+      typeof y !== "number" ||
+      !Array.isArray(color) ||
+      color.length !== 4
+    ) {
+      throw new Error("Invalid arguments for _add method");
+    }
+
+    this.vertices_strip[this.vertices_strip_len++] = x;
+    this.vertices_strip[this.vertices_strip_len++] = y;
+    for (let i = 0; i < 4; i++) {
+      this.colors_strip[this.colors_strip_len++] = color[i];
+    }
+
+    // check if the arrays are full
+    if (this.vertices_strip_len >= this.vertices_strip.length) {
+      this.end_line();
+      this.vertices_strip_len = 0;
+      this.colors_strip_len = 0;
+    }
   }
 
   begin_line(x, y) {
@@ -94,10 +125,10 @@ export class WebGL2UtilTR {
     const p2a = [x2 + nx, y2 + ny];
     const p2b = [x2 - nx, y2 - ny];
 
-    this.vertices_strip.push(...p1a, ...p1b, ...p2a, ...p2b);
-    for (let i = 0; i < 4; i++) {
-      this.colors_strip.push(...color);
-    }
+    this._add(...p1a, color);
+    this._add(...p1b, color);
+    this._add(...p2a, color);
+    this._add(...p2b, color);
   }
 
   end_line() {
@@ -108,22 +139,22 @@ export class WebGL2UtilTR {
 
     // Vertex buffer
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vertices_strip), gl.STREAM_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, this.vertices_strip, gl.STREAM_DRAW);
     const posLoc = gl.getAttribLocation(this.program, "aPosition");
     gl.enableVertexAttribArray(posLoc);
     gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
 
     // Color buffer
     gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.colors_strip), gl.STREAM_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, this.colors_strip, gl.STREAM_DRAW);
     const colorLoc = gl.getAttribLocation(this.program, "aColor");
     gl.enableVertexAttribArray(colorLoc);
     gl.vertexAttribPointer(colorLoc, 4, gl.FLOAT, false, 0, 0);
 
-    gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, this.vertices_strip.length / 2);
+    gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, this.vertices_strip_len / 2);
 
-    this.vertices_strip = [];
-    this.colors_strip = [];
+    this.vertices_strip_len = 0;
+    this.colors_strip_len = 0;
   }
 
   add_rect(x1, y1, x2, y2, color) {
