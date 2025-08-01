@@ -356,15 +356,15 @@ export class WaveCanvas {
     // Find indices in wave that are within the visible time range
     // getChangeIndexAt returns -1 if the time is before the first change.
     // in this case we start plot at the first change.
-    const startIdx = Math.max(0, signal.getChangeIndexAt(timeRange[0]));
-    const endIdx = Math.min(signal.getLenght(), signal.getChangeIndexAt(timeRange[1]) + 1);
+    const startIdx = Math.max(1, signal.getChangeIndexAt(timeRange[0]));
+    const endIdx = Math.min(signal.getLenght() + 1, signal.getChangeIndexAt(timeRange[1]) + 2);
 
     for (let i = startIdx; i < endIdx; i++) {
       // segment values:
       const now = simDB.now;
-      const t0 = signal.getTimeAtI(i, now);
-      const t1 = signal.getTimeAtI(i + 1, now);
-      const v0 = signal.getValueAtI(i);
+      const t0 = signal.getTimeAtI(i - 1, now);
+      const t1 = signal.getTimeAtI(i, now);
+      const v0 = signal.getValueAtI(i - 1);
 
       // trasform to pixel coordinates
       let x0 = t0 * timeScale - xOffset;
@@ -380,24 +380,23 @@ export class WaveCanvas {
         wglu.add_rect(x0, y0abbs, x1, y0abbs + rectHeight, shadow_color);
       }
 
-      // --- Vertical line (valuechanger) ---
-      if (i != startIdx) {
-        try {
-          const vm1 = signal.getValueAtI(i - 1);
-          const ym1r = valueScale(parseIntDef(vm1));
-          const ym1abbs = ym1r + yOffset;
-          wglu.line_to(x0, ym1abbs, lineWidth, line_color);
-          wglu.line_to(x0, y0abbs, lineWidth, line_color);
-        } catch (e) {
-          console.debug("negative index in valuechanger", e);
-        }
-      }
-
       // --- Horizontal line (timeholder) ---
       if (i == startIdx) {
         wglu.begin_line(x0, y0abbs);
       }
       wglu.line_to(x1, y0abbs, lineWidth, line_color);
+
+      // --- Vertical line (valuechanger) ---
+      if (i < endIdx - 1) {
+        try {
+          const v1 = signal.getValueAtI(i);
+          const y1r = valueScale(parseIntDef(v1));
+          const y1abbs = y1r + yOffset;
+          wglu.line_to(x1, y1abbs, lineWidth, line_color);
+        } catch (e) {
+          console.debug("too much in value changer", e);
+        }
+      }
     }
     wglu.end_line();
   }
