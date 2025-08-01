@@ -357,7 +357,7 @@ export class WaveCanvas {
     // getChangeIndexAt returns -1 if the time is before the first change.
     // in this case we start plot at the first change.
     const startIdx = Math.max(0, signal.getChangeIndexAt(timeRange[0]));
-    const endIdx = Math.min(signal.wave.length, signal.getChangeIndexAt(timeRange[1]) + 1);
+    const endIdx = Math.min(signal.getLenght(), signal.getChangeIndexAt(timeRange[1]) + 1);
 
     for (let i = startIdx; i < endIdx; i++) {
       // segment values:
@@ -425,7 +425,7 @@ export class WaveCanvas {
     // getChangeIndexAt returns -1 if the time is before the first change.
     // in this case we start plot at the first change.
     const startIdx = Math.max(0, signal.getChangeIndexAt(timeRange[0]));
-    const endIdx = Math.min(signal.wave.length, signal.getChangeIndexAt(timeRange[1]) + 1);
+    const endIdx = Math.min(signal.getLenght(), signal.getChangeIndexAt(timeRange[1]) + 1);
 
     for (let i = startIdx; i < endIdx; i++) {
       // segment values:

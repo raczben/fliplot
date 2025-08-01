@@ -55,7 +55,7 @@ export class Signal {
     if (nOfBits > this.width) {
       throw `Cannot clone range [${from}:${to}] of signal ${this.references[0]} with width ${this.width}`;
     }
-    const retType = this.width == 1 ? "bit" : "bus";
+    const retType = nOfBits == 1 ? "bit" : "bus";
     const ret = new Signal({
       references: this.references.concat([`[${from}:${to}]`]),
       vcdid: `${this.vcdid}-cloned[${from}:${to}]`,
@@ -86,6 +86,10 @@ export class Signal {
    */
   getWidth() {
     return this.width;
+  }
+
+  getLenght() {
+    return this.wave.length;
   }
 
   /**
