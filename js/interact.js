@@ -149,9 +149,6 @@ $.ajax({
 function initShow(data) {
   console.log(data);
   simDB.init(data);
-  // TODO: I would like to remove it:
-  // Adds fantom 0th elements which are not present in the VCD file.
-  simDB.updateDBInitialX();
   window.waveTable.addAllWaveSignal();
   const tree = new ObjectTree(window.waveTable);
   tree.showTree();

@@ -123,24 +123,4 @@ export class SimDB {
     }
     return ret;
   }
-
-  /**
-   * Updates all signals to ensure they have an initial value at time zero.
-   * If a signal's wave is empty, adds a default value at time zero.
-   * If the first entry is not at time zero, prepends a phantom value at time zero.
-   */
-  updateDBInitialX() {
-    this.getAllSignals().forEach((element) => {
-      var wave = element.wave;
-      if (wave.length == 0) {
-        // Empty array
-        wave.push({ time: 0, bin: "x" });
-        return;
-      }
-      if (wave[0].time != 0) {
-        // Append the phantom zero-th value.
-        wave.unshift({ time: 0, bin: "x".repeat(element.width) });
-      }
-    });
-  }
 }

@@ -74,32 +74,4 @@ describe("SimDB", () => {
       expect(sig).toBeDefined();
     });
   });
-
-  test("updateDBInitialX adds phantom zero-th value if needed", () => {
-    // Remove the first value from a signal's wave
-    const sigObj = simdb.getObject(["top", "a__S"]).signal;
-    sigObj.wave = [{ time: 10, bin: "1" }];
-    simdb.updateDBInitialX();
-    expect(sigObj.wave[0].time).toBe(0);
-    expect(sigObj.wave[0].bin).toBe("x");
-  });
-
-  test("updateDBInitialX does not add if already has zero-th value", () => {
-    const sigObj = simdb.getObject(["top", "a__S"]).signal;
-    sigObj.wave = [
-      { time: 0, bin: "0" },
-      { time: 10, bin: "1" }
-    ];
-    simdb.updateDBInitialX();
-    expect(sigObj.wave[0].time).toBe(0);
-    expect(sigObj.wave[0].bin).toBe("0");
-  });
-
-  test("updateDBInitialX adds value if wave is empty", () => {
-    const sigObj = simdb.getObject(["top", "a__S"]).signal;
-    sigObj.wave = [];
-    simdb.updateDBInitialX();
-    expect(sigObj.wave[0].time).toBe(0);
-    expect(sigObj.wave[0].bin).toBe("x");
-  });
 });
