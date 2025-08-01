@@ -26,6 +26,10 @@ function parseIntDef(intToPare, def = 0.5) {
  */
 function value2ColorWGL(bin, selected) {
   var color;
+  const internalCode = bin.split("-");
+  if (internalCode[0] === "/zcmp") {
+    bin = internalCode[1];
+  }
   if (bin.toLowerCase().includes("x"))
     color = [1.0, 0.0, 0.0, 1.0]; // "#FF0000";
   else if (bin.toLowerCase().includes("z"))
@@ -348,6 +352,9 @@ export class WaveCanvas {
 
     const valueScale = linearScale([0, 1], [rowHeight - bitWavePadding, bitWavePadding]);
 
+    const one = valueScale(1) + yOffset;
+    const zero = valueScale(0) + yOffset;
+
     let wiPrev = null;
     for (let wi of signal.waveIterator(timeRange[0], timeRange[1], timeScale, simDB.now)) {
       // trasform to pixel coordinates
@@ -374,6 +381,14 @@ export class WaveCanvas {
       wiPrev = wi;
 
       let { line_color, shadow_color } = value2ColorWGL(v0, selected);
+
+      const internalCode = v0.split("-");
+      if (internalCode[0] === "/zcmp") {
+        // handle zoom compression
+        // bin = internalCode[1];
+        wglu.add_rect(x0, zero + lineWidth / 2, x1, one - lineWidth / 2, line_color);
+        continue;
+      }
 
       // --- Rectangle (transRect) ---
       const rectHeight = valueScale(1 - parseIntDef(v0)) - bitWavePadding;
@@ -438,6 +453,14 @@ export class WaveCanvas {
       let x1 = t1 * timeScale - xOffset;
 
       let { line_color, _ } = value2ColorWGL(v0, selected);
+
+      const internalCode = v0.split("-");
+      if (internalCode[0] === "/zcmp") {
+        // handle zoom compression
+        // bin = internalCode[1];
+        wglu.add_rect(x0, zero + lineWidth / 2, x1, one - lineWidth / 2, line_color);
+        continue;
+      }
 
       // --- the 'hexagon' of the bus ---
       wglu.line_to(x0, half, lineWidth, [0, 0, 0, 0]);

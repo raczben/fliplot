@@ -103,6 +103,12 @@ export class Signal {
    * @returns {IterableIterator<valueChange_t>} An iterator over the signal's wave.
    */
   *waveIterator(t0 = 0, t1 = Infinity, timeScale = Infinity, now = -1, initialX = false) {
+    this.zcmpChanges = 8;
+    this.zcmpPixels = 8;
+
+    // Search segments to be compress at `timeScale`
+    const compressionInterval = this.zcmpPixels / timeScale;
+
     // Find indices in wave that are within the visible time range
     // getChangeIndexAt returns -1 if the time is before the first change.
     // in this case we start plot at the first change.
@@ -117,10 +123,20 @@ export class Signal {
       }
     }
     for (let i = startIdx; i < endIdx; i++) {
-      // shallow copy
-      const y = { ...waveArr[i] };
-      y.index = i;
-      yield y;
+      const wi = waveArr[i];
+
+      // zoom compression
+      const zcmpIdx = this.getChangeIndexAt(compressionInterval + wi.time);
+      if (zcmpIdx > i + this.zcmpChanges) {
+        // do the compression
+        const y = { time: waveArr[i].time, index: i, bin: "/zcmp-123" };
+        i = zcmpIdx - 1; // skip the following wave items. step the index
+        yield y;
+      } else {
+        // return a simple copy of the wave item
+        const y = { time: waveArr[i].time, index: i, bin: waveArr[i].bin };
+        yield y;
+      }
     }
     if (now >= 0) {
       // if the user request to add the current (phantom) value.
