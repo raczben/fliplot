@@ -93,6 +93,46 @@ export class Signal {
   }
 
   /**
+   * Iterator for the signal's wave.
+   *
+   * @param {number} t0 - Start of the time range
+   * @param {number} t1 - End of the time range
+   * @param {number} timeScale - The time scale to use for the wave.
+   * @param {number} now - Iterator adds phantom values at the end of the iteration till the current simulation time.
+   * @param {boolean} initialX - If true first phantom 'x' value will be added at the beginning of the wave.
+   * @returns {IterableIterator<valueChange_t>} An iterator over the signal's wave.
+   */
+  *waveIterator(t0 = 0, t1 = Infinity, timeScale = Infinity, now = -1, initialX = false) {
+    // Find indices in wave that are within the visible time range
+    // getChangeIndexAt returns -1 if the time is before the first change.
+    // in this case we start plot at the first change.
+    const startIdx = Math.max(0, this.getChangeIndexAt(t0));
+    const endIdx = Math.min(this.getLenght(), this.getChangeIndexAt(t1) + 1);
+
+    const waveArr = this.wave;
+    if (initialX) {
+      if (waveArr.length == 0 || t0 < waveArr[startIdx].time) {
+        // If the first value is not at time zero, prepend a phantom value at time zero.
+        yield { time: 0, bin: "x".repeat(this.width), index: -1 };
+      }
+    }
+    for (let i = startIdx; i < endIdx; i++) {
+      // shallow copy
+      const y = { ...waveArr[i] };
+      y.index = i;
+      yield y;
+    }
+    if (now >= 0) {
+      // if the user request to add the current (phantom) value.
+      if (waveArr.length >= endIdx || t1 > waveArr[endIdx - 1].time) {
+        // if the requested time is over the last value change, add a phantom value at the end
+        // (the values started by '/' charater are internal simbols)
+        yield { time: now, bin: "/phantom-now", index: endIdx };
+      }
+    }
+  }
+
+  /**
    * Returns the index of the last value change before the given time.
    * @param {number} time
    * @return {number} The index of the last value change before the given time.
@@ -134,6 +174,12 @@ export class Signal {
         return def;
       }
       throw "Negative index";
+    }
+    if (i >= this.wave.length) {
+      if (def !== undefined) {
+        return def;
+      }
+      throw "idx is too great";
     }
 
     if (this.wave[i][radix] === undefined) {

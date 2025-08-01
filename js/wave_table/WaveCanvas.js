@@ -3,6 +3,13 @@ import { ceiln, isInt, truncateTextToWidth } from "../core/util.js";
 import { WaveTable } from "./WaveTable.js";
 import { WebGL2UtilTR } from "./WebGL2UtilTR.js";
 
+/**
+ * Simple utility functio to help rendering bit signals.
+ *
+ * @param {string} intToPare - string represented binary value to parse.
+ * @param {number} def - defalult value to return in case of parse error.
+ * @returns {number} - Returns a level of the signlas. (1 for '1', 0 for '0', 0.5 for 'x' or 'z)
+ */
 function parseIntDef(intToPare, def = 0.5) {
   if (isInt(intToPare)) {
     return parseInt(intToPare);
@@ -11,29 +18,6 @@ function parseIntDef(intToPare, def = 0.5) {
   }
 }
 
-/**
- *
- * @param {string} val
- * @param {boolean} selected
- * @returns
- */
-function value2Color(val, selected) {
-  var color;
-  if (isInt(val)) color = "#00FF00";
-  else if (val == "z") color = "#0000FF";
-  else color = "#FF0000";
-  if (selected) {
-    // make the color not transparent if it is selected
-    const line_color = color + "FF";
-    const shadow_color = color + "18";
-    return { line_color, shadow_color };
-  } else {
-    // make the color transparent if it is not selected
-    const line_color = color + "D0";
-    const shadow_color = color + "18";
-    return { line_color, shadow_color };
-  }
-}
 /**
  *
  * @param {string} val
@@ -63,10 +47,16 @@ function value2ColorWGL(bin, selected) {
   return { line_color, shadow_color };
 }
 
-// Linear scale: maps [domainMin, domainMax] to [rangeMin, rangeMax]
-// Based on d3's linear scale, but simplified for our use case
-// Usage: const scale = linearScale([0, 100], [0, 500]);
-// scale(50) -> 250
+/**
+ * Linear scale: maps [domainMin, domainMax] to [rangeMin, rangeMax]
+ * Based on d3's linear scale, but simplified for our use case
+ * Usage: const scale = linearScale([0, 100], [0, 500]);
+ * scale(50) -> 250
+ *
+ * @param {number[]} domain
+ * @param {number[]} range
+ * @returns the scale function
+ */
 function linearScale(domain, range) {
   const [domainMin, domainMax] = domain;
   const [rangeMin, rangeMax] = range;
@@ -82,9 +72,9 @@ function linearScale(domain, range) {
   scale.invert = function (y) {
     return domainMin + ((y - rangeMin) / rangeSpan) * domainSpan;
   };
-
   return scale;
 }
+
 export class WaveCanvas {
   constructor(waveTable) {
     /** @type {WaveTable} */
@@ -200,6 +190,10 @@ export class WaveCanvas {
     };
   }
 
+  /**
+   *
+   * @returns {number} the current time scale of the waveform display.
+   */
   getTimeScale() {
     // Get the current time scale of the waveform display
     return this.timeScale;
@@ -250,7 +244,8 @@ export class WaveCanvas {
     return this.cursorTime;
   }
 
-  /**   * Adjust the width of the wave-time-placeholder element based on the current time scale.
+  /**
+   *  Adjust the width of the wave-time-placeholder element based on the current time scale.
    * This is used to visually represent the current simulation time in the waveform display.
    * And fill the space for horisontal scroll bar.
    */
@@ -353,24 +348,31 @@ export class WaveCanvas {
 
     const valueScale = linearScale([0, 1], [rowHeight - bitWavePadding, bitWavePadding]);
 
-    // Find indices in wave that are within the visible time range
-    // getChangeIndexAt returns -1 if the time is before the first change.
-    // in this case we start plot at the first change.
-    const startIdx = Math.max(1, signal.getChangeIndexAt(timeRange[0]));
-    const endIdx = Math.min(signal.getLenght() + 1, signal.getChangeIndexAt(timeRange[1]) + 2);
+    let wiPrev = null;
+    for (let wi of signal.waveIterator(timeRange[0], timeRange[1], timeScale, simDB.now)) {
+      // trasform to pixel coordinates
+      const t1 = wi.time;
+      const x1 = t1 * timeScale - xOffset;
+      const v1 = wi.bin;
+      const y1r = valueScale(parseIntDef(v1));
+      const y1abbs = y1r + yOffset;
 
-    for (let i = startIdx; i < endIdx; i++) {
-      // segment values:
-      const now = simDB.now;
-      const t0 = signal.getTimeAtI(i - 1, now);
-      const t1 = signal.getTimeAtI(i, now);
-      const v0 = signal.getValueAtI(i - 1);
+      if (wiPrev == null) {
+        // first iteration
+        wglu.begin_line(x1, y1abbs);
+        wiPrev = wi;
+        continue;
+      }
 
       // trasform to pixel coordinates
-      let x0 = t0 * timeScale - xOffset;
-      let x1 = t1 * timeScale - xOffset;
-      let y0r = valueScale(parseIntDef(v0));
-      let y0abbs = y0r + yOffset;
+      const t0 = wiPrev.time;
+      const v0 = wiPrev.bin;
+      const y0r = valueScale(parseIntDef(v0));
+      const y0abbs = y0r + yOffset;
+      const x0 = t0 * timeScale - xOffset;
+
+      wiPrev = wi;
+
       let { line_color, shadow_color } = value2ColorWGL(v0, selected);
 
       // --- Rectangle (transRect) ---
@@ -381,21 +383,11 @@ export class WaveCanvas {
       }
 
       // --- Horizontal line (timeholder) ---
-      if (i == startIdx) {
-        wglu.begin_line(x0, y0abbs);
-      }
       wglu.line_to(x1, y0abbs, lineWidth, line_color);
 
       // --- Vertical line (valuechanger) ---
-      if (i < endIdx - 1) {
-        try {
-          const v1 = signal.getValueAtI(i);
-          const y1r = valueScale(parseIntDef(v1));
-          const y1abbs = y1r + yOffset;
-          wglu.line_to(x1, y1abbs, lineWidth, line_color);
-        } catch (e) {
-          console.debug("too much in value changer", e);
-        }
+      if (v1 !== "/phantom-now") {
+        wglu.line_to(x1, y1abbs, lineWidth, line_color);
       }
     }
     wglu.end_line();
@@ -420,35 +412,35 @@ export class WaveCanvas {
 
     const timeRange = this.getTimeRange(xOffset, this.canvas.width);
 
-    // Find indices in wave that are within the visible time range
-    // getChangeIndexAt returns -1 if the time is before the first change.
-    // in this case we start plot at the first change.
-    const startIdx = Math.max(0, signal.getChangeIndexAt(timeRange[0]));
-    const endIdx = Math.min(signal.getLenght(), signal.getChangeIndexAt(timeRange[1]) + 1);
+    const half = valueScale(0.5) + yOffset;
+    const one = valueScale(1) + yOffset;
+    const zero = valueScale(0) + yOffset;
 
-    for (let i = startIdx; i < endIdx; i++) {
+    let wiPrev = null;
+    for (let wi of signal.waveIterator(timeRange[0], timeRange[1], timeScale, simDB.now)) {
+      // trasform to pixel coordinates
+
+      if (wiPrev == null) {
+        // first iteration
+        // begin line in the middle of nowhere, anywhere
+        wglu.begin_line(0, half);
+        wiPrev = wi;
+        continue;
+      }
+
       // segment values:
-      const now = simDB.now;
-      const t0 = signal.getTimeAtI(i, now);
-      const t1 = signal.getTimeAtI(i + 1, now);
-      const v0 = signal.getValueAtI(i);
+      const t0 = wiPrev.time;
+      const t1 = wi.time;
+      const v0 = wiPrev.bin;
 
       // trasform to pixel coordinates
-      let half = valueScale(0.5) + yOffset;
-      let one = valueScale(1) + yOffset;
-      let zero = valueScale(0) + yOffset;
       let x0 = t0 * timeScale - xOffset;
       let x1 = t1 * timeScale - xOffset;
+
       let { line_color, _ } = value2ColorWGL(v0, selected);
 
       // --- the 'hexagon' of the bus ---
-      if (i == startIdx) {
-        wglu.begin_line(x0, half);
-      } else {
-        // add a trasparent line to the begin.
-        wglu.line_to(x0, half, lineWidth, [0, 0, 0, 0]);
-      }
-      // wglu.add_line(x0, half, x0 + 2, one, lineWidth, line_color);
+      wglu.line_to(x0, half, lineWidth, [0, 0, 0, 0]);
       wglu.line_to(x0 + 2, one, lineWidth, line_color);
       wglu.line_to(x1 - 2, one, lineWidth, line_color);
       wglu.line_to(x1, half, lineWidth, line_color);
@@ -466,9 +458,10 @@ export class WaveCanvas {
       const x0satured = Math.max(x0, 0);
       const x1satured = Math.min(x1, this.canvas.width);
       const xpos = (x0satured + x1satured) / 2;
-      const txt = row.getValueAtI(i);
+      const txt = row.getValueAtI(wiPrev.index);
       let truncedStr = truncateTextToWidth(ctx, txt, x1satured - x0satured - 4);
       ctx.fillText(truncedStr, xpos, zero - 1);
+      wiPrev = wi;
     }
     wglu.end_line();
   }
