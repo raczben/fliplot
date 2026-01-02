@@ -247,6 +247,14 @@ export class WaveTable {
     this.wave.requestRender();
   }
 
+  toggleGroup(rowId) {
+    if (this.tree.get(rowId).opened) {
+      this.closeGroup(rowId);
+    } else {
+      this.openGroup(rowId);
+    }
+  }
+
   openGroup(rowId) {
     this.tree.open(rowId);
     this.nameCol.openGroup(rowId);
@@ -352,17 +360,18 @@ export class WaveTable {
   }
 
   getRow(id, content = false) {
-    return this.tree.get(id);
-    const n = this.tree.get(id);
-    return content ? n.data : n;
+    if (content) {
+      return this.tree.get(id).data;
+    }
+    return this.activeRow;
   }
 
   getSelectedRows(ids = true) {
     if (ids) {
-      return this.nameCol.getSelectedRows();
+      return this.selectedRows;
     } else {
       // return rows itself
-      return this.nameCol.getSelectedRows().map((element) => this.tree.get(element).data);
+      return this.selectedRows.map((element) => this.tree.get(element).data);
     }
   }
 
@@ -372,21 +381,14 @@ export class WaveTable {
    * @returns {boolean} - True if the row is selected, false otherwise
    */
   isSelected(id) {
-    return this.nameCol.isSelected(id);
+    return this.selectedRows.includes(id);
   }
 
   getActiveRow(id = true) {
-    try {
-      const activeId = this.nameCol.getActiveRow();
-      if (id) {
-        return activeId;
-      } else {
-        return this.tree.get(activeId).data;
-      }
-    } catch (e) {
+    if (this.activeRow == null) {
       console.warn("No active row found in WaveTable.");
-      return null;
     }
+    return this.getRow(this.activeRow, !id);
   }
 
   rename(rowId, name) {

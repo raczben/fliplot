@@ -179,18 +179,34 @@ footer {
   transform: translateX(8px);
 }
 
-.signal-name,
+.name-col-item,
 .value-col-item {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 
+  flex-direction: row;
+  display: flex;
+
   font-family: sans-serif;
   height: 24px;
   line-height: 24px; /* same as height! */
+
+  cursor: default;
+  user-select: none;
 }
 
-.value-col-item-selected {
+.name-col-item-text {
+  padding-left: 5px;
+}
+
+.name-col-item-ocl {
+  font-family: monospace;
+  font-size: larger;
+}
+
+.value-col-item-selected,
+.name-col-item-selected {
   background-color: #555;
 }
 

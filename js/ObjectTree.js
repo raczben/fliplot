@@ -1,4 +1,5 @@
 import $ from "jquery";
+import "jstree"; // extend jQuery with .jstree()
 import { simDB } from "./interact.js";
 
 export class ObjectTree {

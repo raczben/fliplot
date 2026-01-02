@@ -263,8 +263,7 @@ function openFile(event) {
 
 $(function () {
   $.contextMenu({
-    selector:
-      ".signal-context-menu, #names-col-container .jstree-node, #values-col-container .jstree-node",
+    selector: ".signal-context-menu, #names-col-container, #values-col-container",
     callback: function (key, options) {
       switch (true) {
         case /rename/.test(key):

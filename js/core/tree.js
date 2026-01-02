@@ -14,6 +14,21 @@ export class Node {
     this.children = children;
     this.opened = opened;
   }
+
+  /**
+   *
+   * @param {Node |string} node the node (or its id) to return its depth.
+   * @returns {number} the depth of the given node.
+   */
+  getDepth() {
+    let node = this;
+    let depth = 0;
+    while (node.parent) {
+      depth++;
+      node = node.parent;
+    }
+    return depth;
+  }
 }
 
 export class Tree {
@@ -105,6 +120,15 @@ export class Tree {
 
   /**
    *
+   * @param {Node |string} node the node (or its id) to return its depth.
+   * @returns {number} the depth of the given node.
+   */
+  getDepth(node) {
+    return this.get(node).getDepth();
+  }
+
+  /**
+   *
    * @param {Node} node the node (or its id) to remove.
    */
   remove(node) {
@@ -117,7 +141,7 @@ export class Tree {
 
   /**
    *
-   * @param {Node} node the node (or its id) to move.
+   * @param {Node |string} node the node (or its id) to move.
    * @param {number} pos the position to move the node to.
    * @param {Node} parent the parent node (or its id) to move the node into.
    * @param {boolean} force whether to force the move even if the target place is the same.
@@ -144,7 +168,7 @@ export class Tree {
 
   /**
    *
-   * @param {Node} node the node (or its id) from which to start the traverse.
+   * @param {Node | string} node the node (or its id) from which to start the traverse.
    * @param {Tree.Traverse} traverse the mode of the trasverse (preorder or shallow).
    * @param {boolean} getHidden if its true returns also the closed nodes.
    * @returns
@@ -169,11 +193,11 @@ export class Tree {
 
   /**
    *
-   * @param {*} node the node (or its id) to return its children.
+   * @param {Node |string} node the node (or its id) to return its children.
    * @param {Tree.Traverse} traverse the mode of the trasverse (preorder or shallow).
    * @param {string} field if its not null, select a given field of the children to return.
    * @param {boolean} getHidden if its true returns also the closed nodes.
-   * @returns
+   * @returns {Node[]} the list of the childre of the given node.
    */
   getChildren(node, traverse = Tree.Traverse.PREORDER, field = null, getHidden = true) {
     node = this.get(node);
@@ -191,10 +215,10 @@ export class Tree {
   /**
    * A helper function to get only the visible nodes. (cover of the trasverse function)
    *
-   * @param {Node} node the node (or its id) from which to start the traverse.
+   * @param {Node |string} node the node (or its id) from which to start the traverse. Or null.
    * @param {Tree.Traverse} traverse the mode of the trasverse (preorder or shallow).
    * @param {string} field if its not null, select a given field of the children to return.
-   * @returns
+   * @returns {Node[]} the list of the visible nodes.
    */
   getVisible(node, traverse = Tree.Traverse.PREORDER, field = null) {
     if (!node) {
@@ -207,7 +231,7 @@ export class Tree {
    *
    * Opens (or closes) a given node.
    *
-   * @param {Node} node the node (or its id) to open.
+   * @param {Node |string} node the node (or its id) to open.
    * @param {boolean} open
    * @returns
    */
@@ -222,7 +246,7 @@ export class Tree {
 
   /**
    * Closes a given node.
-   * @param {Node} node the node (or its id) to close.
+   * @param {Node |string} node the node (or its id) to close.
    */
   close(node) {
     this.open(node, false);

@@ -5,7 +5,7 @@ export class ValueCol {
   constructor(waveTable, init = true) {
     /**  @type {String} */
     this.domContainerName = "#values-col-container-scroll";
-    /**  @type {String} */
+    /**  @type {HTMLElement} */
     this.domContainer = $(this.domContainerName);
     if (this.domContainer.length == 0) {
       throw `ValueCol: Cannot find container ${this.domContainerName}`;
