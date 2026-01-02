@@ -4,7 +4,12 @@ import { WaveTable } from "./WaveTable.js";
 export class ValueCol {
   constructor(waveTable, init = true) {
     /**  @type {String} */
-    this.containerName = "#values-col-container-scroll";
+    this.domContainerName = "#values-col-container-scroll";
+    /**  @type {String} */
+    this.domContainer = $(this.domContainerName);
+    if (this.domContainer.length == 0) {
+      throw `ValueCol: Cannot find container ${this.domContainerName}`;
+    }
     /**  @type {WaveTable} */
     this.waveTable = waveTable;
 
@@ -14,97 +19,47 @@ export class ValueCol {
   }
 
   init() {
-    const self = this;
-
-    $(this.containerName).jstree("destroy").empty();
-    $(this.containerName)
-      .jstree({
-        plugins: ["wholerow", "dnd", "changed"],
-        core: {
-          data: [],
-          animation: false,
-          themes: {
-            icons: false
-          },
-          check_callback: function (op, node, par, pos, more) {
-            if (more && more.dnd) {
-              return more.pos !== "i" && par.id == node.parent;
-            }
-            return true;
-          }
-        }
-      })
-      .on("open_node.jstree", function (e, data) {
-        self.waveTable.openGroup(data.node.data);
-      })
-      .on("close_node.jstree", function (e, data) {
-        self.waveTable.closeGroup(data.node.data);
-      })
-      .on("changed.jstree", function (evt, data) {
-        data.changed.selected.forEach((element) => {
-          const data = self._getTree().get_node(element).data;
-          self.waveTable.selectRow(data);
-        });
-        data.changed.deselected.forEach((element) => {
-          const data = self._getTree().get_node(element).data;
-          self.waveTable.deSelectRow(data);
-        });
-      });
-
     setTimeout(() => {
       this.reload();
     }, 100);
+
+    this.domContainer.unbind();
+
+    this.domContainer.on("click", ".value-col-item", (event) => {
+      const rowId = $(event.currentTarget).data("row-id");
+      const ctrlkey = event.ctrlKey || event.metaKey;
+      const shiftkey = event.shiftKey;
+      this.waveTable.rowClicked(rowId, shiftkey, ctrlkey);
+    });
   }
 
   reload() {
-    const tree = [];
-    this.waveTable.getRows().forEach((row) => {
-      var treeObj = {};
-      treeObj["id"] = this.toId(row.id);
-      if (row.parent.id == "#") {
-        treeObj["parent"] = "#";
-      } else {
-        treeObj["parent"] = this.toId(row.parent.id);
-      }
-      treeObj["text"] = row.data.getValueAt(0);
-      treeObj["data"] = row.id;
-      tree.push(treeObj);
+    this.domContainer.empty();
+    this.waveTable.getRows({ hidden: false }).forEach((row) => {
+      var id = this.toId(row.id);
+      var val = "asd";
+      var data = row.id;
+
+      // add a new div to domContainer
+      this.domContainer.append(
+        `<div id="${id}" class="value-col-item" data-row-id="${data}">${val}</div>`
+      );
     });
-
-    this._getTree().settings.core.data = tree;
-
-    clearTimeout(this.renderTimeout);
-    this.renderTimeout = setTimeout(() => {
-      this.refresh();
-    }, 10);
+    this.showValuesAt();
   }
 
-  refresh() {
-    this._getTree().refresh();
-  }
-
-  clearAll() {
-    $(this.containerName).jstree("destroy").empty();
-  }
+  clearAll() {}
 
   selectRow(rowId) {
-    const selRows = this.getSelectedRows();
-    if (selRows.includes(rowId)) {
-      // If already selected, do nothing.
-      // console.warn(`Row ${rowId} is already selected.`);
-      return;
-    }
-    this._getTree().select_node(this.toId(rowId));
+    this.getDomItem(rowId).addClass("value-col-item-selected");
   }
 
   deSelectRow(rowId) {
-    const selRows = this.getSelectedRows();
-    if (selRows.includes(rowId)) {
-      this._getTree().deselect_node(this.toId(rowId));
-      return;
-    }
-    // If already de-selected, do nothing.
-    // console.warn(`Row ${rowId} is already DEselected.`);
+    this.getDomItem(rowId).removeClass("value-col-item-selected");
+  }
+
+  deSelectAll(rowId) {
+    $(".value-col-item").removeClass("value-col-item-selected");
   }
 
   moveRow(rowId, pos) {
@@ -112,11 +67,11 @@ export class ValueCol {
   }
 
   openGroup(rowId) {
-    this._getTree().open_node(this.toId(rowId));
+    this.reload();
   }
 
   closeGroup(rowId) {
-    this._getTree().close_node(this.toId(rowId));
+    this.reload();
   }
 
   insertRow(rowId, parent, pos = "last") {
@@ -124,21 +79,19 @@ export class ValueCol {
   }
 
   removeRow(rowId) {
-    this.removeRows(rowId);
+    this.reload();
   }
 
   removeRows(rowIds) {
-    this._getTree().delete_node(this.toId(rowIds));
+    this.reload();
   }
 
   getSelectedRows() {
-    return this._getTree()
-      .get_selected(true)
-      .map((element) => element.data);
+    return this.waveTable.getSelectedRows();
   }
 
   getActiveRow() {
-    return waveTable.get($(this.containerName).get_selected(true)[0].data);
+    return this.waveTable.getActiveRow();
   }
 
   showValuesAt(time) {
@@ -146,7 +99,7 @@ export class ValueCol {
       time = this.waveTable.getCursorTime();
     }
     this.waveTable.getRows().forEach((row) => {
-      this._getTree().rename_node(this.toId(row.id), row.data.getValueAt(time));
+      this.getDomItem(row.id).text(row.data.getValueAt(time));
     });
   }
 
@@ -154,8 +107,8 @@ export class ValueCol {
     return `signal-value-${rowId}`;
   }
 
-  _getTree(arg = true) {
-    return $(this.containerName).jstree(arg);
+  getDomItem(rowId) {
+    return $(`#${this.toId(rowId)}`);
   }
 
   setRadix(rowId) {

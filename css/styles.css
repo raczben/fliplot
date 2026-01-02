@@ -180,7 +180,7 @@ footer {
 }
 
 .signal-name,
-.signal-value {
+.value-col-item {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -188,6 +188,10 @@ footer {
   font-family: sans-serif;
   height: 24px;
   line-height: 24px; /* same as height! */
+}
+
+.value-col-item-selected {
+  background-color: #555;
 }
 
 #object-tree {

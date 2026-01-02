@@ -33,6 +33,9 @@ export class WaveTable {
     this._waveAxisResizeObserver = resizeObserver;
     this.attachZoomHandler();
     this.waveAxisContainer.addEventListener("click", (event) => this.handleClickOnWaveAxis(event));
+
+    this.selectedRows = [];
+    this.activeRow = null;
   }
 
   /**
@@ -112,13 +115,11 @@ export class WaveTable {
       const rowHeight = config.rowHeight;
       rowBottom += rowHeight;
       if (yAbbs < rowBottom) {
-        // we found the row that was clicked
-        // select the row in the nameCol and valueCol
+        // we found the row that was clicked, lets call the rowClicked method
+        const ctrlkey = event.ctrlKey || event.metaKey;
+        const shiftkey = event.shiftKey;
         const rowId = row.id;
-        this.nameCol.deSelectAllRows();
-        // this.valueCol.deSelectAllRows(); <-- not needed Names col will call it...
-        this.nameCol.selectRow(rowId);
-        // this.valueCol.selectRow(rowId); <-- not needed Names col will call it...
+        this.rowClicked(rowId, shiftkey, ctrlkey);
         break;
       }
     }
@@ -153,17 +154,78 @@ export class WaveTable {
     this.wave.reload();
   }
 
-  refresh() {
-    this.nameCol.refresh();
-    this.valueCol.refresh();
-    this.wave.refresh();
-  }
-
   clearAll() {
     this.tree = new Tree();
     this.nameCol.clearAll();
     this.valueCol.clearAll();
     this.wave.requestRender();
+  }
+
+  /**
+   * There are three source of the row de/select events: nameCol, ValueCol, and the WaveCanvas.
+   * This method handles the select/deselect functionality, modifies the selectedRows and
+   * activeRows variables, and calls the appropriate methods on the other components.
+   *
+   * @param {string} rowId the waveform-row-id in the wavetable.
+   * @param {boolean} shiftKey the state of the shift key during the click event.
+   * @param {boolean} ctrlKey the state of the ctrl key during the click event.
+   */
+  rowClicked(rowId, shiftKey, ctrlKey) {
+    if (this.selectedRows.length == 0) {
+      this.selectedRows.push(rowId);
+      this.activeRow = rowId;
+      this.selectRow(rowId);
+      return;
+    }
+    if (ctrlKey) {
+      if (this.selectedRows.includes(rowId)) {
+        // Deselect the row
+        this.selectedRows = this.selectedRows.filter((row) => row !== rowId);
+        this.deSelectRow(rowId);
+      } else {
+        this.selectedRows.push(rowId);
+        this.activeRow = rowId;
+        this.selectRow(rowId);
+      }
+      return;
+    }
+    if (shiftKey) {
+      // get the indexes between the activeRow and the clicked one.
+      const visibleRows = this.getRows({ hidden: false, content: false });
+      const activeRowIndex = visibleRows.findIndex((row) => row.id === this.activeRow);
+      const clickedRowIndex = visibleRows.findIndex((row) => row.id === rowId);
+      const start = Math.min(activeRowIndex, clickedRowIndex);
+      const end = Math.max(activeRowIndex, clickedRowIndex);
+
+      // Go through all rows between start and end and create a new list.
+      const newSelectedRows = [];
+      visibleRows.slice(start, end + 1).forEach((row) => {
+        newSelectedRows.push(row.id);
+      });
+      // Deselect rows that are not in the new selection
+      this.selectedRows.forEach((row) => {
+        if (!newSelectedRows.includes(row)) {
+          this.deSelectRow(row);
+        }
+      });
+
+      // calculate the differences between newSelectedRows and selectedRows
+      newSelectedRows.forEach((row) => {
+        this.selectedRows.push(row);
+        this.selectRow(row);
+      });
+    } else {
+      // shiftKey == false and ctrlKey == false
+      // deselect all rows and select only the clicked one
+      this.selectedRows.forEach((row) => {
+        if (row !== rowId) {
+          this.deSelectRow(row);
+        }
+      });
+      this.selectedRows = [rowId];
+      this.activeRow = rowId;
+      this.selectRow(rowId);
+    }
   }
 
   selectRow(rowId) {
@@ -289,8 +351,9 @@ export class WaveTable {
     return this.tree.getChildren(parent, traverse, field, hidden);
   }
 
-  getRow({ id, content = false }) {
-    const n = this.get(id);
+  getRow(id, content = false) {
+    return this.tree.get(id);
+    const n = this.tree.get(id);
     return content ? n.data : n;
   }
 
