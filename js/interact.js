@@ -172,60 +172,6 @@ function parseInitShow(vcdcontent) {
 }
 
 /**
- * Clear the highlight of a given (or all) signal. The highlighted signal has vivid blue background
- * color, and the cursor will step on this signal's transients.
- *
- * @param {string} signalID The ID of the signal that has to be de-highlighted or null to de
- * highlight all signals.
- */
-function deHighlightSignal(signalID = undefined) {
-  if (signalID === undefined) {
-    window.waveTable.getSelectedRows().forEach((rowid) => {
-      deHighlightSignal(rowid);
-    });
-  } else {
-    $("#names-col-container-scroll").jstree().deselect_node(`signal-name-${signalID}`);
-    $("#values-col-container").jstree().deselect_node(`signal-value-${signalID}`);
-    d3.selectAll(`.${signalID}`).classed("highlighted-signal", false);
-
-    setTimeout(() => {
-      if (window.waveTable.getSelectedRows().length == 0) {
-        highlightSignal(signalID, false);
-      }
-    }, 10);
-  }
-}
-
-/**
- * Highlight a given signal. The highlighted signal has vivid blue background color, and the cursor
- * will step on this signal's transients.
- *
- * @param {string} signalID The ID of the signal that has to be highlighted
- */
-function highlightSignal(signalID, deHighlightOthers = true) {
-  if (deHighlightOthers) {
-    deHighlightSignal();
-  }
-  d3.selectAll(`.${signalID}`).classed("highlighted-signal", true);
-  $("#names-col-container-scroll").jstree().select_node(`signal-name-${signalID}`);
-  $("#values-col-container").jstree().select_node(`signal-value-${signalID}`);
-}
-
-/**
- * Highlight a given signal. The highlighted signal has vivid blue background color, and the cursor
- * will step on this signal's transients.
- *
- * @param {string} signalID The ID of the signal that has to be highlighted
- */
-function toggleHighlightSignal(signalID, enableZeroSelection = false) {
-  if (window.waveTable.getSelectedRows().includes(window.waveTable.get(signalID))) {
-    deHighlightSignal(signalID);
-  } else {
-    highlightSignal(signalID, false);
-  }
-}
-
-/**
  * Open a file from file input check the size (gives an alert above 1MB)
  * The reads the content of the file and call the parseInitShow() function.
  *
@@ -291,18 +237,16 @@ $(function () {
     },
 
     build: function ($triggerElement, e) {
-      // The element what has been right-clicked, (which opened the context menu)
-      var targ = e.target;
-      while (!$(targ).hasClass("signal-highlighter")) {
-        targ = targ.parentElement;
-        if (targ === null) {
-          console.log("ERROR tarrg is null");
-          return {};
+      // Get the clicked element:
+      const clickedElement = e.target;
+      // check if the clicked element is selected in the waveTable
+      const rowId = $(clickedElement).closest(".name-col-item").attr("data-row-id");
+      if (!window.waveTable.isSelected(rowId)) {
+        // if there are more than one selected row (it is a real selection): keep it.
+        // othervise deselect the other selected rows and select the clicked one
+        if (window.waveTable.getSelectedRows().length < 2) {
+          window.waveTable.rowClicked(rowId, false, false);
         }
-      }
-      if (window.waveTable.getSelectedRows().length <= 1) {
-        const waveformRow = d3.select(e.target).datum();
-        highlightSignal(waveformRow.id);
       }
       return {};
     },

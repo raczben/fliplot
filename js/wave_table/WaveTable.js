@@ -197,22 +197,13 @@ export class WaveTable {
       const start = Math.min(activeRowIndex, clickedRowIndex);
       const end = Math.max(activeRowIndex, clickedRowIndex);
 
-      // Go through all rows between start and end and create a new list.
-      const newSelectedRows = [];
-      visibleRows.slice(start, end + 1).forEach((row) => {
-        newSelectedRows.push(row.id);
-      });
-      // Deselect rows that are not in the new selection
-      this.selectedRows.forEach((row) => {
-        if (!newSelectedRows.includes(row)) {
-          this.deSelectRow(row);
-        }
-      });
+      // Deselect all rows
+      this.deSelectAll();
 
-      // calculate the differences between newSelectedRows and selectedRows
-      newSelectedRows.forEach((row) => {
-        this.selectedRows.push(row);
-        this.selectRow(row);
+      // Go through all rows between start and end and create a new list.
+      visibleRows.slice(start, end + 1).forEach((row) => {
+        this.selectedRows.push(row.id);
+        this.selectRow(row.id);
       });
     } else {
       // shiftKey == false and ctrlKey == false
@@ -237,6 +228,15 @@ export class WaveTable {
   deSelectRow(rowId) {
     this.nameCol.deSelectRow(rowId);
     this.valueCol.deSelectRow(rowId);
+    this.wave.requestRender();
+  }
+
+  deSelectAll() {
+    this.selectedRows.forEach((rowId) => {
+      this.nameCol.deSelectRow(rowId);
+      this.valueCol.deSelectRow(rowId);
+    });
+    this.selectedRows = [];
     this.wave.requestRender();
   }
 
