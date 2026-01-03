@@ -1,5 +1,6 @@
 import $ from "jquery";
 import { WaveTable } from "./WaveTable.js";
+import { Tree } from "../core/tree.js";
 
 export class NameCol {
   constructor(waveTable, init = true) {
@@ -27,7 +28,7 @@ export class NameCol {
     this.domContainer.unbind("dblclick");
 
     // handle select/deselect
-    this.domContainer.on("click", ".name-col-item", (event) => {
+    this.domContainer.on("click", "li.name-col-item", (event) => {
       const rowId = $(event.currentTarget).data("row-id");
       const ctrlkey = event.ctrlKey || event.metaKey;
       const shiftkey = event.shiftKey;
@@ -89,29 +90,41 @@ export class NameCol {
 
   reload() {
     this.domContainer.empty();
+
+    //add ul element after each node which is not a leaf
+    this.domContainer.append(
+      `<ul id="ul-${this.toId(Tree.ROOT_ID)}" class="name-col-item" data-row-id="${Tree.ROOT_ID}">
+        </ul>`
+    );
     this.waveTable.getRows().forEach((row) => {
-      var domId = this.toId(row.id);
-      var name = row.data.name;
-      var wfrId = row.id;
-      var depth = row.getDepth();
-      var isOpen = row.opened;
+      const domId = this.toId(row.id);
+      const name = row.data.name;
+      const wfrId = row.id;
+      const depth = row.getDepth();
+      const isOpen = row.opened;
       var oclCharacter = "&nbsp".repeat(depth);
-      var leaf = row.children.length == 0;
+      const parentId = row.parent.id;
+      const leaf = row.children.length == 0;
       if (!leaf) {
         oclCharacter = isOpen ? "▾" : "▸";
       }
 
+      // get the parent ul element:
+      const parentUl = $(`#ul-${this.toId(parentId)}`);
+
       // add li element for each node
-
-      //add ul element after each node which is not a leaf
-
-      // add a new div to domContainer
-      this.domContainer.append(
-        `<div id="${domId}" class="name-col-item" data-row-id="${wfrId}">
+      parentUl.append(
+        `<li id="${domId}" class="name-col-item" data-row-id="${wfrId}">
         <div class="name-col-item-ocl">${oclCharacter}</div>
         <div class="name-col-item-text">${name}</div>
-        </div>`
+        </li>`
       );
+      //add ul element after each node which is not a leaf
+      if (!leaf) {
+        parentUl.append(
+          `<ul id="ul-${this.toId(wfrId)}" class="name-col-item${!isOpen ? " hidden" : ""}"></ul>`
+        );
+      }
     });
 
     this.selectRows();

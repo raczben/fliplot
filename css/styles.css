@@ -179,7 +179,7 @@ footer {
   transform: translateX(8px);
 }
 
-.name-col-item,
+li.name-col-item,
 .value-col-item {
   white-space: nowrap;
   overflow: hidden;

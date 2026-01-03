@@ -9,7 +9,7 @@ describe("Tree Test", () => {
     expect(t.getId("asd")).toBe("asd");
     expect(t.getParent("asd")).toBe(t._root);
     expect(t.getChildren("asd")).toEqual([]);
-    expect(t.getChildren("#")).toEqual([t.get("asd")]);
+    expect(t.getChildren("---")).toEqual([t.get("asd")]);
   });
 
   test("more insert", () => {
@@ -117,7 +117,7 @@ describe("Tree Test", () => {
     t.move("b", 3, "a");
     expect(t.get("b").children.map((n) => n.id)).toEqual(["b0", "b1"]);
     expect(t.get("a").children.map((n) => n.id)).toEqual(["a0", "a1", "b2", "b"]);
-    expect(t.getChildren("#").map((n) => n.id)).toEqual(["a", "a0", "a1", "b2", "b", "b0", "b1"]);
+    expect(t.getChildren("---").map((n) => n.id)).toEqual(["a", "a0", "a1", "b2", "b", "b0", "b1"]);
   });
 
   test("remove", () => {
@@ -142,11 +142,11 @@ describe("Tree Test", () => {
     expect(Object.keys(t.nodes).length).toBe(6);
 
     t.remove("b", 0);
-    expect(t.getChildren("#").map((n) => n.id)).toEqual(["a", "a0", "a1"]);
+    expect(t.getChildren("---").map((n) => n.id)).toEqual(["a", "a0", "a1"]);
     expect(Object.keys(t.nodes).length).toBe(4);
 
     t.remove("a", 0);
-    expect(t.getChildren("#").map((n) => n.id)).toEqual([]);
+    expect(t.getChildren("---").map((n) => n.id)).toEqual([]);
     expect(Object.keys(t.nodes).length).toBe(1);
   });
 

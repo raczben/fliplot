@@ -22,7 +22,7 @@ export class ObjectTree {
         if (obj.hierarchy.length > 1) {
           treeObj["parent"] = obj.hierarchy.slice(0, -1);
         } else {
-          treeObj["parent"] = "#";
+          treeObj["parent"] = "---";
         }
         treeObj["text"] = obj.hierarchy[obj.hierarchy.length - 1];
 

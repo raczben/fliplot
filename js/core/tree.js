@@ -37,12 +37,14 @@ export class Tree {
     PREORDER: "preorder"
   });
 
+  static ROOT_ID = "---";
+
   /**
    *
    * @param {string} id the id of the root node.
    * @param {*} data the payload of the root node.
    */
-  constructor(id = "#", data) {
+  constructor(id = Tree.ROOT_ID, data) {
     this._root = new Node(id, data, null, []);
     this._root.opened = true;
     this.nodes = {};
