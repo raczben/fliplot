@@ -210,6 +210,16 @@ footer {
   background-color: #555;
 }
 
+.dnd-helper {
+  /* make it transparent */
+  background-color: rgba(71, 84, 204, 0.849);
+}
+
+.ui-sortable-helper {
+  /* make it transparent */
+  background-color: rgba(185, 14, 14, 0.849);
+}
+
 #object-tree {
   white-space: nowrap;
   text-overflow: ellipsis;

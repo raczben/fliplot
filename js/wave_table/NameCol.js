@@ -24,6 +24,7 @@ export class NameCol {
     }, 0);
 
     this.domContainer.unbind("click");
+    this.domContainer.unbind("dblclick");
 
     // handle select/deselect
     this.domContainer.on("click", ".name-col-item", (event) => {
@@ -38,11 +39,57 @@ export class NameCol {
       const rowId = $(event.currentTarget).parent().data("row-id");
       this.waveTable.toggleGroup(rowId);
     });
+
+    // on double click do open/close too:
+    this.domContainer.on("dblclick", ".name-col-item", (event) => {
+      event.stopPropagation();
+      const rowId = $(event.currentTarget).data("row-id");
+      this.waveTable.toggleGroup(rowId);
+    });
+
+    // add dnd support.
+    this.domContainer.sortable({
+      items: ".name-col-item",
+
+      helper: function (e, item) {
+        // Move multiple element together
+        if (window.waveTable.getSelectedRows().length < 2) {
+          const rowId = item.data("row-id");
+          window.waveTable.rowClicked(rowId, false, false);
+        }
+        var selected = $(".name-col-item-selected");
+        var helper = $("<div/>");
+        helper.addClass("dnd-helper").css("opacity", "0.5");
+        helper.append(selected.clone());
+        return helper;
+      },
+      start: function (e, ui) {
+        var selected = ui.item.parent().children(".name-col-item-selected");
+        ui.item.data("selected", selected);
+        // Hide all selected except the dragged one
+        // selected.not(ui.item).hide();
+      },
+
+      // start: function (event, ui) {
+      //   ui.item.addClass(".name-col-item-selected");
+      // },
+      update: (event, ui) => {
+        const rowIds = window.waveTable.getSelectedRows();
+        const newPos = ui.item.index();
+        // transform the position to a parent and a relative position in that parent:
+        // get the orig node of newPos:
+        const origNode = this.waveTable.getRowAtVisiblePos(newPos);
+        const origNodeParent = origNode.parent;
+        // get the position in that parent:
+        const newrelativePos = origNodeParent.children.indexOf(origNode);
+        this.waveTable.moveRows(rowIds, newrelativePos, origNodeParent.id);
+      }
+    });
   }
 
   reload() {
     this.domContainer.empty();
-    this.waveTable.getRows({ hidden: false }).forEach((row) => {
+    this.waveTable.getRows().forEach((row) => {
       var domId = this.toId(row.id);
       var name = row.data.name;
       var wfrId = row.id;
@@ -54,6 +101,10 @@ export class NameCol {
         oclCharacter = isOpen ? "▾" : "▸";
       }
 
+      // add li element for each node
+
+      //add ul element after each node which is not a leaf
+
       // add a new div to domContainer
       this.domContainer.append(
         `<div id="${domId}" class="name-col-item" data-row-id="${wfrId}">
@@ -62,12 +113,20 @@ export class NameCol {
         </div>`
       );
     });
+
+    this.selectRows();
   }
 
   clearAll() {}
 
   selectRow(rowId) {
     this.getDomItem(rowId).addClass("name-col-item-selected");
+  }
+
+  selectRows() {
+    this.waveTable.getSelectedRows().forEach((rowId) => {
+      this.selectRow(rowId);
+    });
   }
 
   deSelectRow(rowId) {

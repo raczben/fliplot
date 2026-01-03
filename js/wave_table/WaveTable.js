@@ -240,7 +240,25 @@ export class WaveTable {
     this.wave.requestRender();
   }
 
-  moveRow(rowId, pos, parent) {
+  moveRows(rowIds, pos, parent = null) {
+    // sort rows by visual position
+    const visibleRows = this.getRows({ hidden: false, content: false });
+    rowIds.sort((a, b) => {
+      const indexA = visibleRows.findIndex((row) => row.id === a);
+      const indexB = visibleRows.findIndex((row) => row.id === b);
+      return indexB - indexA;
+    });
+    rowIds.forEach((rowId, index) => {
+      let targetPos = pos;
+      // when moving multiple rows, the position shifts by one for each subsequent row
+      if (index > 0 && visibleRows.findIndex((row) => row.id === rowId) < pos) {
+        targetPos -= 1;
+      }
+      this.moveRow(rowId, targetPos, parent);
+    });
+  }
+
+  moveRow(rowId, pos, parent = null) {
     this.tree.move(rowId, pos, parent);
     this.nameCol.moveRow(rowId, pos, parent);
     this.valueCol.moveRow(rowId, pos, parent);
@@ -271,6 +289,10 @@ export class WaveTable {
 
   removeRow(rowId) {
     this.tree.remove(rowId);
+    this.selectedRows = this.selectedRows.filter((row) => row !== rowId);
+    if (this.activeRow == rowId) {
+      this.activeRow = null;
+    }
     this.nameCol.removeRow(rowId);
     this.valueCol.removeRow(rowId);
     this.wave.requestRender();
@@ -280,6 +302,8 @@ export class WaveTable {
     if (rowIds === undefined) {
       rowIds = this.getSelectedRows();
     }
+    // sort by depth descending to remove children before parents
+    rowIds.sort((a, b) => this.tree.getDepth(b) - this.tree.getDepth(a));
     rowIds.forEach((element) => {
       this.removeRow(element);
     });
@@ -366,6 +390,11 @@ export class WaveTable {
     return this.activeRow;
   }
 
+  getRowAtVisiblePos(pos) {
+    const visibleRows = this.getRows({ hidden: false, content: false });
+    return visibleRows[pos];
+  }
+
   getSelectedRows(ids = true) {
     if (ids) {
       return this.selectedRows;
@@ -387,6 +416,7 @@ export class WaveTable {
   getActiveRow(id = true) {
     if (this.activeRow == null) {
       console.warn("No active row found in WaveTable.");
+      return null;
     }
     return this.getRow(this.activeRow, !id);
   }

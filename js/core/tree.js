@@ -62,7 +62,11 @@ export class Tree {
     if (id.constructor == Node) {
       id = id.id;
     }
-    return this.nodes[id];
+    let node = this.nodes[id];
+    if (!node) {
+      throw new Error("Node not found. id: " + id);
+    }
+    return node;
   }
 
   /**
@@ -143,11 +147,11 @@ export class Tree {
    *
    * @param {Node |string} node the node (or its id) to move.
    * @param {number} pos the position to move the node to.
-   * @param {Node} parent the parent node (or its id) to move the node into.
+   * @param {Node} parent the parent node (or its id) to move the node into. If null, keeps the current parent.
    * @param {boolean} force whether to force the move even if the target place is the same.
    * @returns
    */
-  move(node, pos, parent, force = false) {
+  move(node, pos, parent = null, force = false) {
     node = this.get(node);
     if (!parent) {
       parent = node.parent;

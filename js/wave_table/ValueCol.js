@@ -46,12 +46,19 @@ export class ValueCol {
       );
     });
     this.showValuesAt();
+    this.selectRows();
   }
 
   clearAll() {}
 
   selectRow(rowId) {
     this.getDomItem(rowId).addClass("value-col-item-selected");
+  }
+
+  selectRows() {
+    this.waveTable.getSelectedRows().forEach((rowId) => {
+      this.selectRow(rowId);
+    });
   }
 
   deSelectRow(rowId) {

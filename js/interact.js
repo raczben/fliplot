@@ -252,12 +252,21 @@ $(function () {
     },
     zIndex: 1100,
     items: {
-      rename: { name: "Rename", icon: "edit" },
+      rename: {
+        name: "Rename",
+        icon: "edit",
+        visible: function () {
+          return window.waveTable.getActiveRow(false) !== null;
+        }
+      },
       waveStyle: {
         name: "Wave Style",
         items: {
           "waveStyle-analog": { name: "analog" },
           "waveStyle-bus": { name: "bus" }
+        },
+        visible: function () {
+          return window.waveTable.getActiveRow(false) !== null;
         }
       },
       radix: {
@@ -276,6 +285,9 @@ $(function () {
               return row && row.simObj.getWidth() === 32;
             }
           }
+        },
+        visible: function () {
+          return window.waveTable.getActiveRow(false) !== null;
         }
       },
       sep1: "---------",
@@ -283,7 +295,13 @@ $(function () {
       virtualBus: { name: "New Virtual Bus" },
       divider: { name: "New Divider" },
       sep2: "---------",
-      remove: { name: "Remove", icon: "delete" }
+      remove: {
+        name: "Remove",
+        icon: "delete",
+        visible: function () {
+          return window.waveTable.getActiveRow(false) !== null;
+        }
+      }
     }
   });
 });
