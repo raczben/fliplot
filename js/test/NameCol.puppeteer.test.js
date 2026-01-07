@@ -38,6 +38,7 @@ describe("NameCol integration (jsTree UI)", () => {
 
     // await page.screenshot({path: 'screenshots/empty_page.png'});
 
+    console.log("TEST0");
     await page.click("#wiki");
     console.log("TEST1");
 
@@ -46,7 +47,7 @@ describe("NameCol integration (jsTree UI)", () => {
 
     // await page.screenshot({path: 'screenshots/loaded.png'});
     // TODO: Workaround: waiting the last element in the js tree to be loaded.
-    await page.waitForSelector("#signal-name-wfr-14");
+    await page.waitForSelector("#name-col-wfr-14");
     console.log("TEST2");
 
     const signalNames = await page.$$eval("#names-col-container-scroll li > a", (els) =>

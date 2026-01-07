@@ -39,6 +39,7 @@ export class NameCol {
           data: [],
           animation: false,
           themes: {
+            name: "default-dark",
             icons: false
           },
           check_callback: function (op, node, par, pos, more) {
@@ -47,11 +48,75 @@ export class NameCol {
             }
             return true;
           }
+        },
+        dnd: {
+          is_draggable: function (nodes) {
+            // For simplification allow multiple nodes only id they share the same parent
+            if (nodes.length > 1) {
+              const parent = nodes[0].parent;
+              for (let i = 1; i < nodes.length; i++) {
+                if (nodes[i].parent != parent) {
+                  return false;
+                }
+              }
+            }
+            return true;
+          }
         }
       })
       .on("move_node.jstree", function (e, data) {
-        // console.log("NameCol: move_node.jstree", data);
+        console.log("NameCol: move_node.jstree", data);
+        const nodeWtId = data.node.data; // the dragged node
+        const parentNcId = data.parent;
+        const parentWtId = self.toWaveTableId(parentNcId); // the intended new parent
+        const oldParentNcId = data.old_parent;
+        const oldParentWtId = self.toWaveTableId(oldParentNcId); // previous parent
+
+        if (parentNcId !== "#") {
+          const newParentData = self.waveTable.getRow(parentWtId).data;
+          // if the new parent is a bus ask user to confirm if he wants to create a virtual bus
+          if (newParentData.type == "signal") {
+            if (
+              !confirm(
+                `The new parent (${newParentData.name}) is a bus. Do you want to create a virtual bus from that?`
+              )
+            ) {
+              // cacel the move:
+              return false;
+            } else {
+              // create a virtual bus
+              setTimeout(() => {
+                self.waveTable.removeRow(parentWtId);
+                self.waveTable.addVirtualBus();
+              }, 0);
+              return false;
+            }
+          }
+        }
+
+        if (oldParentWtId !== "#" && oldParentWtId !== parentWtId) {
+          const oldParentData = self.waveTable.getRow(parentWtId).data;
+          // if the old parent is a bus ask user to confirm if he wants to create a virtual bus
+          if (oldParentData.type == "signal") {
+            if (
+              !confirm(
+                `The old parent (${oldParentData.name}) is a bus. Do you want to create a virtual bus from that?`
+              )
+            ) {
+              // cacel the move:
+              return false;
+            } else {
+              // create a virtual bus
+              setTimeout(() => {
+                self.waveTable.removeRow(parentWtId);
+                self.waveTable.addVirtualBus();
+              }, 0);
+              return false;
+            }
+          }
+        }
         self.waveTable.moveRow(data.node.data, data.position);
+        return true;
       })
       .on("open_node.jstree", function (e, data) {
         // console.log("NameCol: open_node.jstree", data);
@@ -88,11 +153,11 @@ export class NameCol {
     const tree = [];
     this.waveTable.getRows().forEach((row) => {
       var treeObj = {};
-      treeObj["id"] = this.toId(row.id);
+      treeObj["id"] = this.toNameColId(row.id);
       if (row.parent.id == "#") {
         treeObj["parent"] = "#";
       } else {
-        treeObj["parent"] = this.toId(row.parent.id);
+        treeObj["parent"] = this.toNameColId(row.parent.id);
       }
       treeObj["text"] = row.data.name;
       treeObj["data"] = row.id;
@@ -106,6 +171,16 @@ export class NameCol {
     }, 10);
   }
 
+  rowClicked(rowId, shiftKey, ctrlKey) {
+    // Based on: https://stackoverflow.com/a/28896335/2506522
+
+    var clickEvent = jQuery.Event("click");
+    clickEvent.shiftKey = shiftKey;
+    clickEvent.ctrlKey = ctrlKey;
+
+    $("li#" + this.toNameColId(rowId) + " > .jstree-anchor").trigger(clickEvent);
+  }
+
   refresh() {
     this._getTree().refresh();
   }
@@ -113,32 +188,6 @@ export class NameCol {
   clearAll() {
     $(this.containerName).jstree("destroy").empty();
     // d3.select(this.containerName).selectAll("*").remove();
-  }
-
-  /**
-   * Select the given row.
-   * @param {string|number} rowId - The ID (string) or the index (number) of the row.
-   * @param {boolean} add - If true, the row will be added to the selection instead of replacing it.
-   */
-
-  selectRow(rowId) {
-    const selRows = this.getSelectedRows();
-    if (selRows.includes(rowId)) {
-      // If already selected, do nothing.
-      // console.warn(`Row ${rowId} is already selected.`);
-      return;
-    }
-    this._getTree().select_node(this.toId(rowId));
-  }
-
-  deSelectRow(rowId) {
-    const selRows = this.getSelectedRows();
-    if (selRows.includes(rowId)) {
-      this._getTree().deselect_node(this.toId(rowId));
-      return;
-    }
-    // If already de-selected, do nothing.
-    // console.warn(`Row ${rowId} is already DEselected.`);
   }
 
   deSelectAllRows() {
@@ -150,11 +199,11 @@ export class NameCol {
   }
 
   openGroup(rowId) {
-    this._getTree().open_node(this.toId(rowId));
+    this._getTree().open_node(this.toNameColId(rowId));
   }
 
   closeGroup(rowId) {
-    this._getTree().select_node(this.toId(rowId));
+    this._getTree().select_node(this.toNameColId(rowId));
   }
 
   insertRow(rowId, parent, pos = "last") {
@@ -166,7 +215,7 @@ export class NameCol {
   }
 
   removeRows(rowIds) {
-    this._getTree().delete_node(this.toId(rowIds));
+    this._getTree().delete_node(this.toNameColId(rowIds));
   }
 
   getSelectedRows() {
@@ -181,7 +230,7 @@ export class NameCol {
    * @returns {boolean} - True if the row is selected, false otherwise
    */
   isSelected(rowId) {
-    return this._getTree().is_selected(this.toId(rowId));
+    return this._getTree().is_selected(this.toNameColId(rowId));
   }
 
   getActiveRow() {
@@ -189,11 +238,15 @@ export class NameCol {
   }
 
   rename(rowId, name) {
-    this._getTree().rename_node(this.toId(rowId), name);
+    this._getTree().rename_node(this.toNameColId(rowId), name);
   }
 
-  toId(rowId) {
-    return `signal-name-${rowId}`;
+  toNameColId(wtId) {
+    return `name-col-${wtId}`;
+  }
+
+  toWaveTableId(ncId) {
+    return ncId.substring(9); // remove "name-col-"
   }
 
   _getTree(arg = true) {
@@ -201,13 +254,13 @@ export class NameCol {
   }
 
   get_node(rowId) {
-    return this._getTree().get_node(this.toId(rowId));
+    return this._getTree().get_node(this.toNameColId(rowId));
   }
 
   editName(rowId) {
     const nameEditorId = "nameeditorinput";
     const nameEditorId2 = `#${nameEditorId}`;
-    const li = $(`#${this.toId(rowId)}`);
+    const li = $(`#${this.toNameColId(rowId)}`);
     li.find("a").toggle();
     li.find("div").toggle();
     const input = $("<input></input>")
@@ -230,7 +283,7 @@ export class NameCol {
   }
 
   editNameEnd(rowId, accept = true) {
-    const li = $(`#${this.toId(rowId)}`);
+    const li = $(`#${this.toNameColId(rowId)}`);
     const input = li.find("input");
     const val = input.val();
     input.remove();

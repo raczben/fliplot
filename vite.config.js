@@ -13,6 +13,7 @@ export default defineConfig({
   base: "./", // relative paths for assets
   build: {
     outDir: "dist",
+    sourcemap: true,
     emptyOutDir: true,
     rollupOptions: {
       input: "index.html"

@@ -1,0 +1,22 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "firefox",
+      "request": "launch",
+      "reAttach": true,
+      "name": "Firefox-localhost launch",
+      "url": "http://localhost:5173/index.html",
+      "webRoot": "${workspaceFolder}",
+      //   Based on: https://stackoverflow.com/a/77597038/2506522
+      "tmpDir": "${HOME}/tmp"
+    },
+    {
+      "name": "Launch index.html",
+      "type": "firefox",
+      "request": "launch",
+      "reAttach": true,
+      "file": "${workspaceFolder}/index.html"
+    }
+  ]
+}
