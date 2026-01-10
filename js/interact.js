@@ -66,7 +66,7 @@ $("#zoom-out").on("click", () => {
 });
 
 $("#remove-all").on("click", () => {
-  window.waveTable.clearAll();
+  window.waveTable.nameCol.clearAll();
 });
 
 $("#cursor-to-0").on("click", () => {
@@ -274,7 +274,7 @@ $(function () {
           break;
         case /remove/.test(key):
           setTimeout(() => {
-            window.waveTable.removeRows();
+            window.waveTable.nameCol.removeRows();
           }, 0);
           break;
         case /radix-.+/.test(key):

@@ -1,6 +1,5 @@
 import { SimDB } from "../core/SimDB.js";
 import { SimulationObject } from "../core/SimulationObject.js";
-import { Tree } from "../core/tree.js";
 import { WaveformRow } from "../core/WaveformRow.js";
 import { NameCol } from "./NameCol.js";
 import { ValueCol } from "./ValueCol.js";
@@ -13,8 +12,7 @@ export class WaveTable {
       throw "ERROR";
     }
     this.simDB = simDB;
-    /**  @type {Tree} */
-    this.tree = new Tree();
+    this.wfRows = [];
     this.nameCol = new NameCol(this);
     this.valueCol = new ValueCol(this);
     this.wave = new WaveCanvas(this);
@@ -145,20 +143,9 @@ export class WaveTable {
   }
 
   reload() {
-    this.nameCol.init();
-    this.valueCol.init();
-    this.wave.init();
-
     this.nameCol.reload();
     this.valueCol.reload();
     this.wave.reload();
-  }
-
-  clearAll() {
-    this.tree = new Tree();
-    this.nameCol.clearAll();
-    this.valueCol.clearAll();
-    this.wave.requestRender();
   }
 
   /**
@@ -175,52 +162,34 @@ export class WaveTable {
   }
 
   selectRow(rowId) {
-    // this.nameCol.selectRow(rowId);
     this.valueCol.selectRow(rowId);
     this.wave.requestRender();
   }
 
   deSelectRow(rowId) {
-    // this.nameCol.deSelectRow(rowId);
     this.valueCol.deSelectRow(rowId);
     this.wave.requestRender();
   }
 
   moveRow(rowId, pos, parent) {
-    this.tree.move(rowId, pos, parent);
-    this.nameCol.moveRow(rowId, pos, parent);
     this.valueCol.moveRow(rowId, pos, parent);
     this.wave.requestRender();
   }
 
   openGroup(rowId) {
-    this.tree.open(rowId);
-    this.nameCol.openGroup(rowId);
     this.valueCol.openGroup(rowId);
     this.wave.requestRender();
   }
 
   closeGroup(rowId) {
-    this.tree.close(rowId);
-    this.nameCol.closeGroup(rowId);
     this.valueCol.closeGroup(rowId);
     this.wave.requestRender();
   }
 
   removeRow(rowId) {
-    this.tree.remove(rowId);
-    this.nameCol.removeRow(rowId);
+    delete this.wfRows[rowId];
     this.valueCol.removeRow(rowId);
     this.wave.requestRender();
-  }
-
-  removeRows(rowIds) {
-    if (rowIds === undefined) {
-      rowIds = this.getSelectedRows();
-    }
-    rowIds.forEach((element) => {
-      this.removeRow(element);
-    });
   }
 
   /**
@@ -232,13 +201,14 @@ export class WaveTable {
    * @param {boolean} busAsBus
    * @param {boolean} render
    */
-  insertWaveSignal(hierarchy, parent = null, position = -1, busAsBus = true, render = true) {
+  insertWaveSignal(hierarchy, parent = null, position = "last", busAsBus = true, render = true) {
     /** @type {SimulationObject} obj */
     const obj = this.simDB.getObject(hierarchy);
     /** @type {WaveformRow} rowItem */
     const rowItem = new WaveformRow(obj);
 
-    this.tree.insert(rowItem.id, parent, position, rowItem);
+    this.wfRows[rowItem.id] = rowItem;
+    this.nameCol.insertRow(rowItem, parent, position);
 
     if (busAsBus && rowItem.waveStyle == "bus") {
       // If the signal is a bus, insert all sub-signals
@@ -246,7 +216,8 @@ export class WaveTable {
       for (var i = obj.signal.width - 1; i > -1; i--) {
         const subObj = obj.cloneRange(i);
         const subRowItem = new WaveformRow(subObj);
-        this.tree.insert(subRowItem.id, rowItem.id, position, subRowItem);
+        this.wfRows[subRowItem.id] = subRowItem;
+        this.nameCol.insertRow(subRowItem, rowItem.id, "last");
       }
     }
 
@@ -263,7 +234,7 @@ export class WaveTable {
    */
   addAllWaveSignal(clear = true) {
     if (clear) {
-      this.tree = new Tree();
+      this.nameCol.clearAll();
     }
 
     for (var key in this.simDB.objects) {
@@ -287,18 +258,13 @@ export class WaveTable {
     hierarchies.forEach((hier) => this.insertWaveSignal(hier));
   }
 
-  getRows({
-    traverse = Tree.Traverse.PREORDER,
-    parent = null,
-    hidden = true,
-    content = false
-  } = {}) {
-    var field = content ? "data" : null;
-    return this.tree.getChildren(parent, traverse, field, hidden);
+  getRows({ parent = null, hidden = true, content = false } = {}) {
+    const rowIds = this.nameCol.getRowIds({ parent, hidden, content });
+    return rowIds.map((id) => this.wfRows[id]);
   }
 
   getRow(id, content = false) {
-    return this.tree.get(id);
+    return this.wfRows.get(id);
   }
 
   getSelectedRows(ids = true) {
@@ -306,7 +272,7 @@ export class WaveTable {
       return this.nameCol.getSelectedRows();
     } else {
       // return rows itself
-      return this.nameCol.getSelectedRows().map((element) => this.tree.get(element).data);
+      return this.nameCol.getSelectedRows().map((element) => this.wfRows.get(element).data);
     }
   }
 
@@ -325,7 +291,7 @@ export class WaveTable {
       if (id) {
         return activeId;
       } else {
-        return this.tree.get(activeId).data;
+        return this.wfRows.get(activeId).data;
       }
     } catch (e) {
       console.warn("No active row found in WaveTable.");
@@ -334,7 +300,7 @@ export class WaveTable {
   }
 
   rename(rowId, name) {
-    this.tree.get(rowId).data.name = name;
+    this.wfRows.get(rowId).data.name = name;
     this.nameCol.reload();
   }
 
@@ -343,7 +309,7 @@ export class WaveTable {
       rowIds = this.getSelectedRows();
     }
     rowIds.forEach((element) => {
-      this.tree.get(element).data.setRadix(radix);
+      this.wfRows.get(element).data.setRadix(radix);
       this.valueCol.setRadix(element);
       this.wave.requestRender();
     });

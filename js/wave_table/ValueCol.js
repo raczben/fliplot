@@ -21,7 +21,7 @@ export class ValueCol {
   init() {
     setTimeout(() => {
       this.reload();
-    }, 100);
+    }, 10);
 
     this.domContainer.unbind();
 
@@ -99,7 +99,7 @@ export class ValueCol {
       time = this.waveTable.getCursorTime();
     }
     this.waveTable.getRows().forEach((row) => {
-      this.getDomItem(row.id).text(row.data.getValueAt(time));
+      this.getDomItem(row.id).text(row.getValueAt(time));
     });
   }
 

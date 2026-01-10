@@ -118,15 +118,23 @@ export class NameCol {
         self.waveTable.moveRow(data.node.data, data.position);
         return true;
       })
-      .on("open_node.jstree", function (e, data) {
+      .on("open_node.jstree", function (_e, data) {
         // console.log("NameCol: open_node.jstree", data);
         self.waveTable.openGroup(data.node.data);
       })
-      .on("close_node.jstree", function (e, data) {
+      .on("close_node.jstree", function (_e, data) {
         // console.log("NameCol: close_node.jstree", data);
         self.waveTable.closeGroup(data.node.data);
       })
-      .on("changed.jstree", function (evt, data) {
+      .on("delete_node.jstree", function (_e, data) {
+        console.log("Node deleted:", data.node.id);
+        self.waveTable.removeRow(data.node.data);
+      })
+      .on("create_node.jstree", function (_e, data) {
+        console.log("Node create_node:", data.node.id);
+        // self.waveTable.removeRow(data.node.data);
+      })
+      .on("changed.jstree", function (_e, data) {
         // console.log("NameCol: changed.jstree", data);
         data.changed.selected.forEach((element) => {
           const data = self._getTree().get_node(element).data;
@@ -150,25 +158,74 @@ export class NameCol {
   }
 
   reload() {
-    const tree = [];
-    this.waveTable.getRows().forEach((row) => {
-      var treeObj = {};
-      treeObj["id"] = this.toNameColId(row.id);
-      if (row.parent.id == "#") {
-        treeObj["parent"] = "#";
-      } else {
-        treeObj["parent"] = this.toNameColId(row.parent.id);
-      }
-      treeObj["text"] = row.data.name;
-      treeObj["data"] = row.id;
-      tree.push(treeObj);
-    });
+    // const tree = [];
+    // this.waveTable.getRows().forEach((row) => {
+    //   var treeObj = {};
+    //   treeObj["id"] = this.toNameColId(row.id);
+    //   if (row.parent.id == "#") {
+    //     treeObj["parent"] = "#";
+    //   } else {
+    //     treeObj["parent"] = this.toNameColId(row.parent.id);
+    //   }
+    //   treeObj["text"] = row.data.name;
+    //   treeObj["data"] = row.id;
+    //   tree.push(treeObj);
+    // });
+    // this._getTree().settings.core.data = tree;
+    // clearTimeout(this.renderTimeout);
+    // this.renderTimeout = setTimeout(() => {
+    //   this.refresh();
+    // }, 10);
+  }
 
-    this._getTree().settings.core.data = tree;
-    clearTimeout(this.renderTimeout);
-    this.renderTimeout = setTimeout(() => {
-      this.refresh();
-    }, 10);
+  _walk_nodes(nodes, hidden = true) {
+    var visibles = [];
+    const self = this;
+    nodes.forEach(function (node) {
+      // presumption: the root node is visible.
+      visibles.push(node);
+      // Recurse into children only if this node is open
+      var isOpen = node.state && node.state.opened;
+      if (hidden || isOpen) {
+        if (node.children && node.children.length) {
+          visibles = visibles.concat(self._walk_nodes(node.children, hidden));
+        }
+      }
+    });
+    return visibles;
+  }
+
+  getRowIds({ parent = "#", hidden = true, WtId = true }) {
+    console.log("Hello");
+    const tree_json = this._getTree().get_json(parent);
+    const flat_nodes = this._walk_nodes(tree_json, hidden);
+    if (WtId) {
+      return flat_nodes.map((v) => this.toWaveTableId(v.id));
+    } else {
+      return flat_nodes.map((v) => v.id);
+    }
+  }
+
+  insertRow(wfRow, parent = null, position = "last") {
+    if (!parent) {
+      parent = "#";
+    } else {
+      parent = this.toNameColId(parent);
+    }
+    if (position < 0) {
+      position = "last";
+    }
+    const wfrId = wfRow.id;
+    const ncId = this.toNameColId(wfrId);
+    this._getTree().create_node(
+      parent,
+      {
+        id: ncId,
+        text: wfRow.name,
+        data: wfrId
+      },
+      position
+    );
   }
 
   rowClicked(rowId, shiftKey, ctrlKey) {
@@ -186,36 +243,19 @@ export class NameCol {
   }
 
   clearAll() {
-    $(this.containerName).jstree("destroy").empty();
-    // d3.select(this.containerName).selectAll("*").remove();
-  }
-
-  deSelectAllRows() {
-    this._getTree().deselect_all();
-  }
-
-  moveRow(rowId, pos) {
-    this.reload();
-  }
-
-  openGroup(rowId) {
-    this._getTree().open_node(this.toNameColId(rowId));
-  }
-
-  closeGroup(rowId) {
-    this._getTree().select_node(this.toNameColId(rowId));
-  }
-
-  insertRow(rowId, parent, pos = "last") {
-    this.reload();
-  }
-
-  removeRow(rowId) {
-    this.removeRows(rowId);
+    var rowIds = this.getRowIds({ hidden: true, WtId: true });
+    this.removeRows(rowIds);
   }
 
   removeRows(rowIds) {
-    this._getTree().delete_node(this.toNameColId(rowIds));
+    if (!rowIds) {
+      rowIds = this.getSelectedRows();
+    }
+    if (!Array.isArray(rowIds)) {
+      rowIds = [rowIds];
+    }
+    rowIds = rowIds.map((rid) => this.toNameColId(rid));
+    this._getTree().delete_node(rowIds);
   }
 
   getSelectedRows() {
@@ -237,9 +277,9 @@ export class NameCol {
     return this._getTree().get_selected(true)[0].data;
   }
 
-  rename(rowId, name) {
-    this._getTree().rename_node(this.toNameColId(rowId), name);
-  }
+  // rename(rowId, name) {
+  //   this._getTree().rename_node(this.toNameColId(rowId), name);
+  // }
 
   toNameColId(wtId) {
     return `name-col-${wtId}`;
@@ -249,6 +289,11 @@ export class NameCol {
     return ncId.substring(9); // remove "name-col-"
   }
 
+  /**
+   *
+   * @param {boolean} arg
+   * @returns {JSTree}
+   */
   _getTree(arg = true) {
     return $(this.containerName).jstree(arg);
   }
@@ -257,40 +302,40 @@ export class NameCol {
     return this._getTree().get_node(this.toNameColId(rowId));
   }
 
-  editName(rowId) {
-    const nameEditorId = "nameeditorinput";
-    const nameEditorId2 = `#${nameEditorId}`;
-    const li = $(`#${this.toNameColId(rowId)}`);
-    li.find("a").toggle();
-    li.find("div").toggle();
-    const input = $("<input></input>")
-      .attr("id", nameEditorId)
-      .val(this.get_node(rowId).text)
-      .keypress((e) => {
-        if (e.which == 13) {
-          this.editNameEnd(rowId);
-        }
-        if (e.which == 27) {
-          this.editNameEnd(rowId, false);
-        }
-      })
-      .focusout((e) => {
-        this.editNameEnd(rowId, false);
-      });
-    li.append(input);
-    input.focus();
-    input[0].setSelectionRange(0, 1000);
-  }
+  // editName(rowId) {
+  //   const nameEditorId = "nameeditorinput";
+  //   const nameEditorId2 = `#${nameEditorId}`;
+  //   const li = $(`#${this.toNameColId(rowId)}`);
+  //   li.find("a").toggle();
+  //   li.find("div").toggle();
+  //   const input = $("<input></input>")
+  //     .attr("id", nameEditorId)
+  //     .val(this.get_node(rowId).text)
+  //     .keypress((e) => {
+  //       if (e.which == 13) {
+  //         this.editNameEnd(rowId);
+  //       }
+  //       if (e.which == 27) {
+  //         this.editNameEnd(rowId, false);
+  //       }
+  //     })
+  //     .focusout((e) => {
+  //       this.editNameEnd(rowId, false);
+  //     });
+  //   li.append(input);
+  //   input.focus();
+  //   input[0].setSelectionRange(0, 1000);
+  // }
 
-  editNameEnd(rowId, accept = true) {
-    const li = $(`#${this.toNameColId(rowId)}`);
-    const input = li.find("input");
-    const val = input.val();
-    input.remove();
-    li.find("a").toggle();
-    li.find("div").toggle();
-    if (accept) {
-      this.waveTable.rename(rowId, input.val());
-    }
-  }
+  // editNameEnd(rowId, accept = true) {
+  //   const li = $(`#${this.toNameColId(rowId)}`);
+  //   const input = li.find("input");
+  //   const val = input.val();
+  //   input.remove();
+  //   li.find("a").toggle();
+  //   li.find("div").toggle();
+  //   if (accept) {
+  //     this.waveTable.rename(rowId, input.val());
+  //   }
+  // }
 }
