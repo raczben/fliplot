@@ -19,10 +19,6 @@ export class ValueCol {
   }
 
   init() {
-    setTimeout(() => {
-      this.reload();
-    }, 100);
-
     this.domContainer.unbind();
 
     this.domContainer.on("click", ".value-col-item", (event) => {
@@ -48,7 +44,9 @@ export class ValueCol {
     this.showValuesAt();
   }
 
-  clearAll() {}
+  clearAll() {
+    this.reload();
+  }
 
   selectRow(rowId) {
     this.getDomItem(rowId).addClass("value-col-item-selected");

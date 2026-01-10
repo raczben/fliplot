@@ -145,13 +145,9 @@ export class WaveTable {
   }
 
   reload() {
-    this.nameCol.init();
-    this.valueCol.init();
-    this.wave.init();
-
     this.nameCol.reload();
     this.valueCol.reload();
-    this.wave.reload();
+    this.wave.requestRender();
   }
 
   clearAll() {
@@ -174,35 +170,45 @@ export class WaveTable {
     this.nameCol.rowClicked(rowId, shiftKey, ctrlKey);
   }
 
-  selectRow(rowId) {
-    // this.nameCol.selectRow(rowId);
+  selectRow(rowId, doInNameColToo = true) {
+    if (doInNameColToo) {
+      this.nameCol.selectRow(rowId);
+    }
     this.valueCol.selectRow(rowId);
     this.wave.requestRender();
   }
 
-  deSelectRow(rowId) {
-    // this.nameCol.deSelectRow(rowId);
+  deSelectRow(rowId, doInNameColToo = true) {
+    if (doInNameColToo) {
+      this.nameCol.deSelectRow(rowId);
+    }
     this.valueCol.deSelectRow(rowId);
     this.wave.requestRender();
   }
 
-  moveRow(rowId, pos, parent) {
+  moveRow(rowId, pos, parent, doInNameColToo = true) {
     this.tree.move(rowId, pos, parent);
-    this.nameCol.moveRow(rowId, pos, parent);
+    if (doInNameColToo) {
+      this.nameCol.moveRow(rowId, pos, parent);
+    }
     this.valueCol.moveRow(rowId, pos, parent);
     this.wave.requestRender();
   }
 
-  openGroup(rowId) {
+  openGroup(rowId, doInNameColToo = true) {
     this.tree.open(rowId);
-    this.nameCol.openGroup(rowId);
+    if (doInNameColToo) {
+      this.nameCol.openGroup(rowId);
+    }
     this.valueCol.openGroup(rowId);
     this.wave.requestRender();
   }
 
-  closeGroup(rowId) {
+  closeGroup(rowId, doInNameColToo = true) {
     this.tree.close(rowId);
-    this.nameCol.closeGroup(rowId);
+    if (doInNameColToo) {
+      this.nameCol.closeGroup(rowId);
+    }
     this.valueCol.closeGroup(rowId);
     this.wave.requestRender();
   }
@@ -251,8 +257,7 @@ export class WaveTable {
     }
 
     if (render) {
-      this.nameCol.reload();
-      this.valueCol.reload();
+      this.reload();
     }
 
     return rowItem.id;
@@ -261,7 +266,7 @@ export class WaveTable {
   /**
    * Add all signal from the simDB to the waveform window.
    */
-  addAllWaveSignal(clear = true) {
+  addAllWaveSignal(clear = true, render = true) {
     if (clear) {
       this.tree = new Tree();
     }
@@ -279,8 +284,9 @@ export class WaveTable {
         }
       }
     }
-    this.nameCol.reload();
-    this.valueCol.reload();
+    if (render) {
+      this.reload();
+    }
   }
 
   addObjects(hierarchies) {

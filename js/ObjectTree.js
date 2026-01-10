@@ -36,7 +36,10 @@ export class ObjectTree {
       plugins: ["search", "wholerow", "types"],
       core: {
         data: tree,
-        animation: false
+        animation: false,
+        themes: {
+          name: "default-dark"
+        }
       },
 
       types: {

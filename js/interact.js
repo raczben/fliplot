@@ -17,15 +17,6 @@ $(function () {
   window.waveTable = new WaveTable(simDB);
 });
 
-function showSignals() {
-  window.waveTable.wave.init();
-  window.waveTable.reload();
-
-  setTimeout(() => {
-    window.waveTable.moveCursorTo(0);
-    window.waveTable.wave.render();
-  }, 0);
-}
 /**
  *  Fetch the demo file from the server, parse it with VCDParser,
  * and call initShow() to plot the signals.
@@ -154,10 +145,6 @@ function initShow(data) {
   tree.showTree();
 
   console.log(simDB);
-
-  setTimeout(() => {
-    showSignals();
-  }, 0);
 }
 
 /**

@@ -115,26 +115,26 @@ export class NameCol {
             }
           }
         }
-        self.waveTable.moveRow(data.node.data, data.position);
+        self.waveTable.moveRow(data.node.data, data.position, data.parent, false);
         return true;
       })
       .on("open_node.jstree", function (e, data) {
         // console.log("NameCol: open_node.jstree", data);
-        self.waveTable.openGroup(data.node.data);
+        self.waveTable.openGroup(data.node.data, false);
       })
       .on("close_node.jstree", function (e, data) {
         // console.log("NameCol: close_node.jstree", data);
-        self.waveTable.closeGroup(data.node.data);
+        self.waveTable.closeGroup(data.node.data, false);
       })
       .on("changed.jstree", function (evt, data) {
         // console.log("NameCol: changed.jstree", data);
         data.changed.selected.forEach((element) => {
           const data = self._getTree().get_node(element).data;
-          self.waveTable.selectRow(data);
+          self.waveTable.selectRow(data, false);
         });
         data.changed.deselected.forEach((element) => {
           const data = self._getTree().get_node(element).data;
-          self.waveTable.deSelectRow(data);
+          self.waveTable.deSelectRow(data, false);
         });
       })
       .on("ready.jstree", function (evt, data) {
@@ -143,10 +143,6 @@ export class NameCol {
       .on("load_all.jstree", function (evt, data) {
         console.log("NameCol: load_all", data);
       });
-
-    setTimeout(() => {
-      this.reload();
-    }, 0);
   }
 
   reload() {
@@ -186,8 +182,8 @@ export class NameCol {
   }
 
   clearAll() {
-    $(this.containerName).jstree("destroy").empty();
-    // d3.select(this.containerName).selectAll("*").remove();
+    const tree_json = this._getTree().get_json("#", { flat: true });
+    this._getTree().delete_node(tree_json.map((n) => n.id));
   }
 
   deSelectAllRows() {
