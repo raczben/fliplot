@@ -2,6 +2,7 @@ import { config, simDB } from "../interact.js";
 import { ceiln, isInt, truncateTextToWidth } from "../core/util.js";
 import { WaveTable } from "./WaveTable.js";
 import { WebGL2UtilTR } from "./WebGL2UtilTR.js";
+import { WaveformRow } from "./WaveformRow.js";
 
 /**
  * Simple utility functio to help rendering bit signals.
@@ -299,7 +300,7 @@ export class WaveCanvas {
         ctx.fillRect(0, yBase - this.scrollTop, this.canvas.width, rowHeight);
       }
 
-      if (waveStyle === "bit") {
+      if (waveStyle === WaveformRow.WaveStyle.BIT) {
         // Draw bit wave as rectangles
         this.drawBitSignal(
           this.wglu,
@@ -310,7 +311,7 @@ export class WaveCanvas {
           selected,
           2
         );
-      } else if (waveStyle === "bus") {
+      } else if (waveStyle === WaveformRow.WaveStyle.BUS) {
         this.drawBusSignal(
           ctx,
           this.wglu,
@@ -321,6 +322,8 @@ export class WaveCanvas {
           selected,
           2
         );
+      } else if (waveStyle === WaveformRow.WaveStyle.BLANK) {
+        // Do nothing for blank wave style
       } else {
         // Unsupported style
         ctx.fillStyle = "rgba(150,70,60,0.5)";

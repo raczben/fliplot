@@ -159,60 +159,6 @@ function parseInitShow(vcdcontent) {
 }
 
 /**
- * Clear the highlight of a given (or all) signal. The highlighted signal has vivid blue background
- * color, and the cursor will step on this signal's transients.
- *
- * @param {string} signalID The ID of the signal that has to be de-highlighted or null to de
- * highlight all signals.
- */
-function deHighlightSignal(signalID = undefined) {
-  if (signalID === undefined) {
-    window.waveTable.getSelectedRows().forEach((rowid) => {
-      deHighlightSignal(rowid);
-    });
-  } else {
-    $("#names-col-container-scroll").jstree().deselect_node(`signal-name-${signalID}`);
-    $("#values-col-container").jstree().deselect_node(`signal-value-${signalID}`);
-    d3.selectAll(`.${signalID}`).classed("highlighted-signal", false);
-
-    setTimeout(() => {
-      if (window.waveTable.getSelectedRows().length == 0) {
-        highlightSignal(signalID, false);
-      }
-    }, 10);
-  }
-}
-
-/**
- * Highlight a given signal. The highlighted signal has vivid blue background color, and the cursor
- * will step on this signal's transients.
- *
- * @param {string} signalID The ID of the signal that has to be highlighted
- */
-function highlightSignal(signalID, deHighlightOthers = true) {
-  if (deHighlightOthers) {
-    deHighlightSignal();
-  }
-  d3.selectAll(`.${signalID}`).classed("highlighted-signal", true);
-  $("#names-col-container-scroll").jstree().select_node(`signal-name-${signalID}`);
-  $("#values-col-container").jstree().select_node(`signal-value-${signalID}`);
-}
-
-/**
- * Highlight a given signal. The highlighted signal has vivid blue background color, and the cursor
- * will step on this signal's transients.
- *
- * @param {string} signalID The ID of the signal that has to be highlighted
- */
-function toggleHighlightSignal(signalID, enableZeroSelection = false) {
-  if (window.waveTable.getSelectedRows().includes(window.waveTable.get(signalID))) {
-    deHighlightSignal(signalID);
-  } else {
-    highlightSignal(signalID, false);
-  }
-}
-
-/**
  * Open a file from file input check the size (gives an alert above 1MB)
  * The reads the content of the file and call the parseInitShow() function.
  *
@@ -272,28 +218,17 @@ $(function () {
         case /waveStyle-.+/.test(key):
           // window.waveTable.getSelectedRows()[0].radix = key.split('-')[1];
           break;
+        case /group/.test(key):
+          setTimeout(() => {
+            window.waveTable.createGroup();
+          }, 0);
         default:
           console.log(`unknown key: ${key}`);
           break;
       }
     },
 
-    build: function ($triggerElement, e) {
-      // The element what has been right-clicked, (which opened the context menu)
-      var targ = e.target;
-      while (!$(targ).hasClass("signal-highlighter")) {
-        targ = targ.parentElement;
-        if (targ === null) {
-          console.log("ERROR tarrg is null");
-          return {};
-        }
-      }
-      if (window.waveTable.getSelectedRows().length <= 1) {
-        const waveformRow = d3.select(e.target).datum();
-        highlightSignal(waveformRow.id);
-      }
-      return {};
-    },
+    build: function ($triggerElement, e) {},
     zIndex: 1100,
     items: {
       rename: { name: "Rename", icon: "edit" },
@@ -315,9 +250,9 @@ $(function () {
           // only a 32 bit signal can be set to float
           "radix-float": {
             name: "float",
-            visible: function () {
+            disabled: function () {
               const row = window.waveTable.getActiveRow(false);
-              return row && row.simObj.getWidth() === 32;
+              return !(row && row.simObj && row.simObj.getWidth() === 32);
             }
           }
         }

@@ -1,7 +1,7 @@
 import { SimDB } from "../core/SimDB.js";
 import { SimulationObject } from "../core/SimulationObject.js";
 import { Tree } from "../core/tree.js";
-import { WaveformRow } from "../core/WaveformRow.js";
+import { WaveformRow } from "./WaveformRow.js";
 import { NameCol } from "./NameCol.js";
 import { ValueCol } from "./ValueCol.js";
 import { WaveCanvas } from "./WaveCanvas.js";
@@ -246,7 +246,7 @@ export class WaveTable {
 
     this.tree.insert(rowItem.id, parent, position, rowItem);
 
-    if (busAsBus && rowItem.waveStyle == "bus") {
+    if (busAsBus && rowItem.waveStyle == WaveformRow.WaveStyle.BUS) {
       // If the signal is a bus, insert all sub-signals
       // in reversed: little-endian order.
       for (var i = obj.signal.width - 1; i > -1; i--) {
@@ -293,6 +293,24 @@ export class WaveTable {
     hierarchies.forEach((hier) => this.insertWaveSignal(hier));
   }
 
+  createGroup(wfRows = null, render = true) {
+    if (!wfRows) {
+      wfRows = this.getSelectedRows(true);
+    }
+    const rowItem = new WaveformRow({
+      type: WaveformRow.Type.GROUP,
+      name: "New Group",
+      hierarchy: []
+    });
+    this.tree.insert(rowItem.id, this.getParent(wfRows[0]), this.getPosition(wfRows[0]), rowItem);
+    wfRows.forEach((r) => {
+      this.moveRow(r, -1, rowItem.id, true);
+    });
+    if (render) {
+      this.reload();
+    }
+  }
+
   getRows({
     traverse = Tree.Traverse.PREORDER,
     parent = null,
@@ -303,8 +321,16 @@ export class WaveTable {
     return this.tree.getChildren(parent, traverse, field, hidden);
   }
 
-  getRow(id, content = false) {
+  getRow(id) {
     return this.tree.get(id);
+  }
+
+  getParent(id) {
+    return this.tree.getParent(id);
+  }
+
+  getPosition(id) {
+    return this.tree.getPosition(id);
   }
 
   getSelectedRows(ids = true) {

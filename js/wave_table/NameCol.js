@@ -254,39 +254,13 @@ export class NameCol {
   }
 
   editName(rowId) {
-    const nameEditorId = "nameeditorinput";
-    const nameEditorId2 = `#${nameEditorId}`;
-    const li = $(`#${this.toNameColId(rowId)}`);
-    li.find("a").toggle();
-    li.find("div").toggle();
-    const input = $("<input></input>")
-      .attr("id", nameEditorId)
-      .val(this.get_node(rowId).text)
-      .keypress((e) => {
-        if (e.which == 13) {
-          this.editNameEnd(rowId);
-        }
-        if (e.which == 27) {
-          this.editNameEnd(rowId, false);
-        }
-      })
-      .focusout((e) => {
-        this.editNameEnd(rowId, false);
-      });
-    li.append(input);
-    input.focus();
-    input[0].setSelectionRange(0, 1000);
-  }
-
-  editNameEnd(rowId, accept = true) {
+    this._getTree().edit(this.toNameColId(rowId));
+    // fix the misalignment. Select the input and adjust its CSS:
     const li = $(`#${this.toNameColId(rowId)}`);
     const input = li.find("input");
-    const val = input.val();
-    input.remove();
-    li.find("a").toggle();
-    li.find("div").toggle();
-    if (accept) {
-      this.waveTable.rename(rowId, input.val());
-    }
+    input.css({
+      height: 24 + "px",
+      lineHeight: 24 + "px"
+    });
   }
 }
