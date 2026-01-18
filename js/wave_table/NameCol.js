@@ -150,12 +150,12 @@ export class NameCol {
     this.waveTable.getRows().forEach((row) => {
       var treeObj = {};
       treeObj["id"] = this.toNameColId(row.id);
-      if (row.parent.id == "#") {
+      if (row.getParent().getId() == "#") {
         treeObj["parent"] = "#";
       } else {
-        treeObj["parent"] = this.toNameColId(row.parent.id);
+        treeObj["parent"] = this.toNameColId(row.getParent().getId());
       }
-      treeObj["text"] = row.data.name;
+      treeObj["text"] = row.name;
       treeObj["data"] = row.id;
       tree.push(treeObj);
     });

@@ -1,39 +1,41 @@
-const { Tree } = require("./tree.js");
+const { Node } = require("./tree.js");
 
 describe("Tree Test", () => {
   test("basic insert", () => {
-    var t = new Tree();
+    var t = Node.createRoot();
 
-    t.insert("asd", null, 0);
-    expect(t.get("asd")).toBe(t.nodes.asd);
-    expect(t.getId("asd")).toBe("asd");
-    expect(t.getParent("asd")).toBe(t._root);
-    expect(t.getChildren("asd")).toEqual([]);
-    expect(t.getChildren("#")).toEqual([t.get("asd")]);
+    t.insert("asd", 0);
+    expect(t.get("asd")).toBe(t._all_nodes["asd"]);
+    expect(t.get("asd").getId()).toBe("asd");
+    expect(t.get("asd").getParent()).toBe(t);
+    expect(t.get("asd").getChildren()).toEqual([]);
+    expect(t.get("#").getChildren()).toEqual([t.get("asd")]);
   });
 
   test("more insert", () => {
-    var t = new Tree();
+    var t = Node.createRoot();
 
     t.insert("a");
-    t.insert("a0", "a");
-    t.insert("a1", "a");
+    var a = t.get("a");
+    a.insert("a0");
+    a.insert("a1");
 
     t.insert("b");
-    t.insert("b2", "b", 0);
-    t.insert("b0", "b", 0);
-    t.insert("b1", "b", 1);
+    var b = t.get("b");
+    b.insert("b2", 0);
+    b.insert("b0", 0);
+    b.insert("b1", 1);
 
-    const a = t.get("a");
+    a = t.get("a");
     const a0 = t.get("a0");
     const a1 = t.get("a1");
-    const b = t.get("b");
+    b = t.get("b");
     const b0 = t.get("b0");
     const b1 = t.get("b1");
     const b2 = t.get("b2");
 
-    expect(t.get("a")).toBe(t._root.children[0]);
-    expect(t.get("b")).toBe(t._root.children[1]);
+    expect(t.get("a")).toBe(t.children[0]);
+    expect(t.get("b")).toBe(t.children[1]);
     expect(t.get("a0")).toBe(t.get("a").children[0]);
     expect(t.get("a1")).toBe(t.get("a").children[1]);
     expect(t.get("b0")).toBe(t.get("b").children[0]);
@@ -54,117 +56,98 @@ describe("Tree Test", () => {
     expect(t.getParent("b1")).toBe(b);
     expect(t.getParent("b2")).toBe(b);
 
-    expect(t.getChildren("b", Tree.Traverse.SHALLOW)).toEqual([b0, b1, b2]);
-    expect(t.getChildren("a").map((n) => n.id)).toEqual([a0, a1].map((n) => n.id));
-  });
-
-  test("insert with data", () => {
-    var t = new Tree();
-
-    const databank = {
-      a: "Hello darkness my old friend!",
-      a0: [1, 2, 3, 4, 5, 6],
-      a1: ["Not", "to", "us"],
-      b: 1234567,
-      b0: { x: 1, y: 2, z: 3 },
-      b1: { x: 11, y: 12, z: 13 },
-      b2: { x: 21, y: 22, z: 23 }
-    };
-
-    t.insert("a", null, null, databank["a"]);
-    t.insert("a0", "a", null, databank["a0"]);
-    t.insert("a1", "a", null, databank["a1"]);
-
-    t.insert("b", null, null, databank["b"]);
-    t.insert("b2", "b", 0, databank["b2"]);
-    t.insert("b0", "b", 0, databank["b0"]);
-    t.insert("b1", "b", 1, databank["b1"]);
-
-    expect(t.get("a").data).toBe(databank["a"]);
-    expect(t.get("b").data).toBe(databank["b"]);
-    expect(t.get("a0").data).toBe(databank["a0"]);
-    expect(t.get("a1").data).toBe(databank["a1"]);
-    expect(t.get("b0").data).toBe(databank["b0"]);
-    expect(t.get("b1").data).toBe(databank["b1"]);
-    expect(t.get("b2").data).toBe(databank["b2"]);
+    expect(
+      t
+        .get("b")
+        .getChildren(Node.Traverse.SHALLOW)
+        .map((n) => n.id)
+    ).toEqual(["b0", "b1", "b2"]);
+    expect(
+      t
+        .get("a")
+        .getChildren()
+        .map((n) => n.id)
+    ).toEqual([a0, a1].map((n) => n.id));
   });
 
   test("move", () => {
-    var t = new Tree();
+    var t = Node.createRoot();
 
     t.insert("a");
-    t.insert("a0", "a");
-    t.insert("a1", "a");
+    var a = t.get("a");
+    a.insert("a0");
+    a.insert("a1");
 
     t.insert("b");
-    t.insert("b2", "b", 0);
-    t.insert("b0", "b", 0);
-    t.insert("b1", "b", 1);
+    var b = t.get("b");
+    b.insert("b2", 0);
+    b.insert("b0", 0);
+    b.insert("b1", 1);
 
-    t.move("b0", 1);
+    t.get("b0").move(null, 1);
     expect(t.get("b").children.map((n) => n.id)).toEqual(["b1", "b0", "b2"]);
 
-    t.move("b0", 1);
+    t.get("b0").move(null, 1);
     expect(t.get("b").children.map((n) => n.id)).toEqual(["b1", "b0", "b2"]);
 
-    t.move("b0", 0);
+    t.get("b0").move(null, 0);
     expect(t.get("b").children.map((n) => n.id)).toEqual(["b0", "b1", "b2"]);
 
-    t.move("b2", 2, "a");
+    t.get("b2").move("a", 2);
     expect(t.get("b").children.map((n) => n.id)).toEqual(["b0", "b1"]);
     expect(t.get("a").children.map((n) => n.id)).toEqual(["a0", "a1", "b2"]);
 
-    t.move("b", 3, "a");
+    t.get("b").move("a", 3);
     expect(t.get("b").children.map((n) => n.id)).toEqual(["b0", "b1"]);
     expect(t.get("a").children.map((n) => n.id)).toEqual(["a0", "a1", "b2", "b"]);
-    expect(t.getChildren("#").map((n) => n.id)).toEqual(["a", "a0", "a1", "b2", "b", "b0", "b1"]);
+    expect(t.getChildren().map((n) => n.id)).toEqual(["a", "a0", "a1", "b2", "b", "b0", "b1"]);
   });
 
   test("remove", () => {
-    var t = new Tree();
+    var t = Node.createRoot();
 
     t.insert("a");
-    t.insert("a0", "a");
-    t.insert("a1", "a");
+    t.get("a").insert("a0");
+    t.get("a").insert("a1");
 
     t.insert("b");
-    t.insert("b2", "b", 0);
-    t.insert("b0", "b", 0);
-    t.insert("b1", "b", 1);
+    t.get("b").insert("b2", 0);
+    t.get("b").insert("b0", 0);
+    t.get("b").insert("b1", 1);
 
-    expect(Object.keys(t.nodes).length).toBe(8);
-    t.remove("b0", 1);
+    expect(Object.keys(t._all_nodes).length).toBe(8);
+    t.get("b0").delete();
     expect(t.get("b").children.map((n) => n.id)).toEqual(["b1", "b2"]);
-    expect(Object.keys(t.nodes).length).toBe(7);
+    expect(Object.keys(t._all_nodes).length).toBe(7);
 
-    t.remove("b2", 1);
+    t.get("b2").delete();
     expect(t.get("b").children.map((n) => n.id)).toEqual(["b1"]);
-    expect(Object.keys(t.nodes).length).toBe(6);
+    expect(Object.keys(t._all_nodes).length).toBe(6);
 
-    t.remove("b", 0);
-    expect(t.getChildren("#").map((n) => n.id)).toEqual(["a", "a0", "a1"]);
-    expect(Object.keys(t.nodes).length).toBe(4);
+    t.get("b").delete();
+    expect(t.getChildren().map((n) => n.id)).toEqual(["a", "a0", "a1"]);
+    expect(Object.keys(t._all_nodes).length).toBe(4);
 
-    t.remove("a", 0);
-    expect(t.getChildren("#").map((n) => n.id)).toEqual([]);
-    expect(Object.keys(t.nodes).length).toBe(1);
+    t.get("a").delete();
+    expect(t.getChildren().map((n) => n.id)).toEqual([]);
+    expect(Object.keys(t._all_nodes).length).toBe(1);
   });
 
   test("open-close", () => {
-    var t = new Tree();
+    var t = Node.createRoot();
 
     t.insert("a");
-    t.insert("a0", "a");
-    t.insert("a1", "a");
+    t.get("a").insert("a0");
+    t.get("a").insert("a1");
 
     t.insert("b");
-    t.insert("b2", "b", 0);
-    t.insert("b0", "b", 0);
-    t.insert("b1", "b", 1);
+    t.get("b").insert("b2", 0);
+    t.get("b").insert("b0", 0);
+    t.get("b").insert("b1", 1);
 
     expect(t.getVisible().map((n) => n.id)).toEqual(["a", "b"]);
 
-    t.open("a");
+    t.get("a").open();
     expect(t.getVisible().map((n) => n.id)).toEqual(["a", "a0", "a1", "b"]);
 
     t.openAll();

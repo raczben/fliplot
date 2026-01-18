@@ -1,6 +1,7 @@
 import { SimulationObject } from "../core/SimulationObject.js";
+import { Node } from "../core/tree.js";
 
-export class WaveformRow {
+export class WaveformRow extends Node {
   /**  @type {number} */
   static _idGenerator = 0;
 
@@ -19,16 +20,20 @@ export class WaveformRow {
   /**
    *
    * @param {SimulationObject} simObj
+   * @param {WaveformRow} parent
+   * @param {Array} children
+   * @param {boolean} opened
    */
-  constructor(simObj) {
+  constructor(simObj, parent, pos = -1, children = [], opened = false) {
+    const id = `wfr-${WaveformRow._idGenerator++}`;
+    super(id, parent, pos, children, opened);
+
     /** @type {WaveformRow.Type} */
     if (simObj.type !== undefined) {
       this.type = simObj.type;
     } else {
       this.type = WaveformRow.Type.SIGNAL;
     }
-    /** @type {string} */
-    this.id = `wfr-${WaveformRow._idGenerator++}`;
     /** @type {SimulationObject} */
     this.simObj = null;
     if (this.type == WaveformRow.Type.SIGNAL) {
