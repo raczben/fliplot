@@ -1,4 +1,5 @@
-import { config, simDB } from "../interact.js";
+import { simDB } from "../interact.js";
+import { Config } from "../core/Config.js";
 import { ceiln, isInt, truncateTextToWidth } from "../core/util.js";
 import { WaveTable } from "./WaveTable.js";
 import { WebGL2UtilTR } from "./WebGL2UtilTR.js";
@@ -285,7 +286,7 @@ export class WaveCanvas {
     const rowsToPlot = this.waveTable.getRows({ hidden: false, content: true });
     rowsToPlot.forEach((row, rowIdx) => {
       const waveStyle = row.waveStyle;
-      const rowHeight = config.rowHeight;
+      const rowHeight = row.getHeight();
       const yBase = rowIdx * rowHeight;
 
       // // Skip rows that are not in the visible range
@@ -327,9 +328,9 @@ export class WaveCanvas {
       } else {
         // Unsupported style
         ctx.fillStyle = "rgba(150,70,60,0.5)";
-        ctx.fillRect(0, yBase, this.canvas.width, config.rowHeight);
+        ctx.fillRect(0, yBase, this.canvas.width, rowHeight);
         ctx.fillStyle = "#fff";
-        ctx.fillText(`Unsupported: ${waveStyle}`, 10, yBase + config.rowHeight / 2);
+        ctx.fillText(`Unsupported: ${waveStyle}`, 10, yBase + rowHeight / 2);
       }
     });
     this.drawCursor(ctx, this.cursorTime, this.scrollLeft, this.timeScale);
@@ -340,7 +341,7 @@ export class WaveCanvas {
   /**
    * Draw a single bit-style signal on the canvas.
    * @param {CanvasRenderingContext2D} ctx - Canvas 2D context
-   * @param {Object} row - The rowToPlot element (signal row object)
+   * @param {WaveformRow} row - The rowToPlot element (signal row object)
    * @param {number} yOffset - The vertical offset (pixels from top)
    * @param {number} xOffset - The horizontal offset (pixels from top)
    * @param {number} timeScale - Ratio: simulation time units per pixel
@@ -349,8 +350,8 @@ export class WaveCanvas {
    */
   drawBitSignal(wglu, row, yOffset, xOffset, timeScale, selected, lineWidth) {
     const signal = row.simObj.signal;
-    const rowHeight = config.rowHeight;
-    const bitWavePadding = config.bitWavePadding || 2;
+    const rowHeight = row.getHeight();
+    const bitWavePadding = Config.bitWavePadding || 2;
     const timeRange = this.getTimeRange(xOffset, this.canvas.width);
 
     const valueScale = linearScale([0, 1], [rowHeight - bitWavePadding, bitWavePadding]);
@@ -423,8 +424,8 @@ export class WaveCanvas {
    */
   drawBusSignal(ctx, wglu, row, yOffset, xOffset, timeScale, selected, lineWidth) {
     const signal = row.simObj.signal;
-    const rowHeight = config.rowHeight;
-    const bitWavePadding = config.bitWavePadding || 2;
+    const rowHeight = Config.rowHeight;
+    const bitWavePadding = Config.bitWavePadding || 2;
 
     const valueScale = linearScale([0, 1], [rowHeight - bitWavePadding, bitWavePadding]);
 

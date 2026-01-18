@@ -186,8 +186,7 @@ footer {
   text-overflow: ellipsis;
 
   font-family: sans-serif;
-  height: 24px;
-  line-height: 24px; /* same as height! */
+  /* The height is set in the ValueCol class directly */
 }
 
 .value-col-item-selected {

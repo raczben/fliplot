@@ -1,3 +1,4 @@
+import { Config } from "../core/Config.js";
 import { SimulationObject } from "../core/SimulationObject.js";
 import { Node } from "../core/tree.js";
 
@@ -55,19 +56,20 @@ export class WaveformRow extends Node {
       if (simObj.signal.width > 1) {
         this.name += `[${simObj.signal.width - 1}:0]`;
       }
+    }
 
-      this.setRadix();
-
-      if (this.type == WaveformRow.Type.GROUP) {
-        this.waveStyle = WaveformRow.WaveStyle.BLANK;
+    let wstyle = "";
+    if (this.type == WaveformRow.Type.GROUP) {
+      wstyle = WaveformRow.WaveStyle.BLANK;
+    } else {
+      if (simObj.signal.width == 1) {
+        wstyle = WaveformRow.WaveStyle.BIT;
       } else {
-        if (simObj.signal.width == 1) {
-          this.waveStyle = WaveformRow.WaveStyle.BIT;
-        } else {
-          this.waveStyle = WaveformRow.WaveStyle.BUS;
-        }
+        wstyle = WaveformRow.WaveStyle.BUS;
       }
     }
+    this.setWaveStyle(wstyle);
+    this.setRadix();
   }
 
   /**
@@ -105,6 +107,17 @@ export class WaveformRow extends Node {
     return this.simObj.getTimeAtI(i, now);
   }
 
+  getHeight(defalultAsNegative = false) {
+    if (defalultAsNegative) {
+      // if we want default as negative, just return the height
+      return this.height;
+    }
+    if (this.height < 0) {
+      return Config.rowHeight;
+    }
+    return this.height;
+  }
+
   /**
    * @param {String} radix
    */
@@ -140,5 +153,16 @@ export class WaveformRow extends Node {
 
     this.radix = radix;
     this.radixPrefix = prefix;
+  }
+
+  setWaveStyle(wstyle) {
+    this.waveStyle = wstyle;
+    // analog waves have more height
+    if (wstyle == WaveformRow.WaveStyle.ANALOG) {
+      this.height = 60;
+      return;
+    } else {
+      this.height = -1;
+    }
   }
 }

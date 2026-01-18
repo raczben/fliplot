@@ -73,7 +73,7 @@ export class NameCol {
         const oldParentWtId = self.toWaveTableId(oldParentNcId); // previous parent
 
         if (parentNcId !== "#") {
-          const newParentData = self.waveTable.getRow(parentWtId).data;
+          const newParentData = self.waveTable.getRow(parentWtId);
           // if the new parent is a bus ask user to confirm if he wants to create a virtual bus
           if (newParentData.type == "signal") {
             if (
@@ -157,6 +157,7 @@ export class NameCol {
       }
       treeObj["text"] = row.name;
       treeObj["data"] = row.id;
+      treeObj["state"] = { opened: row.opened };
       tree.push(treeObj);
     });
 

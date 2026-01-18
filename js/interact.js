@@ -7,9 +7,8 @@ import { SimDB } from "./core/SimDB.js";
 
 import { ObjectTree } from "./ObjectTree.js";
 import { WaveTable } from "./wave_table/WaveTable.js";
-
-// TODO should be moved somewhere else.
-export var config = {};
+import { WaveformRow } from "./wave_table/WaveformRow.js";
+import { Config } from "./core/Config.js";
 
 export var simDB = new SimDB();
 
@@ -126,7 +125,7 @@ $.ajax({
   url: "defaults.json",
   dataType: "json",
   success: function (data) {
-    config = data;
+    Config.setValues(data);
 
     $(".resizable-col").resizable({
       handles: "e"
@@ -221,6 +220,11 @@ $(function () {
         case /group/.test(key):
           setTimeout(() => {
             window.waveTable.createGroup();
+          }, 0);
+          break;
+        case /analog/.test(key):
+          setTimeout(() => {
+            window.waveTable.setWaveStyle(WaveformRow.WaveStyle.ANALOG);
           }, 0);
         default:
           console.log(`unknown key: ${key}`);

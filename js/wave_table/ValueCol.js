@@ -37,9 +37,12 @@ export class ValueCol {
       var data = row.id;
 
       // add a new div to domContainer
-      this.domContainer.append(
-        `<div id="${id}" class="value-col-item" data-row-id="${data}">${val}</div>`
-      );
+      const dv = $(`<div id="${id}" class="value-col-item" data-row-id="${data}">${val}</div>`);
+      dv.css({
+        height: `${row.getHeight()}px`,
+        lineHeight: `${row.getHeight()}px`
+      });
+      this.domContainer.append(dv);
     });
     this.showValuesAt();
   }

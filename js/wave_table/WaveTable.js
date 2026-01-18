@@ -5,21 +5,26 @@ import { WaveformRow } from "./WaveformRow.js";
 import { NameCol } from "./NameCol.js";
 import { ValueCol } from "./ValueCol.js";
 import { WaveCanvas } from "./WaveCanvas.js";
-import { config } from "../interact.js";
 
 export class WaveTable {
   constructor(simDB) {
     if (simDB.constructor != SimDB) {
       throw "ERROR";
     }
+    /**  @type {SimDB} */
     this.simDB = simDB;
     /**  @type {Node} */
     this.tree = Node.createRoot();
+    /**  @type {NameCol} */
     this.nameCol = new NameCol(this);
+    /**  @type {ValueCol} */
     this.valueCol = new ValueCol(this);
+    /**  @type {WaveCanvas} */
     this.wave = new WaveCanvas(this);
 
+    /**  @type {HTMLElement} */
     this.mainContainerScrolly = document.getElementById("main-container-scroll-y");
+    /**  @type {HTMLElement} */
     this.waveAxisContainer = document.getElementById("wave-axis-container");
     if (!this.mainContainerScrolly || !this.waveAxisContainer) {
       throw new Error("WaveTable: mainContainerScrolly or waveAxisContainer not found");
@@ -33,9 +38,6 @@ export class WaveTable {
     this._waveAxisResizeObserver = resizeObserver;
     this.attachZoomHandler();
     this.waveAxisContainer.addEventListener("click", (event) => this.handleClickOnWaveAxis(event));
-
-    this.selectedRows = [];
-    this.activeRow = null;
   }
 
   /**
@@ -111,8 +113,7 @@ export class WaveTable {
     const rowsToPlot = this.getRows({ hidden: false, content: true });
     var rowBottom = 0;
     for (var row of rowsToPlot) {
-      // TODO each row could have different height...
-      const rowHeight = config.rowHeight;
+      const rowHeight = row.getHeight();
       rowBottom += rowHeight;
       if (yAbbs < rowBottom) {
         // we found the row that was clicked, lets call the rowClicked method
@@ -190,7 +191,7 @@ export class WaveTable {
   }
 
   moveRow(rowId, pos, parent, doInNameColToo = true) {
-    let row = this.tree.get(rowId); // validate rowId
+    let row = this.tree.get(rowId);
     row.move(parent, pos);
     if (doInNameColToo) {
       this.nameCol.moveRow(rowId, pos, parent);
@@ -307,7 +308,7 @@ export class WaveTable {
    */
   createGroup(wfRows = null, render = true) {
     if (!wfRows) {
-      wfRows = this.getSelectedRows(true);
+      wfRows = this.getSelectedRows(false);
     }
     const parent = wfRows[0].getParent();
     const rowItem = new WaveformRow(
@@ -319,7 +320,7 @@ export class WaveTable {
       parent,
       wfRows[0].getPosition(), // insert at position of first selected row
       [],
-      true
+      true  // opened
     );
     wfRows.forEach((r) => {
       this.moveRow(r, -1, rowItem, true);
@@ -407,6 +408,16 @@ export class WaveTable {
     rowIds.forEach((element) => {
       this.getRow(element).setRadix(radix);
       this.valueCol.setRadix(element);
+      this.wave.requestRender();
+    });
+  }
+
+  setWaveStyle(wstyle, rowIds) {
+    if (rowIds === undefined) {
+      rowIds = this.getSelectedRows();
+    }
+    rowIds.forEach((element) => {
+      this.getRow(element).setWaveStyle(wstyle);
       this.wave.requestRender();
     });
   }

@@ -173,7 +173,7 @@ export class Node {
       parent.insert(this, pos);
       throw `Cannot move node with id ${this.id} to a different tree`;
     } else {
-      this.delete((recursive = false));
+      this.delete(false);
       parent.insert(this, pos);
     }
   }
