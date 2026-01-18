@@ -217,6 +217,9 @@ $(function () {
         case /waveStyle-.+/.test(key):
           // window.waveTable.getSelectedRows()[0].radix = key.split('-')[1];
           break;
+        case /virtualBus/.test(key):
+          window.waveTable.addVirtualBus();
+          break;
         case /group/.test(key):
           setTimeout(() => {
             window.waveTable.createGroup();
@@ -263,8 +266,22 @@ $(function () {
       },
       sep1: "---------",
       group: { name: "New Group" },
-      virtualBus: { name: "New Virtual Bus" },
-      divider: { name: "New Divider" },
+      virtualBus: {
+        name: "New Virtual Bus",
+        disabled: function () {
+          const selectedRows = window.waveTable.getSelectedRows(false);
+          if (selectedRows.length < 1) {
+            return true;
+          }
+          // only "bit-signal" types can be combined into a virtual bus
+          for (let i = 0; i < selectedRows.length; i++) {
+            if (selectedRows[i].isBitSignal() == false) {
+              return true;
+            }
+          }
+          return false;
+        }
+      },
       sep2: "---------",
       remove: { name: "Remove", icon: "delete" }
     }

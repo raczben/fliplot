@@ -22,6 +22,10 @@ import { binarySearch, bin2radix } from "./util.js";
  */
 
 export class Signal {
+  /**
+   *
+   * @param {Signal} sig
+   */
   constructor(sig) {
     /** @type {string[]} */
     this.references = sig.references;
@@ -34,6 +38,18 @@ export class Signal {
     this.wave = sig.wave;
     /** @type {number} */
     this.width = sig.width;
+    /** type {[string]} */
+    this.bit_references = null;
+    if (sig.type != "bit") {
+      if (sig.references != undefined) {
+        this.bit_references = sig.references;
+      } else {
+        firstRef = this.references[0];
+        for (let i = 0; i < this.width; i++) {
+          this.bit_references.push(`${firstRef}[${i}]`);
+        }
+      }
+    }
   }
 
   /**

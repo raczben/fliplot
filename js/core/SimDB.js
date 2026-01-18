@@ -1,4 +1,6 @@
+import { Signal } from "./Signal.js";
 import { SimulationObject } from "./SimulationObject.js";
+import { replaceAt } from "../core/util.js";
 
 /**
  * SimDB is a database for managing simulation objects such as modules and signals.
@@ -121,6 +123,63 @@ export class SimDB {
         }
       }
     }
+    return ret;
+  }
+
+  /**
+   *
+   * @param {[SimulationObject]} simObjects
+   * @param {string} busName
+   * @returns {SimulationObject}
+   */
+  createVirtualBus(simObjects, busName = "New Virtual Bus") {
+    const nOfBits = simObjects.length;
+    const retSig = new Signal({
+      references: "Virtual Bus, see bits...",
+      vcdid: "Virtual Bus, see bits...",
+      type: "virtual-bus",
+      wave: [],
+      width: nOfBits,
+      bit_references: simObjects.map((so) => so[0])
+    });
+    // clone all the wave item bits into a new virtual bus signal
+    // the postition of the bits corewsponds to the position in the simObject array
+    const retWi = [];
+    for (let i = 0; i < nOfBits; i++) {
+      const bitSig = simObjects[i].signal;
+      bitSig.wave.forEach((wi) => {
+        retWi.push({
+          pos: i,
+          bin: wi.bin,
+          time: wi.time
+        });
+      });
+    }
+
+    // lets sort retWi by time:
+    retWi.sort((a, b) => a.time - b.time);
+
+    //lets merge the wave itms at the same time.
+    var currentVi = {
+      time: -1,
+      bin: "x".repeat(nOfBits)
+    };
+    var lastVi = currentVi;
+    retWi.forEach((wi) => {
+      currentVi = {
+        bin: replaceAt(lastVi.bin, wi.pos, wi.bin),
+        time: wi.time
+      };
+      if (lastVi.time == currentVi.time) {
+        retSig.wave[retSig.wave.length - 1] = currentVi;
+      } else {
+        retSig.wave.push(currentVi);
+      }
+      lastVi = currentVi;
+    });
+
+    const ret = new SimulationObject(SimulationObject.Type.SIGNAL, [busName], retSig, null);
+
     return ret;
   }
 }

@@ -62,6 +62,20 @@ export class NameCol {
             }
             return true;
           }
+        },
+        dnd: {
+          is_draggable: function (nodes) {
+            // For simplification allow multiple nodes only id they share the same parent
+            if (nodes.length > 1) {
+              const parent = nodes[0].parent;
+              for (let i = 1; i < nodes.length; i++) {
+                if (nodes[i].parent != parent) {
+                  return false;
+                }
+              }
+            }
+            return true;
+          }
         }
       })
       .on("move_node.jstree", function (e, data) {

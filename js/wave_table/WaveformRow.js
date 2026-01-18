@@ -53,7 +53,7 @@ export class WaveformRow extends Node {
       this.name = simObj.name;
     } else {
       this.name = simObj.hierarchy.join(".");
-      if (simObj.signal.width > 1) {
+      if (this.isBitSignal() == false) {
         this.name += `[${simObj.signal.width - 1}:0]`;
       }
     }
@@ -62,7 +62,7 @@ export class WaveformRow extends Node {
     if (this.type == WaveformRow.Type.GROUP) {
       wstyle = WaveformRow.WaveStyle.BLANK;
     } else {
-      if (simObj.signal.width == 1) {
+      if (this.isBitSignal()) {
         wstyle = WaveformRow.WaveStyle.BIT;
       } else {
         wstyle = WaveformRow.WaveStyle.BUS;
@@ -70,6 +70,14 @@ export class WaveformRow extends Node {
     }
     this.setWaveStyle(wstyle);
     this.setRadix();
+  }
+
+  /**
+   *
+   * @returns {boolean}
+   */
+  isBitSignal() {
+    return this.type == WaveformRow.Type.SIGNAL && this.simObj.signal.width == 1;
   }
 
   /**
@@ -127,7 +135,7 @@ export class WaveformRow extends Node {
       this.radixPrefix = "group";
       return;
     }
-    if (this.simObj.signal.width == 1) {
+    if (this.isBitSignal()) {
       this.radix = "bin";
       this.radixPrefix = "";
       return;

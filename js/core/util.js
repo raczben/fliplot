@@ -198,3 +198,10 @@ export function truncateTextToWidth(ctx, str, maxWidth) {
     return str + ellipsis;
   }
 }
+
+// Source - https://stackoverflow.com/a/1431113/2506522
+// Posted by Cem Kalyoncu, modified by community. See post 'Timeline' for change history
+// Retrieved 2026-01-05, License - CC BY-SA 4.0
+export function replaceAt(str, index, replacement) {
+  return str.substring(0, index) + replacement + str.substring(index + replacement.length);
+}

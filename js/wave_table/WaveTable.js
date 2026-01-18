@@ -301,6 +301,38 @@ export class WaveTable {
     hierarchies.forEach((hier) => this.insertWaveSignal(hier));
   }
 
+  addVirtualBus(wfRows = null, render = true) {
+    if (!wfRows) {
+      wfRows = this.getSelectedRows(false);
+    }
+    if (wfRows.length == 0) {
+      console.warn("WaveTable.addVirtualBus: no rows selected");
+      return;
+    }
+    // Add checks. All rows must be a bit signal
+    for (var rId of wfRows) {
+      const row = this.getRow(rId);
+      if (row.waveStyle != WaveformRow.WaveStyle.BIT) {
+        console.warn(
+          `WaveTable.addVirtualBus: row with id ${rId} is not a bit signal (waveStyle=${row.waveStyle})`
+        );
+        return;
+      }
+    }
+
+    const simObjs = wfRows.map((r) => r.simObj);
+
+    const virtBus = this.simDB.createVirtualBus(simObjs);
+
+    const position = wfRows[0].getPosition(); // insert at position of first selected row
+    const parent = wfRows[0].getParent();
+    const rowItem = new WaveformRow(virtBus, parent, position, [], true);
+
+    wfRows.forEach((rId, i) => {
+      this.moveRow(rId, i, rowItem.id);
+    });
+  }
+
   /**
    *
    * @param {[WaveformRow]} wfRows
@@ -320,7 +352,7 @@ export class WaveTable {
       parent,
       wfRows[0].getPosition(), // insert at position of first selected row
       [],
-      true  // opened
+      true // opened
     );
     wfRows.forEach((r) => {
       this.moveRow(r, -1, rowItem, true);
