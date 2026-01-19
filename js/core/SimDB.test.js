@@ -47,7 +47,7 @@ describe("SimDB", () => {
     const hierarchy = ["top", "mod1"];
     const obj = simdb.addModule(hierarchy);
     expect(obj).toBeInstanceOf(SimulationObject);
-    expect(obj.type).toBe(SimulationObject.Type.MODULE);
+    expect(obj.soType).toBe(SimulationObject.SOType.MODULE);
     expect(simdb.objects["top.mod1"]).toBe(obj);
   });
 
@@ -63,7 +63,7 @@ describe("SimDB", () => {
   test("getObject returns correct object", () => {
     const obj = simdb.getObject(["top", "a__S"]);
     expect(obj).toBeInstanceOf(SimulationObject);
-    expect(obj.type).toBe(SimulationObject.Type.SIGNAL);
+    expect(obj.soType).toBe(SimulationObject.SOType.SIGNAL);
   });
 
   test("getAllSignals returns all signal objects", () => {

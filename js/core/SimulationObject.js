@@ -7,7 +7,7 @@ import { Signal } from "./Signal.js";
  * @class
  */
 export class SimulationObject {
-  static Type = Object.freeze({
+  static SOType = Object.freeze({
     SIGNAL: "signal",
     MODULE: "module"
   });
@@ -15,14 +15,14 @@ export class SimulationObject {
 
   /**
    *
-   * @param {SimulationObject.Type} type
+   * @param {SimulationObject.SOType} type
    * @param {string[]} hierarchy
    * @param {*} data
    * @param {SimulationObject} parent
    */
   constructor(type, hierarchy, data, parent) {
-    /** @type {SimulationObject.Type}  */
-    this.type = type;
+    /** @type {SimulationObject.SOType}  */
+    this.soType = type;
     /** @type {string[]}  */
     this.hierarchy = hierarchy;
     /** @type {SimulationObject}  */
@@ -32,18 +32,18 @@ export class SimulationObject {
     /** @type {String}  */
 
     if (data !== undefined) {
-      switch (this.type) {
-        case SimulationObject.Type.SIGNAL:
+      switch (this.soType) {
+        case SimulationObject.SOType.SIGNAL:
           if (data instanceof Signal) {
             this.signal = data;
           } else {
             this.signal = new Signal(data);
           }
           break;
-        case SimulationObject.Type.MODULE:
+        case SimulationObject.SOType.MODULE:
           break;
         default:
-          throw `Unknown type ${this.type}`;
+          throw `Unknown type ${this.soType}`;
       }
       /** @type {string} */
       this.definedAt = data.definedAt;
@@ -69,7 +69,7 @@ export class SimulationObject {
     }
     const hierarchy = this.hierarchy.concat([con]);
     const signal = this.signal.cloneRange(from, to);
-    const ret = new SimulationObject(this.type, hierarchy, signal, this);
+    const ret = new SimulationObject(this.soType, hierarchy, signal, this);
     return ret;
   }
 

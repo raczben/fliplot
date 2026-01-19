@@ -281,7 +281,7 @@ export class WaveTable {
 
     for (var key in this.simDB.objects) {
       if (Object.prototype.hasOwnProperty.call(this.simDB.objects, key)) {
-        if (this.simDB.objects[key].type == SimulationObject.Type.SIGNAL) {
+        if (this.simDB.objects[key].soType == SimulationObject.SOType.SIGNAL) {
           this.insertWaveSignal(
             key.split("."), // hierarchy
             null, // parent = null
@@ -345,7 +345,7 @@ export class WaveTable {
     const parent = wfRows[0].getParent();
     const rowItem = new WaveformRow(
       {
-        type: WaveformRow.Type.GROUP,
+        soType: WaveformRow.WFRType.GROUP,
         name: "New Group",
         hierarchy: []
       },

@@ -16,7 +16,7 @@ describe("WaveformRow", () => {
   test("constructor sets properties for bit signal", () => {
     const simObj = new MockSimObj(1);
     const row = new WaveformRow(simObj);
-    expect(row.type).toBe("signal");
+    expect(row.wfrType).toBe("signal");
     expect(row.simObj).toBe(simObj);
     expect(row.radix).toBe("bin");
     expect(row.waveStyle).toBe("bit");

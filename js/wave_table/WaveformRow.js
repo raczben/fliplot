@@ -13,7 +13,7 @@ export class WaveformRow extends Node {
     BLANK: "blank"
   });
 
-  static Type = Object.freeze({
+  static WFRType = Object.freeze({
     SIGNAL: "signal",
     GROUP: "group"
   });
@@ -30,14 +30,14 @@ export class WaveformRow extends Node {
     super(id, parent, pos, children, opened);
 
     /** @type {WaveformRow.Type} */
-    if (simObj.type !== undefined) {
-      this.type = simObj.type;
+    if (simObj.soType !== undefined) {
+      this.wfrType = simObj.soType;
     } else {
-      this.type = WaveformRow.Type.SIGNAL;
+      this.wfrType = WaveformRow.WFRType.SIGNAL;
     }
     /** @type {SimulationObject} */
     this.simObj = null;
-    if (this.type == WaveformRow.Type.SIGNAL) {
+    if (this.wfrType == WaveformRow.WFRType.SIGNAL) {
       this.simObj = simObj;
     }
     /** @type {string} */
@@ -59,7 +59,7 @@ export class WaveformRow extends Node {
     }
 
     let wstyle = "";
-    if (this.type == WaveformRow.Type.GROUP) {
+    if (this.wfrType == WaveformRow.WFRType.GROUP) {
       wstyle = WaveformRow.WaveStyle.BLANK;
     } else {
       if (this.isBitSignal()) {
@@ -77,7 +77,7 @@ export class WaveformRow extends Node {
    * @returns {boolean}
    */
   isBitSignal() {
-    return this.type == WaveformRow.Type.SIGNAL && this.simObj.signal.width == 1;
+    return this.wfrType == WaveformRow.WFRType.SIGNAL && this.simObj.signal.width == 1;
   }
 
   /**
@@ -93,7 +93,7 @@ export class WaveformRow extends Node {
    * @param {number} def
    */
   getValueAt(time, def = "- NA -") {
-    if (this.type == WaveformRow.Type.GROUP) {
+    if (this.wfrType == WaveformRow.WFRType.GROUP) {
       return "";
     }
     return this.radixPrefix + this.simObj.getValueAt(time, this.radix, def);
@@ -130,7 +130,7 @@ export class WaveformRow extends Node {
    * @param {String} radix
    */
   setRadix(radix, prefix) {
-    if (this.type == WaveformRow.Type.GROUP) {
+    if (this.wfrType == WaveformRow.WFRType.GROUP) {
       this.radix = "group";
       this.radixPrefix = "group";
       return;

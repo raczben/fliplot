@@ -1,6 +1,7 @@
 import $ from "jquery";
 import "jstree"; // extend jQuery with .jstree()
 import { WaveTable } from "./WaveTable.js";
+import { WaveformRow } from "./WaveformRow.js";
 
 export class NameCol {
   constructor(waveTable, init = true) {
@@ -89,7 +90,7 @@ export class NameCol {
         if (parentNcId !== "#") {
           const newParentData = self.waveTable.getRow(parentWtId);
           // if the new parent is a bus ask user to confirm if he wants to create a virtual bus
-          if (newParentData.type == "signal") {
+          if (newParentData.wfrType == WaveformRow.WFRType.SIGNAL) {
             if (
               !confirm(
                 `The new parent (${newParentData.name}) is a bus. Do you want to create a virtual bus from that?`
@@ -111,7 +112,7 @@ export class NameCol {
         if (oldParentWtId !== "#" && oldParentWtId !== parentWtId) {
           const oldParentData = self.waveTable.getRow(parentWtId).data;
           // if the old parent is a bus ask user to confirm if he wants to create a virtual bus
-          if (oldParentData.type == "signal") {
+          if (oldParentData.wfrType == WaveformRow.WFRType.SIGNAL) {
             if (
               !confirm(
                 `The old parent (${oldParentData.name}) is a bus. Do you want to create a virtual bus from that?`

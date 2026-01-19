@@ -25,8 +25,6 @@ export class ObjectTree {
         }
         treeObj["text"] = obj.hierarchy[obj.hierarchy.length - 1];
 
-        treeObj["type"] = obj.type;
-
         tree.push(treeObj);
       }
     }

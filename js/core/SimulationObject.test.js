@@ -43,12 +43,17 @@ describe("SimulationObject", () => {
 
   let bitSimObj, busSimObj;
   beforeEach(() => {
-    bitSimObj = new SimulationObject(SimulationObject.Type.SIGNAL, ["top", "sig"], bitSignal, null);
+    bitSimObj = new SimulationObject(
+      SimulationObject.SOType.SIGNAL,
+      ["top", "sig"],
+      bitSignal,
+      null
+    );
   });
 
   beforeEach(() => {
     busSimObj = new SimulationObject(
-      SimulationObject.Type.SIGNAL,
+      SimulationObject.SOType.SIGNAL,
       ["top", "databus"],
       busSignal,
       null
@@ -56,7 +61,7 @@ describe("SimulationObject", () => {
   });
 
   test("constructor initializes properties", () => {
-    expect(bitSimObj.type).toBe(SimulationObject.Type.SIGNAL);
+    expect(bitSimObj.soType).toBe(SimulationObject.SOType.SIGNAL);
     expect(bitSimObj.hierarchy).toEqual(["top", "sig"]);
     expect(bitSimObj.signal).toBeInstanceOf(Signal);
     expect(bitSimObj.parent).toBeNull();

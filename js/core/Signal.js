@@ -33,14 +33,14 @@ export class Signal {
     this.vcdid = sig.vcdid;
 
     /** @type {string} */
-    this.type = sig.type;
+    this.sigType = sig.sigType;
     /** @type {valueChange_t[]} */
     this.wave = sig.wave;
     /** @type {number} */
     this.width = sig.width;
     /** type {[string]} */
     this.bit_references = null;
-    if (sig.type != "bit") {
+    if (sig.sigType != "bit") {
       if (sig.references != undefined) {
         this.bit_references = sig.references;
       } else {
@@ -75,7 +75,7 @@ export class Signal {
     const ret = new Signal({
       references: this.references.concat([`[${from}:${to}]`]),
       vcdid: `${this.vcdid}-cloned[${from}:${to}]`,
-      type: retType,
+      sigType: retType,
       wave: [],
       width: nOfBits
     });

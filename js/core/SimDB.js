@@ -49,7 +49,7 @@ export class SimDB {
     const associativeIndex = hierarchy.join(".") + "__S";
     var parent = this.addModule(hierarchy.slice(0, -1));
 
-    const child = new SimulationObject(SimulationObject.Type.SIGNAL, hierarchy, signal, parent);
+    const child = new SimulationObject(SimulationObject.SOType.SIGNAL, hierarchy, signal, parent);
     this.objects[associativeIndex] = child;
     return child;
   }
@@ -72,7 +72,7 @@ export class SimDB {
     if (hierarchy.length > 1) {
       parent = this.addModule(hierarchy.slice(0, -1));
     }
-    child = new SimulationObject(SimulationObject.Type.MODULE, hierarchy, undefined, parent);
+    child = new SimulationObject(SimulationObject.SOType.MODULE, hierarchy, undefined, parent);
     this.objects[associativeIndex] = child;
     return child;
   }
@@ -118,7 +118,7 @@ export class SimDB {
     for (var key in this.objects) {
       if (Object.prototype.hasOwnProperty.call(this.objects, key)) {
         var obj = this.objects[key];
-        if (obj.type == SimulationObject.Type.SIGNAL) {
+        if (obj.soType == SimulationObject.SOType.SIGNAL) {
           ret.push(obj.signal);
         }
       }
@@ -137,7 +137,7 @@ export class SimDB {
     const retSig = new Signal({
       references: "Virtual Bus, see bits...",
       vcdid: "Virtual Bus, see bits...",
-      type: "virtual-bus",
+      sigType: "virtual-bus",
       wave: [],
       width: nOfBits,
       bit_references: simObjects.map((so) => so[0])
@@ -178,7 +178,7 @@ export class SimDB {
       lastVi = currentVi;
     });
 
-    const ret = new SimulationObject(SimulationObject.Type.SIGNAL, [busName], retSig, null);
+    const ret = new SimulationObject(SimulationObject.SOType.SIGNAL, [busName], retSig, null);
 
     return ret;
   }
