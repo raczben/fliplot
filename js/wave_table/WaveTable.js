@@ -5,6 +5,7 @@ import { WaveformRow } from "./WaveformRow.js";
 import { NameCol } from "./NameCol.js";
 import { ValueCol } from "./ValueCol.js";
 import { WaveCanvas } from "./WaveCanvas.js";
+import { initContextMenu } from "./wtContextMenu.js";
 
 export class WaveTable {
   constructor(simDB) {
@@ -38,6 +39,7 @@ export class WaveTable {
     this._waveAxisResizeObserver = resizeObserver;
     this.attachZoomHandler();
     this.waveAxisContainer.addEventListener("click", (event) => this.handleClickOnWaveAxis(event));
+    initContextMenu();
   }
 
   /**
@@ -107,8 +109,20 @@ export class WaveTable {
     const time = this.wave.getTimeFromX(x);
     this.moveCursorTo(time);
 
+    const row = this.getRowfromY(event.clientY);
+    this.rowClicked(row.id, event.shiftKey, event.ctrlKey);
+  }
+
+  /**
+   * Returns the WaveformRow object at the given y position.
+   * @param {number} y
+   * @param {boolean} id
+   * @returns {WaveformRow}
+   */
+  getRowfromY(y) {
+    const rect = this.waveAxisContainer.getBoundingClientRect();
     // The y position gives the signal to be selected (and activated)
-    const yBase = event.clientY - rect.top; // y position within the element
+    const yBase = y - rect.top; // y position within the element
     const yAbbs = yBase + this.mainContainerScrolly.scrollTop; // y position within the entire wave axis container
     const rowsToPlot = this.getRows({ hidden: false, content: true });
     var rowBottom = 0;
@@ -116,14 +130,12 @@ export class WaveTable {
       const rowHeight = row.getHeight();
       rowBottom += rowHeight;
       if (yAbbs < rowBottom) {
-        // we found the row that was clicked, lets call the rowClicked method
-        const ctrlkey = event.ctrlKey || event.metaKey;
-        const shiftkey = event.shiftKey;
-        const rowId = row.id;
-        this.rowClicked(rowId, shiftkey, ctrlkey);
-        break;
+        // we found the row that was clicked, lets return the rowId
+        return row;
       }
     }
+    console.error(`getRowfromY: no row found. y=${y}`);
+    return null;
   }
 
   /**
@@ -163,14 +175,20 @@ export class WaveTable {
 
   /**
    * There are three source of the row de/select events: nameCol, ValueCol, and the WaveCanvas.
-   * This method handles the select/deselect functionality, modifies the selectedRows and
-   * activeRows variables, and calls the appropriate methods on the other components.
+   * This method handles the select/deselect functionality, and calls the appropriate methods on the other components.
    *
    * @param {string} rowId the waveform-row-id in the wavetable.
    * @param {boolean} shiftKey the state of the shift key during the click event.
    * @param {boolean} ctrlKey the state of the ctrl key during the click event.
    */
-  rowClicked(rowId, shiftKey, ctrlKey) {
+  rowClicked(rowId, shiftKey, ctrlKey, rightClick = false) {
+    // check if the click is in the selected rows:
+    if (this.getSelectedRows(true).includes(rowId)) {
+      // if this is a right click, do nothing more (otherwise propagate as a normal click)
+      if (rightClick) {
+        return;
+      }
+    }
     this.nameCol.rowClicked(rowId, shiftKey, ctrlKey);
   }
 

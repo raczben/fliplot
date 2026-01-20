@@ -1,7 +1,6 @@
 import $ from "jquery";
 import "jquery-ui/dist/jquery-ui"; // https://stackoverflow.com/a/75920162/2506522
 import "jquery-ui/ui/widgets/resizable";
-import "jquery-contextmenu";
 import { VCDParser } from "./core/VCDParser.js";
 import { SimDB } from "./core/SimDB.js";
 
@@ -192,98 +191,3 @@ function openFile(event) {
 
   reader.readAsText(file);
 }
-
-$(function () {
-  $.contextMenu({
-    selector:
-      ".signal-context-menu, #names-col-container .jstree-node, #values-col-container .jstree-node",
-    callback: function (key, options) {
-      switch (true) {
-        case /rename/.test(key):
-          setTimeout(() => {
-            window.waveTable.nameCol.editName(window.waveTable.getActiveRow());
-          }, 0);
-          break;
-        case /remove/.test(key):
-          setTimeout(() => {
-            window.waveTable.removeRows();
-          }, 0);
-          break;
-        case /radix-.+/.test(key):
-          setTimeout(() => {
-            window.waveTable.setRadix(key.split("-")[1]);
-          }, 0);
-          break;
-        case /waveStyle-.+/.test(key):
-          // window.waveTable.getSelectedRows()[0].radix = key.split('-')[1];
-          break;
-        case /virtualBus/.test(key):
-          window.waveTable.addVirtualBus();
-          break;
-        case /group/.test(key):
-          setTimeout(() => {
-            window.waveTable.createGroup();
-          }, 0);
-          break;
-        case /analog/.test(key):
-          setTimeout(() => {
-            window.waveTable.setWaveStyle(WaveformRow.WaveStyle.ANALOG);
-          }, 0);
-        default:
-          console.log(`unknown key: ${key}`);
-          break;
-      }
-    },
-
-    build: function ($triggerElement, e) {},
-    zIndex: 1100,
-    items: {
-      rename: { name: "Rename", icon: "edit" },
-      waveStyle: {
-        name: "Wave Style",
-        items: {
-          "waveStyle-analog": { name: "analog" },
-          "waveStyle-bus": { name: "bus" }
-        }
-      },
-      radix: {
-        name: "Radix",
-        items: {
-          "radix-bin": { name: "bin" },
-          "radix-hex": { name: "hex" },
-          "radix-signed": { name: "signed" },
-          "radix-unsigned": { name: "unsigned" },
-          // Add floating point option conditionally:
-          // only a 32 bit signal can be set to float
-          "radix-float": {
-            name: "float",
-            disabled: function () {
-              const row = window.waveTable.getActiveRow(false);
-              return !(row && row.simObj && row.simObj.getWidth() === 32);
-            }
-          }
-        }
-      },
-      sep1: "---------",
-      group: { name: "New Group" },
-      virtualBus: {
-        name: "New Virtual Bus",
-        disabled: function () {
-          const selectedRows = window.waveTable.getSelectedRows(false);
-          if (selectedRows.length < 1) {
-            return true;
-          }
-          // only "bit-signal" types can be combined into a virtual bus
-          for (let i = 0; i < selectedRows.length; i++) {
-            if (selectedRows[i].isBitSignal() == false) {
-              return true;
-            }
-          }
-          return false;
-        }
-      },
-      sep2: "---------",
-      remove: { name: "Remove", icon: "delete" }
-    }
-  });
-});
