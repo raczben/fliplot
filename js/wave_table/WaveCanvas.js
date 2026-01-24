@@ -28,16 +28,28 @@ function parseIntDef(intToPare, def = 0.5) {
  */
 function value2ColorWGL(bin, selected) {
   var color;
+  if (bin === null || bin === undefined) {
+    // handle invalid inputs
+    bin = "x";
+  } else if (Number.isFinite(bin)) {
+    // handle numbers: (which was parsed already)
+    bin = "1";
+  }
+
+  // Handle the internal codes like zoomcompression
   const internalCode = bin.split("-");
   if (internalCode[0] === "/zcmp") {
     bin = internalCode[1];
   }
+
+  // Handle the normal string represented binary values
   if (bin.toLowerCase().includes("x"))
     color = [1.0, 0.0, 0.0, 1.0]; // "#FF0000";
   else if (bin.toLowerCase().includes("z"))
     color = [0.0, 0.0, 1.0, 1.0]; // "#0000FF";
   else color = [0.0, 1.0, 0.0, 1.0]; //"#00FF00";
 
+  // Do some staff for WebGL interface
   // copy array:
   let line_color = [...color];
   let shadow_color = [...color];
@@ -82,6 +94,10 @@ function linearScale(domain, range) {
 }
 
 export class WaveCanvas {
+  /**
+   *
+   * @param {WaveTable} waveTable
+   */
   constructor(waveTable) {
     /** @type {WaveTable} */
     this.waveTable = waveTable;
@@ -96,8 +112,12 @@ export class WaveCanvas {
     this.timeScale = 1.0; // Ratio: simulation time units per pixel. Unit: px/simTimeUnit.
     this.cursorTime = 0; // The time of the cursor in simulation time units. Unit: simTimeUnit.
 
+    /**  @type {HTMLElement} */
     this.canvas = document.getElementById("wave-axis-canvas");
+    /**  @type {HTMLElement} */
     this.canvasWebGL2 = document.getElementById("wave-axis-canvas-webgl2");
+
+    /** @type {WebGL2UtilTR} */
     this.wglu = new WebGL2UtilTR(this.canvasWebGL2);
 
     this._renderScheduled = false;
@@ -105,20 +125,31 @@ export class WaveCanvas {
 
   init() {}
 
+  /**
+   *
+   * @param {boolean} render
+   */
   reload(render = false) {
     console.log("Reloading waveform display", { render });
   }
 
+  /**
+   *
+   * @param {number} scrollTop
+   */
   setScrollTop(scrollTop) {
     // Set the scroll position of the wave display
     this.scrollTop = scrollTop;
   }
 
+  /**
+   *
+   * @param {number} scrollTop
+   */
   setLeftOffset(scrollLeft) {
     // Set the scroll position of the wave display
     this.scrollLeft = scrollLeft;
     console.log("Set scroll left to:", scrollLeft);
-    console.log("Render range set to:", this.renderRange);
   }
 
   refresh() {}
@@ -282,15 +313,16 @@ export class WaveCanvas {
       top: this.scrollTop,
       bottom: this.scrollTop + this.canvas.height
     };
+    let yBase = 0;
     // Example: render each row in waveTable.rows
     const rowsToPlot = this.waveTable.getRows({ hidden: false, content: true });
     rowsToPlot.forEach((row, rowIdx) => {
       const waveStyle = row.waveStyle;
       const rowHeight = row.getHeight();
-      const yBase = rowIdx * rowHeight;
 
       // // Skip rows that are not in the visible range
       if (yBase + rowHeight < visibleRangeY.top || yBase > visibleRangeY.bottom) {
+        yBase = yBase + row.getHeight();
         return;
       }
 
@@ -332,6 +364,7 @@ export class WaveCanvas {
         ctx.fillStyle = "#fff";
         ctx.fillText(`Unsupported: ${waveStyle}`, 10, yBase + rowHeight / 2);
       }
+      yBase = yBase + row.getHeight();
     });
     this.drawCursor(ctx, this.cursorTime, this.scrollLeft, this.timeScale);
     this.drawAxis(ctx, this.scrollLeft, this.timeScale);
@@ -340,7 +373,7 @@ export class WaveCanvas {
 
   /**
    * Draw a single bit-style signal on the canvas.
-   * @param {CanvasRenderingContext2D} ctx - Canvas 2D context
+   * @param {WebGL2UtilTR} wglu - The WebGL utility wrapper class.
    * @param {WaveformRow} row - The rowToPlot element (signal row object)
    * @param {number} yOffset - The vertical offset (pixels from top)
    * @param {number} xOffset - The horizontal offset (pixels from top)
@@ -364,7 +397,7 @@ export class WaveCanvas {
       // trasform to pixel coordinates
       const t1 = wi.time;
       const x1 = t1 * timeScale - xOffset;
-      const v1 = wi.bin;
+      const v1 = wi.val;
       const y1r = valueScale(parseIntDef(v1));
       const y1abbs = y1r + yOffset;
 
@@ -377,7 +410,7 @@ export class WaveCanvas {
 
       // trasform to pixel coordinates
       const t0 = wiPrev.time;
-      const v0 = wiPrev.bin;
+      const v0 = wiPrev.val;
       const y0r = valueScale(parseIntDef(v0));
       const y0abbs = y0r + yOffset;
       const x0 = t0 * timeScale - xOffset;
@@ -414,8 +447,9 @@ export class WaveCanvas {
 
   /**
    * Draw a single bit-style signal on the canvas.
-   * @param {CanvasRenderingContext2D} ctx - Canvas 2D context
-   * @param {Object} row - The rowToPlot element (signal row object)
+   * @param {CanvasRenderingContext2D} ctx - Canvas 2D context for the values
+   * @param {WebGL2UtilTR} wglu - The WebGL utility wrapper class, for the signal wave
+   * @param {WaveformRow} row - The rowToPlot element (signal row object)
    * @param {number} yOffset - The vertical offset (pixels from top)
    * @param {number} xOffset - The horizontal offset (pixels from top)
    * @param {number} timeScale - Ratio: simulation time units per pixel
@@ -450,7 +484,7 @@ export class WaveCanvas {
       // segment values:
       const t0 = wiPrev.time;
       const t1 = wi.time;
-      const v0 = wiPrev.bin;
+      const v0 = wiPrev.val;
 
       // trasform to pixel coordinates
       let x0 = t0 * timeScale - xOffset;

@@ -468,8 +468,9 @@ export class WaveTable {
     }
     rowIds.forEach((element) => {
       this.getRow(element).setWaveStyle(wstyle);
-      this.wave.requestRender();
     });
+    // Reload is needed because the waveStyle change may affect the height of the row
+    this.reload();
   }
 
   moveCursorTo(time) {

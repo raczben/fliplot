@@ -77,6 +77,9 @@ export class WebGL2UtilTR {
 
   /**
    * Add new vertices to the strip array.
+   * @param {number} x
+   * @param {number} y
+   * @param {[number]} color
    */
   _add(x, y, color) {
     //check arguments
@@ -103,12 +106,34 @@ export class WebGL2UtilTR {
     }
   }
 
+  /**
+   * Begins a simple line from the given coordinates
+   * @param {number} x
+   * @param {number} y
+   */
   begin_line(x, y) {
     this.prevPoint = [x, y];
   }
 
-  line_to(x, y, lineWidth, color) {
-    if (!this.prevPoint) return;
+  /**
+   * Draws a line from the previous point to the <x,y> coordinate.
+   * If there is no previous point, and beginNew is true, begins a new line at the given point.
+   *
+   * @param {number} x The horisontal position of the target coordinate
+   * @param {number} y The vertical position of the target coordinate
+   * @param {number} lineWidth
+   * @param {[number]} color RGBA value array of the line color
+   * @param {boolean} beginNew If true, begins a new line at the given point
+   * @returns
+   */
+  line_to(x, y, lineWidth, color, beginNew = false) {
+    if (!this.prevPoint) {
+      if (beginNew) {
+        this.begin_line(x, y);
+        return;
+      }
+      throw new Error("line_to called before begin_line");
+    }
 
     const [x1, y1] = this.prevPoint;
     const [x2, y2] = [x, y];
@@ -155,6 +180,7 @@ export class WebGL2UtilTR {
 
     this.vertices_strip_len = 0;
     this.colors_strip_len = 0;
+    this.prevPoint = null;
   }
 
   add_rect(x1, y1, x2, y2, color) {

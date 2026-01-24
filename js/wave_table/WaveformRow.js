@@ -115,6 +115,13 @@ export class WaveformRow extends Node {
     return this.simObj.getTimeAtI(i, now);
   }
 
+  /**
+   *
+   * @param {boolean} defalultAsNegative If the current row height is equals the default height, return -1
+   *                            instead of the actual height. (This is useful for saving settings and faster drawing,
+   *                            using the css defaults.)
+   * @returns {number} the row height in pixels
+   */
   getHeight(defalultAsNegative = false) {
     if (defalultAsNegative) {
       // if we want default as negative, just return the height
@@ -163,6 +170,15 @@ export class WaveformRow extends Node {
     this.radixPrefix = prefix;
   }
 
+  /**
+   * This method set three things:
+   *  - the wave style (obviously)
+   *  - the row-height in the canvas,
+   *  - and the Y-axis range.
+   *
+   * @param {WaveformRow.WaveStyle} wstyle The wave style to set
+   * @returns
+   */
   setWaveStyle(wstyle) {
     this.waveStyle = wstyle;
     // analog waves have more height

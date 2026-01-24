@@ -118,7 +118,14 @@ export class Signal {
    * @param {boolean} initialX - If true first phantom 'x' value will be added at the beginning of the wave.
    * @returns {IterableIterator<valueChange_t>} An iterator over the signal's wave.
    */
-  *waveIterator(t0 = 0, t1 = Infinity, timeScale = Infinity, now = -1, initialX = false) {
+  *waveIterator(
+    t0 = 0,
+    t1 = Infinity,
+    timeScale = Infinity,
+    now = -1,
+    initialX = false,
+    radix = "bin"
+  ) {
     this.zcmpChanges = 8;
     this.zcmpPixels = 8;
 
@@ -135,7 +142,7 @@ export class Signal {
     if (initialX) {
       if (waveArr.length == 0 || t0 < waveArr[startIdx].time) {
         // If the first value is not at time zero, prepend a phantom value at time zero.
-        yield { time: 0, bin: "x".repeat(this.width), index: -1 };
+        yield { time: 0, val: bin2radix("x".repeat(this.width), radix), index: -1 };
       }
     }
     for (let i = startIdx; i < endIdx; i++) {
@@ -145,12 +152,15 @@ export class Signal {
       const zcmpIdx = this.getChangeIndexAt(compressionInterval + wi.time);
       if (zcmpIdx > i + this.zcmpChanges) {
         // do the compression
-        const y = { time: waveArr[i].time, index: i, bin: "/zcmp-123" };
+        const y = { time: wi.time, index: i, val: "/zcmp-123" };
         i = zcmpIdx - 1; // skip the following wave items. step the index
         yield y;
       } else {
         // return a simple copy of the wave item
-        const y = { time: waveArr[i].time, index: i, bin: waveArr[i].bin };
+        if (wi[radix] === undefined) {
+          wi[radix] = bin2radix(wi.bin, radix);
+        }
+        const y = { time: wi.time, index: i, val: wi[radix] };
         yield y;
       }
     }
@@ -159,7 +169,7 @@ export class Signal {
       if (waveArr.length >= endIdx || t1 > waveArr[endIdx - 1].time) {
         // if the requested time is over the last value change, add a phantom value at the end
         // (the values started by '/' charater are internal simbols)
-        yield { time: now, bin: "/phantom-now", index: endIdx };
+        yield { time: now, val: "/phantom-now", index: endIdx };
       }
     }
   }
