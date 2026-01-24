@@ -116,6 +116,11 @@ export class Signal {
    * @param {number} timeScale - The time scale to use for the wave.
    * @param {number} now - Iterator adds phantom values at the end of the iteration till the current simulation time.
    * @param {boolean} initialX - If true first phantom 'x' value will be added at the beginning of the wave.
+   * @param {string} radix - The radix to use for the value conversion. Default is 'bin'. The yielded valueChange_t
+   *                        will have the 'val' property in the specified radix.
+   * @param {[number, number]} padding - Number of extra value changes to include before t0 and after t1.
+   *                        The default is [0, 1]. Which means the first value change before t0 and the last in t1+1
+   *                        will be included in the iteration.
    * @returns {IterableIterator<valueChange_t>} An iterator over the signal's wave.
    */
   *waveIterator(
@@ -124,7 +129,8 @@ export class Signal {
     timeScale = Infinity,
     now = -1,
     initialX = false,
-    radix = "bin"
+    radix = "bin",
+    padding = [0, 1]
   ) {
     this.zcmpChanges = 8;
     this.zcmpPixels = 8;
@@ -135,8 +141,8 @@ export class Signal {
     // Find indices in wave that are within the visible time range
     // getChangeIndexAt returns -1 if the time is before the first change.
     // in this case we start plot at the first change.
-    const startIdx = Math.max(0, this.getChangeIndexAt(t0));
-    const endIdx = Math.min(this.getLenght(), this.getChangeIndexAt(t1) + 1);
+    const startIdx = Math.max(0, this.getChangeIndexAt(t0) - padding[0]);
+    const endIdx = Math.min(this.getLenght(), this.getChangeIndexAt(t1) + padding[1] + 1);
 
     const waveArr = this.wave;
     if (initialX) {

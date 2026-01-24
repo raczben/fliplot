@@ -572,7 +572,7 @@ export class WaveCanvas {
       timeRange[0],
       timeRange[1],
       Infinity,
-      simDB.now,
+      -1,
       false,
       row.radix
     )) {

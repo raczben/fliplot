@@ -129,6 +129,16 @@ export class WebGL2UtilTR {
   line_to(x, y, lineWidth, color) {
     if (!this.prevPoint) throw new Error("line_to called before begin_line");
 
+    // verify the input arguments
+    if (
+      Number.isFinite(x) == false ||
+      Number.isFinite(y) == false ||
+      typeof lineWidth !== "number" ||
+      lineWidth <= 0
+    ) {
+      throw new Error("Invalid arguments for line_to method: " + [x, y, lineWidth]);
+    }
+
     const [x1, y1] = this.prevPoint;
     const [x2, y2] = [x, y];
     this.prevPoint = [x2, y2];
