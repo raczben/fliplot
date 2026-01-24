@@ -275,7 +275,7 @@ export class WaveTable {
       // in reversed: little-endian order.
       for (var i = obj.signal.width - 1; i > -1; i--) {
         const subObj = obj.cloneRange(i);
-        new WaveformRow(subObj, rowItem, i, [], false);
+        new WaveformRow(subObj, rowItem);
       }
     }
 
