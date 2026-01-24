@@ -173,6 +173,13 @@ export class NameCol {
       treeObj["text"] = row.name;
       treeObj["data"] = row.id;
       treeObj["state"] = { opened: row.opened };
+      // TODO ...
+      // get waveStyle and set class accordingly:
+      if (row.waveStyle == WaveformRow.WaveStyle.ANALOG) {
+        treeObj["li_attr"] = {
+          class: "name-col-analog"
+        };
+      }
       tree.push(treeObj);
     });
 

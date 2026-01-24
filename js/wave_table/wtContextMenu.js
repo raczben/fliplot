@@ -28,6 +28,10 @@ export function initContextMenu() {
           }, 0);
           break;
         case /waveStyle-.+/.test(key):
+          const waveStyleStr = key.split("-")[1];
+          setTimeout(() => {
+            window.waveTable.setWaveStyle(waveStyleStr);
+          }, 0);
           // window.waveTable.getSelectedRows()[0].radix = key.split('-')[1];
           break;
         case /virtualBus/.test(key):
@@ -38,10 +42,6 @@ export function initContextMenu() {
             window.waveTable.createGroup();
           }, 0);
           break;
-        case /analog/.test(key):
-          setTimeout(() => {
-            window.waveTable.setWaveStyle(WaveformRow.WaveStyle.ANALOG);
-          }, 0);
         default:
           console.log(`unknown key: ${key}`);
           break;

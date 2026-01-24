@@ -1160,3 +1160,14 @@ https://github.com/vakata/jstree/blob/6256df013ebd98aea138402d8ac96db3efe0c0da/s
 .jstree-default-dark-large.jstree-rtl .jstree-last {
   background-image: none;
 }
+
+.name-col-analog > .jstree-anchor,
+.name-col-analog > .jstree-wholerow-clicked,
+.name-col-analog > .jstree-wholerow-hovered {
+  height: 60px;
+  line-height: 60px;
+}
+
+.name-col-analog > .jstree-icon {
+  margin-top: 18px;
+}

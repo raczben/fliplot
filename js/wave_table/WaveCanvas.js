@@ -28,7 +28,7 @@ function parseIntDef(intToPare, def = 0.5) {
  */
 function value2ColorWGL(bin, selected) {
   var color;
-  if (bin === null || bin === undefined) {
+  if (bin === null || bin === undefined || Number.isNaN(bin)) {
     // handle invalid inputs
     bin = "x";
   } else if (Number.isFinite(bin)) {
@@ -355,6 +355,17 @@ export class WaveCanvas {
           selected,
           2
         );
+      } else if (waveStyle === WaveformRow.WaveStyle.ANALOG) {
+        this.drawAnalogSignal(
+          ctx,
+          this.wglu,
+          row,
+          yBase - this.scrollTop,
+          this.scrollLeft,
+          this.timeScale,
+          selected,
+          2
+        );
       } else if (waveStyle === WaveformRow.WaveStyle.BLANK) {
         // Do nothing for blank wave style
       } else {
@@ -523,6 +534,63 @@ export class WaveCanvas {
       let truncedStr = truncateTextToWidth(ctx, txt, x1satured - x0satured - 4);
       ctx.fillText(truncedStr, xpos, zero - 1);
       wiPrev = wi;
+    }
+    wglu.end_line();
+  }
+
+  /**
+   * Draw an analog-style signal on the canvas.
+   * @param {CanvasRenderingContext2D} ctx - Canvas 2D context
+   * @param {WebGL2UtilTR} wglu - The WebGL utility wrapper class, for the signal wave
+   * @param {WaveformRow} row - The rowToPlot element (signal row object)
+   * @param {number} yOffset - The vertical offset (pixels from top)
+   * @param {number} xOffset - The horizontal offset (pixels from top)
+   * @param {number} timeScale - Ratio: simulation time units per pixel
+   * @param {boolean} selected - Selected row is lighter
+   * @param {number} lineWidth - The line width of the signal.
+   */
+  drawAnalogSignal(ctx, wglu, row, yOffset, xOffset, timeScale, selected, lineWidth) {
+    const signal = row.simObj.signal;
+    const rowHeight = row.getHeight();
+    const bitWavePadding = Config.bitWavePadding || 2;
+
+    const timeRange = this.getTimeRange(xOffset, this.canvas.width);
+
+    const absTop = rowHeight - bitWavePadding + yOffset;
+    const absBottom = bitWavePadding + yOffset;
+
+    const valueScalify = linearScale(
+      row.getYAxisRange(), // domain
+      [absTop, absBottom] // range
+    );
+    // const timeScalify = linearScale(
+    //   row.getYAxisRange(), // domain
+    //   [absTop, absBottom] // range
+    // );
+    let firstIteration = true;
+    for (let wi of signal.waveIterator(
+      timeRange[0],
+      timeRange[1],
+      Infinity,
+      simDB.now,
+      false,
+      row.radix
+    )) {
+      const t1 = wi.time;
+
+      // trasform to pixel coordinates
+      let v1 = wi.val;
+      let y1 = valueScalify(v1);
+      let x1 = t1 * timeScale - xOffset;
+
+      let { line_color, _ } = value2ColorWGL(v1, selected);
+
+      if (firstIteration) {
+        wglu.begin_line(x1, y1);
+        firstIteration = false;
+      } else {
+        wglu.line_to(x1, y1, lineWidth, line_color, true);
+      }
     }
     wglu.end_line();
   }

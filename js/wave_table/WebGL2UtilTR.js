@@ -117,7 +117,7 @@ export class WebGL2UtilTR {
 
   /**
    * Draws a line from the previous point to the <x,y> coordinate.
-   * If there is no previous point, and beginNew is true, begins a new line at the given point.
+   * If there is no previous point, throws an error.
    *
    * @param {number} x The horisontal position of the target coordinate
    * @param {number} y The vertical position of the target coordinate
@@ -126,14 +126,8 @@ export class WebGL2UtilTR {
    * @param {boolean} beginNew If true, begins a new line at the given point
    * @returns
    */
-  line_to(x, y, lineWidth, color, beginNew = false) {
-    if (!this.prevPoint) {
-      if (beginNew) {
-        this.begin_line(x, y);
-        return;
-      }
-      throw new Error("line_to called before begin_line");
-    }
+  line_to(x, y, lineWidth, color) {
+    if (!this.prevPoint) throw new Error("line_to called before begin_line");
 
     const [x1, y1] = this.prevPoint;
     const [x2, y2] = [x, y];
@@ -180,7 +174,6 @@ export class WebGL2UtilTR {
 
     this.vertices_strip_len = 0;
     this.colors_strip_len = 0;
-    this.prevPoint = null;
   }
 
   add_rect(x1, y1, x2, y2, color) {

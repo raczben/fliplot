@@ -68,6 +68,7 @@ export class WaveformRow extends Node {
         wstyle = WaveformRow.WaveStyle.BUS;
       }
     }
+    this.yAxisRange = [0, 1];
     this.setWaveStyle(wstyle);
     this.setRadix();
   }
@@ -134,6 +135,14 @@ export class WaveformRow extends Node {
   }
 
   /**
+   *
+   * @returns {[number]} the min max range of the y axis range.
+   */
+  getYAxisRange() {
+    return this.yAxisRange;
+  }
+
+  /**
    * @param {String} radix
    */
   setRadix(radix, prefix) {
@@ -183,9 +192,45 @@ export class WaveformRow extends Node {
     this.waveStyle = wstyle;
     // analog waves have more height
     if (wstyle == WaveformRow.WaveStyle.ANALOG) {
+      // the radix must be compatible with analog (float, double, signed, unsigned)
+      if (
+        ["float", "double"].includes(this.radix) == false &&
+        this.radix.startsWith("s") == false &&
+        this.radix.startsWith("u") == false
+      ) {
+        // set to signed if incompatible
+        this.setRadix("signed");
+      }
+
       this.height = 60;
-      return;
+      // search for min and max values in the signal
+      let minV = Number.POSITIVE_INFINITY;
+      let maxV = Number.NEGATIVE_INFINITY;
+
+      for (let wi of this.simObj.signal.waveIterator(
+        0, // t0
+        Infinity, // t1
+        Infinity, // timeScale
+        -1, // now
+        false, //initialX
+        this.radix
+      )) {
+        const v = wi.val;
+        if (isNaN(v)) {
+          continue;
+        } else {
+          if (v < minV) {
+            minV = v;
+          }
+          if (v > maxV) {
+            maxV = v;
+          }
+        }
+      }
+      this.yAxisRange = [minV, maxV];
     } else {
+      // if the wavestyle is not analog
+      this.yAxisRange = [0, 1];
       this.height = -1;
     }
   }
