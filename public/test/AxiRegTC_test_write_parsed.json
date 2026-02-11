@@ -4461,7 +4461,12 @@
           "rSt"
         ]
       ],
-      "wave": [],
+      "wave": [
+        {
+          "time": 0,
+          "bin": "rdidle"
+        }
+      ],
       "type": "real",
       "width": 1
     },
@@ -4474,7 +4479,12 @@
           "rSt_next"
         ]
       ],
-      "wave": [],
+      "wave": [
+        {
+          "time": 0,
+          "bin": "rdidle"
+        }
+      ],
       "type": "real",
       "width": 1
     },
@@ -4487,7 +4497,72 @@
           "wSt"
         ]
       ],
-      "wave": [],
+      "wave": [
+        {
+          "time": 0,
+          "bin": "wridle"
+        },
+        {
+          "time": 25000,
+          "bin": "wrdata"
+        },
+        {
+          "time": 35000,
+          "bin": "wrresp"
+        },
+        {
+          "time": 45000,
+          "bin": "wridle"
+        },
+        {
+          "time": 55000,
+          "bin": "wrdata"
+        },
+        {
+          "time": 65000,
+          "bin": "wrresp"
+        },
+        {
+          "time": 75000,
+          "bin": "wridle"
+        },
+        {
+          "time": 85000,
+          "bin": "wrdata"
+        },
+        {
+          "time": 95000,
+          "bin": "wrresp"
+        },
+        {
+          "time": 105000,
+          "bin": "wridle"
+        },
+        {
+          "time": 115000,
+          "bin": "wrdata"
+        },
+        {
+          "time": 125000,
+          "bin": "wrresp"
+        },
+        {
+          "time": 135000,
+          "bin": "wridle"
+        },
+        {
+          "time": 145000,
+          "bin": "wrdata"
+        },
+        {
+          "time": 155000,
+          "bin": "wrresp"
+        },
+        {
+          "time": 175000,
+          "bin": "wridle"
+        }
+      ],
       "type": "real",
       "width": 1
     },
@@ -4500,7 +4575,72 @@
           "wSt_next"
         ]
       ],
-      "wave": [],
+      "wave": [
+        {
+          "time": 0,
+          "bin": "wridle"
+        },
+        {
+          "time": 15000,
+          "bin": "wrdata"
+        },
+        {
+          "time": 25000,
+          "bin": "wrresp"
+        },
+        {
+          "time": 35000,
+          "bin": "wridle"
+        },
+        {
+          "time": 45000,
+          "bin": "wrdata"
+        },
+        {
+          "time": 55000,
+          "bin": "wrresp"
+        },
+        {
+          "time": 65000,
+          "bin": "wridle"
+        },
+        {
+          "time": 75000,
+          "bin": "wrdata"
+        },
+        {
+          "time": 85000,
+          "bin": "wrresp"
+        },
+        {
+          "time": 95000,
+          "bin": "wridle"
+        },
+        {
+          "time": 105000,
+          "bin": "wrdata"
+        },
+        {
+          "time": 115000,
+          "bin": "wrresp"
+        },
+        {
+          "time": 125000,
+          "bin": "wridle"
+        },
+        {
+          "time": 135000,
+          "bin": "wrdata"
+        },
+        {
+          "time": 145000,
+          "bin": "wrresp"
+        },
+        {
+          "time": 175000,
+          "bin": "wridle"
+        }
+      ],
       "type": "real",
       "width": 1
     },
