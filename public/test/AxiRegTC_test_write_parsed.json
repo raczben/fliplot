@@ -13,7 +13,7 @@
         },
         {
           "time": 125000,
-          "bin": "XXX"
+          "bin": "xxx"
         }
       ],
       "width": 3
@@ -1492,7 +1492,7 @@
         },
         {
           "time": 155000,
-          "bin": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+          "bin": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         }
       ],
       "width": 32
@@ -1647,7 +1647,7 @@
         },
         {
           "time": 155000,
-          "bin": "XXXX"
+          "bin": "xxxx"
         }
       ],
       "width": 4
@@ -2851,7 +2851,7 @@
         },
         {
           "time": 125000,
-          "bin": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+          "bin": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         }
       ],
       "width": 32
@@ -2899,7 +2899,7 @@
         },
         {
           "time": 125000,
-          "bin": "XXX"
+          "bin": "xxx"
         }
       ],
       "width": 3
@@ -3711,7 +3711,7 @@
         },
         {
           "time": 155000,
-          "bin": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+          "bin": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         }
       ],
       "width": 32
@@ -3855,7 +3855,7 @@
         },
         {
           "time": 155000,
-          "bin": "XXXX"
+          "bin": "xxxx"
         }
       ],
       "width": 4
@@ -4147,7 +4147,7 @@
         },
         {
           "time": 125000,
-          "bin": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+          "bin": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         }
       ],
       "width": 32
@@ -5333,7 +5333,7 @@
         },
         {
           "time": 125000,
-          "bin": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+          "bin": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         }
       ],
       "width": 32
@@ -5351,7 +5351,7 @@
         },
         {
           "time": 125000,
-          "bin": "XXX"
+          "bin": "xxx"
         }
       ],
       "width": 3
@@ -7485,7 +7485,7 @@
         },
         {
           "time": 155000,
-          "bin": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+          "bin": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         }
       ],
       "width": 32
@@ -7557,7 +7557,7 @@
         },
         {
           "time": 155000,
-          "bin": "XXXX"
+          "bin": "xxxx"
         }
       ],
       "width": 4
