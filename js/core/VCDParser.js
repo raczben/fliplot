@@ -12,8 +12,9 @@ export class VCDParser {
   }
 
   _padBin(bin, width) {
+    bin = bin.toLocaleLowerCase();
     // if starts with b or B, remove it before padding:
-    if (/^[bB]/.test(bin)) {
+    if (/^[b]/.test(bin)) {
       bin = bin.slice(1);
     }
     // https://0x04.net/~mwk/vstd/ieee-1364-2001.pdf
@@ -164,31 +165,54 @@ export class VCDParser {
         endtime = currentTime;
       } else {
         // Value change line, e.g. 1! or b1010 !
-        var value, id, _x;
+        var value, id, _full;
         if (/^[01xXzZuU]/.test(line)) {
           // Scalar value change: e.g. 1!
           value = line[0];
           id = line.slice(1);
-        } else if (/^[brBR]/.test(line)) {
-          // Vector value change: e.g. b1010 !
-          [_x, value, id] = line.match(/^([brBR][01xXzZuU]+)\s+(\S+)/) || [];
+        } else if (/^[bBrR]/.test(line)) {
+          const formatChar = Array.from(line)[0].toLowerCase();
+          line = line.slice(1);
+          // if (ln == 322) {
+          // console.log(`line ${ln + 1}: ${line}  id: ${id}  value: ${value}` );
+          // }
+          if (formatChar == "r") {
+            // real value change: e.g. r3.14 !
+            [_full, value, id] = line.match(/^([\d.eE+-]+)\s+(\S+)/) || [];
+            value = parseFloat(value);
+            if (value == 0) {
+              value = 0.0; // to avoid -0
+            }
+          } else if (formatChar == "b") {
+            // Vector value change: e.g. b1010 !
+            [_full, value, id] = line.match(/^([01xXzZuU-]+)\s+(\S+)/) || [];
+            // console.log(`line ${ln + 1}: ${rawLine} id: ${id}  value: ${value}` );
+          } else {
+            console.error(
+              `ERROR: Unrecognized format character "${formatChar}" at line ${ln + 1}: ${rawLine}`
+            );
+          }
         } else {
           console.warn(`Warning: Unrecognized line format at line ${ln + 1}: ${rawLine}`);
           continue;
         }
 
-        value = value.toLocaleLowerCase();
         // Store the value change in the corresponding signal's wave array
         if (idToSignal[id]) {
+          let bin;
           for (const signal of idToSignal[id]) {
-            const bin = this._padBin(value, signal.width);
+            if (typeof value === "string") {
+              bin = this._padBin(value, signal.width);
+            } else {
+              bin = value;
+            }
+            const lastEntry = signal.wave[signal.wave.length - 1];
             if (!duplicate_repeted_values) {
-              const lastEntry = signal.wave[signal.wave.length - 1];
               if (lastEntry && lastEntry.bin === bin) {
                 continue; // Skip duplicate value
               }
             }
-            signal.wave.push({ time: currentTime, bin: bin.toUpperCase() });
+            signal.wave.push({ time: currentTime, bin: bin });
           }
         } else {
           console.warn(
