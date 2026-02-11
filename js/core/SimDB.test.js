@@ -6,13 +6,32 @@ describe("SimDB", () => {
     now: 42,
     signals: [
       {
-        references: ["top.a", "top.b"],
+        references: [
+          ["top", "a"],
+          ["top", "b"]
+        ],
         vcdid: "v1",
         type: "wire",
         wave: [
           { time: 0, bin: "0" },
           { time: 10, bin: "1" }
         ],
+        width: 1
+      }
+    ],
+    varialbes: [
+      {
+        vcdid: "v1",
+        name: "a",
+        hierarchy: ["top"],
+        type: "wire",
+        width: 1
+      },
+      {
+        vcdid: "v1",
+        name: "b",
+        hierarchy: ["top"],
+        type: "wire",
         width: 1
       }
     ]

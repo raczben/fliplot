@@ -1,617 +1,13 @@
 {
-  "signals": [
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "bus_aw_prot",
-      "references": ["EpWithReg.bus_aw_prot"],
-      "type": "wire",
-      "vcdid": "!",
-      "wave": [
-        {
-          "time": 15000,
-          "bin": "000"
-        },
-        {
-          "time": 125000,
-          "bin": "xxx"
-        }
-      ],
-      "width": 3
-    },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_bus_r_valid",
-      "references": ["EpWithReg.sig_ep_bus_r_valid"],
-      "type": "wire",
-      "vcdid": "\"",
-      "wave": [
-        {
-          "time": 0,
-          "bin": "0"
-        }
-      ],
-      "width": 1
-    },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_out_m_ar_valid",
-      "references": ["EpWithReg.sig_reg_out_m_ar_valid"],
-      "type": "wire",
-      "vcdid": "#",
-      "wave": [
-        {
-          "time": 0,
-          "bin": "0"
-        }
-      ],
-      "width": 1
-    },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "bus_aw_ready",
-      "references": ["EpWithReg.bus_aw_ready"],
-      "type": "wire",
-      "vcdid": "$",
-      "wave": [
-        {
-          "time": 0,
-          "bin": "1"
-        },
-        {
-          "time": 25000,
-          "bin": "0"
-        },
-        {
-          "time": 45000,
-          "bin": "1"
-        },
-        {
-          "time": 55000,
-          "bin": "0"
-        },
-        {
-          "time": 75000,
-          "bin": "1"
-        },
-        {
-          "time": 85000,
-          "bin": "0"
-        },
-        {
-          "time": 105000,
-          "bin": "1"
-        },
-        {
-          "time": 115000,
-          "bin": "0"
-        },
-        {
-          "time": 135000,
-          "bin": "1"
-        }
-      ],
-      "width": 1
-    },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_bus_w_data",
-      "references": ["EpWithReg.sig_ep_bus_w_data"],
-      "type": "wire",
-      "vcdid": "%",
-      "wave": [
-        {
-          "time": 15000,
-          "bin": "00000000000000000000000001100100"
-        },
-        {
-          "time": 55000,
-          "bin": "00000000000000000000000001100101"
-        },
-        {
-          "time": 75000,
-          "bin": "00000000000000000000000001100110"
-        },
-        {
-          "time": 95000,
-          "bin": "00000000000000000000000001100111"
-        },
-        {
-          "time": 125000,
-          "bin": "00000000000000000000000001101000"
-        }
-      ],
-      "width": 32
-    },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_out_m_aw_addr",
-      "references": ["EpWithReg.sig_reg_out_m_aw_addr"],
-      "type": "wire",
-      "vcdid": "&",
-      "wave": [
-        {
-          "time": 15000,
-          "bin": "00000000000000000000000000000000"
-        },
-        {
-          "time": 25000,
-          "bin": "00000000000000000000000000000100"
-        },
-        {
-          "time": 55000,
-          "bin": "00000000000000000000000000000000"
-        },
-        {
-          "time": 85000,
-          "bin": "00000000000000000000000000000100"
-        },
-        {
-          "time": 115000,
-          "bin": "00000000000000000000000000001000"
-        }
-      ],
-      "width": 32
-    },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "bus_aw_valid",
-      "references": ["EpWithReg.bus_aw_valid"],
-      "type": "wire",
-      "vcdid": "'",
-      "wave": [
-        {
-          "time": 2500,
-          "bin": "0"
-        },
-        {
-          "time": 15000,
-          "bin": "1"
-        },
-        {
-          "time": 22500,
-          "bin": "0"
-        },
-        {
-          "time": 25000,
-          "bin": "1"
-        },
-        {
-          "time": 32500,
-          "bin": "0"
-        },
-        {
-          "time": 55000,
-          "bin": "1"
-        },
-        {
-          "time": 62500,
-          "bin": "0"
-        },
-        {
-          "time": 75000,
-          "bin": "1"
-        },
-        {
-          "time": 82500,
-          "bin": "0"
-        },
-        {
-          "time": 85000,
-          "bin": "1"
-        },
-        {
-          "time": 92500,
-          "bin": "0"
-        },
-        {
-          "time": 115000,
-          "bin": "1"
-        },
-        {
-          "time": 122500,
-          "bin": "0"
-        }
-      ],
-      "width": 1
-    },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_bus_w_ready",
-      "references": ["EpWithReg.sig_ep_bus_w_ready"],
-      "type": "wire",
-      "vcdid": "(",
-      "wave": [
-        {
-          "time": 0,
-          "bin": "0"
-        },
-        {
-          "time": 25000,
-          "bin": "1"
-        },
-        {
-          "time": 35000,
-          "bin": "0"
-        },
-        {
-          "time": 55000,
-          "bin": "1"
-        },
-        {
-          "time": 65000,
-          "bin": "0"
-        },
-        {
-          "time": 85000,
-          "bin": "1"
-        },
-        {
-          "time": 95000,
-          "bin": "0"
-        },
-        {
-          "time": 115000,
-          "bin": "1"
-        },
-        {
-          "time": 125000,
-          "bin": "0"
-        },
-        {
-          "time": 145000,
-          "bin": "1"
-        },
-        {
-          "time": 155000,
-          "bin": "0"
-        }
-      ],
-      "width": 1
-    },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_out_m_aw_prot",
-      "references": ["EpWithReg.sig_reg_out_m_aw_prot"],
-      "type": "wire",
-      "vcdid": ")",
-      "wave": [
-        {
-          "time": 15000,
-          "bin": "000"
-        }
-      ],
-      "width": 3
-    },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "bus_b_ready",
-      "references": ["EpWithReg.bus_b_ready"],
-      "type": "wire",
-      "vcdid": "*",
-      "wave": [
-        {
-          "time": 2500,
-          "bin": "0"
-        },
-        {
-          "time": 35000,
-          "bin": "1"
-        },
-        {
-          "time": 42500,
-          "bin": "0"
-        },
-        {
-          "time": 55000,
-          "bin": "1"
-        },
-        {
-          "time": 62500,
-          "bin": "0"
-        },
-        {
-          "time": 75000,
-          "bin": "1"
-        },
-        {
-          "time": 82500,
-          "bin": "0"
-        },
-        {
-          "time": 95000,
-          "bin": "1"
-        },
-        {
-          "time": 102500,
-          "bin": "0"
-        },
-        {
-          "time": 115000,
-          "bin": "1"
-        },
-        {
-          "time": 122500,
-          "bin": "0"
-        },
-        {
-          "time": 125000,
-          "bin": "1"
-        },
-        {
-          "time": 132500,
-          "bin": "0"
-        },
-        {
-          "time": 175000,
-          "bin": "1"
-        },
-        {
-          "time": 182500,
-          "bin": "0"
-        },
-        {
-          "time": 195000,
-          "bin": "1"
-        },
-        {
-          "time": 202500,
-          "bin": "0"
-        },
-        {
-          "time": 215000,
-          "bin": "1"
-        },
-        {
-          "time": 222500,
-          "bin": "0"
-        },
-        {
-          "time": 235000,
-          "bin": "1"
-        },
-        {
-          "time": 242500,
-          "bin": "0"
-        },
-        {
-          "time": 255000,
-          "bin": "1"
-        },
-        {
-          "time": 262500,
-          "bin": "0"
-        },
-        {
-          "time": 275000,
-          "bin": "1"
-        },
-        {
-          "time": 282500,
-          "bin": "0"
-        },
-        {
-          "time": 305000,
-          "bin": "1"
-        },
-        {
-          "time": 312500,
-          "bin": "0"
-        },
-        {
-          "time": 335000,
-          "bin": "1"
-        },
-        {
-          "time": 352500,
-          "bin": "0"
-        },
-        {
-          "time": 355000,
-          "bin": "1"
-        },
-        {
-          "time": 362500,
-          "bin": "0"
-        },
-        {
-          "time": 395000,
-          "bin": "1"
-        },
-        {
-          "time": 402500,
-          "bin": "0"
-        },
-        {
-          "time": 405000,
-          "bin": "1"
-        },
-        {
-          "time": 412500,
-          "bin": "0"
-        },
-        {
-          "time": 445000,
-          "bin": "1"
-        },
-        {
-          "time": 462500,
-          "bin": "0"
-        },
-        {
-          "time": 475000,
-          "bin": "1"
-        },
-        {
-          "time": 482500,
-          "bin": "0"
-        },
-        {
-          "time": 485000,
-          "bin": "1"
-        },
-        {
-          "time": 492500,
-          "bin": "0"
-        },
-        {
-          "time": 495000,
-          "bin": "1"
-        }
-      ],
-      "width": 1
-    },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_bus_w_strb",
-      "references": ["EpWithReg.sig_ep_bus_w_strb"],
-      "type": "wire",
-      "vcdid": "+",
-      "wave": [
-        {
-          "time": 15000,
-          "bin": "1111"
-        }
-      ],
-      "width": 4
-    },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_out_m_aw_ready",
-      "references": ["EpWithReg.sig_reg_out_m_aw_ready"],
-      "type": "wire",
-      "vcdid": ",",
-      "wave": [
-        {
-          "time": 0,
-          "bin": "1"
-        },
-        {
-          "time": 25000,
-          "bin": "0"
-        },
-        {
-          "time": 45000,
-          "bin": "1"
-        },
-        {
-          "time": 55000,
-          "bin": "0"
-        },
-        {
-          "time": 75000,
-          "bin": "1"
-        },
-        {
-          "time": 85000,
-          "bin": "0"
-        },
-        {
-          "time": 105000,
-          "bin": "1"
-        },
-        {
-          "time": 115000,
-          "bin": "0"
-        },
-        {
-          "time": 135000,
-          "bin": "1"
-        },
-        {
-          "time": 145000,
-          "bin": "0"
-        },
-        {
-          "time": 175000,
-          "bin": "1"
-        }
-      ],
-      "width": 1
-    },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "bus_b_resp",
-      "references": ["EpWithReg.bus_b_resp"],
-      "type": "wire",
-      "vcdid": "-",
-      "wave": [
-        {
-          "time": 45000,
-          "bin": "00"
-        },
-        {
-          "time": 175000,
-          "bin": "10"
-        }
-      ],
-      "width": 2
-    },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_bus_w_valid",
-      "references": ["EpWithReg.sig_ep_bus_w_valid"],
-      "type": "wire",
-      "vcdid": ".",
-      "wave": [
-        {
-          "time": 0,
-          "bin": "0"
-        },
-        {
-          "time": 15000,
-          "bin": "1"
-        },
-        {
-          "time": 35000,
-          "bin": "0"
-        },
-        {
-          "time": 55000,
-          "bin": "1"
-        },
-        {
-          "time": 65000,
-          "bin": "0"
-        },
-        {
-          "time": 75000,
-          "bin": "1"
-        },
-        {
-          "time": 155000,
-          "bin": "0"
-        }
-      ],
-      "width": 1
-    },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_out_m_aw_valid",
-      "references": ["EpWithReg.sig_reg_out_m_aw_valid"],
-      "type": "wire",
-      "vcdid": "/",
-      "wave": [
-        {
-          "time": 0,
-          "bin": "0"
-        },
-        {
-          "time": 15000,
-          "bin": "1"
-        },
-        {
-          "time": 145000,
-          "bin": "0"
-        }
-      ],
-      "width": 1
-    },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "bus_b_valid",
-      "references": ["EpWithReg.bus_b_valid"],
-      "type": "wire",
+  "signals": {
+    "0": {
       "vcdid": "0",
+      "references": [
+        [
+          "EpWithReg",
+          "bus_b_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -650,14 +46,17 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_clk",
-      "references": ["EpWithReg.sig_ep_clk"],
-      "type": "wire",
+    "1": {
       "vcdid": "1",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_clk"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -1060,14 +459,17 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_out_m_b_ready",
-      "references": ["EpWithReg.sig_reg_out_m_b_ready"],
-      "type": "wire",
+    "2": {
       "vcdid": "2",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_out_m_b_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -1114,32 +516,41 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "bus_r_data",
-      "references": ["EpWithReg.bus_r_data"],
-      "type": "wire",
+    "3": {
       "vcdid": "3",
+      "references": [
+        [
+          "EpWithReg",
+          "bus_r_data"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_decoded_field0_din",
-      "references": ["EpWithReg.sig_ep_decoded_field0_din"],
-      "type": "wire",
+    "4": {
       "vcdid": "4",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_decoded_field0_din"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_out_m_b_resp",
-      "references": ["EpWithReg.sig_reg_out_m_b_resp"],
-      "type": "wire",
+    "5": {
       "vcdid": "5",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_out_m_b_resp"
+        ]
+      ],
       "wave": [
         {
           "time": 25000,
@@ -1150,14 +561,17 @@
           "bin": "10"
         }
       ],
+      "type": "wire",
       "width": 2
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "bus_r_ready",
-      "references": ["EpWithReg.bus_r_ready"],
-      "type": "wire",
+    "6": {
       "vcdid": "6",
+      "references": [
+        [
+          "EpWithReg",
+          "bus_r_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 2500,
@@ -1292,14 +706,17 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_decoded_field0_dout_data",
-      "references": ["EpWithReg.sig_ep_decoded_field0_dout_data"],
-      "type": "wire",
+    "7": {
       "vcdid": "7",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_decoded_field0_dout_data"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
@@ -1322,14 +739,17 @@
           "bin": "00000000000000000000000001101000"
         }
       ],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_out_m_b_valid",
-      "references": ["EpWithReg.sig_reg_out_m_b_valid"],
-      "type": "wire",
+    "8": {
       "vcdid": "8",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_out_m_b_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -1376,23 +796,680 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "bus_r_resp",
-      "references": ["EpWithReg.bus_r_resp"],
-      "type": "wire",
+    "9": {
       "vcdid": "9",
+      "references": [
+        [
+          "EpWithReg",
+          "bus_r_resp"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 2
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_decoded_field0_dout_vld",
-      "references": ["EpWithReg.sig_ep_decoded_field0_dout_vld"],
+    "!": {
+      "vcdid": "!",
+      "references": [
+        [
+          "EpWithReg",
+          "bus_aw_prot"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 15000,
+          "bin": "000"
+        },
+        {
+          "time": 125000,
+          "bin": "xxx"
+        }
+      ],
       "type": "wire",
+      "width": 3
+    },
+    "\"": {
+      "vcdid": "\"",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_bus_r_valid"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 0,
+          "bin": "0"
+        }
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    "#": {
+      "vcdid": "#",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_out_m_ar_valid"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 0,
+          "bin": "0"
+        }
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    "$": {
+      "vcdid": "$",
+      "references": [
+        [
+          "EpWithReg",
+          "bus_aw_ready"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 0,
+          "bin": "1"
+        },
+        {
+          "time": 25000,
+          "bin": "0"
+        },
+        {
+          "time": 45000,
+          "bin": "1"
+        },
+        {
+          "time": 55000,
+          "bin": "0"
+        },
+        {
+          "time": 75000,
+          "bin": "1"
+        },
+        {
+          "time": 85000,
+          "bin": "0"
+        },
+        {
+          "time": 105000,
+          "bin": "1"
+        },
+        {
+          "time": 115000,
+          "bin": "0"
+        },
+        {
+          "time": 135000,
+          "bin": "1"
+        }
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    "%": {
+      "vcdid": "%",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_bus_w_data"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 15000,
+          "bin": "00000000000000000000000001100100"
+        },
+        {
+          "time": 55000,
+          "bin": "00000000000000000000000001100101"
+        },
+        {
+          "time": 75000,
+          "bin": "00000000000000000000000001100110"
+        },
+        {
+          "time": 95000,
+          "bin": "00000000000000000000000001100111"
+        },
+        {
+          "time": 125000,
+          "bin": "00000000000000000000000001101000"
+        }
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    "&": {
+      "vcdid": "&",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_out_m_aw_addr"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 15000,
+          "bin": "00000000000000000000000000000000"
+        },
+        {
+          "time": 25000,
+          "bin": "00000000000000000000000000000100"
+        },
+        {
+          "time": 55000,
+          "bin": "00000000000000000000000000000000"
+        },
+        {
+          "time": 85000,
+          "bin": "00000000000000000000000000000100"
+        },
+        {
+          "time": 115000,
+          "bin": "00000000000000000000000000001000"
+        }
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    "'": {
+      "vcdid": "'",
+      "references": [
+        [
+          "EpWithReg",
+          "bus_aw_valid"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 2500,
+          "bin": "0"
+        },
+        {
+          "time": 15000,
+          "bin": "1"
+        },
+        {
+          "time": 22500,
+          "bin": "0"
+        },
+        {
+          "time": 25000,
+          "bin": "1"
+        },
+        {
+          "time": 32500,
+          "bin": "0"
+        },
+        {
+          "time": 55000,
+          "bin": "1"
+        },
+        {
+          "time": 62500,
+          "bin": "0"
+        },
+        {
+          "time": 75000,
+          "bin": "1"
+        },
+        {
+          "time": 82500,
+          "bin": "0"
+        },
+        {
+          "time": 85000,
+          "bin": "1"
+        },
+        {
+          "time": 92500,
+          "bin": "0"
+        },
+        {
+          "time": 115000,
+          "bin": "1"
+        },
+        {
+          "time": 122500,
+          "bin": "0"
+        }
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    "(": {
+      "vcdid": "(",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_bus_w_ready"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 0,
+          "bin": "0"
+        },
+        {
+          "time": 25000,
+          "bin": "1"
+        },
+        {
+          "time": 35000,
+          "bin": "0"
+        },
+        {
+          "time": 55000,
+          "bin": "1"
+        },
+        {
+          "time": 65000,
+          "bin": "0"
+        },
+        {
+          "time": 85000,
+          "bin": "1"
+        },
+        {
+          "time": 95000,
+          "bin": "0"
+        },
+        {
+          "time": 115000,
+          "bin": "1"
+        },
+        {
+          "time": 125000,
+          "bin": "0"
+        },
+        {
+          "time": 145000,
+          "bin": "1"
+        },
+        {
+          "time": 155000,
+          "bin": "0"
+        }
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    ")": {
+      "vcdid": ")",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_out_m_aw_prot"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 15000,
+          "bin": "000"
+        }
+      ],
+      "type": "wire",
+      "width": 3
+    },
+    "*": {
+      "vcdid": "*",
+      "references": [
+        [
+          "EpWithReg",
+          "bus_b_ready"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 2500,
+          "bin": "0"
+        },
+        {
+          "time": 35000,
+          "bin": "1"
+        },
+        {
+          "time": 42500,
+          "bin": "0"
+        },
+        {
+          "time": 55000,
+          "bin": "1"
+        },
+        {
+          "time": 62500,
+          "bin": "0"
+        },
+        {
+          "time": 75000,
+          "bin": "1"
+        },
+        {
+          "time": 82500,
+          "bin": "0"
+        },
+        {
+          "time": 95000,
+          "bin": "1"
+        },
+        {
+          "time": 102500,
+          "bin": "0"
+        },
+        {
+          "time": 115000,
+          "bin": "1"
+        },
+        {
+          "time": 122500,
+          "bin": "0"
+        },
+        {
+          "time": 125000,
+          "bin": "1"
+        },
+        {
+          "time": 132500,
+          "bin": "0"
+        },
+        {
+          "time": 175000,
+          "bin": "1"
+        },
+        {
+          "time": 182500,
+          "bin": "0"
+        },
+        {
+          "time": 195000,
+          "bin": "1"
+        },
+        {
+          "time": 202500,
+          "bin": "0"
+        },
+        {
+          "time": 215000,
+          "bin": "1"
+        },
+        {
+          "time": 222500,
+          "bin": "0"
+        },
+        {
+          "time": 235000,
+          "bin": "1"
+        },
+        {
+          "time": 242500,
+          "bin": "0"
+        },
+        {
+          "time": 255000,
+          "bin": "1"
+        },
+        {
+          "time": 262500,
+          "bin": "0"
+        },
+        {
+          "time": 275000,
+          "bin": "1"
+        },
+        {
+          "time": 282500,
+          "bin": "0"
+        },
+        {
+          "time": 305000,
+          "bin": "1"
+        },
+        {
+          "time": 312500,
+          "bin": "0"
+        },
+        {
+          "time": 335000,
+          "bin": "1"
+        },
+        {
+          "time": 352500,
+          "bin": "0"
+        },
+        {
+          "time": 355000,
+          "bin": "1"
+        },
+        {
+          "time": 362500,
+          "bin": "0"
+        },
+        {
+          "time": 395000,
+          "bin": "1"
+        },
+        {
+          "time": 402500,
+          "bin": "0"
+        },
+        {
+          "time": 405000,
+          "bin": "1"
+        },
+        {
+          "time": 412500,
+          "bin": "0"
+        },
+        {
+          "time": 445000,
+          "bin": "1"
+        },
+        {
+          "time": 462500,
+          "bin": "0"
+        },
+        {
+          "time": 475000,
+          "bin": "1"
+        },
+        {
+          "time": 482500,
+          "bin": "0"
+        },
+        {
+          "time": 485000,
+          "bin": "1"
+        },
+        {
+          "time": 492500,
+          "bin": "0"
+        },
+        {
+          "time": 495000,
+          "bin": "1"
+        }
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    "+": {
+      "vcdid": "+",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_bus_w_strb"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 15000,
+          "bin": "1111"
+        }
+      ],
+      "type": "wire",
+      "width": 4
+    },
+    ",": {
+      "vcdid": ",",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_out_m_aw_ready"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 0,
+          "bin": "1"
+        },
+        {
+          "time": 25000,
+          "bin": "0"
+        },
+        {
+          "time": 45000,
+          "bin": "1"
+        },
+        {
+          "time": 55000,
+          "bin": "0"
+        },
+        {
+          "time": 75000,
+          "bin": "1"
+        },
+        {
+          "time": 85000,
+          "bin": "0"
+        },
+        {
+          "time": 105000,
+          "bin": "1"
+        },
+        {
+          "time": 115000,
+          "bin": "0"
+        },
+        {
+          "time": 135000,
+          "bin": "1"
+        },
+        {
+          "time": 145000,
+          "bin": "0"
+        },
+        {
+          "time": 175000,
+          "bin": "1"
+        }
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    "-": {
+      "vcdid": "-",
+      "references": [
+        [
+          "EpWithReg",
+          "bus_b_resp"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 45000,
+          "bin": "00"
+        },
+        {
+          "time": 175000,
+          "bin": "10"
+        }
+      ],
+      "type": "wire",
+      "width": 2
+    },
+    ".": {
+      "vcdid": ".",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_bus_w_valid"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 0,
+          "bin": "0"
+        },
+        {
+          "time": 15000,
+          "bin": "1"
+        },
+        {
+          "time": 35000,
+          "bin": "0"
+        },
+        {
+          "time": 55000,
+          "bin": "1"
+        },
+        {
+          "time": 65000,
+          "bin": "0"
+        },
+        {
+          "time": 75000,
+          "bin": "1"
+        },
+        {
+          "time": 155000,
+          "bin": "0"
+        }
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    "/": {
+      "vcdid": "/",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_out_m_aw_valid"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 0,
+          "bin": "0"
+        },
+        {
+          "time": 15000,
+          "bin": "1"
+        },
+        {
+          "time": 145000,
+          "bin": "0"
+        }
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    ":": {
       "vcdid": ":",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_decoded_field0_dout_vld"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -1415,60 +1492,75 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_out_m_r_data",
-      "references": ["EpWithReg.sig_reg_out_m_r_data"],
-      "type": "wire",
+    ";": {
       "vcdid": ";",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_out_m_r_data"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "bus_r_valid",
-      "references": ["EpWithReg.bus_r_valid"],
-      "type": "wire",
+    "<": {
       "vcdid": "<",
+      "references": [
+        [
+          "EpWithReg",
+          "bus_r_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_decoded_field1_din",
-      "references": ["EpWithReg.sig_ep_decoded_field1_din"],
-      "type": "wire",
+    "=": {
       "vcdid": "=",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_decoded_field1_din"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_out_m_r_ready",
-      "references": ["EpWithReg.sig_reg_out_m_r_ready"],
-      "type": "wire",
+    ">": {
       "vcdid": ">",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_out_m_r_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "bus_w_data",
-      "references": ["EpWithReg.bus_w_data"],
-      "type": "wire",
+    "?": {
       "vcdid": "?",
+      "references": [
+        [
+          "EpWithReg",
+          "bus_w_data"
+        ]
+      ],
       "wave": [
         {
           "time": 5000,
@@ -1495,14 +1587,17 @@
           "bin": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         }
       ],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_decoded_field1_dout_data",
-      "references": ["EpWithReg.sig_ep_decoded_field1_dout_data"],
-      "type": "wire",
+    "@": {
       "vcdid": "@",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_decoded_field1_dout_data"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
@@ -1525,23 +1620,29 @@
           "bin": "00000000000000000000000001101000"
         }
       ],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_out_m_r_resp",
-      "references": ["EpWithReg.sig_reg_out_m_r_resp"],
-      "type": "wire",
+    "A": {
       "vcdid": "A",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_out_m_r_resp"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 2
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "bus_w_ready",
-      "references": ["EpWithReg.bus_w_ready"],
-      "type": "wire",
+    "B": {
       "vcdid": "B",
+      "references": [
+        [
+          "EpWithReg",
+          "bus_w_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -1588,14 +1689,17 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_decoded_field1_dout_vld",
-      "references": ["EpWithReg.sig_ep_decoded_field1_dout_vld"],
-      "type": "wire",
+    "C": {
       "vcdid": "C",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_decoded_field1_dout_vld"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -1618,28 +1722,34 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_out_m_r_valid",
-      "references": ["EpWithReg.sig_reg_out_m_r_valid"],
-      "type": "wire",
+    "D": {
       "vcdid": "D",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_out_m_r_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "bus_w_strb",
-      "references": ["EpWithReg.bus_w_strb"],
-      "type": "wire",
+    "E": {
       "vcdid": "E",
+      "references": [
+        [
+          "EpWithReg",
+          "bus_w_strb"
+        ]
+      ],
       "wave": [
         {
           "time": 5000,
@@ -1650,14 +1760,17 @@
           "bin": "xxxx"
         }
       ],
+      "type": "wire",
       "width": 4
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_rst_n",
-      "references": ["EpWithReg.sig_ep_rst_n"],
-      "type": "wire",
+    "F": {
       "vcdid": "F",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_rst_n"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -1668,14 +1781,17 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_out_m_w_data",
-      "references": ["EpWithReg.sig_reg_out_m_w_data"],
-      "type": "wire",
+    "G": {
       "vcdid": "G",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_out_m_w_data"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
@@ -1698,14 +1814,17 @@
           "bin": "00000000000000000000000001101000"
         }
       ],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "bus_w_valid",
-      "references": ["EpWithReg.bus_w_valid"],
-      "type": "wire",
+    "H": {
       "vcdid": "H",
+      "references": [
+        [
+          "EpWithReg",
+          "bus_w_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 5000,
@@ -1752,14 +1871,17 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_clk",
-      "references": ["EpWithReg.sig_reg_clk"],
-      "type": "wire",
+    "I": {
       "vcdid": "I",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_clk"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -2162,14 +2284,17 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_out_m_w_ready",
-      "references": ["EpWithReg.sig_reg_out_m_w_ready"],
-      "type": "wire",
+    "J": {
       "vcdid": "J",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_out_m_w_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -2216,14 +2341,17 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "clk",
-      "references": ["EpWithReg.clk"],
-      "type": "wire",
+    "K": {
       "vcdid": "K",
+      "references": [
+        [
+          "EpWithReg",
+          "clk"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -2626,55 +2754,70 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_in_s_ar_addr",
-      "references": ["EpWithReg.sig_reg_in_s_ar_addr"],
-      "type": "wire",
+    "L": {
       "vcdid": "L",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_in_s_ar_addr"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_out_m_w_strb",
-      "references": ["EpWithReg.sig_reg_out_m_w_strb"],
-      "type": "wire",
+    "M": {
       "vcdid": "M",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_out_m_w_strb"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
           "bin": "1111"
         }
       ],
+      "type": "wire",
       "width": 4
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "decoded_field0_din",
-      "references": ["EpWithReg.decoded_field0_din"],
-      "type": "wire",
+    "N": {
       "vcdid": "N",
+      "references": [
+        [
+          "EpWithReg",
+          "decoded_field0_din"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_in_s_ar_prot",
-      "references": ["EpWithReg.sig_reg_in_s_ar_prot"],
-      "type": "wire",
+    "O": {
       "vcdid": "O",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_in_s_ar_prot"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 3
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_out_m_w_valid",
-      "references": ["EpWithReg.sig_reg_out_m_w_valid"],
-      "type": "wire",
+    "P": {
       "vcdid": "P",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_out_m_w_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -2705,14 +2848,17 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "decoded_field0_dout_data",
-      "references": ["EpWithReg.decoded_field0_dout_data"],
-      "type": "wire",
+    "Q": {
       "vcdid": "Q",
+      "references": [
+        [
+          "EpWithReg",
+          "decoded_field0_dout_data"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
@@ -2735,28 +2881,34 @@
           "bin": "00000000000000000000000001101000"
         }
       ],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_in_s_ar_ready",
-      "references": ["EpWithReg.sig_reg_in_s_ar_ready"],
-      "type": "wire",
+    "R": {
       "vcdid": "R",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_in_s_ar_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_rst_n",
-      "references": ["EpWithReg.sig_reg_rst_n"],
-      "type": "wire",
+    "S": {
       "vcdid": "S",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_rst_n"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -2767,28 +2919,34 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_in_s_ar_valid",
-      "references": ["EpWithReg.sig_reg_in_s_ar_valid"],
-      "type": "wire",
+    "T": {
       "vcdid": "T",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_in_s_ar_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 5000,
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "decoded_field0_dout_vld",
-      "references": ["EpWithReg.decoded_field0_dout_vld"],
-      "type": "wire",
+    "U": {
       "vcdid": "U",
+      "references": [
+        [
+          "EpWithReg",
+          "decoded_field0_dout_vld"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -2811,23 +2969,29 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "decoded_field1_din",
-      "references": ["EpWithReg.decoded_field1_din"],
-      "type": "wire",
+    "V": {
       "vcdid": "V",
+      "references": [
+        [
+          "EpWithReg",
+          "decoded_field1_din"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_in_s_aw_addr",
-      "references": ["EpWithReg.sig_reg_in_s_aw_addr"],
-      "type": "wire",
+    "W": {
       "vcdid": "W",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_in_s_aw_addr"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
@@ -2854,14 +3018,17 @@
           "bin": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         }
       ],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "decoded_field1_dout_data",
-      "references": ["EpWithReg.decoded_field1_dout_data"],
-      "type": "wire",
+    "X": {
       "vcdid": "X",
+      "references": [
+        [
+          "EpWithReg",
+          "decoded_field1_dout_data"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
@@ -2884,14 +3051,17 @@
           "bin": "00000000000000000000000001101000"
         }
       ],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_in_s_aw_prot",
-      "references": ["EpWithReg.sig_reg_in_s_aw_prot"],
-      "type": "wire",
+    "Y": {
       "vcdid": "Y",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_in_s_aw_prot"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
@@ -2902,14 +3072,17 @@
           "bin": "xxx"
         }
       ],
+      "type": "wire",
       "width": 3
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "decoded_field1_dout_vld",
-      "references": ["EpWithReg.decoded_field1_dout_vld"],
-      "type": "wire",
+    "Z": {
       "vcdid": "Z",
+      "references": [
+        [
+          "EpWithReg",
+          "decoded_field1_dout_vld"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -2932,14 +3105,17 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_in_s_aw_ready",
-      "references": ["EpWithReg.sig_reg_in_s_aw_ready"],
-      "type": "wire",
+    "[": {
       "vcdid": "[",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_in_s_aw_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -2978,14 +3154,17 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "rst_n",
-      "references": ["EpWithReg.rst_n"],
-      "type": "wire",
+    "\\": {
       "vcdid": "\\",
+      "references": [
+        [
+          "EpWithReg",
+          "rst_n"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -2996,14 +3175,17 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_in_s_aw_valid",
-      "references": ["EpWithReg.sig_reg_in_s_aw_valid"],
-      "type": "wire",
+    "]": {
       "vcdid": "]",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_in_s_aw_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 2500,
@@ -3058,23 +3240,29 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_bus_ar_addr",
-      "references": ["EpWithReg.sig_ep_bus_ar_addr"],
-      "type": "wire",
+    "^": {
       "vcdid": "^",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_bus_ar_addr"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_in_s_b_ready",
-      "references": ["EpWithReg.sig_reg_in_s_b_ready"],
-      "type": "wire",
+    "_": {
       "vcdid": "_",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_in_s_b_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 2500,
@@ -3245,23 +3433,29 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_bus_ar_prot",
-      "references": ["EpWithReg.sig_ep_bus_ar_prot"],
-      "type": "wire",
+    "`": {
       "vcdid": "`",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_bus_ar_prot"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 3
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_in_s_b_resp",
-      "references": ["EpWithReg.sig_reg_in_s_b_resp"],
-      "type": "wire",
+    "a": {
       "vcdid": "a",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_in_s_b_resp"
+        ]
+      ],
       "wave": [
         {
           "time": 45000,
@@ -3272,14 +3466,17 @@
           "bin": "10"
         }
       ],
+      "type": "wire",
       "width": 2
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_bus_ar_ready",
-      "references": ["EpWithReg.sig_ep_bus_ar_ready"],
-      "type": "wire",
+    "b": {
       "vcdid": "b",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_bus_ar_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -3326,14 +3523,17 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_in_s_b_valid",
-      "references": ["EpWithReg.sig_reg_in_s_b_valid"],
-      "type": "wire",
+    "c": {
       "vcdid": "c",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_in_s_b_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -3372,37 +3572,46 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_bus_ar_valid",
-      "references": ["EpWithReg.sig_ep_bus_ar_valid"],
-      "type": "wire",
+    "d": {
       "vcdid": "d",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_bus_ar_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_in_s_r_data",
-      "references": ["EpWithReg.sig_reg_in_s_r_data"],
-      "type": "wire",
+    "e": {
       "vcdid": "e",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_in_s_r_data"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_bus_aw_addr",
-      "references": ["EpWithReg.sig_ep_bus_aw_addr"],
-      "type": "wire",
+    "f": {
       "vcdid": "f",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_bus_aw_addr"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
@@ -3425,14 +3634,17 @@
           "bin": "00000000000000000000000000001000"
         }
       ],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_in_s_r_ready",
-      "references": ["EpWithReg.sig_reg_in_s_r_ready"],
-      "type": "wire",
+    "g": {
       "vcdid": "g",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_in_s_r_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 2500,
@@ -3567,37 +3779,46 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_bus_aw_prot",
-      "references": ["EpWithReg.sig_ep_bus_aw_prot"],
-      "type": "wire",
+    "h": {
       "vcdid": "h",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_bus_aw_prot"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
           "bin": "000"
         }
       ],
+      "type": "wire",
       "width": 3
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_in_s_r_resp",
-      "references": ["EpWithReg.sig_reg_in_s_r_resp"],
-      "type": "wire",
+    "i": {
       "vcdid": "i",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_in_s_r_resp"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 2
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_bus_aw_ready",
-      "references": ["EpWithReg.sig_ep_bus_aw_ready"],
-      "type": "wire",
+    "j": {
       "vcdid": "j",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_bus_aw_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -3644,28 +3865,34 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_in_s_r_valid",
-      "references": ["EpWithReg.sig_reg_in_s_r_valid"],
-      "type": "wire",
+    "k": {
       "vcdid": "k",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_in_s_r_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_bus_aw_valid",
-      "references": ["EpWithReg.sig_ep_bus_aw_valid"],
-      "type": "wire",
+    "l": {
       "vcdid": "l",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_bus_aw_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -3680,14 +3907,17 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_in_s_w_data",
-      "references": ["EpWithReg.sig_reg_in_s_w_data"],
-      "type": "wire",
+    "m": {
       "vcdid": "m",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_in_s_w_data"
+        ]
+      ],
       "wave": [
         {
           "time": 5000,
@@ -3714,14 +3944,17 @@
           "bin": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         }
       ],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_bus_b_ready",
-      "references": ["EpWithReg.sig_ep_bus_b_ready"],
-      "type": "wire",
+    "n": {
       "vcdid": "n",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_bus_b_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -3768,14 +4001,17 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_in_s_w_ready",
-      "references": ["EpWithReg.sig_reg_in_s_w_ready"],
-      "type": "wire",
+    "o": {
       "vcdid": "o",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_in_s_w_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -3822,14 +4058,17 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_bus_b_resp",
-      "references": ["EpWithReg.sig_ep_bus_b_resp"],
-      "type": "wire",
+    "p": {
       "vcdid": "p",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_bus_b_resp"
+        ]
+      ],
       "wave": [
         {
           "time": 25000,
@@ -3840,14 +4079,17 @@
           "bin": "10"
         }
       ],
+      "type": "wire",
       "width": 2
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_in_s_w_strb",
-      "references": ["EpWithReg.sig_reg_in_s_w_strb"],
-      "type": "wire",
+    "q": {
       "vcdid": "q",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_in_s_w_strb"
+        ]
+      ],
       "wave": [
         {
           "time": 5000,
@@ -3858,14 +4100,17 @@
           "bin": "xxxx"
         }
       ],
+      "type": "wire",
       "width": 4
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_bus_b_valid",
-      "references": ["EpWithReg.sig_ep_bus_b_valid"],
-      "type": "wire",
+    "r": {
       "vcdid": "r",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_bus_b_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -3912,14 +4157,17 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_in_s_w_valid",
-      "references": ["EpWithReg.sig_reg_in_s_w_valid"],
-      "type": "wire",
+    "s": {
       "vcdid": "s",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_in_s_w_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 5000,
@@ -3966,55 +4214,70 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_bus_r_data",
-      "references": ["EpWithReg.sig_ep_bus_r_data"],
-      "type": "wire",
+    "t": {
       "vcdid": "t",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_bus_r_data"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_out_m_ar_addr",
-      "references": ["EpWithReg.sig_reg_out_m_ar_addr"],
-      "type": "wire",
+    "u": {
       "vcdid": "u",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_out_m_ar_addr"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_bus_r_ready",
-      "references": ["EpWithReg.sig_ep_bus_r_ready"],
-      "type": "wire",
+    "v": {
       "vcdid": "v",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_bus_r_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_out_m_ar_prot",
-      "references": ["EpWithReg.sig_reg_out_m_ar_prot"],
-      "type": "wire",
+    "w": {
       "vcdid": "w",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_out_m_ar_prot"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 3
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_reg_out_m_ar_ready",
-      "references": ["EpWithReg.sig_reg_out_m_ar_ready"],
-      "type": "wire",
+    "x": {
       "vcdid": "x",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_reg_out_m_ar_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -4061,69 +4324,87 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "sig_ep_bus_r_resp",
-      "references": ["EpWithReg.sig_ep_bus_r_resp"],
-      "type": "wire",
+    "y": {
       "vcdid": "y",
+      "references": [
+        [
+          "EpWithReg",
+          "sig_ep_bus_r_resp"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 2
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "bus_ar_addr",
-      "references": ["EpWithReg.bus_ar_addr"],
-      "type": "wire",
+    "z": {
       "vcdid": "z",
+      "references": [
+        [
+          "EpWithReg",
+          "bus_ar_addr"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "bus_ar_prot",
-      "references": ["EpWithReg.bus_ar_prot"],
-      "type": "wire",
+    "{": {
       "vcdid": "{",
+      "references": [
+        [
+          "EpWithReg",
+          "bus_ar_prot"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 3
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "bus_ar_ready",
-      "references": ["EpWithReg.bus_ar_ready"],
-      "type": "wire",
+    "|": {
       "vcdid": "|",
+      "references": [
+        [
+          "EpWithReg",
+          "bus_ar_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "bus_ar_valid",
-      "references": ["EpWithReg.bus_ar_valid"],
-      "type": "wire",
+    "}": {
       "vcdid": "}",
+      "references": [
+        [
+          "EpWithReg",
+          "bus_ar_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 5000,
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg"],
-      "name": "bus_aw_addr",
-      "references": ["EpWithReg.bus_aw_addr"],
-      "type": "wire",
+    "~": {
       "vcdid": "~",
+      "references": [
+        [
+          "EpWithReg",
+          "bus_aw_addr"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
@@ -4150,64 +4431,88 @@
           "bin": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         }
       ],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg", "ep"],
-      "name": "isBramAddr",
-      "references": ["EpWithReg.ep.isBramAddr"],
-      "type": "wire",
+    "\"!": {
       "vcdid": "\"!",
+      "references": [
+        [
+          "EpWithReg",
+          "ep",
+          "isBramAddr"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
           "bin": "0"
         }
       ],
-      "width": 1
-    },
-    {
-      "hierarchy": ["EpWithReg", "ep"],
-      "name": "rSt",
-      "references": ["EpWithReg.ep.rSt"],
-      "type": "real",
-      "vcdid": "\"\"",
-      "wave": [],
-      "width": 1
-    },
-    {
-      "hierarchy": ["EpWithReg", "ep"],
-      "name": "rSt_next",
-      "references": ["EpWithReg.ep.rSt_next"],
-      "type": "real",
-      "vcdid": "\"#",
-      "wave": [],
-      "width": 1
-    },
-    {
-      "hierarchy": ["EpWithReg", "ep"],
-      "name": "wSt",
-      "references": ["EpWithReg.ep.wSt"],
-      "type": "real",
-      "vcdid": "\"$",
-      "wave": [],
-      "width": 1
-    },
-    {
-      "hierarchy": ["EpWithReg", "ep"],
-      "name": "wSt_next",
-      "references": ["EpWithReg.ep.wSt_next"],
-      "type": "real",
-      "vcdid": "\"%",
-      "wave": [],
-      "width": 1
-    },
-    {
-      "hierarchy": ["EpWithReg", "ep"],
-      "name": "w_hs",
-      "references": ["EpWithReg.ep.w_hs"],
       "type": "wire",
+      "width": 1
+    },
+    "\"\"": {
+      "vcdid": "\"\"",
+      "references": [
+        [
+          "EpWithReg",
+          "ep",
+          "rSt"
+        ]
+      ],
+      "wave": [],
+      "type": "real",
+      "width": 1
+    },
+    "\"#": {
+      "vcdid": "\"#",
+      "references": [
+        [
+          "EpWithReg",
+          "ep",
+          "rSt_next"
+        ]
+      ],
+      "wave": [],
+      "type": "real",
+      "width": 1
+    },
+    "\"$": {
+      "vcdid": "\"$",
+      "references": [
+        [
+          "EpWithReg",
+          "ep",
+          "wSt"
+        ]
+      ],
+      "wave": [],
+      "type": "real",
+      "width": 1
+    },
+    "\"%": {
+      "vcdid": "\"%",
+      "references": [
+        [
+          "EpWithReg",
+          "ep",
+          "wSt_next"
+        ]
+      ],
+      "wave": [],
+      "type": "real",
+      "width": 1
+    },
+    "\"&": {
       "vcdid": "\"&",
+      "references": [
+        [
+          "EpWithReg",
+          "ep",
+          "w_hs"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -4254,32 +4559,44 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "ep"],
-      "name": "arAddr",
-      "references": ["EpWithReg.ep.arAddr"],
-      "type": "wire",
+    "\"'": {
       "vcdid": "\"'",
+      "references": [
+        [
+          "EpWithReg",
+          "ep",
+          "arAddr"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg", "ep"],
-      "name": "arAddr_next",
-      "references": ["EpWithReg.ep.arAddr_next"],
-      "type": "wire",
+    "\"(": {
       "vcdid": "\"(",
+      "references": [
+        [
+          "EpWithReg",
+          "ep",
+          "arAddr_next"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg", "ep"],
-      "name": "awAddr",
-      "references": ["EpWithReg.ep.awAddr"],
-      "type": "wire",
+    "\")": {
       "vcdid": "\")",
+      "references": [
+        [
+          "EpWithReg",
+          "ep",
+          "awAddr"
+        ]
+      ],
       "wave": [
         {
           "time": 25000,
@@ -4302,14 +4619,18 @@
           "bin": "00000000000000000000000000001000"
         }
       ],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg", "ep"],
-      "name": "awAddr_next",
-      "references": ["EpWithReg.ep.awAddr_next"],
-      "type": "wire",
+    "\"*": {
       "vcdid": "\"*",
+      "references": [
+        [
+          "EpWithReg",
+          "ep",
+          "awAddr_next"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
@@ -4332,14 +4653,18 @@
           "bin": "00000000000000000000000000001000"
         }
       ],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_ar_reg_0_clk",
-      "references": ["EpWithReg.reg.sig_gen_ar_reg_0_clk"],
-      "type": "wire",
+    "\"+": {
       "vcdid": "\"+",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_ar_reg_0_clk"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -4742,78 +5067,106 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_ar_reg_0_dataIn_addr",
-      "references": ["EpWithReg.reg.sig_gen_ar_reg_0_dataIn_addr"],
-      "type": "wire",
+    "\",": {
       "vcdid": "\",",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_ar_reg_0_dataIn_addr"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_ar_reg_0_dataIn_prot",
-      "references": ["EpWithReg.reg.sig_gen_ar_reg_0_dataIn_prot"],
-      "type": "wire",
+    "\"-": {
       "vcdid": "\"-",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_ar_reg_0_dataIn_prot"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 3
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_ar_reg_0_dataIn_ready",
-      "references": ["EpWithReg.reg.sig_gen_ar_reg_0_dataIn_ready"],
-      "type": "wire",
+    "\".": {
       "vcdid": "\".",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_ar_reg_0_dataIn_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_ar_reg_0_dataIn_valid",
-      "references": ["EpWithReg.reg.sig_gen_ar_reg_0_dataIn_valid"],
-      "type": "wire",
+    "\"/": {
       "vcdid": "\"/",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_ar_reg_0_dataIn_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 5000,
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_ar_reg_0_dataOut_addr",
-      "references": ["EpWithReg.reg.sig_gen_ar_reg_0_dataOut_addr"],
-      "type": "wire",
+    "\"0": {
       "vcdid": "\"0",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_ar_reg_0_dataOut_addr"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_ar_reg_0_dataOut_prot",
-      "references": ["EpWithReg.reg.sig_gen_ar_reg_0_dataOut_prot"],
-      "type": "wire",
+    "\"1": {
       "vcdid": "\"1",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_ar_reg_0_dataOut_prot"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 3
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_ar_reg_0_dataOut_ready",
-      "references": ["EpWithReg.reg.sig_gen_ar_reg_0_dataOut_ready"],
-      "type": "wire",
+    "\"2": {
       "vcdid": "\"2",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_ar_reg_0_dataOut_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -4860,28 +5213,36 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_ar_reg_0_dataOut_valid",
-      "references": ["EpWithReg.reg.sig_gen_ar_reg_0_dataOut_valid"],
-      "type": "wire",
+    "\"3": {
       "vcdid": "\"3",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_ar_reg_0_dataOut_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_ar_reg_0_rst_n",
-      "references": ["EpWithReg.reg.sig_gen_ar_reg_0_rst_n"],
-      "type": "wire",
+    "\"4": {
       "vcdid": "\"4",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_ar_reg_0_rst_n"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -4892,14 +5253,18 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_aw_reg_0_clk",
-      "references": ["EpWithReg.reg.sig_gen_aw_reg_0_clk"],
-      "type": "wire",
+    "\"5": {
       "vcdid": "\"5",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_aw_reg_0_clk"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -5302,14 +5667,18 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_aw_reg_0_dataIn_addr",
-      "references": ["EpWithReg.reg.sig_gen_aw_reg_0_dataIn_addr"],
-      "type": "wire",
+    "\"6": {
       "vcdid": "\"6",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_aw_reg_0_dataIn_addr"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
@@ -5336,14 +5705,18 @@
           "bin": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         }
       ],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_aw_reg_0_dataIn_prot",
-      "references": ["EpWithReg.reg.sig_gen_aw_reg_0_dataIn_prot"],
-      "type": "wire",
+    "\"7": {
       "vcdid": "\"7",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_aw_reg_0_dataIn_prot"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
@@ -5354,14 +5727,18 @@
           "bin": "xxx"
         }
       ],
+      "type": "wire",
       "width": 3
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_aw_reg_0_dataIn_ready",
-      "references": ["EpWithReg.reg.sig_gen_aw_reg_0_dataIn_ready"],
-      "type": "wire",
+    "\"8": {
       "vcdid": "\"8",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_aw_reg_0_dataIn_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -5400,14 +5777,18 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_aw_reg_0_dataIn_valid",
-      "references": ["EpWithReg.reg.sig_gen_aw_reg_0_dataIn_valid"],
-      "type": "wire",
+    "\"9": {
       "vcdid": "\"9",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_aw_reg_0_dataIn_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 2500,
@@ -5462,14 +5843,18 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_aw_reg_0_dataOut_addr",
-      "references": ["EpWithReg.reg.sig_gen_aw_reg_0_dataOut_addr"],
-      "type": "wire",
+    "\":": {
       "vcdid": "\":",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_aw_reg_0_dataOut_addr"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
@@ -5492,28 +5877,36 @@
           "bin": "00000000000000000000000000001000"
         }
       ],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_aw_reg_0_dataOut_prot",
-      "references": ["EpWithReg.reg.sig_gen_aw_reg_0_dataOut_prot"],
-      "type": "wire",
+    "\";": {
       "vcdid": "\";",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_aw_reg_0_dataOut_prot"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
           "bin": "000"
         }
       ],
+      "type": "wire",
       "width": 3
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_aw_reg_0_dataOut_ready",
-      "references": ["EpWithReg.reg.sig_gen_aw_reg_0_dataOut_ready"],
-      "type": "wire",
+    "\"<": {
       "vcdid": "\"<",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_aw_reg_0_dataOut_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -5560,14 +5953,18 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_aw_reg_0_dataOut_valid",
-      "references": ["EpWithReg.reg.sig_gen_aw_reg_0_dataOut_valid"],
-      "type": "wire",
+    "\"=": {
       "vcdid": "\"=",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_aw_reg_0_dataOut_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -5582,14 +5979,18 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_aw_reg_0_rst_n",
-      "references": ["EpWithReg.reg.sig_gen_aw_reg_0_rst_n"],
-      "type": "wire",
+    "\">": {
       "vcdid": "\">",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_aw_reg_0_rst_n"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -5600,14 +6001,18 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_b_reg_0_clk",
-      "references": ["EpWithReg.reg.sig_gen_b_reg_0_clk"],
-      "type": "wire",
+    "\"?": {
       "vcdid": "\"?",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_b_reg_0_clk"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -6010,14 +6415,18 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_b_reg_0_dataIn_ready",
-      "references": ["EpWithReg.reg.sig_gen_b_reg_0_dataIn_ready"],
-      "type": "wire",
+    "\"@": {
       "vcdid": "\"@",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_b_reg_0_dataIn_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -6064,14 +6473,18 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_b_reg_0_dataIn_resp",
-      "references": ["EpWithReg.reg.sig_gen_b_reg_0_dataIn_resp"],
-      "type": "wire",
+    "\"A": {
       "vcdid": "\"A",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_b_reg_0_dataIn_resp"
+        ]
+      ],
       "wave": [
         {
           "time": 25000,
@@ -6082,14 +6495,18 @@
           "bin": "10"
         }
       ],
+      "type": "wire",
       "width": 2
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_b_reg_0_dataIn_valid",
-      "references": ["EpWithReg.reg.sig_gen_b_reg_0_dataIn_valid"],
-      "type": "wire",
+    "\"B": {
       "vcdid": "\"B",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_b_reg_0_dataIn_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -6136,14 +6553,18 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_b_reg_0_dataOut_ready",
-      "references": ["EpWithReg.reg.sig_gen_b_reg_0_dataOut_ready"],
-      "type": "wire",
+    "\"C": {
       "vcdid": "\"C",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_b_reg_0_dataOut_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 2500,
@@ -6314,14 +6735,18 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_b_reg_0_dataOut_resp",
-      "references": ["EpWithReg.reg.sig_gen_b_reg_0_dataOut_resp"],
-      "type": "wire",
+    "\"D": {
       "vcdid": "\"D",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_b_reg_0_dataOut_resp"
+        ]
+      ],
       "wave": [
         {
           "time": 45000,
@@ -6332,14 +6757,18 @@
           "bin": "10"
         }
       ],
+      "type": "wire",
       "width": 2
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_b_reg_0_dataOut_valid",
-      "references": ["EpWithReg.reg.sig_gen_b_reg_0_dataOut_valid"],
-      "type": "wire",
+    "\"E": {
       "vcdid": "\"E",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_b_reg_0_dataOut_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -6378,14 +6807,18 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_b_reg_0_rst_n",
-      "references": ["EpWithReg.reg.sig_gen_b_reg_0_rst_n"],
-      "type": "wire",
+    "\"F": {
       "vcdid": "\"F",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_b_reg_0_rst_n"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -6396,14 +6829,18 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_r_reg_0_clk",
-      "references": ["EpWithReg.reg.sig_gen_r_reg_0_clk"],
-      "type": "wire",
+    "\"G": {
       "vcdid": "\"G",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_r_reg_0_clk"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -6806,69 +7243,93 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_r_reg_0_dataIn_data",
-      "references": ["EpWithReg.reg.sig_gen_r_reg_0_dataIn_data"],
-      "type": "wire",
+    "\"H": {
       "vcdid": "\"H",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_r_reg_0_dataIn_data"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_r_reg_0_dataIn_ready",
-      "references": ["EpWithReg.reg.sig_gen_r_reg_0_dataIn_ready"],
-      "type": "wire",
+    "\"I": {
       "vcdid": "\"I",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_r_reg_0_dataIn_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_r_reg_0_dataIn_resp",
-      "references": ["EpWithReg.reg.sig_gen_r_reg_0_dataIn_resp"],
-      "type": "wire",
+    "\"J": {
       "vcdid": "\"J",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_r_reg_0_dataIn_resp"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 2
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_r_reg_0_dataIn_valid",
-      "references": ["EpWithReg.reg.sig_gen_r_reg_0_dataIn_valid"],
-      "type": "wire",
+    "\"K": {
       "vcdid": "\"K",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_r_reg_0_dataIn_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_r_reg_0_dataOut_data",
-      "references": ["EpWithReg.reg.sig_gen_r_reg_0_dataOut_data"],
-      "type": "wire",
+    "\"L": {
       "vcdid": "\"L",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_r_reg_0_dataOut_data"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_r_reg_0_dataOut_ready",
-      "references": ["EpWithReg.reg.sig_gen_r_reg_0_dataOut_ready"],
-      "type": "wire",
+    "\"M": {
       "vcdid": "\"M",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_r_reg_0_dataOut_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 2500,
@@ -7003,37 +7464,49 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_r_reg_0_dataOut_resp",
-      "references": ["EpWithReg.reg.sig_gen_r_reg_0_dataOut_resp"],
-      "type": "wire",
+    "\"N": {
       "vcdid": "\"N",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_r_reg_0_dataOut_resp"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 2
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_r_reg_0_dataOut_valid",
-      "references": ["EpWithReg.reg.sig_gen_r_reg_0_dataOut_valid"],
-      "type": "wire",
+    "\"O": {
       "vcdid": "\"O",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_r_reg_0_dataOut_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_r_reg_0_rst_n",
-      "references": ["EpWithReg.reg.sig_gen_r_reg_0_rst_n"],
-      "type": "wire",
+    "\"P": {
       "vcdid": "\"P",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_r_reg_0_rst_n"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -7044,14 +7517,18 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_w_reg_0_clk",
-      "references": ["EpWithReg.reg.sig_gen_w_reg_0_clk"],
-      "type": "wire",
+    "\"Q": {
       "vcdid": "\"Q",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_w_reg_0_clk"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -7454,14 +7931,18 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_w_reg_0_dataIn_data",
-      "references": ["EpWithReg.reg.sig_gen_w_reg_0_dataIn_data"],
-      "type": "wire",
+    "\"R": {
       "vcdid": "\"R",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_w_reg_0_dataIn_data"
+        ]
+      ],
       "wave": [
         {
           "time": 5000,
@@ -7488,14 +7969,18 @@
           "bin": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         }
       ],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_w_reg_0_dataIn_ready",
-      "references": ["EpWithReg.reg.sig_gen_w_reg_0_dataIn_ready"],
-      "type": "wire",
+    "\"S": {
       "vcdid": "\"S",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_w_reg_0_dataIn_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -7542,14 +8027,18 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_w_reg_0_dataIn_strb",
-      "references": ["EpWithReg.reg.sig_gen_w_reg_0_dataIn_strb"],
-      "type": "wire",
+    "\"T": {
       "vcdid": "\"T",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_w_reg_0_dataIn_strb"
+        ]
+      ],
       "wave": [
         {
           "time": 5000,
@@ -7560,14 +8049,18 @@
           "bin": "xxxx"
         }
       ],
+      "type": "wire",
       "width": 4
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_w_reg_0_dataIn_valid",
-      "references": ["EpWithReg.reg.sig_gen_w_reg_0_dataIn_valid"],
-      "type": "wire",
+    "\"U": {
       "vcdid": "\"U",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_w_reg_0_dataIn_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 5000,
@@ -7614,14 +8107,18 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_w_reg_0_dataOut_data",
-      "references": ["EpWithReg.reg.sig_gen_w_reg_0_dataOut_data"],
-      "type": "wire",
+    "\"V": {
       "vcdid": "\"V",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_w_reg_0_dataOut_data"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
@@ -7644,14 +8141,18 @@
           "bin": "00000000000000000000000001101000"
         }
       ],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_w_reg_0_dataOut_ready",
-      "references": ["EpWithReg.reg.sig_gen_w_reg_0_dataOut_ready"],
-      "type": "wire",
+    "\"W": {
       "vcdid": "\"W",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_w_reg_0_dataOut_ready"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -7698,28 +8199,36 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_w_reg_0_dataOut_strb",
-      "references": ["EpWithReg.reg.sig_gen_w_reg_0_dataOut_strb"],
-      "type": "wire",
+    "\"X": {
       "vcdid": "\"X",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_w_reg_0_dataOut_strb"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
           "bin": "1111"
         }
       ],
+      "type": "wire",
       "width": 4
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_w_reg_0_dataOut_valid",
-      "references": ["EpWithReg.reg.sig_gen_w_reg_0_dataOut_valid"],
-      "type": "wire",
+    "\"Y": {
       "vcdid": "\"Y",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_w_reg_0_dataOut_valid"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -7750,14 +8259,18 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg"],
-      "name": "sig_gen_w_reg_0_rst_n",
-      "references": ["EpWithReg.reg.sig_gen_w_reg_0_rst_n"],
-      "type": "wire",
+    "\"Z": {
       "vcdid": "\"Z",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "sig_gen_w_reg_0_rst_n"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -7768,92 +8281,132 @@
           "bin": "1"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_ar_reg_0"],
-      "name": "latency1_reg_we",
-      "references": ["EpWithReg.reg.gen_ar_reg_0.latency1_reg_we"],
-      "type": "wire",
+    "\"[": {
       "vcdid": "\"[",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_ar_reg_0",
+          "latency1_reg_we"
+        ]
+      ],
       "wave": [
         {
           "time": 5000,
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_ar_reg_0"],
-      "name": "latency1_isOccupied_next",
-      "references": ["EpWithReg.reg.gen_ar_reg_0.latency1_isOccupied_next"],
-      "type": "wire",
+    "\"\\": {
       "vcdid": "\"\\",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_ar_reg_0",
+          "latency1_isOccupied_next"
+        ]
+      ],
       "wave": [
         {
           "time": 5000,
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_ar_reg_0"],
-      "name": "latency1_reg_prot_next",
-      "references": ["EpWithReg.reg.gen_ar_reg_0.latency1_reg_prot_next"],
-      "type": "wire",
+    "\"]": {
       "vcdid": "\"]",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_ar_reg_0",
+          "latency1_reg_prot_next"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 3
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_ar_reg_0"],
-      "name": "latency1_isOccupied",
-      "references": ["EpWithReg.reg.gen_ar_reg_0.latency1_isOccupied"],
-      "type": "wire",
+    "\"^": {
       "vcdid": "\"^",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_ar_reg_0",
+          "latency1_isOccupied"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_ar_reg_0"],
-      "name": "latency1_reg_prot",
-      "references": ["EpWithReg.reg.gen_ar_reg_0.latency1_reg_prot"],
-      "type": "wire",
+    "\"_": {
       "vcdid": "\"_",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_ar_reg_0",
+          "latency1_reg_prot"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 3
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_ar_reg_0"],
-      "name": "latency1_reg_addr_next",
-      "references": ["EpWithReg.reg.gen_ar_reg_0.latency1_reg_addr_next"],
-      "type": "wire",
+    "\"`": {
       "vcdid": "\"`",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_ar_reg_0",
+          "latency1_reg_addr_next"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_ar_reg_0"],
-      "name": "latency1_reg_addr",
-      "references": ["EpWithReg.reg.gen_ar_reg_0.latency1_reg_addr"],
-      "type": "wire",
+    "\"a": {
       "vcdid": "\"a",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_ar_reg_0",
+          "latency1_reg_addr"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_aw_reg_0"],
-      "name": "latency1_reg_addr",
-      "references": ["EpWithReg.reg.gen_aw_reg_0.latency1_reg_addr"],
-      "type": "wire",
+    "\"b": {
       "vcdid": "\"b",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_aw_reg_0",
+          "latency1_reg_addr"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
@@ -7876,14 +8429,19 @@
           "bin": "00000000000000000000000000001000"
         }
       ],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_aw_reg_0"],
-      "name": "latency1_reg_we",
-      "references": ["EpWithReg.reg.gen_aw_reg_0.latency1_reg_we"],
-      "type": "wire",
+    "\"c": {
       "vcdid": "\"c",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_aw_reg_0",
+          "latency1_reg_we"
+        ]
+      ],
       "wave": [
         {
           "time": 2500,
@@ -7938,14 +8496,19 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_aw_reg_0"],
-      "name": "latency1_isOccupied_next",
-      "references": ["EpWithReg.reg.gen_aw_reg_0.latency1_isOccupied_next"],
-      "type": "wire",
+    "\"d": {
       "vcdid": "\"d",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_aw_reg_0",
+          "latency1_isOccupied_next"
+        ]
+      ],
       "wave": [
         {
           "time": 2500,
@@ -7992,28 +8555,38 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_aw_reg_0"],
-      "name": "latency1_reg_prot_next",
-      "references": ["EpWithReg.reg.gen_aw_reg_0.latency1_reg_prot_next"],
-      "type": "wire",
+    "\"e": {
       "vcdid": "\"e",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_aw_reg_0",
+          "latency1_reg_prot_next"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
           "bin": "000"
         }
       ],
+      "type": "wire",
       "width": 3
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_aw_reg_0"],
-      "name": "latency1_isOccupied",
-      "references": ["EpWithReg.reg.gen_aw_reg_0.latency1_isOccupied"],
-      "type": "wire",
+    "\"f": {
       "vcdid": "\"f",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_aw_reg_0",
+          "latency1_isOccupied"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -8028,28 +8601,38 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_aw_reg_0"],
-      "name": "latency1_reg_prot",
-      "references": ["EpWithReg.reg.gen_aw_reg_0.latency1_reg_prot"],
-      "type": "wire",
+    "\"g": {
       "vcdid": "\"g",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_aw_reg_0",
+          "latency1_reg_prot"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
           "bin": "000"
         }
       ],
+      "type": "wire",
       "width": 3
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_aw_reg_0"],
-      "name": "latency1_reg_addr_next",
-      "references": ["EpWithReg.reg.gen_aw_reg_0.latency1_reg_addr_next"],
-      "type": "wire",
+    "\"h": {
       "vcdid": "\"h",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_aw_reg_0",
+          "latency1_reg_addr_next"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
@@ -8080,14 +8663,19 @@
           "bin": "00000000000000000000000000001000"
         }
       ],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_b_reg_0"],
-      "name": "latency1_reg_we",
-      "references": ["EpWithReg.reg.gen_b_reg_0.latency1_reg_we"],
-      "type": "wire",
+    "\"i": {
       "vcdid": "\"i",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_b_reg_0",
+          "latency1_reg_we"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -8134,14 +8722,19 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_b_reg_0"],
-      "name": "latency1_isOccupied",
-      "references": ["EpWithReg.reg.gen_b_reg_0.latency1_isOccupied"],
-      "type": "wire",
+    "\"j": {
       "vcdid": "\"j",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_b_reg_0",
+          "latency1_isOccupied"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -8180,14 +8773,19 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_b_reg_0"],
-      "name": "latency1_isOccupied_next",
-      "references": ["EpWithReg.reg.gen_b_reg_0.latency1_isOccupied_next"],
-      "type": "wire",
+    "\"k": {
       "vcdid": "\"k",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_b_reg_0",
+          "latency1_isOccupied_next"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -8242,14 +8840,19 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_b_reg_0"],
-      "name": "latency1_reg_resp",
-      "references": ["EpWithReg.reg.gen_b_reg_0.latency1_reg_resp"],
-      "type": "wire",
+    "\"l": {
       "vcdid": "\"l",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_b_reg_0",
+          "latency1_reg_resp"
+        ]
+      ],
       "wave": [
         {
           "time": 45000,
@@ -8260,14 +8863,19 @@
           "bin": "10"
         }
       ],
+      "type": "wire",
       "width": 2
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_b_reg_0"],
-      "name": "latency1_reg_resp_next",
-      "references": ["EpWithReg.reg.gen_b_reg_0.latency1_reg_resp_next"],
-      "type": "wire",
+    "\"m": {
       "vcdid": "\"m",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_b_reg_0",
+          "latency1_reg_resp_next"
+        ]
+      ],
       "wave": [
         {
           "time": 35000,
@@ -8278,92 +8886,132 @@
           "bin": "10"
         }
       ],
+      "type": "wire",
       "width": 2
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_r_reg_0"],
-      "name": "latency1_reg_we",
-      "references": ["EpWithReg.reg.gen_r_reg_0.latency1_reg_we"],
-      "type": "wire",
+    "\"n": {
       "vcdid": "\"n",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_r_reg_0",
+          "latency1_reg_we"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_r_reg_0"],
-      "name": "latency1_reg_resp_next",
-      "references": ["EpWithReg.reg.gen_r_reg_0.latency1_reg_resp_next"],
-      "type": "wire",
+    "\"o": {
       "vcdid": "\"o",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_r_reg_0",
+          "latency1_reg_resp_next"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 2
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_r_reg_0"],
-      "name": "latency1_isOccupied_next",
-      "references": ["EpWithReg.reg.gen_r_reg_0.latency1_isOccupied_next"],
-      "type": "wire",
+    "\"p": {
       "vcdid": "\"p",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_r_reg_0",
+          "latency1_isOccupied_next"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_r_reg_0"],
-      "name": "latency1_reg_resp",
-      "references": ["EpWithReg.reg.gen_r_reg_0.latency1_reg_resp"],
-      "type": "wire",
+    "\"q": {
       "vcdid": "\"q",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_r_reg_0",
+          "latency1_reg_resp"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 2
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_r_reg_0"],
-      "name": "latency1_isOccupied",
-      "references": ["EpWithReg.reg.gen_r_reg_0.latency1_isOccupied"],
-      "type": "wire",
+    "\"r": {
       "vcdid": "\"r",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_r_reg_0",
+          "latency1_isOccupied"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_r_reg_0"],
-      "name": "latency1_reg_data",
-      "references": ["EpWithReg.reg.gen_r_reg_0.latency1_reg_data"],
-      "type": "wire",
+    "\"s": {
       "vcdid": "\"s",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_r_reg_0",
+          "latency1_reg_data"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_r_reg_0"],
-      "name": "latency1_reg_data_next",
-      "references": ["EpWithReg.reg.gen_r_reg_0.latency1_reg_data_next"],
-      "type": "wire",
+    "\"t": {
       "vcdid": "\"t",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_r_reg_0",
+          "latency1_reg_data_next"
+        ]
+      ],
       "wave": [],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_w_reg_0"],
-      "name": "latency1_reg_data_next",
-      "references": ["EpWithReg.reg.gen_w_reg_0.latency1_reg_data_next"],
-      "type": "wire",
+    "\"u": {
       "vcdid": "\"u",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_w_reg_0",
+          "latency1_reg_data_next"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
@@ -8386,28 +9034,38 @@
           "bin": "00000000000000000000000001101000"
         }
       ],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_w_reg_0"],
-      "name": "latency1_reg_strb_next",
-      "references": ["EpWithReg.reg.gen_w_reg_0.latency1_reg_strb_next"],
-      "type": "wire",
+    "\"v": {
       "vcdid": "\"v",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_w_reg_0",
+          "latency1_reg_strb_next"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
           "bin": "1111"
         }
       ],
+      "type": "wire",
       "width": 4
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_w_reg_0"],
-      "name": "latency1_reg_data",
-      "references": ["EpWithReg.reg.gen_w_reg_0.latency1_reg_data"],
-      "type": "wire",
+    "\"w": {
       "vcdid": "\"w",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_w_reg_0",
+          "latency1_reg_data"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
@@ -8430,14 +9088,19 @@
           "bin": "00000000000000000000000001101000"
         }
       ],
+      "type": "wire",
       "width": 32
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_w_reg_0"],
-      "name": "latency1_isOccupied_next",
-      "references": ["EpWithReg.reg.gen_w_reg_0.latency1_isOccupied_next"],
-      "type": "wire",
+    "\"x": {
       "vcdid": "\"x",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_w_reg_0",
+          "latency1_isOccupied_next"
+        ]
+      ],
       "wave": [
         {
           "time": 5000,
@@ -8468,14 +9131,19 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_w_reg_0"],
-      "name": "latency1_reg_we",
-      "references": ["EpWithReg.reg.gen_w_reg_0.latency1_reg_we"],
-      "type": "wire",
+    "\"y": {
       "vcdid": "\"y",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_w_reg_0",
+          "latency1_reg_we"
+        ]
+      ],
       "wave": [
         {
           "time": 5000,
@@ -8530,14 +9198,19 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_w_reg_0"],
-      "name": "latency1_isOccupied",
-      "references": ["EpWithReg.reg.gen_w_reg_0.latency1_isOccupied"],
-      "type": "wire",
+    "\"z": {
       "vcdid": "\"z",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_w_reg_0",
+          "latency1_isOccupied"
+        ]
+      ],
       "wave": [
         {
           "time": 0,
@@ -8568,24 +9241,1821 @@
           "bin": "0"
         }
       ],
+      "type": "wire",
       "width": 1
     },
-    {
-      "hierarchy": ["EpWithReg", "reg", "gen_w_reg_0"],
-      "name": "latency1_reg_strb",
-      "references": ["EpWithReg.reg.gen_w_reg_0.latency1_reg_strb"],
-      "type": "wire",
+    "\"{": {
       "vcdid": "\"{",
+      "references": [
+        [
+          "EpWithReg",
+          "reg",
+          "gen_w_reg_0",
+          "latency1_reg_strb"
+        ]
+      ],
       "wave": [
         {
           "time": 15000,
           "bin": "1111"
         }
       ],
+      "type": "wire",
+      "width": 4
+    }
+  },
+  "variables": [
+    {
+      "vcdid": "!",
+      "name": "bus_aw_prot",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 3
+    },
+    {
+      "vcdid": "\"",
+      "name": "sig_ep_bus_r_valid",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "#",
+      "name": "sig_reg_out_m_ar_valid",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "$",
+      "name": "bus_aw_ready",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "%",
+      "name": "sig_ep_bus_w_data",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "&",
+      "name": "sig_reg_out_m_aw_addr",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "'",
+      "name": "bus_aw_valid",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "(",
+      "name": "sig_ep_bus_w_ready",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": ")",
+      "name": "sig_reg_out_m_aw_prot",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 3
+    },
+    {
+      "vcdid": "*",
+      "name": "bus_b_ready",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "+",
+      "name": "sig_ep_bus_w_strb",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 4
+    },
+    {
+      "vcdid": ",",
+      "name": "sig_reg_out_m_aw_ready",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "-",
+      "name": "bus_b_resp",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 2
+    },
+    {
+      "vcdid": ".",
+      "name": "sig_ep_bus_w_valid",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "/",
+      "name": "sig_reg_out_m_aw_valid",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "0",
+      "name": "bus_b_valid",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "1",
+      "name": "sig_ep_clk",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "2",
+      "name": "sig_reg_out_m_b_ready",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "3",
+      "name": "bus_r_data",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "4",
+      "name": "sig_ep_decoded_field0_din",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "5",
+      "name": "sig_reg_out_m_b_resp",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 2
+    },
+    {
+      "vcdid": "6",
+      "name": "bus_r_ready",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "7",
+      "name": "sig_ep_decoded_field0_dout_data",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "8",
+      "name": "sig_reg_out_m_b_valid",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "9",
+      "name": "bus_r_resp",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 2
+    },
+    {
+      "vcdid": ":",
+      "name": "sig_ep_decoded_field0_dout_vld",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": ";",
+      "name": "sig_reg_out_m_r_data",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "<",
+      "name": "bus_r_valid",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "=",
+      "name": "sig_ep_decoded_field1_din",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": ">",
+      "name": "sig_reg_out_m_r_ready",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "?",
+      "name": "bus_w_data",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "@",
+      "name": "sig_ep_decoded_field1_dout_data",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "A",
+      "name": "sig_reg_out_m_r_resp",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 2
+    },
+    {
+      "vcdid": "B",
+      "name": "bus_w_ready",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "C",
+      "name": "sig_ep_decoded_field1_dout_vld",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "D",
+      "name": "sig_reg_out_m_r_valid",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "E",
+      "name": "bus_w_strb",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 4
+    },
+    {
+      "vcdid": "F",
+      "name": "sig_ep_rst_n",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "G",
+      "name": "sig_reg_out_m_w_data",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "H",
+      "name": "bus_w_valid",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "I",
+      "name": "sig_reg_clk",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "J",
+      "name": "sig_reg_out_m_w_ready",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "K",
+      "name": "clk",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "L",
+      "name": "sig_reg_in_s_ar_addr",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "M",
+      "name": "sig_reg_out_m_w_strb",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 4
+    },
+    {
+      "vcdid": "N",
+      "name": "decoded_field0_din",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "O",
+      "name": "sig_reg_in_s_ar_prot",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 3
+    },
+    {
+      "vcdid": "P",
+      "name": "sig_reg_out_m_w_valid",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "Q",
+      "name": "decoded_field0_dout_data",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "R",
+      "name": "sig_reg_in_s_ar_ready",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "S",
+      "name": "sig_reg_rst_n",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "T",
+      "name": "sig_reg_in_s_ar_valid",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "U",
+      "name": "decoded_field0_dout_vld",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "V",
+      "name": "decoded_field1_din",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "W",
+      "name": "sig_reg_in_s_aw_addr",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "X",
+      "name": "decoded_field1_dout_data",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "Y",
+      "name": "sig_reg_in_s_aw_prot",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 3
+    },
+    {
+      "vcdid": "Z",
+      "name": "decoded_field1_dout_vld",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "[",
+      "name": "sig_reg_in_s_aw_ready",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\\",
+      "name": "rst_n",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "]",
+      "name": "sig_reg_in_s_aw_valid",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "^",
+      "name": "sig_ep_bus_ar_addr",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "_",
+      "name": "sig_reg_in_s_b_ready",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "`",
+      "name": "sig_ep_bus_ar_prot",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 3
+    },
+    {
+      "vcdid": "a",
+      "name": "sig_reg_in_s_b_resp",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 2
+    },
+    {
+      "vcdid": "b",
+      "name": "sig_ep_bus_ar_ready",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "c",
+      "name": "sig_reg_in_s_b_valid",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "d",
+      "name": "sig_ep_bus_ar_valid",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "e",
+      "name": "sig_reg_in_s_r_data",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "f",
+      "name": "sig_ep_bus_aw_addr",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "g",
+      "name": "sig_reg_in_s_r_ready",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "h",
+      "name": "sig_ep_bus_aw_prot",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 3
+    },
+    {
+      "vcdid": "i",
+      "name": "sig_reg_in_s_r_resp",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 2
+    },
+    {
+      "vcdid": "j",
+      "name": "sig_ep_bus_aw_ready",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "k",
+      "name": "sig_reg_in_s_r_valid",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "l",
+      "name": "sig_ep_bus_aw_valid",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "m",
+      "name": "sig_reg_in_s_w_data",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "n",
+      "name": "sig_ep_bus_b_ready",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "o",
+      "name": "sig_reg_in_s_w_ready",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "p",
+      "name": "sig_ep_bus_b_resp",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 2
+    },
+    {
+      "vcdid": "q",
+      "name": "sig_reg_in_s_w_strb",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 4
+    },
+    {
+      "vcdid": "r",
+      "name": "sig_ep_bus_b_valid",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "s",
+      "name": "sig_reg_in_s_w_valid",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "t",
+      "name": "sig_ep_bus_r_data",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "u",
+      "name": "sig_reg_out_m_ar_addr",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "v",
+      "name": "sig_ep_bus_r_ready",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "w",
+      "name": "sig_reg_out_m_ar_prot",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 3
+    },
+    {
+      "vcdid": "x",
+      "name": "sig_reg_out_m_ar_ready",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "y",
+      "name": "sig_ep_bus_r_resp",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 2
+    },
+    {
+      "vcdid": "z",
+      "name": "bus_ar_addr",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "{",
+      "name": "bus_ar_prot",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 3
+    },
+    {
+      "vcdid": "|",
+      "name": "bus_ar_ready",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "}",
+      "name": "bus_ar_valid",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "~",
+      "name": "bus_aw_addr",
+      "hierarchy": [
+        "EpWithReg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "\"!",
+      "name": "isBramAddr",
+      "hierarchy": [
+        "EpWithReg",
+        "ep"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"\"",
+      "name": "rSt",
+      "hierarchy": [
+        "EpWithReg",
+        "ep"
+      ],
+      "type": "real",
+      "width": 1
+    },
+    {
+      "vcdid": "\"#",
+      "name": "rSt_next",
+      "hierarchy": [
+        "EpWithReg",
+        "ep"
+      ],
+      "type": "real",
+      "width": 1
+    },
+    {
+      "vcdid": "\"$",
+      "name": "wSt",
+      "hierarchy": [
+        "EpWithReg",
+        "ep"
+      ],
+      "type": "real",
+      "width": 1
+    },
+    {
+      "vcdid": "\"%",
+      "name": "wSt_next",
+      "hierarchy": [
+        "EpWithReg",
+        "ep"
+      ],
+      "type": "real",
+      "width": 1
+    },
+    {
+      "vcdid": "\"&",
+      "name": "w_hs",
+      "hierarchy": [
+        "EpWithReg",
+        "ep"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"'",
+      "name": "arAddr",
+      "hierarchy": [
+        "EpWithReg",
+        "ep"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "\"(",
+      "name": "arAddr_next",
+      "hierarchy": [
+        "EpWithReg",
+        "ep"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "\")",
+      "name": "awAddr",
+      "hierarchy": [
+        "EpWithReg",
+        "ep"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "\"*",
+      "name": "awAddr_next",
+      "hierarchy": [
+        "EpWithReg",
+        "ep"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "\"+",
+      "name": "sig_gen_ar_reg_0_clk",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\",",
+      "name": "sig_gen_ar_reg_0_dataIn_addr",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "\"-",
+      "name": "sig_gen_ar_reg_0_dataIn_prot",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 3
+    },
+    {
+      "vcdid": "\".",
+      "name": "sig_gen_ar_reg_0_dataIn_ready",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"/",
+      "name": "sig_gen_ar_reg_0_dataIn_valid",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"0",
+      "name": "sig_gen_ar_reg_0_dataOut_addr",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "\"1",
+      "name": "sig_gen_ar_reg_0_dataOut_prot",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 3
+    },
+    {
+      "vcdid": "\"2",
+      "name": "sig_gen_ar_reg_0_dataOut_ready",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"3",
+      "name": "sig_gen_ar_reg_0_dataOut_valid",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"4",
+      "name": "sig_gen_ar_reg_0_rst_n",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"5",
+      "name": "sig_gen_aw_reg_0_clk",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"6",
+      "name": "sig_gen_aw_reg_0_dataIn_addr",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "\"7",
+      "name": "sig_gen_aw_reg_0_dataIn_prot",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 3
+    },
+    {
+      "vcdid": "\"8",
+      "name": "sig_gen_aw_reg_0_dataIn_ready",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"9",
+      "name": "sig_gen_aw_reg_0_dataIn_valid",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\":",
+      "name": "sig_gen_aw_reg_0_dataOut_addr",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "\";",
+      "name": "sig_gen_aw_reg_0_dataOut_prot",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 3
+    },
+    {
+      "vcdid": "\"<",
+      "name": "sig_gen_aw_reg_0_dataOut_ready",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"=",
+      "name": "sig_gen_aw_reg_0_dataOut_valid",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\">",
+      "name": "sig_gen_aw_reg_0_rst_n",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"?",
+      "name": "sig_gen_b_reg_0_clk",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"@",
+      "name": "sig_gen_b_reg_0_dataIn_ready",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"A",
+      "name": "sig_gen_b_reg_0_dataIn_resp",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 2
+    },
+    {
+      "vcdid": "\"B",
+      "name": "sig_gen_b_reg_0_dataIn_valid",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"C",
+      "name": "sig_gen_b_reg_0_dataOut_ready",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"D",
+      "name": "sig_gen_b_reg_0_dataOut_resp",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 2
+    },
+    {
+      "vcdid": "\"E",
+      "name": "sig_gen_b_reg_0_dataOut_valid",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"F",
+      "name": "sig_gen_b_reg_0_rst_n",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"G",
+      "name": "sig_gen_r_reg_0_clk",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"H",
+      "name": "sig_gen_r_reg_0_dataIn_data",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "\"I",
+      "name": "sig_gen_r_reg_0_dataIn_ready",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"J",
+      "name": "sig_gen_r_reg_0_dataIn_resp",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 2
+    },
+    {
+      "vcdid": "\"K",
+      "name": "sig_gen_r_reg_0_dataIn_valid",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"L",
+      "name": "sig_gen_r_reg_0_dataOut_data",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "\"M",
+      "name": "sig_gen_r_reg_0_dataOut_ready",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"N",
+      "name": "sig_gen_r_reg_0_dataOut_resp",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 2
+    },
+    {
+      "vcdid": "\"O",
+      "name": "sig_gen_r_reg_0_dataOut_valid",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"P",
+      "name": "sig_gen_r_reg_0_rst_n",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"Q",
+      "name": "sig_gen_w_reg_0_clk",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"R",
+      "name": "sig_gen_w_reg_0_dataIn_data",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "\"S",
+      "name": "sig_gen_w_reg_0_dataIn_ready",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"T",
+      "name": "sig_gen_w_reg_0_dataIn_strb",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 4
+    },
+    {
+      "vcdid": "\"U",
+      "name": "sig_gen_w_reg_0_dataIn_valid",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"V",
+      "name": "sig_gen_w_reg_0_dataOut_data",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "\"W",
+      "name": "sig_gen_w_reg_0_dataOut_ready",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"X",
+      "name": "sig_gen_w_reg_0_dataOut_strb",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 4
+    },
+    {
+      "vcdid": "\"Y",
+      "name": "sig_gen_w_reg_0_dataOut_valid",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"Z",
+      "name": "sig_gen_w_reg_0_rst_n",
+      "hierarchy": [
+        "EpWithReg",
+        "reg"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"[",
+      "name": "latency1_reg_we",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_ar_reg_0"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"\\",
+      "name": "latency1_isOccupied_next",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_ar_reg_0"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"]",
+      "name": "latency1_reg_prot_next",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_ar_reg_0"
+      ],
+      "type": "wire",
+      "width": 3
+    },
+    {
+      "vcdid": "\"^",
+      "name": "latency1_isOccupied",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_ar_reg_0"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"_",
+      "name": "latency1_reg_prot",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_ar_reg_0"
+      ],
+      "type": "wire",
+      "width": 3
+    },
+    {
+      "vcdid": "\"`",
+      "name": "latency1_reg_addr_next",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_ar_reg_0"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "\"a",
+      "name": "latency1_reg_addr",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_ar_reg_0"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "\"b",
+      "name": "latency1_reg_addr",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_aw_reg_0"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "\"c",
+      "name": "latency1_reg_we",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_aw_reg_0"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"d",
+      "name": "latency1_isOccupied_next",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_aw_reg_0"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"e",
+      "name": "latency1_reg_prot_next",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_aw_reg_0"
+      ],
+      "type": "wire",
+      "width": 3
+    },
+    {
+      "vcdid": "\"f",
+      "name": "latency1_isOccupied",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_aw_reg_0"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"g",
+      "name": "latency1_reg_prot",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_aw_reg_0"
+      ],
+      "type": "wire",
+      "width": 3
+    },
+    {
+      "vcdid": "\"h",
+      "name": "latency1_reg_addr_next",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_aw_reg_0"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "\"i",
+      "name": "latency1_reg_we",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_b_reg_0"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"j",
+      "name": "latency1_isOccupied",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_b_reg_0"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"k",
+      "name": "latency1_isOccupied_next",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_b_reg_0"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"l",
+      "name": "latency1_reg_resp",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_b_reg_0"
+      ],
+      "type": "wire",
+      "width": 2
+    },
+    {
+      "vcdid": "\"m",
+      "name": "latency1_reg_resp_next",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_b_reg_0"
+      ],
+      "type": "wire",
+      "width": 2
+    },
+    {
+      "vcdid": "\"n",
+      "name": "latency1_reg_we",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_r_reg_0"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"o",
+      "name": "latency1_reg_resp_next",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_r_reg_0"
+      ],
+      "type": "wire",
+      "width": 2
+    },
+    {
+      "vcdid": "\"p",
+      "name": "latency1_isOccupied_next",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_r_reg_0"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"q",
+      "name": "latency1_reg_resp",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_r_reg_0"
+      ],
+      "type": "wire",
+      "width": 2
+    },
+    {
+      "vcdid": "\"r",
+      "name": "latency1_isOccupied",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_r_reg_0"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"s",
+      "name": "latency1_reg_data",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_r_reg_0"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "\"t",
+      "name": "latency1_reg_data_next",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_r_reg_0"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "\"u",
+      "name": "latency1_reg_data_next",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_w_reg_0"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "\"v",
+      "name": "latency1_reg_strb_next",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_w_reg_0"
+      ],
+      "type": "wire",
+      "width": 4
+    },
+    {
+      "vcdid": "\"w",
+      "name": "latency1_reg_data",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_w_reg_0"
+      ],
+      "type": "wire",
+      "width": 32
+    },
+    {
+      "vcdid": "\"x",
+      "name": "latency1_isOccupied_next",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_w_reg_0"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"y",
+      "name": "latency1_reg_we",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_w_reg_0"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"z",
+      "name": "latency1_isOccupied",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_w_reg_0"
+      ],
+      "type": "wire",
+      "width": 1
+    },
+    {
+      "vcdid": "\"{",
+      "name": "latency1_reg_strb",
+      "hierarchy": [
+        "EpWithReg",
+        "reg",
+        "gen_w_reg_0"
+      ],
+      "type": "wire",
       "width": 4
     }
   ],
-  "name": "dduummyy",
   "now": 495000,
+  "name": "dduummyy",
   "type": "struct"
 }

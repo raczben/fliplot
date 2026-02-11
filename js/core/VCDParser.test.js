@@ -16,16 +16,15 @@ describe("VCDParser", () => {
     const data = parser.getData();
 
     expect(data).toHaveProperty("signals");
-    expect(Array.isArray(data.signals)).toBe(true);
-    expect(data.signals.length).toBeGreaterThan(0);
+    expect(Array.isArray(data.variables)).toBe(true);
+    expect(data.variables.length).toBeGreaterThan(0);
 
     // Check that each signal has id, name, type, width, and changes
-    for (const sig of data.signals) {
-      expect(sig).toHaveProperty("vcdid");
-      expect(sig).toHaveProperty("name");
-      expect(sig).toHaveProperty("type");
-      expect(sig).toHaveProperty("width");
-      expect(Array.isArray(sig.wave)).toBe(true);
+    for (const v of data.variables) {
+      expect(v).toHaveProperty("vcdid");
+      expect(v).toHaveProperty("name");
+      expect(v).toHaveProperty("type");
+      expect(v).toHaveProperty("width");
     }
 
     // Check that endtime is a number and >= 0
@@ -33,12 +32,12 @@ describe("VCDParser", () => {
     expect(data.now).toBeGreaterThanOrEqual(0);
 
     // Optionally, check for a known signal and its changes
-    const clk = data.signals.find((s) => s.name.includes("rx_en"));
-    expect(clk).toBeDefined();
-    expect(Array.isArray(clk.wave)).toBe(true);
-    expect(clk.wave.length).toBeGreaterThan(0);
-    expect(clk.wave[0]).toHaveProperty("time");
-    expect(clk.wave[0]).toHaveProperty("bin");
+    const rx_en = data.signals["&"]; // vcdid for rx_en in wiki.vcd is "&"
+    expect(rx_en).toBeDefined();
+    expect(Array.isArray(rx_en.wave)).toBe(true);
+    expect(rx_en.wave.length).toBeGreaterThan(0);
+    expect(rx_en.wave[0]).toHaveProperty("time");
+    expect(rx_en.wave[0]).toHaveProperty("bin");
   });
 
   // Test AxiRegTC_test_write.vcd and compare with AxiRegTC_test_write_parsed.json
@@ -54,6 +53,8 @@ describe("VCDParser", () => {
       vcdcontent: fs.readFileSync(vcdPath, "utf8")
     });
     const data = parser.getData();
+    // export JSON:
+    // fs.writeFileSync("out.json", JSON.stringify(parser.getData(), null, 2));
 
     expect(data).toEqual(expectedOutput);
   });

@@ -67,8 +67,8 @@ export class VCDParser {
    */
   parse(vcdcontent, duplicate_repeted_values = false) {
     const lines = vcdcontent.split(/\r?\n/);
-    const signals = [];
-    const idToSignal = {};
+    const variables = [];
+    const signals = {};
     let hierarchy = [];
     let currentTime = 0;
     let endtime = 0;
@@ -140,20 +140,29 @@ export class VCDParser {
             const fullName = [...hierarchy, name].join(".");
 
             console.log(hierarchy);
-            const signal = {
+            const variable = {
               vcdid: id,
               name: name,
-              references: [fullName], // TUDO: should be parsed the references field...
-              type,
-              width,
               hierarchy: hierarchy.slice(0),
-              wave: []
+              type,
+              width
             };
-            signals.push(signal);
-            if (idToSignal[id]) {
-              idToSignal[id].push(signal);
+            variables.push(variable);
+            if (signals[id]) {
+              signals[id].references.push(hierarchy.slice(0) + name);
+              if (type != signals[id].type || width != signals[id].width) {
+                console.warn(
+                  `Warning: Inconsistent signal type/width for id "${id}" ln: ${ln + 1}: ${rawLine}`
+                );
+              }
             } else {
-              idToSignal[id] = [signal];
+              signals[id] = {
+                vcdid: id,
+                references: [hierarchy.slice(0).concat(name)],
+                wave: [],
+                type: type,
+                width: width
+              };
             }
           } else {
             console.warn(`Warning: Unrecognized directive at line ${ln + 1}: ${rawLine}`);
@@ -174,9 +183,6 @@ export class VCDParser {
           } else if (/^[bBrR]/.test(line)) {
             const formatChar = Array.from(line)[0].toLowerCase();
             line = line.slice(1);
-            // if (ln == 322) {
-            // console.log(`line ${ln + 1}: ${line}  id: ${id}  value: ${value}` );
-            // }
             if (formatChar == "r") {
               // real value change: e.g. r3.14 !
               [_full, value, id] = line.match(/^([\d.eE+-]+)\s+(\S+)/) || [];
@@ -199,22 +205,21 @@ export class VCDParser {
           }
 
           // Store the value change in the corresponding signal's wave array
-          if (idToSignal[id]) {
+          if (signals[id]) {
             let bin;
-            for (const signal of idToSignal[id]) {
-              if (typeof value === "string") {
-                bin = this._padBin(value, signal.width);
-              } else {
-                bin = value;
-              }
-              const lastEntry = signal.wave[signal.wave.length - 1];
-              if (!duplicate_repeted_values) {
-                if (lastEntry && lastEntry.bin === bin) {
-                  continue; // Skip duplicate value
-                }
-              }
-              signal.wave.push({ time: currentTime, bin: bin });
+            const signal = signals[id];
+            if (typeof value === "string") {
+              bin = this._padBin(value, signal.width);
+            } else {
+              bin = value;
             }
+            const lastEntry = signal.wave[signal.wave.length - 1];
+            if (!duplicate_repeted_values) {
+              if (lastEntry && lastEntry.bin === bin) {
+                continue; // Skip duplicate value
+              }
+            }
+            signal.wave.push({ time: currentTime, bin: bin });
           } else {
             console.warn(
               `Warning: No signal found for id "${id}" at time ${currentTime} (line ${ln + 1})`
@@ -231,6 +236,7 @@ export class VCDParser {
 
     return {
       signals,
+      variables,
       now: endtime,
       name: "dduummyy",
       type: "struct"

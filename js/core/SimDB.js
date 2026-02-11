@@ -29,9 +29,9 @@ export class SimDB {
     this.timeUnit = -1;
 
     if (db) {
-      db.signals.forEach((sig) => {
+      Object.values(db.signals).forEach((sig) => {
         sig.references.forEach((ref) => {
-          const hierarchy = ref.split(".");
+          const hierarchy = ref;
           this.addSignal(hierarchy, sig);
         });
       });
