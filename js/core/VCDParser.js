@@ -27,6 +27,21 @@ export class VCDParser {
     return bin.padStart(width, "0");
   }
 
+  _hexToBin(hex) {
+    bin = hex
+      .split("")
+      .map((hexDigit) => {
+        if (!/[0-9a-fA-F]/.test(hexDigit)) {
+          // repeat all hex digits into 4 bits binary:
+          return hexDigit.repeat(4);
+        } else {
+          return parseInt(hexDigit, 16).toString(2).padStart(4, "0");
+        }
+      })
+      .join("");
+    return bin;
+  }
+
   _parseVAR(line) {
     line = line.trim();
     if (!line.startsWith("$var")) {
@@ -180,7 +195,7 @@ export class VCDParser {
             // Scalar value change: e.g. 1!
             value = line[0];
             id = line.slice(1);
-          } else if (/^[bBrR]/.test(line)) {
+          } else if (/^[bBrRsShH]/.test(line)) {
             const formatChar = Array.from(line)[0].toLowerCase();
             line = line.slice(1);
             if (formatChar == "r") {
@@ -193,7 +208,14 @@ export class VCDParser {
             } else if (formatChar == "b") {
               // Vector value change: e.g. b1010 !
               [_full, value, id] = line.match(/^([01xXzZuU-]+)\s+(\S+)/) || [];
-              // console.log(`line ${ln + 1}: ${rawLine} id: ${id}  value: ${value}` );
+            } else if (formatChar == "h") {
+              // Hex value change: e.g. h12345678 !
+              [_full, value, id] = line.match(/^([\w]+)\s+(\S+)/) || [];
+              value = _hexToBin(value); // convert hex to binary string
+              formatChar = "b"; // treat as binary for padding
+            } else if (formatChar == "s") {
+              // String value change: e.g. s"hello" ! MyHDL uses s for string values
+              [_full, value, id] = line.match(/^([^\s]+)\s+(\S+)/) || [];
             } else {
               console.error(
                 `ERROR: Unrecognized format character "${formatChar}" at line ${ln + 1}: ${rawLine}`
