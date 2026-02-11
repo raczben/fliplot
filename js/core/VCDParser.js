@@ -7,10 +7,16 @@ export class VCDParser {
     this.vcdcontent = opts.vcdcontent || "";
     this.data = null;
     if (this.vcdcontent) {
-      this.data = this.parse(this.vcdcontent);
+      this.parse(this.vcdcontent);
     }
   }
 
+  /**
+   *
+   * @param {string} bin
+   * @param {number} width
+   * @returns {string}
+   */
   _padBin(bin, width) {
     bin = bin.toLocaleLowerCase();
     // if starts with b or B, remove it before padding:
@@ -27,6 +33,14 @@ export class VCDParser {
     return bin.padStart(width, "0");
   }
 
+  /**
+   *
+   * Convert hex string to binary string, e.g. "1A3F" -> "0001101000111111"
+   * If the hex string contains non-hex characters (e.g. "x", "z"), repeat them into 4 bits, e.g. "xz" -> "xxxxzzzz"
+   *
+   * @param {string} hex
+   * @returns {string}
+   */
   _hexToBin(hex) {
     bin = hex
       .split("")
@@ -42,6 +56,18 @@ export class VCDParser {
     return bin;
   }
 
+  /**
+   *
+   * @typedef {Object} VarType
+   * @property {string} type
+   * @property {number} width
+   * @property {string} id
+   * @property {string} name
+   * @property {string} dimension
+   *
+   * @param {string} line
+   * @returns {VarType}
+   */
   _parseVAR(line) {
     line = line.trim();
     if (!line.startsWith("$var")) {
@@ -78,6 +104,7 @@ export class VCDParser {
    * Parse the VCD content and return a structured object.
    * This is a minimal parser for signal hierarchy and value changes.
    * @param {string} vcdcontent
+   * @param {boolean} [duplicate_repeted_values=false]
    * @returns {Object}
    */
   parse(vcdcontent, duplicate_repeted_values = false) {
@@ -256,13 +283,14 @@ export class VCDParser {
       }
     }
 
-    return {
+    this.data = {
       signals,
       variables,
       now: endtime,
       name: "dduummyy",
       type: "struct"
     };
+    return this.data;
   }
 
   /**
