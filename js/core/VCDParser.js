@@ -6,6 +6,7 @@ export class VCDParser {
   constructor(opts = {}) {
     this.vcdcontent = opts.vcdcontent || "";
     this.data = null;
+    this.timescale = "1ns"; //default timescale, can be overridden by $timescale directive in VCD file
     if (this.vcdcontent) {
       this.parse(this.vcdcontent);
     }
@@ -83,14 +84,20 @@ export class VCDParser {
     let dimension = null;
 
     // trunk dimension from name:
-    if (name.includes("[")) {
-      const nameParts = name.split("[");
-      name = nameParts[0];
-      dimension = "[" + nameParts[1];
-    } else if (parts.length > 5) {
-      dimension = parts[5];
+    const regex = /^(.+)\[(\d+):(\d+)\]$/;
+    const match = name.match(regex);
+    if (match) {
+      name = match[1];
+      dimension = `[${match[2]}:${match[3]}]`;
+    } else if (parts.length > 6) {
+      if (/\[\d+:\d+\]/.test(parts[5])) {
+        dimension = parts[5];
+      } else if (/\[\d+\]/.test(parts[5])) {
+        // Questasim exports variables like: data[0], data[1],
+        // etc., we can keep the position in the name to distinguish them, e.g. data[0], data[1], etc.
+        name += parts[5];
+      }
     }
-
     return {
       type,
       width,
@@ -98,6 +105,15 @@ export class VCDParser {
       name,
       dimension
     };
+  }
+
+  _parseTimescale(line) {
+    line = line.trim();
+    const pattern = /\d+\s*(s|ms|us|ns|ps|fs)/i;
+    const match = line.match(pattern);
+    if (match) {
+      this.timescale = match[0].replace(/\s+/g, ""); // remove any whitespace
+    }
   }
 
   /**
@@ -122,44 +138,59 @@ export class VCDParser {
         if (!line) continue;
 
         if (line.startsWith("$")) {
-          // Directive line, e.g. $scope, $var, $upscope, etc.
-          // We will handle $scope, $upscope, and $var for this minimal parser.
-          if (line === "$end") {
-            if (["comment", "timescale", "date", "version", "dumpvars"].includes(state)) {
-              state = "";
-            } else {
-              console.warn(`Warning: Unmatched $end at line ${ln + 1}: ${rawLine}`);
-            }
-            continue;
-          } else if (line.startsWith("$comment")) {
+          if (line.startsWith("$comment") || state === "comment") {
             if (line.includes("$end")) {
+              state = "";
               continue; // Handle single-line comment
             }
             state = "comment";
             continue;
-          } else if (line.startsWith("$timescale")) {
+          } else if (line.startsWith("$timescale") || state === "timescale") {
+            this._parseTimescale(line);
             if (line.includes("$end")) {
+              state = "";
               continue; // Handle single-line timescale
             }
             state = "timescale";
             continue;
-          } else if (line.startsWith("$date")) {
+          } else if (line.startsWith("$date") || state === "date") {
             if (line.includes("$end")) {
+              state = "";
               continue; // Handle single-line date
             }
             state = "date";
             continue;
-          } else if (line.startsWith("$version")) {
+          } else if (line.startsWith("$version") || state === "version") {
             if (line.includes("$end")) {
+              state = "";
               continue; // Handle single-line version
             }
             state = "version";
             continue;
-          } else if (line.startsWith("$dumpvars")) {
+          } else if (line.startsWith("$dumpvars") || state === "dumpvars") {
             if (line.includes("$end")) {
-              continue; // Handle single-line version
+              state = "";
+              continue; // Handle single-line dumpvars
             }
             state = "dumpvars";
+            continue;
+          } else if (line.startsWith("$dumpall") || state === "dumpall") {
+            if (line.includes("$end")) {
+              state = "";
+              continue; // Handle single-line dumpall
+            }
+            state = "dumpall";
+            continue;
+          } else if (line.startsWith("$dumpoff") || state === "dumpoff") {
+            if (line.includes("$end")) {
+              state = "";
+              continue; // Handle single-line dumpoff
+            }
+            state = "dumpoff";
+            continue; // Directive line, e.g. $scope, $var, $upscope, etc.
+            // We will handle $scope, $upscope, and $var for this minimal parser.
+          } else if (line === "$end") {
+            console.warn(`Warning: Unmatched $end at line ${ln + 1}: ${rawLine}`);
             continue;
           } else if (line.startsWith("$enddefinitions")) {
             if (state) {
@@ -177,22 +208,20 @@ export class VCDParser {
             hierarchy.pop();
           } else if (line.startsWith("$var")) {
             // Example: $var wire 1 ! clk $end
-            const { type, width, id, name, _dimension } = this._parseVAR(line);
+            const { type, width, id, name, dimension } = this._parseVAR(line);
 
-            const fullName = [...hierarchy, name].join(".");
-
-            console.log(hierarchy);
             const variable = {
               vcdid: id,
               name: name,
               hierarchy: hierarchy.slice(0),
               type,
-              width
+              width,
+              dimension: dimension
             };
             variables.push(variable);
             if (signals[id]) {
-              signals[id].references.push(hierarchy.slice(0) + name);
-              if (type != signals[id].type || width != signals[id].width) {
+              signals[id].references.push(hierarchy.slice(0).concat(name));
+              if (width != signals[id].width) {
                 console.warn(
                   `Warning: Inconsistent signal type/width for id "${id}" ln: ${ln + 1}: ${rawLine}`
                 );
@@ -203,7 +232,8 @@ export class VCDParser {
                 references: [hierarchy.slice(0).concat(name)],
                 wave: [],
                 type: type,
-                width: width
+                width: width,
+                value_type: null
               };
             }
           } else {
@@ -216,12 +246,19 @@ export class VCDParser {
           currentTime = parseInt(line.slice(1), 10);
           endtime = currentTime;
         } else {
+          let value_type = null;
           // Value change line, e.g. 1! or b1010 !
           var value, id, _full;
           if (/^[01xXzZuU]/.test(line)) {
             // Scalar value change: e.g. 1!
             value = line[0];
             id = line.slice(1);
+            value_type = "bin";
+            if (signals[id] && signals[id].width > 1) {
+              console.warn(
+                `Warning: Integer value "${value}" for multi-bit signal id "${id}" at line ${ln + 1}: ${rawLine}`
+              );
+            }
           } else if (/^[bBrRsShH]/.test(line)) {
             const formatChar = Array.from(line)[0].toLowerCase();
             line = line.slice(1);
@@ -232,17 +269,21 @@ export class VCDParser {
               if (value == 0) {
                 value = 0.0; // to avoid -0
               }
+              value_type = "real";
             } else if (formatChar == "b") {
               // Vector value change: e.g. b1010 !
               [_full, value, id] = line.match(/^([01xXzZuU-]+)\s+(\S+)/) || [];
+              value_type = "bin";
             } else if (formatChar == "h") {
               // Hex value change: e.g. h12345678 !
               [_full, value, id] = line.match(/^([\w]+)\s+(\S+)/) || [];
               value = _hexToBin(value); // convert hex to binary string
               formatChar = "b"; // treat as binary for padding
+              value_type = "bin"; // treat as binary
             } else if (formatChar == "s") {
               // String value change: e.g. s"hello" ! MyHDL uses s for string values
               [_full, value, id] = line.match(/^([^\s]+)\s+(\S+)/) || [];
+              value_type = "string";
             } else {
               console.error(
                 `ERROR: Unrecognized format character "${formatChar}" at line ${ln + 1}: ${rawLine}`
@@ -257,7 +298,7 @@ export class VCDParser {
           if (signals[id]) {
             let bin;
             const signal = signals[id];
-            if (typeof value === "string") {
+            if (value_type == "bin") {
               bin = this._padBin(value, signal.width);
             } else {
               bin = value;
@@ -269,6 +310,13 @@ export class VCDParser {
               }
             }
             signal.wave.push({ time: currentTime, bin: bin });
+            if (signal.value_type && signal.value_type != value_type) {
+              console.warn(
+                `Warning: Inconsistent value type for id "${id}" at line ${ln + 1}: ${rawLine}`
+              );
+            } else {
+              signal.value_type = value_type;
+            }
           } else {
             console.warn(
               `Warning: No signal found for id "${id}" at time ${currentTime} (line ${ln + 1})`
@@ -287,8 +335,7 @@ export class VCDParser {
       signals,
       variables,
       now: endtime,
-      name: "dduummyy",
-      type: "struct"
+      timescale: this.timescale
     };
     return this.data;
   }

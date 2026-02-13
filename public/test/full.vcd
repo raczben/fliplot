@@ -1,0 +1,70 @@
+$date
+	Sat Aug  7 17:27:07 2021
+$end
+$version
+	Synopsys VCS version I-2014.03-2
+$end
+$timescale
+	1ps
+$end
+
+$comment This vcd file contains all type of the tricky constructions $end
+
+$var wire 1 " branch_en $end
+$scope module fetch_RISCV $end
+$var wire 1 ! clk $end
+$var wire 1 # stall $end
+$var wire 32 $ branch_pc [31:0] $end
+$var reg 32 % PC[31:0] $end
+$var real     64 *    op1  $end
+$var real     1 S3    str_var  $end
+
+$scope module g.U1 $end
+$var reg 1 w clk $end
+$var wire 1 # stall_sub $end
+$var wire 32 $ branch_pcsub[31:0] $end
+$var wire 1 a count [1] $end
+$var wire 1 b count [0] $end
+$upscope $end
+
+$upscope $end
+
+#0
+$dumpvars
+r0 *
+z!
+z"
+z#
+x#
+1#
+1a
+0b
+bzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz $
+b00000000000000000000000000000000 %
+sIDDLE S3
+0w
+$end
+#100
+r1.060997895976702e-314 *
+1b
+1w
+b00000000000000000000000000000000 $
+b00000000000000000000010001010110 $
+#200
+r1.065409610201267e-314 *
+0a
+0w
+b110 $
+#300
+sWRITE S3
+0b
+1w
+b1x0 $
+#400
+0w
+bx0 $
+#500
+sREAD S3
+1w
+bzz1 $
+#600

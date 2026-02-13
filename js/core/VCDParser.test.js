@@ -58,4 +58,20 @@ describe("VCDParser", () => {
 
     expect(data).toEqual(expectedOutput);
   });
+
+  // Test full.vcd and compare with fullvcd
+  test("parses full.vcd and matches expected output", () => {
+    const vcdPath = path.resolve(__dirname, "../../public/test/full.vcd");
+    const expectedOutputPath = path.resolve(__dirname, "../../public/test/full.json");
+    const expectedOutput = JSON.parse(fs.readFileSync(expectedOutputPath, "utf8"));
+
+    const parser = new VCDParser({
+      vcdcontent: fs.readFileSync(vcdPath, "utf8")
+    });
+    const data = parser.getData();
+    // export JSON:
+    // fs.writeFileSync("out.json", JSON.stringify(parser.getData(), null, 2));
+
+    expect(data).toEqual(expectedOutput);
+  });
 });

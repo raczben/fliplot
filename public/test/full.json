@@ -1,0 +1,403 @@
+{
+  "signals": {
+    "\"": {
+      "vcdid": "\"",
+      "references": [
+        [
+          "branch_en"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 0,
+          "bin": "z"
+        }
+      ],
+      "type": "wire",
+      "width": 1,
+      "value_type": "bin"
+    },
+    "!": {
+      "vcdid": "!",
+      "references": [
+        [
+          "fetch_RISCV",
+          "clk"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 0,
+          "bin": "z"
+        }
+      ],
+      "type": "wire",
+      "width": 1,
+      "value_type": "bin"
+    },
+    "#": {
+      "vcdid": "#",
+      "references": [
+        [
+          "fetch_RISCV",
+          "stall"
+        ],
+        [
+          "fetch_RISCV",
+          "g.U1",
+          "stall_sub"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 0,
+          "bin": "z"
+        },
+        {
+          "time": 0,
+          "bin": "x"
+        },
+        {
+          "time": 0,
+          "bin": "1"
+        }
+      ],
+      "type": "wire",
+      "width": 1,
+      "value_type": "bin"
+    },
+    "$": {
+      "vcdid": "$",
+      "references": [
+        [
+          "fetch_RISCV",
+          "branch_pc"
+        ],
+        [
+          "fetch_RISCV",
+          "g.U1",
+          "branch_pcsub"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 0,
+          "bin": "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
+        },
+        {
+          "time": 100,
+          "bin": "00000000000000000000000000000000"
+        },
+        {
+          "time": 100,
+          "bin": "00000000000000000000010001010110"
+        },
+        {
+          "time": 200,
+          "bin": "00000000000000000000000000000110"
+        },
+        {
+          "time": 300,
+          "bin": "000000000000000000000000000001x0"
+        },
+        {
+          "time": 400,
+          "bin": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx0"
+        },
+        {
+          "time": 500,
+          "bin": "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz1"
+        }
+      ],
+      "type": "wire",
+      "width": 32,
+      "value_type": "bin"
+    },
+    "%": {
+      "vcdid": "%",
+      "references": [
+        [
+          "fetch_RISCV",
+          "PC"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 0,
+          "bin": "00000000000000000000000000000000"
+        }
+      ],
+      "type": "reg",
+      "width": 32,
+      "value_type": "bin"
+    },
+    "*": {
+      "vcdid": "*",
+      "references": [
+        [
+          "fetch_RISCV",
+          "op1"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 0,
+          "bin": 0
+        },
+        {
+          "time": 100,
+          "bin": 1.060997896e-314
+        },
+        {
+          "time": 200,
+          "bin": 1.06540961e-314
+        }
+      ],
+      "type": "real",
+      "width": 64,
+      "value_type": "real"
+    },
+    "S3": {
+      "vcdid": "S3",
+      "references": [
+        [
+          "fetch_RISCV",
+          "str_var"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 0,
+          "bin": "IDDLE"
+        },
+        {
+          "time": 300,
+          "bin": "WRITE"
+        },
+        {
+          "time": 500,
+          "bin": "READ"
+        }
+      ],
+      "type": "real",
+      "width": 1,
+      "value_type": "string"
+    },
+    "w": {
+      "vcdid": "w",
+      "references": [
+        [
+          "fetch_RISCV",
+          "g.U1",
+          "clk"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 0,
+          "bin": "0"
+        },
+        {
+          "time": 100,
+          "bin": "1"
+        },
+        {
+          "time": 200,
+          "bin": "0"
+        },
+        {
+          "time": 300,
+          "bin": "1"
+        },
+        {
+          "time": 400,
+          "bin": "0"
+        },
+        {
+          "time": 500,
+          "bin": "1"
+        }
+      ],
+      "type": "reg",
+      "width": 1,
+      "value_type": "bin"
+    },
+    "a": {
+      "vcdid": "a",
+      "references": [
+        [
+          "fetch_RISCV",
+          "g.U1",
+          "count[1]"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 0,
+          "bin": "1"
+        },
+        {
+          "time": 200,
+          "bin": "0"
+        }
+      ],
+      "type": "wire",
+      "width": 1,
+      "value_type": "bin"
+    },
+    "b": {
+      "vcdid": "b",
+      "references": [
+        [
+          "fetch_RISCV",
+          "g.U1",
+          "count[0]"
+        ]
+      ],
+      "wave": [
+        {
+          "time": 0,
+          "bin": "0"
+        },
+        {
+          "time": 100,
+          "bin": "1"
+        },
+        {
+          "time": 300,
+          "bin": "0"
+        }
+      ],
+      "type": "wire",
+      "width": 1,
+      "value_type": "bin"
+    }
+  },
+  "variables": [
+    {
+      "vcdid": "\"",
+      "name": "branch_en",
+      "hierarchy": [],
+      "type": "wire",
+      "width": 1,
+      "dimension": null
+    },
+    {
+      "vcdid": "!",
+      "name": "clk",
+      "hierarchy": [
+        "fetch_RISCV"
+      ],
+      "type": "wire",
+      "width": 1,
+      "dimension": null
+    },
+    {
+      "vcdid": "#",
+      "name": "stall",
+      "hierarchy": [
+        "fetch_RISCV"
+      ],
+      "type": "wire",
+      "width": 1,
+      "dimension": null
+    },
+    {
+      "vcdid": "$",
+      "name": "branch_pc",
+      "hierarchy": [
+        "fetch_RISCV"
+      ],
+      "type": "wire",
+      "width": 32,
+      "dimension": "[31:0]"
+    },
+    {
+      "vcdid": "%",
+      "name": "PC",
+      "hierarchy": [
+        "fetch_RISCV"
+      ],
+      "type": "reg",
+      "width": 32,
+      "dimension": "[31:0]"
+    },
+    {
+      "vcdid": "*",
+      "name": "op1",
+      "hierarchy": [
+        "fetch_RISCV"
+      ],
+      "type": "real",
+      "width": 64,
+      "dimension": null
+    },
+    {
+      "vcdid": "S3",
+      "name": "str_var",
+      "hierarchy": [
+        "fetch_RISCV"
+      ],
+      "type": "real",
+      "width": 1,
+      "dimension": null
+    },
+    {
+      "vcdid": "w",
+      "name": "clk",
+      "hierarchy": [
+        "fetch_RISCV",
+        "g.U1"
+      ],
+      "type": "reg",
+      "width": 1,
+      "dimension": null
+    },
+    {
+      "vcdid": "#",
+      "name": "stall_sub",
+      "hierarchy": [
+        "fetch_RISCV",
+        "g.U1"
+      ],
+      "type": "wire",
+      "width": 1,
+      "dimension": null
+    },
+    {
+      "vcdid": "$",
+      "name": "branch_pcsub",
+      "hierarchy": [
+        "fetch_RISCV",
+        "g.U1"
+      ],
+      "type": "wire",
+      "width": 32,
+      "dimension": "[31:0]"
+    },
+    {
+      "vcdid": "a",
+      "name": "count[1]",
+      "hierarchy": [
+        "fetch_RISCV",
+        "g.U1"
+      ],
+      "type": "wire",
+      "width": 1,
+      "dimension": null
+    },
+    {
+      "vcdid": "b",
+      "name": "count[0]",
+      "hierarchy": [
+        "fetch_RISCV",
+        "g.U1"
+      ],
+      "type": "wire",
+      "width": 1,
+      "dimension": null
+    }
+  ],
+  "now": 600,
+  "timescale": "1ns"
+}
