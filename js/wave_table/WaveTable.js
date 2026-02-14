@@ -270,7 +270,7 @@ export class WaveTable {
     parent = this.tree.get(parent); // validate parent
     const rowItem = new WaveformRow(obj, parent, position, [], false);
 
-    if (busAsBus && rowItem.waveStyle == WaveformRow.WaveStyle.BUS) {
+    if (busAsBus && obj.signal.hasSubBits) {
       // If the signal is a bus, insert all sub-signals
       // in reversed: little-endian order.
       for (var i = obj.signal.width - 1; i > -1; i--) {

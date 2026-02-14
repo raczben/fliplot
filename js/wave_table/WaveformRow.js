@@ -61,13 +61,14 @@ export class WaveformRow extends Node {
     let wstyle = "";
     if (this.wfrType == WaveformRow.WFRType.GROUP) {
       wstyle = WaveformRow.WaveStyle.BLANK;
+    } else if (this.simObj.signal.sigType == "real") {
+      wstyle = WaveformRow.WaveStyle.BUS;
+    } else if (this.isBitSignal()) {
+      wstyle = WaveformRow.WaveStyle.BIT;
     } else {
-      if (this.isBitSignal()) {
-        wstyle = WaveformRow.WaveStyle.BIT;
-      } else {
-        wstyle = WaveformRow.WaveStyle.BUS;
-      }
+      wstyle = WaveformRow.WaveStyle.BUS;
     }
+
     this.yAxisRange = [0, 1];
     this.setWaveStyle(wstyle);
     this.setRadix();
@@ -78,7 +79,7 @@ export class WaveformRow extends Node {
    * @returns {boolean}
    */
   isBitSignal() {
-    return this.wfrType == WaveformRow.WFRType.SIGNAL && this.simObj.signal.width == 1;
+    return this.simObj.signal.hasSubBits == false;
   }
 
   /**
@@ -149,6 +150,11 @@ export class WaveformRow extends Node {
     if (this.wfrType == WaveformRow.WFRType.GROUP) {
       this.radix = "group";
       this.radixPrefix = "group";
+      return;
+    }
+    if (this.simObj.signal.sigType == "real") {
+      this.radix = "float";
+      this.radixPrefix = "";
       return;
     }
     if (this.isBitSignal()) {

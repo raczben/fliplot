@@ -137,10 +137,10 @@ export class SimDB {
     const retSig = new Signal({
       references: "Virtual Bus, see bits...",
       vcdid: "Virtual Bus, see bits...",
-      sigType: "virtual-bus",
+      type: "wire",
       wave: [],
       width: nOfBits,
-      bit_references: simObjects.map((so) => so[0])
+      bit_references: simObjects
     });
     // clone all the wave item bits into a new virtual bus signal
     // the postition of the bits corewsponds to the position in the simObject array

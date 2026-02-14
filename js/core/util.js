@@ -19,9 +19,28 @@ function Bin2Dec(n) {
   if (!checkBin(n)) return NaN;
   return parseInt(n, 2).toString(10);
 }
+
+/**
+ *
+ * @param {string} n
+ * @returns
+ */
 function Bin2Hex(n) {
-  if (!checkBin(n)) return "x";
-  return parseInt(n, 2).toString(16);
+  if (!checkBin(n)) {
+    n = n.toLowerCase();
+    if (n.includes("x")) {
+      return "x";
+    } else if (n.includes("u")) {
+      return "u";
+    } else if (n.includes("z")) {
+      return "z";
+    } else {
+      console.warn(`unknown bin: ${n}`);
+      return "x";
+    }
+  } else {
+    return parseInt(n, 2).toString(16);
+  }
 }
 
 //Hexadecimal Operations
@@ -183,6 +202,8 @@ export function ceiln(x, n) {
 export function truncateTextToWidth(ctx, str, maxWidth) {
   if (maxWidth < 5) {
     return "";
+  } else if (maxWidth < 20) {
+    return "…";
   }
   var width = ctx.measureText(str).width;
   var ellipsis = "…";

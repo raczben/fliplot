@@ -317,65 +317,70 @@ export class WaveCanvas {
     // Example: render each row in waveTable.rows
     const rowsToPlot = this.waveTable.getRows({ hidden: false, content: true });
     rowsToPlot.forEach((row, rowIdx) => {
-      const waveStyle = row.waveStyle;
-      const rowHeight = row.getHeight();
+      try {
+        const waveStyle = row.waveStyle;
+        const rowHeight = row.getHeight();
 
-      // // Skip rows that are not in the visible range
-      if (yBase + rowHeight < visibleRangeY.top || yBase > visibleRangeY.bottom) {
+        // // Skip rows that are not in the visible range
+        if (yBase + rowHeight < visibleRangeY.top || yBase > visibleRangeY.bottom) {
+          yBase = yBase + row.getHeight();
+          return;
+        }
+
+        const selected = this.waveTable.isSelected(row.id);
+        // draw light gray background for the selected signals:
+        if (selected) {
+          ctx.fillStyle = "rgba(200, 200, 200, 0.19)";
+          ctx.fillRect(0, yBase - this.scrollTop, this.canvas.width, rowHeight);
+        }
+
+        if (waveStyle === WaveformRow.WaveStyle.BIT) {
+          // Draw bit wave as rectangles
+          this.drawBitSignal(
+            this.wglu,
+            row,
+            yBase - this.scrollTop,
+            this.scrollLeft,
+            this.timeScale,
+            selected,
+            2
+          );
+        } else if (waveStyle === WaveformRow.WaveStyle.BUS) {
+          this.drawBusSignal(
+            ctx,
+            this.wglu,
+            row,
+            yBase - this.scrollTop,
+            this.scrollLeft,
+            this.timeScale,
+            selected,
+            2
+          );
+        } else if (waveStyle === WaveformRow.WaveStyle.ANALOG) {
+          this.drawAnalogSignal(
+            ctx,
+            this.wglu,
+            row,
+            yBase - this.scrollTop,
+            this.scrollLeft,
+            this.timeScale,
+            selected,
+            2
+          );
+        } else if (waveStyle === WaveformRow.WaveStyle.BLANK) {
+          // Do nothing for blank wave style
+        } else {
+          // Unsupported style
+          ctx.fillStyle = "rgba(150,70,60,0.5)";
+          ctx.fillRect(0, yBase, this.canvas.width, rowHeight);
+          ctx.fillStyle = "#fff";
+          ctx.fillText(`Unsupported: ${waveStyle}`, 10, yBase + rowHeight / 2);
+        }
         yBase = yBase + row.getHeight();
-        return;
+      } catch (e) {
+        console.error("Error rendering row:", row, e);
+        throw e;
       }
-
-      const selected = this.waveTable.isSelected(row.id);
-      // draw light gray background for the selected signals:
-      if (selected) {
-        ctx.fillStyle = "rgba(200, 200, 200, 0.19)";
-        ctx.fillRect(0, yBase - this.scrollTop, this.canvas.width, rowHeight);
-      }
-
-      if (waveStyle === WaveformRow.WaveStyle.BIT) {
-        // Draw bit wave as rectangles
-        this.drawBitSignal(
-          this.wglu,
-          row,
-          yBase - this.scrollTop,
-          this.scrollLeft,
-          this.timeScale,
-          selected,
-          2
-        );
-      } else if (waveStyle === WaveformRow.WaveStyle.BUS) {
-        this.drawBusSignal(
-          ctx,
-          this.wglu,
-          row,
-          yBase - this.scrollTop,
-          this.scrollLeft,
-          this.timeScale,
-          selected,
-          2
-        );
-      } else if (waveStyle === WaveformRow.WaveStyle.ANALOG) {
-        this.drawAnalogSignal(
-          ctx,
-          this.wglu,
-          row,
-          yBase - this.scrollTop,
-          this.scrollLeft,
-          this.timeScale,
-          selected,
-          2
-        );
-      } else if (waveStyle === WaveformRow.WaveStyle.BLANK) {
-        // Do nothing for blank wave style
-      } else {
-        // Unsupported style
-        ctx.fillStyle = "rgba(150,70,60,0.5)";
-        ctx.fillRect(0, yBase, this.canvas.width, rowHeight);
-        ctx.fillStyle = "#fff";
-        ctx.fillText(`Unsupported: ${waveStyle}`, 10, yBase + rowHeight / 2);
-      }
-      yBase = yBase + row.getHeight();
     });
     this.drawCursor(ctx, this.cursorTime, this.scrollLeft, this.timeScale);
     this.drawAxis(ctx, this.scrollLeft, this.timeScale);
@@ -481,7 +486,14 @@ export class WaveCanvas {
     const zero = valueScale(0) + yOffset;
 
     let wiPrev = null;
-    for (let wi of signal.waveIterator(timeRange[0], timeRange[1], timeScale, simDB.now)) {
+    for (let wi of signal.waveIterator(
+      timeRange[0],
+      timeRange[1],
+      timeScale,
+      simDB.now,
+      false, // initialX
+      row.radix
+    )) {
       // trasform to pixel coordinates
 
       if (wiPrev == null) {

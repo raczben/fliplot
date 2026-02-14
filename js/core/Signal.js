@@ -31,15 +31,32 @@ export class Signal {
     this.references = sig.references;
     /** @type {string} */
     this.vcdid = sig.vcdid;
+    /** @type {string} Can be: wire, reg, real, etc*/
+    this.sigType = sig.type;
+    /** @type {string} Can be: bin, real, string*/
+    this.valueType = sig.value_type;
 
-    /** @type {string} */
-    this.sigType = sig.sigType;
     /** @type {valueChange_t[]} */
     this.wave = sig.wave;
     /** @type {number} */
     this.width = sig.width;
+
+    if (this.sigType == "real") {
+      this.hasSubBits = false;
+    } else if (sig.dimension) {
+      this.hasSubBits = true;
+    } else if (sig.width > 1) {
+      this.hasSubBits = true;
+    } else {
+      this.hasSubBits = false;
+    }
+
+    /** @type {[[string]]} */
+    this.references = sig.references;
+
     /** type {[string]} */
-    this.bit_references = null;
+    this.bit_references = sig.bit_references;
+
     if (sig.sigType != "bit") {
       if (sig.references != undefined) {
         this.bit_references = sig.references;
@@ -75,7 +92,7 @@ export class Signal {
     const ret = new Signal({
       references: this.references.concat([`[${from}:${to}]`]),
       vcdid: `${this.vcdid}-cloned[${from}:${to}]`,
-      sigType: retType,
+      type: retType,
       wave: [],
       width: nOfBits
     });
@@ -138,6 +155,9 @@ export class Signal {
     // Search segments to be compress at `timeScale`
     const compressionInterval = this.zcmpPixels / timeScale;
 
+    // The value type.
+    const value_type = this.valueType;
+
     // Find indices in wave that are within the visible time range
     // getChangeIndexAt returns -1 if the time is before the first change.
     // in this case we start plot at the first change.
@@ -164,7 +184,16 @@ export class Signal {
       } else {
         // return a simple copy of the wave item
         if (wi[radix] === undefined) {
-          wi[radix] = bin2radix(wi.bin, radix);
+          if (value_type == "bin") {
+            wi[radix] = bin2radix(wi.bin, radix);
+          } else if (value_type == "real") {
+            wi[radix] = `${wi.bin}`;
+          } else if (value_type == "string") {
+            wi[radix] = wi.bin;
+          } else {
+            console.error(`Unsupported value type ${value_type} for signal ${this.references[0]}`);
+            throw `Unsupported value type ${value_type} for signal ${this.references[0]}`;
+          }
         }
         const y = { time: wi.time, index: i, val: wi[radix] };
         yield y;
@@ -230,8 +259,18 @@ export class Signal {
       throw "idx is too great";
     }
 
+    const value_type = this.valueType;
     if (this.wave[i][radix] === undefined) {
-      this.wave[i][radix] = bin2radix(this.wave[i].bin, radix);
+      if (value_type == "bin") {
+        this.wave[i][radix] = bin2radix(this.wave[i].bin, radix);
+      } else if (value_type == "real") {
+        this.wave[i][radix] = `${this.wave[i].bin}`;
+      } else if (value_type == "string") {
+        this.wave[i][radix] = this.wave[i].bin;
+      } else {
+        console.error(`Unsupported value type ${value_type} for signal ${this.references[0]}`);
+        throw `Unsupported value type ${value_type} for signal ${this.references[0]}`;
+      }
     }
     return this.wave[i][radix];
   }

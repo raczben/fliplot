@@ -123,7 +123,6 @@ export class WebGL2UtilTR {
    * @param {number} y The vertical position of the target coordinate
    * @param {number} lineWidth
    * @param {[number]} color RGBA value array of the line color
-   * @param {boolean} beginNew If true, begins a new line at the given point
    * @returns
    */
   line_to(x, y, lineWidth, color) {
