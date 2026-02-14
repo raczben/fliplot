@@ -31,14 +31,16 @@ describe("SimulationObject", () => {
     vcdid: "v1",
     type: "wire",
     wave: bit_wave,
-    width: 1
+    width: 1,
+    value_type: "bin"
   };
   const busSignal = {
     references: ["databus"],
     vcdid: "b",
     type: "wire",
     wave: bus_wave,
-    width: 16
+    width: 16,
+    value_type: "bin"
   };
 
   let bitSimObj, busSimObj;

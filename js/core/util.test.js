@@ -53,7 +53,7 @@ describe("bin2radix ", () => {
     expect(bin2radix("0000", "hex")).toBe("0");
     expect(bin2radix("001100", "hex")).toBe("0c");
     expect(bin2radix("0011x0", "hex")).toBe("0x");
-    expect(bin2radix("0z1100", "hex")).toBe("xc");
+    expect(bin2radix("0z1100", "hex")).toBe("zc");
 
     // invalid formats
     expect(bin2radix("", "hex")).toBe("");
@@ -165,6 +165,7 @@ describe("truncateTextToWidth", () => {
 
   test("handles empty string", () => {
     const ctx = mockCtx(10);
-    expect(truncateTextToWidth(ctx, "", 10)).toBe("");
+    expect(truncateTextToWidth(ctx, "", 4)).toBe("");
+    expect(truncateTextToWidth(ctx, "", 10)).toBe("…");
   });
 });

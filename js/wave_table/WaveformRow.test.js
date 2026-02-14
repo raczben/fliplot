@@ -3,7 +3,7 @@ const { WaveformRow } = require("./WaveformRow.js");
 // Mock SimulationObject
 class MockSimObj {
   constructor(width = 1) {
-    this.signal = { width };
+    this.signal = { width, hasSubBits: width > 1, sigType: "wire" };
     this.hierarchy = ["top", "sig"];
     this.getChangeIndexAt = jest.fn((time) => time);
     this.getValueAt = jest.fn((time, radix, def) => `val_${time}_${radix}`);
