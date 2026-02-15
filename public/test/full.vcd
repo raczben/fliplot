@@ -20,11 +20,11 @@ $var real     64 *    op1  $end
 $var real     1 S3    str_var  $end
 
 $scope module g.U1 $end
-$var reg 1 w clk $end
-$var wire 1 # stall_sub $end
-$var wire 32 $ branch_pcsub[31:0] $end
-$var wire 1 a count [1] $end
-$var wire 1 b count [0] $end
+  $var reg 1 w clk $end
+  $var wire 1 # stall_sub $end
+  $var wire 32 $ branch_pcsub[31:0] $end
+  $var wire 1 a count [1] $end
+  $var wire 1 b count [0] $end
 $upscope $end
 
 $upscope $end

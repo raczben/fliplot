@@ -138,6 +138,7 @@ export class SimDB {
       references: "Virtual Bus, see bits...",
       vcdid: "Virtual Bus, see bits...",
       type: "wire",
+      value_type: "bin",
       wave: [],
       width: nOfBits,
       bit_references: simObjects

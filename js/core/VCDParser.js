@@ -264,7 +264,7 @@ export class VCDParser {
             line = line.slice(1);
             if (formatChar == "r") {
               // real value change: e.g. r3.14 !
-              [_full, value, id] = line.match(/^([\d.eE+-]+)\s+(\S+)/) || [];
+              [_full, value, id] = line.match(/^([\d.eE+-]+)\s+(\S+)/);
               value = parseFloat(value);
               if (value == 0) {
                 value = 0.0; // to avoid -0
@@ -272,16 +272,16 @@ export class VCDParser {
               value_type = "real";
             } else if (formatChar == "b") {
               // Vector value change: e.g. b1010 !
-              [_full, value, id] = line.match(/^([01xXzZuU-]+)\s+(\S+)/) || [];
+              [_full, value, id] = line.match(/^([01xXzZuU-]+)\s+(\S+)/);
               value_type = "bin";
             } else if (formatChar == "h") {
               // Hex value change: e.g. h12345678 !
-              [_full, value, id] = line.match(/^([\w]+)\s+(\S+)/) || [];
+              [_full, value, id] = line.match(/^([\w]+)\s+(\S+)/);
               value = _hexToBin(value); // convert hex to binary string
               value_type = "bin"; // treat as binary
             } else if (formatChar == "s") {
               // String value change: e.g. s"hello" ! MyHDL uses s for string values
-              [_full, value, id] = line.match(/^([^\s]+)\s+(\S+)/) || [];
+              [_full, value, id] = line.match(/^([^\s]+)\s+(\S+)/);
               value_type = "string";
             } else {
               console.error(

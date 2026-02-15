@@ -110,7 +110,9 @@ export class WaveTable {
     this.moveCursorTo(time);
 
     const row = this.getRowfromY(event.clientY);
-    this.rowClicked(row.id, event.shiftKey, event.ctrlKey);
+    if (row) {
+      this.rowClicked(row.id, event.shiftKey, event.ctrlKey);
+    }
   }
 
   /**
@@ -134,7 +136,7 @@ export class WaveTable {
         return row;
       }
     }
-    console.error(`getRowfromY: no row found. y=${y}`);
+    console.log(`getRowfromY: it was clicked below all rows. y=${y}`);
     return null;
   }
 

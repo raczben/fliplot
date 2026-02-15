@@ -216,7 +216,7 @@ export class Signal {
 
         const y = {
           time: wi.time,
-          index: i,
+          index: i - zcmpIdx,
           val: muv,
           minval: min,
           maxval: max,
