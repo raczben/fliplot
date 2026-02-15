@@ -93,10 +93,38 @@ export function initContextMenu() {
       radix: {
         name: "Radix",
         items: {
-          "radix-bin": { name: "bin" },
-          "radix-hex": { name: "hex" },
-          "radix-signed": { name: "signed" },
-          "radix-unsigned": { name: "unsigned" },
+          "radix-bin": {
+            name: "bin",
+            disabled: function () {
+              /** @type {WaveformRow} */
+              const row = window.waveTable.getActiveRow(false);
+              return !(row && row.simObj && ["reg", "wire"].includes(row.simObj.signal.sigType));
+            }
+          },
+          "radix-hex": {
+            name: "hex",
+            disabled: function () {
+              /** @type {WaveformRow} */
+              const row = window.waveTable.getActiveRow(false);
+              return !(row && row.simObj && ["reg", "wire"].includes(row.simObj.signal.sigType));
+            }
+          },
+          "radix-signed": {
+            name: "signed",
+            disabled: function () {
+              /** @type {WaveformRow} */
+              const row = window.waveTable.getActiveRow(false);
+              return !(row && row.simObj && ["reg", "wire"].includes(row.simObj.signal.sigType));
+            }
+          },
+          "radix-unsigned": {
+            name: "unsigned",
+            disabled: function () {
+              /** @type {WaveformRow} */
+              const row = window.waveTable.getActiveRow(false);
+              return !(row && row.simObj && ["reg", "wire"].includes(row.simObj.signal.sigType));
+            }
+          },
           // Add floating point option conditionally:
           // only a 32 bit signal can be set to float
           "radix-float": {

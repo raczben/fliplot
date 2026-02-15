@@ -8,20 +8,28 @@ import { binarySearch, bin2radix } from "./util.js";
  * @property {number} time Simulation time, in the unit defined by simulation timePrecision.
  * @property {string} bin The raw value in binary form. Each character represents a bit in the
  *      bit vector. All other (optional) value formats are derived from this.
- * @property {string} [hex] A value derived from the raw bin. Optional: calculated only when the user
+ * @property {string} hex A value derived from the raw bin. Optional: calculated only when the user
  *      wants to see hex values. Each hex digit will be X or Z if there is an X or Z bit value in
  *      its region.
- * @property {number} [u30] Fixed-point floating-point number. The first character (s/u) denotes signed or unsigned
+ * @property {number} u30 Fixed-point floating-point number. The first character (s/u) denotes signed or unsigned
  *      format. The number indicates how many bits represent the fractional value (the number of bits below the
  *      decimal point). For example, u0 means that the whole bit vector represents a fixed-point
  *      unsigned integer. Note that the full word length is defined at the signal level. This is derived,
  *      and optional as above. If any X or Z is present in the raw binary format, this value
  *      will be NaN.
- * @property {number} [float] Single-precision floating-point number. Derived and optional as above.
- * @property {number} [double] Double-precision floating-point number. Derived and optional as above.
+ * @property {number} float Single-precision floating-point number. Derived and optional as above.
+ * @property {number} double Double-precision floating-point number. Derived and optional as above.
+ * @property {Signal.WITYPE} wiType The type of this wave item.
+ *
  */
 
 export class Signal {
+  static WITYPE = Object.freeze({
+    NATIVE: "n",
+    ZOOM_COMPRESSION: "zcmp",
+    PHANTOM_NOW: "phantom-now"
+  });
+
   /**
    *
    * @param {Signal} sig
@@ -168,7 +176,12 @@ export class Signal {
     if (initialX) {
       if (waveArr.length == 0 || t0 < waveArr[startIdx].time) {
         // If the first value is not at time zero, prepend a phantom value at time zero.
-        yield { time: 0, val: bin2radix("x".repeat(this.width), radix), index: -1 };
+        yield {
+          time: 0,
+          val: bin2radix("x".repeat(this.width), radix),
+          index: -1,
+          wiType: Signal.WITYPE.NATIVE
+        };
       }
     }
     for (let i = startIdx; i < endIdx; i++) {
@@ -178,7 +191,7 @@ export class Signal {
       const zcmpIdx = this.getChangeIndexAt(compressionInterval + wi.time);
       if (zcmpIdx > i + this.zcmpChanges) {
         // do the compression
-        const y = { time: wi.time, index: i, val: "/zcmp-123" };
+        const y = { time: wi.time, index: i, val: "123", wiType: Signal.WITYPE.ZOOM_COMPRESSION };
         i = zcmpIdx - 1; // skip the following wave items. step the index
         yield y;
       } else {
@@ -195,7 +208,7 @@ export class Signal {
             throw `Unsupported value type ${value_type} for signal ${this.references[0]}`;
           }
         }
-        const y = { time: wi.time, index: i, val: wi[radix] };
+        const y = { time: wi.time, index: i, val: wi[radix], wiType: Signal.WITYPE.NATIVE };
         yield y;
       }
     }
@@ -204,7 +217,8 @@ export class Signal {
       if (waveArr.length >= endIdx || t1 > waveArr[endIdx - 1].time) {
         // if the requested time is over the last value change, add a phantom value at the end
         // (the values started by '/' charater are internal simbols)
-        yield { time: now, val: "/phantom-now", index: endIdx };
+        const val = this.getValueAt(now, radix);
+        yield { time: now, val: val, index: endIdx, wiType: Signal.WITYPE.PHANTOM_NOW };
       }
     }
   }

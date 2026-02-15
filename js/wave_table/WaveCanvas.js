@@ -4,6 +4,7 @@ import { ceiln, isInt, truncateTextToWidth } from "../core/util.js";
 import { WaveTable } from "./WaveTable.js";
 import { WebGL2UtilTR } from "./WebGL2UtilTR.js";
 import { WaveformRow } from "./WaveformRow.js";
+import { Signal } from "../core/Signal.js";
 
 /**
  * Simple utility functio to help rendering bit signals.
@@ -34,12 +35,6 @@ function value2ColorWGL(bin, selected) {
   } else if (Number.isFinite(bin)) {
     // handle numbers: (which was parsed already)
     bin = "1";
-  }
-
-  // Handle the internal codes like zoomcompression
-  const internalCode = bin.split("-");
-  if (internalCode[0] === "/zcmp") {
-    bin = internalCode[1];
   }
 
   // Handle the normal string represented binary values
@@ -426,37 +421,33 @@ export class WaveCanvas {
 
       // trasform to pixel coordinates
       const t0 = wiPrev.time;
-      const v0 = wiPrev.val;
-      const y0r = valueScale(parseIntDef(v0));
+      const y0r = valueScale(parseIntDef(wiPrev.val));
       const y0abbs = y0r + yOffset;
       const x0 = t0 * timeScale - xOffset;
 
-      wiPrev = wi;
+      let { line_color, shadow_color } = value2ColorWGL(wiPrev.val, selected);
 
-      let { line_color, shadow_color } = value2ColorWGL(v0, selected);
-
-      const internalCode = v0.split("-");
-      if (internalCode[0] === "/zcmp") {
+      if (wiPrev.wiType === Signal.WITYPE.ZOOM_COMPRESSION) {
         // handle zoom compression
-        // bin = internalCode[1];
         wglu.add_rect(x0, zero + lineWidth / 2, x1, one - lineWidth / 2, line_color);
-        continue;
-      }
+        wglu.line_to(x1, y1abbs, lineWidth, [0.0, 0.0, 0.0, 0.0]);
+      } else {
+        if (x1 - x0 > 10) {
+          // --- Rectangle (transRect) ---
+          const rectHeight = valueScale(1 - parseIntDef(wiPrev.val)) - bitWavePadding;
+          // if frequiency is too high (zooming out is too much) do not draw the rectangle:
+          wglu.add_rect(x0, y0abbs, x1, y0abbs + rectHeight, shadow_color);
+        }
 
-      // --- Rectangle (transRect) ---
-      const rectHeight = valueScale(1 - parseIntDef(v0)) - bitWavePadding;
-      if (x1 - x0 > 10) {
-        // if frequiency is too high (zooming out is too much) do not draw the rectangle:
-        wglu.add_rect(x0, y0abbs, x1, y0abbs + rectHeight, shadow_color);
-      }
+        // --- Horizontal line (timeholder) ---
+        wglu.line_to(x1, y0abbs, lineWidth, line_color);
 
-      // --- Horizontal line (timeholder) ---
-      wglu.line_to(x1, y0abbs, lineWidth, line_color);
-
-      // --- Vertical line (valuechanger) ---
-      if (v1 !== "/phantom-now") {
-        wglu.line_to(x1, y1abbs, lineWidth, line_color);
+        // --- Vertical line (valuechanger) ---
+        if (wi.wiType === Signal.WITYPE.NATIVE) {
+          wglu.line_to(x1, y1abbs, lineWidth, line_color);
+        }
       }
+      wiPrev = wi;
     }
     wglu.end_line();
   }
@@ -515,10 +506,8 @@ export class WaveCanvas {
 
       let { line_color, _ } = value2ColorWGL(v0, selected);
 
-      const internalCode = v0.split("-");
-      if (internalCode[0] === "/zcmp") {
+      if (wiPrev.wiType === Signal.WITYPE.ZOOM_COMPRESSION) {
         // handle zoom compression
-        // bin = internalCode[1];
         wglu.add_rect(x0, zero + lineWidth / 2, x1, one - lineWidth / 2, line_color);
         continue;
       }
@@ -542,7 +531,7 @@ export class WaveCanvas {
       const x0satured = Math.max(x0, 0);
       const x1satured = Math.min(x1, this.canvas.width);
       const xpos = (x0satured + x1satured) / 2;
-      const txt = row.getValueAtI(wiPrev.index);
+      const txt = row.radixPrefix + wiPrev.val;
       let truncedStr = truncateTextToWidth(ctx, txt, x1satured - x0satured - 4);
       ctx.fillText(truncedStr, xpos, zero - 1);
       wiPrev = wi;
@@ -575,17 +564,14 @@ export class WaveCanvas {
       row.getYAxisRange(), // domain
       [absTop, absBottom] // range
     );
-    // const timeScalify = linearScale(
-    //   row.getYAxisRange(), // domain
-    //   [absTop, absBottom] // range
-    // );
+
     let firstIteration = true;
     for (let wi of signal.waveIterator(
       timeRange[0],
       timeRange[1],
-      Infinity,
-      -1,
-      false,
+      Infinity, // timeScale
+      -1, // now
+      false, // initialX
       row.radix
     )) {
       const t1 = wi.time;
@@ -596,6 +582,13 @@ export class WaveCanvas {
       let x1 = t1 * timeScale - xOffset;
 
       let { line_color, _ } = value2ColorWGL(v1, selected);
+
+      if (wi.wiType === Signal.WITYPE.ZOOM_COMPRESSION) {
+        // handle zoom compression
+        // wglu.add_rect(x0, zero + lineWidth / 2, x1, one - lineWidth / 2, line_color);
+        console.log("ANALOG ZOOM_COMPRESSION");
+        continue;
+      }
 
       if (firstIteration) {
         wglu.begin_line(x1, y1);
