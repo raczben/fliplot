@@ -278,7 +278,6 @@ export class VCDParser {
               // Hex value change: e.g. h12345678 !
               [_full, value, id] = line.match(/^([\w]+)\s+(\S+)/) || [];
               value = _hexToBin(value); // convert hex to binary string
-              formatChar = "b"; // treat as binary for padding
               value_type = "bin"; // treat as binary
             } else if (formatChar == "s") {
               // String value change: e.g. s"hello" ! MyHDL uses s for string values

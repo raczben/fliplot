@@ -1,4 +1,5 @@
-import { binarySearch, bin2radix } from "./util.js";
+import { Config } from "./Config.js";
+import { binarySearch, bin2radix, mostUndefined } from "./util.js";
 
 /**
  * The value change type composes the wave list of the signal. Each element describes a value change in
@@ -157,8 +158,8 @@ export class Signal {
     radix = "bin",
     padding = [0, 1]
   ) {
-    this.zcmpChanges = 8;
-    this.zcmpPixels = 8;
+    this.zcmpChanges = Config.zcmpChanges;
+    this.zcmpPixels = Config.zcmpPixels;
 
     // Search segments to be compress at `timeScale`
     const compressionInterval = this.zcmpPixels / timeScale;
@@ -188,11 +189,44 @@ export class Signal {
       const wi = waveArr[i];
 
       // zoom compression
-      const zcmpIdx = this.getChangeIndexAt(compressionInterval + wi.time);
+      const zcmpIdx = this.getChangeIndexAt(wi.time + compressionInterval);
       if (zcmpIdx > i + this.zcmpChanges) {
-        // do the compression
-        const y = { time: wi.time, index: i, val: "123", wiType: Signal.WITYPE.ZOOM_COMPRESSION };
-        i = zcmpIdx - 1; // skip the following wave items. step the index
+        // do the zoom compression
+
+        // searching for min/max and most undefined value:
+        let min = Infinity;
+        let max = -Infinity;
+        let mintime = NaN;
+        let maxtime = NaN;
+        let muv = "0";
+        for (; i < zcmpIdx; i++) {
+          const v = this.getValueAtI(i, radix);
+          if (typeof v === "number") {
+            if (v < min) {
+              min = v;
+              mintime = this.getTimeAtI(i);
+            }
+            if (v > max) {
+              max = v;
+              maxtime = this.getTimeAtI(i);
+            }
+          }
+          muv = mostUndefined(v, muv);
+        }
+
+        const y = {
+          time: wi.time,
+          index: i,
+          val: muv,
+          minval: min,
+          maxval: max,
+          mintime: mintime,
+          maxtime: maxtime,
+          wiType: Signal.WITYPE.ZOOM_COMPRESSION
+        };
+
+        // skip the following wave items. step the index: (-1 is because the for loop will step +1)
+        i = zcmpIdx - 1;
         yield y;
       } else {
         // return a simple copy of the wave item

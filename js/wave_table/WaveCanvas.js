@@ -1,6 +1,6 @@
 import { simDB } from "../interact.js";
 import { Config } from "../core/Config.js";
-import { ceiln, isInt, truncateTextToWidth } from "../core/util.js";
+import { ceiln, isInt, mostUndefined, truncateTextToWidth } from "../core/util.js";
 import { WaveTable } from "./WaveTable.js";
 import { WebGL2UtilTR } from "./WebGL2UtilTR.js";
 import { WaveformRow } from "./WaveformRow.js";
@@ -28,21 +28,17 @@ function parseIntDef(intToPare, def = 0.5) {
  * @returns
  */
 function value2ColorWGL(bin, selected) {
-  var color;
-  if (bin === null || bin === undefined || Number.isNaN(bin)) {
-    // handle invalid inputs
-    bin = "x";
-  } else if (Number.isFinite(bin)) {
-    // handle numbers: (which was parsed already)
-    bin = "1";
+  const colorMap = {
+    0: [0.0, 1.0, 0.0, 1.0], //"#00FF00";
+    x: [1.0, 0.0, 0.0, 1.0], // "#FF0000";
+    u: [1.0, 0.0, 0.0, 1.0], // "#FF0000";
+    z: [0.0, 0.0, 1.0, 1.0] // "#0000FF";
+  };
+  const muv = mostUndefined(bin);
+  let color = colorMap[muv];
+  if (!color) {
+    color = colorMap["x"];
   }
-
-  // Handle the normal string represented binary values
-  if (bin.toLowerCase().includes("x"))
-    color = [1.0, 0.0, 0.0, 1.0]; // "#FF0000";
-  else if (bin.toLowerCase().includes("z"))
-    color = [0.0, 0.0, 1.0, 1.0]; // "#0000FF";
-  else color = [0.0, 1.0, 0.0, 1.0]; //"#00FF00";
 
   // Do some staff for WebGL interface
   // copy array:
@@ -509,6 +505,7 @@ export class WaveCanvas {
       if (wiPrev.wiType === Signal.WITYPE.ZOOM_COMPRESSION) {
         // handle zoom compression
         wglu.add_rect(x0, zero + lineWidth / 2, x1, one - lineWidth / 2, line_color);
+        wiPrev = wi;
         continue;
       }
 
@@ -569,7 +566,7 @@ export class WaveCanvas {
     for (let wi of signal.waveIterator(
       timeRange[0],
       timeRange[1],
-      Infinity, // timeScale
+      timeScale, // timeScale
       -1, // now
       false, // initialX
       row.radix
@@ -577,19 +574,39 @@ export class WaveCanvas {
       const t1 = wi.time;
 
       // trasform to pixel coordinates
-      let v1 = wi.val;
-      let y1 = valueScalify(v1);
-      let x1 = t1 * timeScale - xOffset;
-
-      let { line_color, _ } = value2ColorWGL(v1, selected);
+      const v1 = wi.val;
+      const { line_color, _ } = value2ColorWGL(v1, selected);
 
       if (wi.wiType === Signal.WITYPE.ZOOM_COMPRESSION) {
         // handle zoom compression
-        // wglu.add_rect(x0, zero + lineWidth / 2, x1, one - lineWidth / 2, line_color);
+        let timeValuePairs = [];
+        if (wi.mintime < wi.maxtime) {
+          timeValuePairs = [
+            [wi.mintime, wi.minval],
+            [wi.maxtime, wi.maxval]
+          ];
+        } else {
+          timeValuePairs = [
+            [wi.maxtime, wi.maxval],
+            [wi.mintime, wi.minval]
+          ];
+        }
+        for (const [t, v] of timeValuePairs) {
+          const y = valueScalify(v);
+          const x = t * timeScale - xOffset;
+          if (firstIteration) {
+            wglu.begin_line(x, y);
+            firstIteration = false;
+          } else {
+            wglu.line_to(x, y, lineWidth, line_color, true);
+          }
+        }
         console.log("ANALOG ZOOM_COMPRESSION");
         continue;
       }
 
+      const y1 = valueScalify(v1);
+      const x1 = t1 * timeScale - xOffset;
       if (firstIteration) {
         wglu.begin_line(x1, y1);
         firstIteration = false;
@@ -609,8 +626,8 @@ export class WaveCanvas {
    * @param {number} timeScale - Ratio: simulation time units per pixel
    */
   drawAxis(ctx, xOffset, timeScale) {
-    // Always draw the axis 15px above the bottom edge of the canvas
-    const axisY = this.canvas.height - 25;
+    // Always draw the axis 25px above the bottom edge of the canvas
+    const axisY = this.canvas.height - Config.axisHeight;
 
     // Clear the axis area
     ctx.fillStyle = "#222";

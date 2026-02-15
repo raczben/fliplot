@@ -1,4 +1,4 @@
-const { binarySearch, isInt, ceiln, bin2radix } = require("./util.js");
+const { binarySearch, isInt, ceiln, bin2radix, mostUndefined } = require("./util.js");
 const { truncateTextToWidth } = require("./util.js");
 
 describe("binarySearch", () => {
@@ -167,5 +167,40 @@ describe("truncateTextToWidth", () => {
     const ctx = mockCtx(10);
     expect(truncateTextToWidth(ctx, "", 4)).toBe("");
     expect(truncateTextToWidth(ctx, "", 10)).toBe("…");
+  });
+});
+
+describe("mostUndefined", () => {
+  test("mostUndefined", () => {
+    expect(mostUndefined("0")).toBe("0");
+    expect(mostUndefined("1")).toBe("0");
+    expect(mostUndefined("112345")).toBe("0");
+    expect(mostUndefined("x")).toBe("x");
+    expect(mostUndefined("xxxx")).toBe("x");
+    expect(mostUndefined("z")).toBe("z");
+    expect(mostUndefined("zzzz")).toBe("z");
+    expect(mostUndefined("u")).toBe("u");
+    expect(mostUndefined("uuuu")).toBe("u");
+    expect(mostUndefined("auxz1")).toBe("u");
+    expect(mostUndefined("axz1")).toBe("x");
+    expect(mostUndefined("az1")).toBe("z");
+    expect(mostUndefined("abcdef1")).toBe("0");
+
+    expect(mostUndefined("abc", "0")).toBe("0");
+    expect(mostUndefined("abc", "1")).toBe("0");
+    expect(mostUndefined("abc", "112345")).toBe("0");
+    expect(mostUndefined("abc", "x")).toBe("x");
+    expect(mostUndefined("abc", "xxxx")).toBe("x");
+    expect(mostUndefined("abc", "z")).toBe("z");
+    expect(mostUndefined("abc", "zzzz")).toBe("z");
+    expect(mostUndefined("abc", "u")).toBe("u");
+    expect(mostUndefined("abc", "uuuu")).toBe("u");
+    expect(mostUndefined("abc", "auxz1")).toBe("u");
+    expect(mostUndefined("abc", "axz1")).toBe("x");
+    expect(mostUndefined("abc", "az1")).toBe("z");
+    expect(mostUndefined("abc", "abcdef1")).toBe("0");
+
+    expect(mostUndefined(Infinity, "abcdef1")).toBe("x");
+    expect(mostUndefined("abcdef1", Infinity)).toBe("x");
   });
 });

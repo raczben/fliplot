@@ -226,3 +226,42 @@ export function truncateTextToWidth(ctx, str, maxWidth) {
 export function replaceAt(str, index, replacement) {
   return str.substring(0, index) + replacement + str.substring(index + replacement.length);
 }
+
+/**
+ * Return the most undefined value, aka. 'x', 'u', 'z', '0' of the given values.
+ * @param {number|string} val1
+ * @param {number|string} val2
+ */
+export function mostUndefined(val1, val2 = 1) {
+  if (typeof val1 === "number") {
+    if (Number.isFinite(val1)) {
+      val1 = "0";
+    } else {
+      val1 = "x";
+    }
+  }
+  if (typeof val2 === "number") {
+    if (Number.isFinite(val2)) {
+      val2 = "0";
+    } else {
+      val2 = "x";
+    }
+  }
+  if (typeof val1 === "string") {
+    if (typeof val2 !== "string") {
+      val2 = `${val2}`;
+    }
+    val1 = val1 + val2;
+    val1.toLocaleLowerCase();
+
+    // Do the sort actually:
+    const undefinedOrder = ["u", "x", "z"];
+    for (const u of undefinedOrder) {
+      if (val1.includes(u)) return u;
+    }
+    // if no undefined value found:
+    return "0";
+  } else {
+    throw "Unsupported arg type: 'typeof val1'";
+  }
+}
