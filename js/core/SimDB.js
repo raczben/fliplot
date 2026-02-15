@@ -47,7 +47,11 @@ export class SimDB {
    */
   addSignal(hierarchy, signal) {
     const associativeIndex = hierarchy.join(".") + "__S";
-    var parent = this.addModule(hierarchy.slice(0, -1));
+    const parentHier = hierarchy.slice(0, -1);
+    var parent = null;
+    if (parentHier.length > 0) {
+      parent = this.addModule(parentHier);
+    }
 
     const child = new SimulationObject(SimulationObject.SOType.SIGNAL, hierarchy, signal, parent);
     this.objects[associativeIndex] = child;

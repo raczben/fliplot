@@ -18,8 +18,8 @@ export class ObjectTree {
         var treeObj = {};
         treeObj["id"] = obj.hierarchy;
         treeObj["data"] = key;
-        if (obj.hierarchy.length > 1) {
-          treeObj["parent"] = obj.hierarchy.slice(0, -1);
+        if (obj.parent) {
+          treeObj["parent"] = obj.parent.hierarchy;
         } else {
           treeObj["parent"] = "#";
         }
