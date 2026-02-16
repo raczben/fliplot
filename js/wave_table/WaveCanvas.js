@@ -325,6 +325,9 @@ export class WaveCanvas {
           ctx.fillRect(0, yBase - this.scrollTop, this.canvas.width, rowHeight);
         }
 
+        if (!row.simObj.signal.isWaveSet) {
+          row.simObj.signal.cloneWaveFromOrigin();
+        }
         if (waveStyle === WaveformRow.WaveStyle.BIT) {
           // Draw bit wave as rectangles
           this.drawBitSignal(

@@ -50,6 +50,10 @@ export class Signal {
     /** @type {number} */
     this.width = sig.width;
 
+    this.isWaveSet = true;
+    this.dimension = sig.dimension || null;
+    this.cloneRangeBits = sig.cloneRangeBits || [];
+
     if (this.sigType == "real") {
       this.hasSubBits = false;
     } else if (sig.dimension) {
@@ -59,6 +63,9 @@ export class Signal {
     } else {
       this.hasSubBits = false;
     }
+
+    /** @type {Signal} If this signal is cloned this holds the original signal. */
+    this.cloneOrigin = sig.cloneOrigin || null;
 
     /** @type {[[string]]} */
     this.references = sig.references;
@@ -85,7 +92,7 @@ export class Signal {
    * @param {number} to The ending bit index (inclusive). Defaults to 'from' if not specified.
    * @returns {Signal} A new Signal object representing the specified bit range.
    */
-  cloneRange(from, to = -1) {
+  cloneRange(from, to = -1, lazy = true) {
     if (to < 0) {
       to = from;
     }
@@ -99,27 +106,48 @@ export class Signal {
     }
     const retType = nOfBits == 1 ? "bit" : "bus";
     const ret = new Signal({
-      references: this.references.concat([`[${from}:${to}]`]),
+      references: this.references,
       vcdid: `${this.vcdid}-cloned[${from}:${to}]`,
       type: retType,
       wave: [],
-      width: nOfBits
+      width: nOfBits,
+      cloneOrigin: this,
+      cloneRangeBits: [from, to],
+      value_type: "bin"
     });
+    if (!lazy) {
+      ret.cloneWaveFromOrigin();
+    } else {
+      ret.isWaveSet = false;
+    }
+    return ret;
+  }
+
+  cloneWaveFromOrigin(from = -1, to = -1) {
+    if (this.isWaveSet) {
+      console.warn(`Signal: ${this.references} cloneWaveFromOrigin was just called before.`);
+    }
+    if (from < 0) from = this.cloneRangeBits[0];
+    if (to < 0) to = this.cloneRangeBits[1];
+
+    if (!this.cloneOrigin) {
+      throw `Signal: ${this.references} cloneOrigin is undefined. Cannot clone`;
+    }
+    const orig = this.cloneOrigin;
     // Little endian conversion:
-    const fromLE = this.width - 1 - from;
-    const toLE = this.width - 1 - to;
+    const fromLE = orig.width - 1 - from;
+    const toLE = orig.width - 1 - to;
     var retWi;
     let retWiPrev = { time: -1, bin: "" };
-    this.wave.forEach((wi) => {
+    orig.wave.forEach((wi) => {
       retWi = { time: wi.time, bin: wi.bin.substring(fromLE, toLE + 1) };
       if (retWi.bin != retWiPrev.bin) {
         // instert the new value only if it is different from the previous one
-        ret.wave.push(retWi);
+        this.wave.push(retWi);
       }
       retWiPrev = retWi;
     });
-    // ret.width = to-from+1;
-    return ret;
+    this.isWaveSet = true;
   }
 
   /**
